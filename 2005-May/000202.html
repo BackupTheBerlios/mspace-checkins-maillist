@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r489 - ComponentModel/trunk/src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r489%20-%20ComponentModel/trunk/src&In-Reply-To=%3C200505141215.j4ECFA5U012726%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000201.html">
+   <LINK REL="Next"  HREF="000203.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r489 - ComponentModel/trunk/src</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r489%20-%20ComponentModel/trunk/src&In-Reply-To=%3C200505141215.j4ECFA5U012726%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r489 - ComponentModel/trunk/src">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Sat May 14 14:15:10 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000201.html">[Mspace-checkins] r488 - in ComponentModel/trunk/src: . ComponentModel.Threading
+</A></li>
+        <LI>Next message: <A HREF="000203.html">[Mspace-checkins] r490 - koolboy/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#202">[ date ]</a>
+              <a href="thread.html#202">[ thread ]</a>
+              <a href="subject.html#202">[ subject ]</a>
+              <a href="author.html#202">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-05-14 14:15:09 +0200 (Sat, 14 May 2005)
+New Revision: 489
+
+Modified:
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Fix a little bug redirecting ResponseMethodVO.
+
+
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-12 21:25:21 UTC (rev 488)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-14 12:15:09 UTC (rev 489)
+@@ -132,8 +132,8 @@
+ 
+ 
+         private ResponseMethodVO ExecuteRedirectNewView (MethodInfo methodToExecute, object[] parameters, Type viewType, MethodInfo methodToResponse) {
++            ResponseMethodVO responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO (); 
+             try {
+-                ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
+                 object ret = methodToExecute.Invoke (this, parameters);
+                 responseMethodVO.MethodResult = ret;
+                 object obj = viewType.GetConstructor (null).Invoke (null);
+@@ -144,36 +144,34 @@
+             catch (TargetInvocationException exception) {
+                 this.MapException (exception);
+             }
+-            return null;
++            return responseMethodVO;
+         }
+ 
+         private ResponseMethodVO ExecuteRedirectView (MethodInfo methodToExecute, object[] parameters, IViewHandler viewHandler, MethodInfo methodToResponse) {
++            ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
+             try {
+-                ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
+                 object ret = methodToExecute.Invoke (this, parameters);
+                 responseMethodVO.MethodResult = ret;
+                 responseMethodVO.SetExecutionSuccess (true);
+                 methodToResponse.Invoke (viewHandler, new object[] {responseMethodVO});
+-                return responseMethodVO;
+             }
+             catch (TargetInvocationException exception) {
+                 this.MapException (exception);
+             }
+-            return null;
++            return responseMethodVO;
+         }
+         
+         private ResponseMethodVO ExecuteNoRedirect (MethodInfo methodToExecute, object[] parameters) {
++            ResponseMethodVO responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
+             try {
+-                ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
+                 object ret = methodToExecute.Invoke (this, parameters);
+                 responseMethodVO.MethodResult = ret;
+                 responseMethodVO.SetExecutionSuccess (true);
+-                return responseMethodVO;
+             }
+             catch (TargetInvocationException exception) {
+                 this.MapException (exception);
+             }
+-            return null;
++            return responseMethodVO;
+         }
+         
+         /*Executor overloads*/
+@@ -226,24 +224,40 @@
+                     MethodInfo methodToResponse;
+                     Type viewType;
+                     if (viewHandler == null) {
++                        //Exception handling &#191;&#191;
+                         viewType = this.GetViewType (componentMethodAttribute);
+                         methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
+                         componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters, viewType, methodToResponse);
+-                        componentActionDispatcher.Do ();
++                        try {
++                            componentActionDispatcher.Do ();
++                        }
++                        catch (TargetInvocationException exception) {
++                            this.MapException (exception);
++                        }
+                         return componentActionDispatcher.ResponseMethodVO;
+                     }
+                     else {
+                         viewType = viewHandler.GetType ();
+                         methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
+                         componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters, viewHandler, methodToResponse);
+-                        componentActionDispatcher.Do ();
++                        try {
++                            componentActionDispatcher.Do ();
++                        }
++                        catch (TargetInvocationException exception) {
++                            this.MapException (exception);
++                        }
+                         return componentActionDispatcher.ResponseMethodVO;
+                     }
+                 }
+                 else {
+-                   componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters); 
+-                   componentActionDispatcher.Do ();
+-                   return componentActionDispatcher.ResponseMethodVO;
++                    componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters); 
++                    try {
++                        componentActionDispatcher.Do ();
++                    }
++                    catch (TargetInvocationException exception) {
++                        this.MapException (exception);
++                    }
++                    return componentActionDispatcher.ResponseMethodVO;
+                 }
+             }
+             //return null;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000201.html">[Mspace-checkins] r488 - in ComponentModel/trunk/src: . ComponentModel.Threading
+</A></li>
+	<LI>Next message: <A HREF="000203.html">[Mspace-checkins] r490 - koolboy/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#202">[ date ]</a>
+              <a href="thread.html#202">[ thread ]</a>
+              <a href="subject.html#202">[ subject ]</a>
+              <a href="author.html#202">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

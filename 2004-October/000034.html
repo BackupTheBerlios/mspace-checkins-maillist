@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r298 - in monkeypop/trunk: . monkeypopd src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r298%20-%20in%20monkeypop/trunk%3A%20.%20monkeypopd%20src&In-Reply-To=%3C200410211454.i9LEsN0l020913%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000033.html">
+   <LINK REL="Next"  HREF="000035.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r298 - in monkeypop/trunk: . monkeypopd src</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r298%20-%20in%20monkeypop/trunk%3A%20.%20monkeypopd%20src&In-Reply-To=%3C200410211454.i9LEsN0l020913%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r298 - in monkeypop/trunk: . monkeypopd src">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Thu Oct 21 16:54:23 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000033.html">[Mspace-checkins] r297 - in Chicken/trunk: . src/Gnome/TrayIcon/libtrayicon
+</A></li>
+        <LI>Next message: <A HREF="000035.html">[Mspace-checkins] r299 - in monkeypop/trunk: . monkeypopd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#34">[ date ]</a>
+              <a href="thread.html#34">[ thread ]</a>
+              <a href="subject.html#34">[ subject ]</a>
+              <a href="author.html#34">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2004-10-21 16:54:21 +0200 (Thu, 21 Oct 2004)
+New Revision: 298
+
+Added:
+   monkeypop/trunk/monkeypopd/Client.cs
+Removed:
+   monkeypop/trunk/monkeypopd/MonkeyPopClient.cs
+Modified:
+   monkeypop/trunk/ChangeLog
+   monkeypop/trunk/Makefile.am
+   monkeypop/trunk/configure.in
+   monkeypop/trunk/monkeypopd/DaemonLauncher.cs
+   monkeypop/trunk/monkeypopd/Makefile.am
+   monkeypop/trunk/monkeypopd/NotificationDaemon.cs
+   monkeypop/trunk/src/Makefile.am
+Log:
+2004-10-21  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+
+        * Makefile.am: Added optional monkeypopd subdir
+        * configure.in: Added optional dbus support
+        * monkeypopd/Client.cs: DBus service client example
+        * monkeypopd/DaemonLauncher.cs: DBus daemon laucher
+        * monkeypopd/Makefile.am: Updated and cleaned
+        * monkeypopd/MonkeyPopClient.cs: Obsolete code
+        * monkeypopd/NotificationDaemon.cs: DBus service code
+        * src/Makefile.am: Cleaned
+
+
+
+Modified: monkeypop/trunk/ChangeLog
+===================================================================
+--- monkeypop/trunk/ChangeLog	2004-10-21 13:28:35 UTC (rev 297)
++++ monkeypop/trunk/ChangeLog	2004-10-21 14:54:21 UTC (rev 298)
+@@ -1,3 +1,14 @@
++2004-10-21  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
++	* Makefile.am: Added optional monkeypopd subdir
++	* configure.in: Added optional dbus support
++	* monkeypopd/Client.cs: DBus service client example
++	* monkeypopd/DaemonLauncher.cs: DBus daemon laucher
++	* monkeypopd/Makefile.am: Updated and cleaned
++	* monkeypopd/MonkeyPopClient.cs: Obsolete code
++	* monkeypopd/NotificationDaemon.cs: DBus service code
++	* src/Makefile.am: Cleaned
++
+ 2004-10-20  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
+ 	* NEWS: Updated
+
+Modified: monkeypop/trunk/Makefile.am
+===================================================================
+--- monkeypop/trunk/Makefile.am	2004-10-21 13:28:35 UTC (rev 297)
++++ monkeypop/trunk/Makefile.am	2004-10-21 14:54:21 UTC (rev 298)
+@@ -1,4 +1,9 @@
+ SUBDIRS = images src
++
++if ENABLE_DBUS
++SUBDIRS += monkeypopd
++endif
++
+ TMPDIR=/tmp/MonkeyPop-$(VERSION)
+ BIN=monkeypop-$(VERSION)-bin.tar.gz
+ SRC=monkeypop-$(VERSION)-src.tar.gz
+
+Modified: monkeypop/trunk/configure.in
+===================================================================
+--- monkeypop/trunk/configure.in	2004-10-21 13:28:35 UTC (rev 297)
++++ monkeypop/trunk/configure.in	2004-10-21 14:54:21 UTC (rev 298)
+@@ -42,11 +42,27 @@
+ AC_SUBST(GTKSHARP_LIBS)
+ 
+ 
++dnl-------------------------
++dnl	Chicken check
++dnl-------------------------
+ PKG_CHECK_MODULES(CHICKEN,
+ 		    chicken &gt;= $CHICKEN_REQUIRED)
+ AC_SUBST(CHICKEN_LIBS)
+ 
+ 
++dnl --------------
++dnl	DBus
++dnl --------------
++DBUS_REQUIRED=0.22
++AC_ARG_ENABLE(dbus, [  --enable-dbus=[no/yes]    compile with DBus daemon support.],,enable_dbus=no)
++AM_CONDITIONAL(ENABLE_DBUS, test &quot;$enable_dbus&quot; = &quot;yes&quot;)
++if test &quot;x$enable_dbus&quot; = &quot;xyes&quot;; then
++    PKG_CHECK_MODULES(DBUS_SHARP,
++                  dbus-sharp &gt;= $DBUS_REQUIRED)
++fi
++AC_SUBST(DBUS_SHARP_LIBS)
++
++
+ dnl Check for Mono
+ AC_PATH_PROG(MCS, mcs)
+ AC_PATH_PROG(MONO, mono)
+@@ -57,4 +73,5 @@
+ src/Makefile
+ images/Makefile
+ src/monkeypop
++monkeypopd/Makefile
+ ])
+
+Added: monkeypop/trunk/monkeypopd/Client.cs
+===================================================================
+--- monkeypop/trunk/monkeypopd/Client.cs	2004-10-21 13:28:35 UTC (rev 297)
++++ monkeypop/trunk/monkeypopd/Client.cs	2004-10-21 14:54:21 UTC (rev 298)
+@@ -0,0 +1,16 @@
++namespace Foo
++{
++  using System;
++  using DBus;
++
++  public class Client
++  {
++    public static void Main(string [] args)
++    {
++      Connection connection = Bus.GetSessionBus();
++      Service service = Service.Get(connection, &quot;org.rubiojr.MonkeyPop&quot;);
++      NotificationDaemon daemon = (NotificationDaemon) 
++      		service.GetObject(typeof(NotificationDaemon), &quot;/org/rubiojr/MonkeyPop/NotificationDaemon&quot;);
++    }
++  }
++}
+
+Modified: monkeypop/trunk/monkeypopd/DaemonLauncher.cs
+===================================================================
+--- monkeypop/trunk/monkeypopd/DaemonLauncher.cs	2004-10-21 13:28:35 UTC (rev 297)
++++ monkeypop/trunk/monkeypopd/DaemonLauncher.cs	2004-10-21 14:54:21 UTC (rev 298)
+@@ -17,8 +17,6 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace MonkeyPop.NotificationDaemon 
+-{
+     using System;    
+     using Gtk; 
+     
+@@ -44,5 +42,4 @@
+ 	}
+     }
+ 
+-}
+ 
+
+Modified: monkeypop/trunk/monkeypopd/Makefile.am
+===================================================================
+--- monkeypop/trunk/monkeypopd/Makefile.am	2004-10-21 13:28:35 UTC (rev 297)
++++ monkeypop/trunk/monkeypopd/Makefile.am	2004-10-21 14:54:21 UTC (rev 298)
+@@ -1,10 +1,18 @@
+-CSFILES=*.cs
+-REFERENCES=-pkg:gtk-sharp -pkg:chicken -pkg:dbus-sharp
++REFERENCES= \
++	    $(GTKSHARP_LIBS)		\
++	    $(CHICKEN_LIBS)	 	\
++	    $(DBUS_SHARP_LIBS)
+ 
+-all: notification-daemon.exe
++all: NotificationDaemon.dll notification-daemon.exe client.exe
+ 
+-notification-daemon.exe: $(CSFILES)
+-	mcs $(CSFILES) -o $@ $(REFERENCES)
++NotificationDaemon.dll: NotificationDaemon.cs
++	mcs NotificationDaemon.cs -t:library -o $@ $(REFERENCES)
+ 
++notification-daemon.exe: DaemonLauncher.cs
++	mcs DaemonLauncher.cs -o $@ $(REFERENCES) -r:NotificationDaemon.dll
++
++client.exe: Client.cs
++	mcs Client.cs -o $@ $(REFERENCES) -r:NotificationDaemon.dll
++
+ EXTRA_DIST = *.cs
+-CLEANFILES= *.exe
++CLEANFILES= *.exe *.dll
+
+Deleted: monkeypop/trunk/monkeypopd/MonkeyPopClient.cs
+===================================================================
+--- monkeypop/trunk/monkeypopd/MonkeyPopClient.cs	2004-10-21 13:28:35 UTC (rev 297)
++++ monkeypop/trunk/monkeypopd/MonkeyPopClient.cs	2004-10-21 14:54:21 UTC (rev 298)
+@@ -1,20 +0,0 @@
+-namespace Foo
+-{
+-  using System;
+-  using DBus;
+-  using MonkeyPop.NotificationDaemon;
+-
+-  public class MonkeyPopClient
+-  {
+-    public static int Main(string [] args)
+-    {
+-      Connection connection = Bus.GetSessionBus();
+-      Service service = Service.Get(connection, &quot;org.rubiojr.MonkeyPop&quot;);
+-      NotificationDaemon daemon = (NotificationDaemon) 
+-	    service.GetObject(typeof(NotificationDaemon), &quot;/org/rubiojr/MonkeyPop/NotificationDaemon&quot;);
+-      daemon.ShowMessageNotification (&quot;test&quot;, &quot;TEST&quot;, &quot;Info&quot;);
+-      
+-      return 0;
+-    }
+-  }
+-}
+
+Modified: monkeypop/trunk/monkeypopd/NotificationDaemon.cs
+===================================================================
+--- monkeypop/trunk/monkeypopd/NotificationDaemon.cs	2004-10-21 13:28:35 UTC (rev 297)
++++ monkeypop/trunk/monkeypopd/NotificationDaemon.cs	2004-10-21 14:54:21 UTC (rev 298)
+@@ -1,9 +1,8 @@
+ 
+-namespace MonkeyPop.NotificationDaemon
+-{
+     using DBus;
+     using System;
+     using Chicken.Gnome.Notification;
++    using Gtk;
+     
+     [DBus.Interface (&quot;org.rubiojr.MonkeyPop.NotificationDaemon&quot;)]
+     public class NotificationDaemon
+@@ -21,6 +20,6 @@
+ 	    NotificationType ntype = (NotificationType)Enum.Parse (typeof (NotificationType), type);
+ 	    NotificationFactory.ShowMessageNotification (header, body, ntype, null);
+ 	}
++	
+ 
+     }
+-}
+
+Modified: monkeypop/trunk/src/Makefile.am
+===================================================================
+--- monkeypop/trunk/src/Makefile.am	2004-10-21 13:28:35 UTC (rev 297)
++++ monkeypop/trunk/src/Makefile.am	2004-10-21 14:54:21 UTC (rev 298)
+@@ -1,5 +1,6 @@
+ CSSOURCES = MonkeyPop.cs
+-REFERECES = -pkg:chicken -pkg:gtk-sharp -r:Mono.GetOptions
++REFERECES = $(CHICKEN_LIBS) $(GTKSHARP_LIBS) -r:Mono.GetOptions
++
+ #RESOURCES = \
+ #	/resource:../images/notification.png,notification.png \
+ #	/resource:../images/simple.svg,simple.svg				\
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000033.html">[Mspace-checkins] r297 - in Chicken/trunk: . src/Gnome/TrayIcon/libtrayicon
+</A></li>
+	<LI>Next message: <A HREF="000035.html">[Mspace-checkins] r299 - in monkeypop/trunk: . monkeypopd
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#34">[ date ]</a>
+              <a href="thread.html#34">[ thread ]</a>
+              <a href="subject.html#34">[ subject ]</a>
+              <a href="author.html#34">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

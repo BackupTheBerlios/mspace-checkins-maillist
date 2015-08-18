@@ -1,0 +1,337 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r430 - in SimpleP/trunk: . resources src src/Contexts/StartPage ui-data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r430%20-%20in%20SimpleP/trunk%3A%20.%20resources%20src%20src/Contexts/StartPage%20ui-data&In-Reply-To=%3C200504111502.j3BF2eb8028129%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000142.html">
+   <LINK REL="Next"  HREF="000144.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r430 - in SimpleP/trunk: . resources src src/Contexts/StartPage ui-data</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r430%20-%20in%20SimpleP/trunk%3A%20.%20resources%20src%20src/Contexts/StartPage%20ui-data&In-Reply-To=%3C200504111502.j3BF2eb8028129%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r430 - in SimpleP/trunk: . resources src src/Contexts/StartPage ui-data">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Mon Apr 11 17:02:40 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000142.html">[Mspace-checkins] r429 - in SimpleP/trunk: . resources src
+</A></li>
+        <LI>Next message: <A HREF="000144.html">[Mspace-checkins] r431 - in ComponentModel/trunk: ComponentTest/src/Components/MainComponent/Bo ComponentTest/src/Components/Saludator/Bo src src/ComponentModel.Container
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#143">[ date ]</a>
+              <a href="thread.html#143">[ thread ]</a>
+              <a href="subject.html#143">[ subject ]</a>
+              <a href="author.html#143">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-11 17:02:39 +0200 (Mon, 11 Apr 2005)
+New Revision: 430
+
+Added:
+   SimpleP/trunk/src/ContextViewStore.boo
+Modified:
+   SimpleP/trunk/ChangeLog
+   SimpleP/trunk/resources/welcome.html
+   SimpleP/trunk/src/Contexts/StartPage/StartPageWidget.boo
+   SimpleP/trunk/src/MainWindow.boo
+   SimpleP/trunk/ui-data/simplep.glade
+Log:
+
+	* resources/welcome.html: Renamed the Open last project link to
+	OpenLastProject
+	* src/ContextViewStore.boo: New store for the context view
+	* src/Contexts/StartPage/StartPageWidget.boo: Make the Open last project
+	actually work
+	* src/MainWindow.boo: Changed the store for the context view added some
+	cosmetic changes to the ui
+	* ui-data/simplep.glade: added some coolnes to the ui (Choose project
+	label over the projects combo)
+
+
+
+Modified: SimpleP/trunk/ChangeLog
+===================================================================
+--- SimpleP/trunk/ChangeLog	2005-04-10 12:22:26 UTC (rev 429)
++++ SimpleP/trunk/ChangeLog	2005-04-11 15:02:39 UTC (rev 430)
+@@ -1,3 +1,15 @@
++2005-04-11  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
++	* resources/welcome.html: Renamed the Open last project link to
++	OpenLastProject
++	* src/ContextViewStore.boo: New store for the context view
++	* src/Contexts/StartPage/StartPageWidget.boo: Make the Open last project
++	actually work
++	* src/MainWindow.boo: Changed the store for the context view added some
++	cosmetic changes to the ui
++	* ui-data/simplep.glade: added some coolnes to the ui (Choose project
++	label over the projects combo)
++
+ 2005-04-10  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
+ 	* resources/config.ini: Changed default size
+
+Modified: SimpleP/trunk/resources/welcome.html
+===================================================================
+--- SimpleP/trunk/resources/welcome.html	2005-04-10 12:22:26 UTC (rev 429)
++++ SimpleP/trunk/resources/welcome.html	2005-04-11 15:02:39 UTC (rev 430)
+@@ -15,5 +15,5 @@
+   &lt;/tbody&gt;
+ &lt;/table&gt;
+ &lt;br&gt;
+-&lt;b&gt;&lt;A href=&quot;OpenProject&quot;&gt;Open last project&lt;/A&gt;&lt;/b&gt;
++&lt;b&gt;&lt;A href=&quot;OpenLastProject&quot;&gt;Open last project&lt;/A&gt;&lt;/b&gt;
+ 
+
+Added: SimpleP/trunk/src/ContextViewStore.boo
+===================================================================
+--- SimpleP/trunk/src/ContextViewStore.boo	2005-04-10 12:22:26 UTC (rev 429)
++++ SimpleP/trunk/src/ContextViewStore.boo	2005-04-11 15:02:39 UTC (rev 430)
+@@ -0,0 +1,19 @@
++namespace SimpleP
++
++import Gtk
++import System
++
++class ContextViewStore (ListStore):
++	
++	def constructor ( types as (Type) ):
++		super (types)
++		SetDefaultSortFunc (SortFunc, IntPtr.Zero, null)
++		SetSortColumnId (-1, SortType.Ascending)
++
++	private def SortFunc (model as TreeModel, iterA as TreeIter, iterB as TreeIter) as int:
++		o1 as string = GetValue (iterA, 1)
++		o2 as string = GetValue (iterB, 1)
++		if o1 == &quot;Start page&quot;:
++			return -1
++		if o2 == &quot;Start page&quot;:
++			return 1
+
+Modified: SimpleP/trunk/src/Contexts/StartPage/StartPageWidget.boo
+===================================================================
+--- SimpleP/trunk/src/Contexts/StartPage/StartPageWidget.boo	2005-04-10 12:22:26 UTC (rev 429)
++++ SimpleP/trunk/src/Contexts/StartPage/StartPageWidget.boo	2005-04-11 15:02:39 UTC (rev 430)
+@@ -7,6 +7,7 @@
+ class StartPageWidget (VBox):
+ 	
+ 	html as HTML
++	lastProject as string
+ 	
+ 	def constructor ():
+ 		stream = Globals.Resources.GetManifestResourceStream (&quot;welcome.html&quot;)
+@@ -15,4 +16,11 @@
+ 		reader.Close ()
+ 		stream.Close ()
+ 		html = HTML (content)
++		html.LinkClicked += HandleLinkClicked
+ 		Add (html)
++		lastProject = Services.Config.MainConfig.GetString (&quot;LastProject&quot;, null)
++
++	def HandleLinkClicked (sender, args as LinkClickedArgs):
++		if args.Url == &quot;OpenLastProject&quot; and lastProject and Services.ProjectManager.Contains (lastProject):
++			print &quot;Restoring las projecT&quot;
++			Services.ProjectManager.SetActiveProject (lastProject)
+
+Modified: SimpleP/trunk/src/MainWindow.boo
+===================================================================
+--- SimpleP/trunk/src/MainWindow.boo	2005-04-10 12:22:26 UTC (rev 429)
++++ SimpleP/trunk/src/MainWindow.boo	2005-04-11 15:02:39 UTC (rev 430)
+@@ -27,6 +27,8 @@
+ 	[Glade.Widget] statusbar as Statusbar
+ 	[Glade.Widget] contextMenues as MenuItem
+ 	[Glade.Widget] hpaned as HPaned
++	[Glade.Widget] projectsLabel as Label
++	[Glade.Widget] projectsLabelBox as EventBox
+ 	iContextMenues as Menu
+ 	projectView as TreeView 
+ 	_lastWidget as Widget 
+@@ -54,12 +56,9 @@
+ 	private def Init ():
+ 		DeleteEvent += WindowDeleted
+ 		Icon = Gdk.Pixbuf (Globals.Resources,&quot;SimpleP-icon-gears.png&quot;)
++
++		projectsLabelBox.ModifyBg (StateType.Normal, Gdk.Color (76,76,76))
+ 		
+-		startPage = Services.ContextManager.GetContext (&quot;Start page&quot;)
+-		itemViewBox.Add (startPage.View)
+-		startPage.Activate ()
+-		_lastWidget = startPage.View
+-
+ 		SetupProjectView ()
+ 		Services.Statusbar.MessagePushed += MessagePushed
+ 
+@@ -83,6 +82,9 @@
+ 		Services.Config[&quot;XPos&quot;] = x.ToString ()
+ 		Services.Config[&quot;YPos&quot;] = y.ToString ()
+ 		Services.Config[&quot;HPanedPosition&quot;] = hpaned.Position.ToString ()
++		currentProject = Services.ProjectManager.CurrentProject
++		if currentProject:
++			Services.Config[&quot;LastProject&quot;] = currentProject.Name
+ 		Services.Config.SaveConfig ()
+ 		Application.Quit ()
+ 
+@@ -92,7 +94,7 @@
+ 		Services.Config.SaveConfig ()
+ 
+ 	private def SetupProjectView ():
+-		projectStore = ListStore ( (typeof (Gdk.Pixbuf), typeof (string)) )	
++		projectStore = ContextViewStore ( (typeof (Gdk.Pixbuf), typeof (string)) )	
+ 		menuItems = 0
+ 		iContextMenues = Menu ()
+ 		contextMenues.Submenu = iContextMenues
+@@ -107,9 +109,10 @@
+ 			contextMenues.Sensitive = false
+ 		
+ 		projectView = TreeView ()
++		
+ 		projectView.HeadersVisible = false
+ 		projectView.Model = projectStore
+-		
++		projectView.Reorderable = false
+ 		projectView.AppendColumn (&quot;Icon&quot;, CellRendererPixbuf (), (&quot;pixbuf&quot;, 0))
+ 		textRenderer = CellRendererText ()
+ 		textRenderer.Visible = true
+@@ -206,19 +209,23 @@
+ 	private def ProjectChangedHandler (sender, args):
+ 		if Services.ProjectManager.CurrentProject:
+ 			iter as TreeIter
++			model as ListStore
++			model = projectCombo.Model
+ 			if projectCombo.GetActiveIter (iter):
+ 				name = projectCombo.Model.GetValue (iter, 0)
+ 				currentName = Services.ProjectManager.CurrentProject.Name
+ 				if name != currentName:
+-					model as ListStore = projectCombo.Model
+ 					model.Foreach (ChangedForeach)
++			else:
++				model.Foreach (ChangedForeach)
+ 
+ 	private def ChangedForeach (model as TreeModel, path as TreePath, iter as TreeIter) as bool:
+ 		currentName = Services.ProjectManager.CurrentProject.Name
+ 		name = model.GetValue (iter, 0)
+ 		if name == currentName:
+ 			projectCombo.SetActiveIter (iter)
+-		return true
++			return true
++		return false
+ 				
+ 	private def ProjectAddedHandler (sender, args as ProjectAddedArgs):
+ 		model = projectCombo.Model
+
+Modified: SimpleP/trunk/ui-data/simplep.glade
+===================================================================
+--- SimpleP/trunk/ui-data/simplep.glade	2005-04-10 12:22:26 UTC (rev 429)
++++ SimpleP/trunk/ui-data/simplep.glade	2005-04-11 15:02:39 UTC (rev 430)
+@@ -250,32 +250,65 @@
+ 	      &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
+ 
+ 	      &lt;child&gt;
+-		&lt;widget class=&quot;GtkComboBox&quot; id=&quot;projectCombo&quot;&gt;
++		&lt;widget class=&quot;GtkVBox&quot; id=&quot;treeViewBox&quot;&gt;
+ 		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;items&quot; translatable=&quot;yes&quot;&gt;&lt;/property&gt;
+-		  &lt;property name=&quot;add_tearoffs&quot;&gt;False&lt;/property&gt;
+-		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
++		  &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
++
++		  &lt;child&gt;
++		    &lt;placeholder/&gt;
++		  &lt;/child&gt;
+ 		&lt;/widget&gt;
+ 		&lt;packing&gt;
+ 		  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-		  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++		  &lt;property name=&quot;expand&quot;&gt;True&lt;/property&gt;
+ 		  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
+ 		&lt;/packing&gt;
+ 	      &lt;/child&gt;
+ 
+ 	      &lt;child&gt;
+-		&lt;widget class=&quot;GtkVBox&quot; id=&quot;treeViewBox&quot;&gt;
++		&lt;widget class=&quot;GtkEventBox&quot; id=&quot;projectsLabelBox&quot;&gt;
+ 		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
+-		  &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
++		  &lt;property name=&quot;visible_window&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;above_child&quot;&gt;False&lt;/property&gt;
+ 
+ 		  &lt;child&gt;
+-		    &lt;placeholder/&gt;
++		    &lt;widget class=&quot;GtkLabel&quot; id=&quot;projectsLabel&quot;&gt;
++		      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++		      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;&lt;span foreground=&quot;white&quot;&gt;&lt;b&gt;Choose Project&lt;/b&gt;&lt;/span&gt;&lt;/property&gt;
++		      &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
++		      &lt;property name=&quot;use_markup&quot;&gt;True&lt;/property&gt;
++		      &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_LEFT&lt;/property&gt;
++		      &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
++		      &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
++		      &lt;property name=&quot;xalign&quot;&gt;0&lt;/property&gt;
++		      &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
++		      &lt;property name=&quot;xpad&quot;&gt;4&lt;/property&gt;
++		      &lt;property name=&quot;ypad&quot;&gt;4&lt;/property&gt;
++		      &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
++		      &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
++		      &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
++		      &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
++		    &lt;/widget&gt;
+ 		  &lt;/child&gt;
+ 		&lt;/widget&gt;
+ 		&lt;packing&gt;
+ 		  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-		  &lt;property name=&quot;expand&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++		  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
++		&lt;/packing&gt;
++	      &lt;/child&gt;
++
++	      &lt;child&gt;
++		&lt;widget class=&quot;GtkComboBox&quot; id=&quot;projectCombo&quot;&gt;
++		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;items&quot; translatable=&quot;yes&quot;&gt;&lt;/property&gt;
++		  &lt;property name=&quot;add_tearoffs&quot;&gt;False&lt;/property&gt;
++		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++		&lt;/widget&gt;
++		&lt;packing&gt;
++		  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++		  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
+ 		  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
+ 		&lt;/packing&gt;
+ 	      &lt;/child&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000142.html">[Mspace-checkins] r429 - in SimpleP/trunk: . resources src
+</A></li>
+	<LI>Next message: <A HREF="000144.html">[Mspace-checkins] r431 - in ComponentModel/trunk: ComponentTest/src/Components/MainComponent/Bo ComponentTest/src/Components/Saludator/Bo src src/ComponentModel.Container
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#143">[ date ]</a>
+              <a href="thread.html#143">[ thread ]</a>
+              <a href="subject.html#143">[ subject ]</a>
+              <a href="author.html#143">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r503 - ComponentModel/trunk/src/ComponentModel.Container
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-July/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r503%20-%20ComponentModel/trunk/src/ComponentModel.Container&In-Reply-To=%3C200507181912.j6IJCSF8013409%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000217.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r503 - ComponentModel/trunk/src/ComponentModel.Container</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r503%20-%20ComponentModel/trunk/src/ComponentModel.Container&In-Reply-To=%3C200507181912.j6IJCSF8013409%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r503 - ComponentModel/trunk/src/ComponentModel.Container">nestor at berlios.de
+       </A><BR>
+    <I>Mon Jul 18 21:12:28 CEST 2005</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000217.html">[Mspace-checkins] r504 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container src/ComponentModel.Interfaces src/ComponentModel.Threading
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#216">[ date ]</a>
+              <a href="thread.html#216">[ thread ]</a>
+              <a href="subject.html#216">[ subject ]</a>
+              <a href="author.html#216">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-07-18 21:12:23 +0200 (Mon, 18 Jul 2005)
+New Revision: 503
+
+Modified:
+   ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+Log:
+Added Executor Service into Container.
+
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-05-16 21:27:53 UTC (rev 502)
++++ ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-07-18 19:12:23 UTC (rev 503)
+@@ -6,6 +6,7 @@
+ using ComponentModel.Interfaces;
+ using ComponentModel.Container.Dao;
+ using ComponentModel.Exceptions;
++using ComponentModel.VO;
+ using NLog;
+ 
+ 
+@@ -121,5 +122,23 @@
+                 componentList.Remove (component);
+             }
+         }
++
++        /*Servicio ejecutor*/
++        public ResponseMethodVO Execute (string componentName, string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block) {
++            IComponentModel componentModel = this.GetComponentByName (componentName);
++            return componentModel.Execute (methodName, parameters, redirect, viewHandler, block);
++        }
++
++        public ResponseMethodVO Execute (string componentName, string methodName, object[] parameters, IViewHandler viewHandler) {
++            return this.Execute (componentName, methodName, parameters, true, viewHandler, true);
++        }       
++
++        public ResponseMethodVO Execute (string componentName, string methodName, object[] parameters, bool redirect) {
++            return this.Execute (componentName, methodName, parameters, redirect, null, true);
++        }
++
++        public ResponseMethodVO Execute (string componentName, string methodName, object[] parameters) {
++            return this.Execute (componentName, methodName, parameters, true, null, true);
++        }
+     }
+ }
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000217.html">[Mspace-checkins] r504 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container src/ComponentModel.Interfaces src/ComponentModel.Threading
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#216">[ date ]</a>
+              <a href="thread.html#216">[ thread ]</a>
+              <a href="subject.html#216">[ subject ]</a>
+              <a href="author.html#216">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

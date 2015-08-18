@@ -1,0 +1,859 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r541 - in ComponentModel/trunk: . src/ComponentModel src/ComponentModel/Container src/ComponentModel/Dto src/ComponentModel/Factory src/ComponentModel/Interfaces src/ComponentModel/Threading src/ComponentModel/VO src/UnitTest/Components/TestComponent
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r541%20-%20in%20ComponentModel/trunk%3A%20.%20src/ComponentModel%20src/ComponentModel/Container%20src/ComponentModel/Dto%20src/ComponentModel/Factory%20src/ComponentModel/Interfaces%20src/ComponentModel/Threading%20src/ComponentModel/VO%20src/UnitTest/Components/TestComponent&In-Reply-To=%3C200510170735.j9H7ZZXJ016791%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000253.html">
+   <LINK REL="Next"  HREF="000255.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r541 - in ComponentModel/trunk: . src/ComponentModel src/ComponentModel/Container src/ComponentModel/Dto src/ComponentModel/Factory src/ComponentModel/Interfaces src/ComponentModel/Threading src/ComponentModel/VO src/UnitTest/Components/TestComponent</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r541%20-%20in%20ComponentModel/trunk%3A%20.%20src/ComponentModel%20src/ComponentModel/Container%20src/ComponentModel/Dto%20src/ComponentModel/Factory%20src/ComponentModel/Interfaces%20src/ComponentModel/Threading%20src/ComponentModel/VO%20src/UnitTest/Components/TestComponent&In-Reply-To=%3C200510170735.j9H7ZZXJ016791%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r541 - in ComponentModel/trunk: . src/ComponentModel src/ComponentModel/Container src/ComponentModel/Dto src/ComponentModel/Factory src/ComponentModel/Interfaces src/ComponentModel/Threading src/ComponentModel/VO src/UnitTest/Components/TestComponent">nestor at berlios.de
+       </A><BR>
+    <I>Mon Oct 17 09:35:35 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000253.html">[Mspace-checkins] r540 - in ComponentModel/trunk/src/ComponentModel: . Collections Container/Dao
+</A></li>
+        <LI>Next message: <A HREF="000255.html">[Mspace-checkins] r542 - in ComponentModel/trunk/src/ComponentModel: . Container/Dao
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#254">[ date ]</a>
+              <a href="thread.html#254">[ thread ]</a>
+              <a href="subject.html#254">[ subject ]</a>
+              <a href="author.html#254">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-10-17 09:35:33 +0200 (Mon, 17 Oct 2005)
+New Revision: 541
+
+Added:
+   ComponentModel/trunk/src/ComponentModel/Dto/ComponentModelDTO.cs
+   ComponentModel/trunk/src/ComponentModel/Dto/ResponseMethodDTO.cs
+   ComponentModel/trunk/src/ComponentModel/Factory/FactoryDTO.cs
+   ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModelDTO.cs
+Removed:
+   ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModelVO.cs
+Modified:
+   ComponentModel/trunk/TODO
+   ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs
+   ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs
+   ComponentModel/trunk/src/ComponentModel/Factory/FactoryVO.cs
+   ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModel.cs
+   ComponentModel/trunk/src/ComponentModel/Interfaces/IContainer.cs
+   ComponentModel/trunk/src/ComponentModel/Interfaces/IVO.cs
+   ComponentModel/trunk/src/ComponentModel/Threading/ComponentActionDispatcher.cs
+   ComponentModel/trunk/src/ComponentModel/VO/ComponentModelVO.cs
+   ComponentModel/trunk/src/ComponentModel/VO/ResponseMethodVO.cs
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs
+Log:
+Est?\195?\161 a mitad el cambio de Api.
+
+Ahora solo falta el DefaultContainerDao y poco m?\195?\161s para tener todo con DTO. 
+(Fucking CORE j2ee patterns ?\194?\172?\194?\172)
+
+
+Modified: ComponentModel/trunk/TODO
+===================================================================
+--- ComponentModel/trunk/TODO	2005-10-16 16:05:44 UTC (rev 540)
++++ ComponentModel/trunk/TODO	2005-10-17 07:35:33 UTC (rev 541)
+@@ -6,14 +6,20 @@
+   sobrecarga de casos de uso seg&#195;&#186;n la firma.  Esto es sencillo de arreglar.
+   Hay una implementaci&#195;&#179;n de referencia sin testear.
+ 
++    DONE!
++    
+ * Implementaci&#195;&#179;n de un ViewCache, almacenando todas las vistas de un componente;
+   poder acceder as&#195;&#173; a cada una de ellas.  Ser&#195;&#161; as&#195;&#173; un modo de tener un Proxy en
+   cada componente que pueda autogestionar sus vistas; y en caso necesario poder
+   conseguir nosotros a una vista asociada a un componente.
+ 
++    DONE! (Think at 70%)
++    
+ * Implementaci&#195;&#179;n de m&#195;&#169;todos para conseguir la devoluci&#195;&#179;n de Propiedades que
+   tenga un componente.
+ 
++    DONE! 
++    
+ * Mejora de la concurrencia de un componente, varios accesos; varias llamadas,
+   respuestas y esperas.
+ 
+@@ -25,13 +31,19 @@
+ * Problemas de nomenclatura; deprecar el interface IVO, dado que no es
+   estrictamente un Value Object.  Sustituir por IDataTransferObject.
+ 
++    DONE! (Think at 50%) -- Only Refactor Now.
++    
+ * El interface de la vista, dejar&#195;&#161; de estar vacio; para implementar 3 m&#195;&#169;todos
+   que se suelen utilizar en las vistas siempre, esto es GetDataForm,
+   LoadDataForm y ClearForm.
+ 
++    DONE!
++
+ * Preejecuci&#195;&#179;n y postejecuci&#195;&#179;n; con m&#195;&#169;todos virtuales e implementaci&#195;&#179;n de
+   callbacks.
+ 
+ * ?&#194;&#191;&#194;&#191;?&#194;&#191;? Uso de delegates para poder responder a varios responses de golpe.
+ 
+ * Dejar de hacer los test a pelo !! Uso intensivo de NUnit para ello.
++    
++    DONE!
+
+Modified: ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs	2005-10-16 16:05:44 UTC (rev 540)
++++ ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs	2005-10-17 07:35:33 UTC (rev 541)
+@@ -25,7 +25,7 @@
+ using ComponentModel.Interfaces;
+ using ComponentModel.Container.Dao;
+ using ComponentModel.Exceptions;
+-using ComponentModel.VO;
++using ComponentModel.DTO;
+ using NLog;
+ 
+ 
+@@ -117,29 +117,29 @@
+         }
+ 
+         public void Add (IComponentModel component) {
+-            componentHashtable.Add (component.VO.ComponentName, component);
+-            logger.Info (&quot;Registering component: &quot; + component + &quot; as Name: &quot; + component.VO.ComponentName);
++            componentHashtable.Add (component.ComponentModelDTO.ComponentName, component);
++            logger.Info (&quot;Registering component: &quot; + component + &quot; as Name: &quot; + component.ComponentModelDTO.ComponentName);
+         }
+ 
+         public void Remove (IComponentModel component) {
+-            componentHashtable.Remove (component.VO.ComponentName);
++            componentHashtable.Remove (component.ComponentModelDTO.ComponentName);
+         }
+ 
+         /*Servicio ejecutor*/
+-        public ResponseMethodVO Execute (string componentName, string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block) {
++        public ResponseMethodDTO Execute (string componentName, string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block) {
+             IComponentModel componentModel = this.GetComponentByName (componentName);
+             return componentModel.Execute (methodName, parameters, redirect, viewHandler, block);
+         }
+ 
+-        public ResponseMethodVO Execute (string componentName, string methodName, object[] parameters, IViewHandler viewHandler) {
++        public ResponseMethodDTO Execute (string componentName, string methodName, object[] parameters, IViewHandler viewHandler) {
+             return this.Execute (componentName, methodName, parameters, true, viewHandler, true);
+         }       
+ 
+-        public ResponseMethodVO Execute (string componentName, string methodName, object[] parameters, bool redirect) {
++        public ResponseMethodDTO Execute (string componentName, string methodName, object[] parameters, bool redirect) {
+             return this.Execute (componentName, methodName, parameters, redirect, null, true);
+         }
+ 
+-        public ResponseMethodVO Execute (string componentName, string methodName, object[] parameters) {
++        public ResponseMethodDTO Execute (string componentName, string methodName, object[] parameters) {
+             return this.Execute (componentName, methodName, parameters, true, null, true);
+         }
+     }
+
+Modified: ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs	2005-10-16 16:05:44 UTC (rev 540)
++++ ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs	2005-10-17 07:35:33 UTC (rev 541)
+@@ -1,6 +1,6 @@
+ /*
+ Babuine Component Model &amp; Babuine Framework
+-Copyright (C) 2005  N&#195;&#169;stor Salceda Alonso
++Copyright (C) 2005  N&#233;stor Salceda Alonso
+ 
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+@@ -21,6 +21,7 @@
+ using System.Reflection;
+ using ComponentModel.Interfaces;
+ using ComponentModel.VO;
++using ComponentModel.DTO;
+ using ComponentModel.Container;
+ using ComponentModel.Container.Dao;
+ using ComponentModel.Factory;
+@@ -35,7 +36,11 @@
+         //Logging
+         private Logger logger = LogManager.GetLogger (&quot;ComponentModel.DefaultComponentModel&quot;);
+         //Value object with information associated to component
++        [Obsolete (&quot;This field is deprecated.&quot;)]
+         private ComponentModelVO vO;
++        
++        private ComponentModelDTO componentModelDTO;
++        
+         //Exception manager to process exceptions.
+         private IExceptionManager defaultExceptionManager;
+ 
+@@ -61,6 +66,10 @@
+         public ComponentModelVO VO {
+             get {return vO;}
+         }
++
++        public ComponentModelDTO ComponentModelDTO {
++            get {return componentModelDTO;}
++        }
+         
+         //Ctor
+         protected DefaultComponentModel () {
+@@ -139,7 +148,8 @@
+                 throw exception.InnerException;
+             else {
+                 if (this.defaultExceptionManager == null) {
+-                    Type typeManager = this.GetTypeExceptionManager (this.VO.ExceptionManagerClassName);
++                    //Type typeManager = this.GetTypeExceptionManager (this.VO.ExceptionManagerClassName);
++                    Type typeManager = this.GetTypeExceptionManager (this.ComponentModelDTO.ExceptionManagerClassName);
+                     this.defaultExceptionManager = (IExceptionManager) typeManager.GetConstructor (null).Invoke (null);
+                 }
+                 this.defaultExceptionManager.ProcessException (exception.InnerException);
+@@ -179,76 +189,96 @@
+         }
+ 
+ 
+-        private ResponseMethodVO ExecuteRedirectNewView (MethodInfo methodToExecute, object[] parameters, Type viewType, MethodInfo methodToResponse) {
+-            ResponseMethodVO responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO (); 
++        private ResponseMethodDTO ExecuteRedirectNewView (MethodInfo methodToExecute, object[] parameters, Type viewType, MethodInfo methodToResponse) {
++            ResponseMethodDTO responseMethodDTO = (ResponseMethodDTO) FactoryDTO.Instance.Create (CreateDTO.ResponseMethod); 
+             try {
+                 object ret = methodToExecute.Invoke (this, parameters);
+-                responseMethodVO.MethodResult = ret;
++                responseMethodDTO.MethodResult = ret;
+                 object obj = viewType.GetConstructor (null).Invoke (null);
+-                responseMethodVO.SetExecutionSuccess (true);
++                responseMethodDTO.SetExecutionSuccess (true);
+                 if (VirtualMethod != null) {
+-                    VirtualMethod (responseMethodVO);
++                    VirtualMethod (responseMethodDTO);
+                     VirtualMethod = null;
+                 }
+-                methodToResponse.Invoke (obj, new object[] {responseMethodVO});
+-                return responseMethodVO;
++                methodToResponse.Invoke (obj, new object[] {responseMethodDTO});
++                //Beta Implementation
++                //
++                //Siempre se va a a&#241;adir esta vista puesto que es una vista
++                //nueva.
++                ViewHandlerCollection.Add ((IViewHandler)obj);
++                logger.Debug (&quot;A new view has been added to View Cache.&quot;);
++                //
++                //End
++                return responseMethodDTO;
+             }
+             catch (TargetInvocationException exception) {
+                 this.MapException (exception);
+             }
+-            return responseMethodVO;
++            return responseMethodDTO;
+         }
+ 
+-        private ResponseMethodVO ExecuteRedirectView (MethodInfo methodToExecute, object[] parameters, IViewHandler viewHandler, MethodInfo methodToResponse) {
+-            ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
++        private ResponseMethodDTO ExecuteRedirectView (MethodInfo methodToExecute, object[] parameters, IViewHandler viewHandler, MethodInfo methodToResponse) {
++            ResponseMethodDTO responseMethodDTO = (ResponseMethodDTO) FactoryDTO.Instance.Create (CreateDTO.ResponseMethod);
+             try {
+                 object ret = methodToExecute.Invoke (this, parameters);
+-                responseMethodVO.MethodResult = ret;
+-                responseMethodVO.SetExecutionSuccess (true);
++                responseMethodDTO.MethodResult = ret;
++                responseMethodDTO.SetExecutionSuccess (true);
+                 if (VirtualMethod != null) {
+-                    VirtualMethod (responseMethodVO);
++                    VirtualMethod (responseMethodDTO);
+                     VirtualMethod = null;
+                 }
+-                methodToResponse.Invoke (viewHandler, new object[] {responseMethodVO});
++                //Beta Implementation
++                //
++                if (!ViewHandlerCollection.Contains (viewHandler)) {
++                    ViewHandlerCollection.Add (viewHandler);
++                    logger.Debug (&quot;A new view has been added to View Cache&quot;);
++                }
++                else {
++                    logger.Debug (&quot;This view has already been registered at View Cache.&quot;);
++                }
++                //
++                //End
++                
++                methodToResponse.Invoke (viewHandler, new object[] {responseMethodDTO});
+             }
+             catch (TargetInvocationException exception) {
+                 this.MapException (exception);
+             }
+-            return responseMethodVO;
++            return responseMethodDTO;
+         }
+         
+-        private ResponseMethodVO ExecuteNoRedirect (MethodInfo methodToExecute, object[] parameters) {
+-            ResponseMethodVO responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++        private ResponseMethodDTO ExecuteNoRedirect (MethodInfo methodToExecute, object[] parameters) {
++            ResponseMethodDTO responseMethodDTO = (ResponseMethodDTO) FactoryDTO.Instance.Create (CreateDTO.ResponseMethod);
+             try {
+                 object ret = methodToExecute.Invoke (this, parameters);
+-                responseMethodVO.MethodResult = ret;
+-                responseMethodVO.SetExecutionSuccess (true);
++                responseMethodDTO.MethodResult = ret;
++                responseMethodDTO.SetExecutionSuccess (true);
+                 if (VirtualMethod != null) {
+-                    VirtualMethod (responseMethodVO);
++                    VirtualMethod (responseMethodDTO);
+                     VirtualMethod = null;
+                 }
+             }
+             catch (TargetInvocationException exception) {
+                 this.MapException (exception);
+             }
+-            return responseMethodVO;
++            return responseMethodDTO;
+         }
+         
+         /*Executor overloads*/
+-        public ResponseMethodVO Execute (string methodName, object[] parameters) {
++        public ResponseMethodDTO Execute (string methodName, object[] parameters) {
+             return this.Execute (methodName, parameters, true, null, true);
+         }
+         
+-        public ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect) {
++        public ResponseMethodDTO Execute (string methodName, object[] parameters, bool redirect) {
+             return this.Execute (methodName, parameters, redirect, null, true);
+         }
+         
+-        public ResponseMethodVO Execute (string methodName, object[] parameters, IViewHandler viewHandler) {
++        public ResponseMethodDTO Execute (string methodName, object[] parameters, IViewHandler viewHandler) {
+             return this.Execute (methodName, parameters, true, viewHandler, true);
+         }       
+         
+         /*Executor commander !*/
+-        public ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block) {
++        public ResponseMethodDTO Execute (string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block) {
+             /*Existen cosas que siempre deben de buscarse*/
+             MethodInfo methodToExecute = this.GetMethodToExecute (methodName, parameters); 
+             ComponentMethodAttribute componentMethodAttribute = this.GetComponentAttributes (methodToExecute);
+@@ -294,7 +324,7 @@
+                         catch (TargetInvocationException exception) {
+                             this.MapException (exception);
+                         }
+-                        return componentActionDispatcher.ResponseMethodVO;
++                        return componentActionDispatcher.ResponseMethodDTO;
+                     }
+                     else {
+                         viewType = viewHandler.GetType ();
+@@ -306,7 +336,7 @@
+                         catch (TargetInvocationException exception) {
+                             this.MapException (exception);
+                         }
+-                        return componentActionDispatcher.ResponseMethodVO;
++                        return componentActionDispatcher.ResponseMethodDTO;
+                     }
+                 }
+                 else {
+@@ -317,7 +347,7 @@
+                     catch (TargetInvocationException exception) {
+                         this.MapException (exception);
+                     }
+-                    return componentActionDispatcher.ResponseMethodVO;
++                    return componentActionDispatcher.ResponseMethodDTO;
+                 }
+             }
+             //return null;
+
+Added: ComponentModel/trunk/src/ComponentModel/Dto/ComponentModelDTO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Dto/ComponentModelDTO.cs	2005-10-16 16:05:44 UTC (rev 540)
++++ ComponentModel/trunk/src/ComponentModel/Dto/ComponentModelDTO.cs	2005-10-17 07:35:33 UTC (rev 541)
+@@ -0,0 +1,48 @@
++/*
++Babuine Component Model &amp; Babuine Framework
++Copyright (C) 2005  N&#195;&#169;stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
++using System;
++using System.Collections;
++using ComponentModel.Interfaces;
++
++namespace ComponentModel.DTO {
++    public sealed class ComponentModelDTO : IComponentModelDTO {
++        private string componentName;
++        private string componentClassName;
++        private string exceptionManagerClassName;
++
++        internal ComponentModelDTO () {
++        }
++        
++        public string ExceptionManagerClassName {
++            get {return exceptionManagerClassName;}
++            set {exceptionManagerClassName = value;}
++        }
++        
++        public string ComponentClassName {
++            get {return componentClassName;}
++            set {componentClassName = value;}
++        }
++        
++        public string ComponentName {
++            get {return componentName;}
++            set {componentName = value;}
++        }
++    }
++}
+
+Added: ComponentModel/trunk/src/ComponentModel/Dto/ResponseMethodDTO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Dto/ResponseMethodDTO.cs	2005-10-16 16:05:44 UTC (rev 540)
++++ ComponentModel/trunk/src/ComponentModel/Dto/ResponseMethodDTO.cs	2005-10-17 07:35:33 UTC (rev 541)
+@@ -0,0 +1,46 @@
++/*
++Babuine Component Model &amp; Babuine Framework
++Copyright (C) 2005  N&#195;&#169;stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
++using System;
++using ComponentModel.Interfaces;
++
++namespace ComponentModel.DTO {
++    public sealed class ResponseMethodDTO : IComponentModelDTO {
++        private bool executionSuccess;
++        private object methodResult;
++
++        internal ResponseMethodDTO () {
++            //this.SetExecutionSuccess (false);
++        }
++        
++        public object MethodResult {
++            get {return methodResult;}
++            set {methodResult = value;}
++        }
++        
++        public bool ExecutionSuccess {
++            get {return executionSuccess;}
++        }
++
++        internal void SetExecutionSuccess (bool executionSuccess) {
++            this.executionSuccess = executionSuccess;
++        }
++        
++    }
++}
+
+Added: ComponentModel/trunk/src/ComponentModel/Factory/FactoryDTO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Factory/FactoryDTO.cs	2005-10-16 16:05:44 UTC (rev 540)
++++ ComponentModel/trunk/src/ComponentModel/Factory/FactoryDTO.cs	2005-10-17 07:35:33 UTC (rev 541)
+@@ -0,0 +1,58 @@
++/*
++Babuine Component Model &amp; Babuine Framework
++Copyright (C) 2005  N&#195;&#169;stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
++using System;
++using ComponentModel.DTO;
++using ComponentModel.Interfaces;
++
++namespace ComponentModel.Factory {
++    public enum CreateDTO {
++        ComponentModel,
++        ResponseMethod
++    }
++    
++    public sealed class FactoryDTO {
++        private static FactoryDTO instance;
++
++        private FactoryDTO () {
++        }
++
++        public static FactoryDTO Instance {
++            get {
++                if (instance == null)
++                    instance = new FactoryDTO ();
++                return instance;
++            }
++        }
++
++        public IComponentModelDTO Create (CreateDTO value) {
++            switch (value) {
++                case CreateDTO.ComponentModel:
++                    return new ComponentModelDTO ();
++                case CreateDTO.ResponseMethod:
++                    ResponseMethodDTO responseMethodDTO = new ResponseMethodDTO ();
++                    responseMethodDTO.SetExecutionSuccess (false); //Por defecto inicializar&#195;&#161; a false.
++                    return responseMethodDTO;
++                default:
++                    return null;
++            }
++        }
++
++    }
++}
+
+Modified: ComponentModel/trunk/src/ComponentModel/Factory/FactoryVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Factory/FactoryVO.cs	2005-10-16 16:05:44 UTC (rev 540)
++++ ComponentModel/trunk/src/ComponentModel/Factory/FactoryVO.cs	2005-10-17 07:35:33 UTC (rev 541)
+@@ -21,6 +21,7 @@
+ using ComponentModel.VO;
+ 
+ namespace ComponentModel.Factory {
++    [Obsolete (&quot;FactoryVO is being removed at next version.  Please use FactoryDto instead.&quot;)]
+     public sealed class FactoryVO {
+         private static FactoryVO instance;
+ 
+
+Modified: ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModel.cs	2005-10-16 16:05:44 UTC (rev 540)
++++ ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModel.cs	2005-10-17 07:35:33 UTC (rev 541)
+@@ -19,18 +19,24 @@
+ 
+ using System;
+ using ComponentModel.VO;
++using ComponentModel.DTO;
++using ComponentModel.Collections;
+ 
+ namespace ComponentModel.Interfaces {
+-    public delegate void VirtualMethod (ResponseMethodVO responseMethodVO);
++    public delegate void VirtualMethod (ResponseMethodDTO responseMethodDTO);
+     
+     public interface IComponentModel {
++        [Obsolete(&quot;Property Deprecated.  Use ComponentModelDTO instead&quot;)]
+         ComponentModelVO VO {get;}
++
++        ComponentModelDTO ComponentModelDTO {get;}
+         VirtualMethod VirtualMethod {get; set;}
++        IViewHandlerCollection ViewHandlerCollection {get; set;}
+         
+-        ResponseMethodVO Execute (string methodName, object[] parameters);//Redirige &amp; bloquea a la vista por defecto.
+-        ResponseMethodVO Execute (string methodName, object[] parameters, IViewHandler viewHandler);//Redirige y elige vista.
+-        ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect);//Redirige o no redirige, si redirige vista nueva.
+-        ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block);
++        ResponseMethodDTO Execute (string methodName, object[] parameters);//Redirige &amp; bloquea a la vista por defecto.
++        ResponseMethodDTO Execute (string methodName, object[] parameters, IViewHandler viewHandler);//Redirige y elige vista.
++        ResponseMethodDTO Execute (string methodName, object[] parameters, bool redirect);//Redirige o no redirige, si redirige vista nueva.
++        ResponseMethodDTO Execute (string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block);
+ 
+         object GetProperty (string propertyName);
+         void SetProperty (string propertyName, object valor);
+
+Copied: ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModelDTO.cs (from rev 540, ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModelVO.cs)
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModelVO.cs	2005-10-16 16:05:44 UTC (rev 540)
++++ ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModelDTO.cs	2005-10-17 07:35:33 UTC (rev 541)
+@@ -0,0 +1,27 @@
++/*
++Babuine Component Model &amp; Babuine Framework
++Copyright (C) 2005  N&#195;&#169;stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
++using System;
++
++namespace ComponentModel.Interfaces {
++    //Usaremos este interfaz para separar los DTO que son propios a la
++    //construcci&#195;&#179;n del modelo de componentes.
++    public interface IComponentModelDTO: IDataTransferObject {
++    }
++}
+
+Deleted: ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModelVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModelVO.cs	2005-10-16 16:05:44 UTC (rev 540)
++++ ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModelVO.cs	2005-10-17 07:35:33 UTC (rev 541)
+@@ -1,25 +0,0 @@
+-/*
+-Babuine Component Model &amp; Babuine Framework
+-Copyright (C) 2005  N&#195;&#169;stor Salceda Alonso
+-
+-This library is free software; you can redistribute it and/or
+-modify it under the terms of the GNU Lesser General Public
+-License as published by the Free Software Foundation; either
+-version 2.1 of the License, or (at your option) any later version.
+-
+-This library is distributed in the hope that it will be useful,
+-but WITHOUT ANY WARRANTY; without even the implied warranty of
+-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+-Lesser General Public License for more details.
+-
+-You should have received a copy of the GNU Lesser General Public
+-License along with this library; if not, write to the Free Software
+-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+-*/
+-
+-using System;
+-
+-namespace ComponentModel.Interfaces {
+-    public interface IComponentModelVO {
+-    }
+-}
+
+Modified: ComponentModel/trunk/src/ComponentModel/Interfaces/IContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Interfaces/IContainer.cs	2005-10-16 16:05:44 UTC (rev 540)
++++ ComponentModel/trunk/src/ComponentModel/Interfaces/IContainer.cs	2005-10-17 07:35:33 UTC (rev 541)
+@@ -18,7 +18,7 @@
+ */
+ 
+ using System;
+-using ComponentModel.VO;
++using ComponentModel.DTO;
+ 
+ namespace ComponentModel.Interfaces {
+     //Igual si extendemos de System.ComponentModel.IContainer est&#195;&#161; bien tambi&#195;&#169;n.
+@@ -28,9 +28,9 @@
+         void Add (IComponentModel componentModel);
+         void Remove (IComponentModel componentModel);
+ 
+-        ResponseMethodVO Execute (string componentName, string methodName, object[] parameters);//Redirige &amp; bloquea a la vista por defecto.
+-        ResponseMethodVO Execute (string componentName, string methodName, object[] parameters, IViewHandler viewHandler);//Redirige y elige vista.
+-        ResponseMethodVO Execute (string componentName, string methodName, object[] parameters, bool redirect);//Redirige o no redirige, si redirige vista nueva.
+-        ResponseMethodVO Execute (string componentName, string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block);
++        ResponseMethodDTO Execute (string componentName, string methodName, object[] parameters);//Redirige &amp; bloquea a la vista por defecto.
++        ResponseMethodDTO Execute (string componentName, string methodName, object[] parameters, IViewHandler viewHandler);//Redirige y elige vista.
++        ResponseMethodDTO Execute (string componentName, string methodName, object[] parameters, bool redirect);//Redirige o no redirige, si redirige vista nueva.
++        ResponseMethodDTO Execute (string componentName, string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block);
+     }
+ }
+
+Modified: ComponentModel/trunk/src/ComponentModel/Interfaces/IVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Interfaces/IVO.cs	2005-10-16 16:05:44 UTC (rev 540)
++++ ComponentModel/trunk/src/ComponentModel/Interfaces/IVO.cs	2005-10-17 07:35:33 UTC (rev 541)
+@@ -20,6 +20,7 @@
+ using System;
+ 
+ namespace ComponentModel.Interfaces {
++    [Obsolete (&quot;Please IVO is being removed at next version.  Please use IDto instead.&quot;)]
+     public interface IVO {
+     }
+ }
+
+Modified: ComponentModel/trunk/src/ComponentModel/Threading/ComponentActionDispatcher.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Threading/ComponentActionDispatcher.cs	2005-10-16 16:05:44 UTC (rev 540)
++++ ComponentModel/trunk/src/ComponentModel/Threading/ComponentActionDispatcher.cs	2005-10-17 07:35:33 UTC (rev 541)
+@@ -19,11 +19,11 @@
+ 
+ using System;
+ using System.Threading;
+-using ComponentModel.VO;
+ using System.Reflection;
+ using ComponentModel;
+ using ComponentModel.Factory;
+ using ComponentModel.Interfaces;
++using ComponentModel.DTO;
+ 
+ namespace ComponentModel.Threading {
+     internal class ComponentActionDispatcher  {
+@@ -38,12 +38,12 @@
+         Type viewType;
+         IViewHandler viewHandler;
+         MethodInfo methodToResponse;
+-        ResponseMethodVO responseMethodVO;
++        ResponseMethodDTO responseMethodDTO;
+ 
+-        internal ResponseMethodVO ResponseMethodVO {
++        internal ResponseMethodDTO ResponseMethodDTO {
+             get {
+-                lock (responseMethodVO) {
+-                    return responseMethodVO;
++                lock (responseMethodDTO) {
++                    return responseMethodDTO;
+                 }
+             }
+         }
+@@ -84,42 +84,42 @@
+         }
+         
+         private void CallBackExecuteRedirectNewView () {
+-            lock (responseMethodVO) {
+-                responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++            lock (responseMethodDTO) {
++                responseMethodDTO = (ResponseMethodDTO) FactoryDTO.Instance.Create (CreateDTO.ResponseMethod);
+                 object ret = methodToExecute.Invoke (componentModel, parameters);
+-                responseMethodVO.MethodResult = ret;
+-                responseMethodVO.SetExecutionSuccess (true);
++                responseMethodDTO.MethodResult = ret;
++                responseMethodDTO.SetExecutionSuccess (true);
+                 if (componentModel.VirtualMethod != null) {
+-                    componentModel.VirtualMethod (responseMethodVO);
++                    componentModel.VirtualMethod (responseMethodDTO);
+                     componentModel.VirtualMethod = null;
+                 }
+                 object obj = viewType.GetConstructor (null).Invoke (null);
+-                methodToResponse.Invoke (obj, new object[] {responseMethodVO});
++                methodToResponse.Invoke (obj, new object[] {responseMethodDTO});
+             }
+         }
+ 
+         private void CallBackExecuteRedirectView () {
+-            lock (responseMethodVO) {
+-                responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++            lock (responseMethodDTO) {
++                responseMethodDTO = (ResponseMethodDTO)FactoryDTO.Instance.Create (CreateDTO.ResponseMethod);
+                 object ret = methodToExecute.Invoke (componentModel, parameters);
+-                responseMethodVO.MethodResult = ret;
+-                responseMethodVO.SetExecutionSuccess (true);
++                responseMethodDTO.MethodResult = ret;
++                responseMethodDTO.SetExecutionSuccess (true);
+                 if (componentModel.VirtualMethod != null) {
+-                    componentModel.VirtualMethod (responseMethodVO);
++                    componentModel.VirtualMethod (responseMethodDTO);
+                     componentModel.VirtualMethod = null;
+                 }
+-                methodToResponse.Invoke (viewHandler, new object[] {responseMethodVO});
++                methodToResponse.Invoke (viewHandler, new object[] {responseMethodDTO});
+             }
+         }
+ 
+         private void CallBackExecuteNoRedirect () {
+-            lock (responseMethodVO) {
+-                responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++            lock (responseMethodDTO) {
++                responseMethodDTO = (ResponseMethodDTO)FactoryDTO.Instance.Create (CreateDTO.ResponseMethod);
+                 object ret = methodToExecute.Invoke (componentModel, parameters);
+-                responseMethodVO.MethodResult = ret;
+-                responseMethodVO.SetExecutionSuccess (true);
++                responseMethodDTO.MethodResult = ret;
++                responseMethodDTO.SetExecutionSuccess (true);
+                 if (componentModel.VirtualMethod != null) {
+-                    componentModel.VirtualMethod (responseMethodVO);
++                    componentModel.VirtualMethod (responseMethodDTO);
+                     componentModel.VirtualMethod = null;
+                 }
+             }
+
+Modified: ComponentModel/trunk/src/ComponentModel/VO/ComponentModelVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/VO/ComponentModelVO.cs	2005-10-16 16:05:44 UTC (rev 540)
++++ ComponentModel/trunk/src/ComponentModel/VO/ComponentModelVO.cs	2005-10-17 07:35:33 UTC (rev 541)
+@@ -21,7 +21,8 @@
+ using System.Collections;
+ 
+ namespace ComponentModel.VO {
+-    public class ComponentModelVO {
++    [Obsolete (&quot;ComponentModelVO is being removed in future Babuine Component Model version.  Please, use ComponentModelDto instead&quot;)]    
++    public sealed class ComponentModelVO {
+         private string componentName;
+         private string componentClassName;
+         private string exceptionManagerClassName;
+
+Modified: ComponentModel/trunk/src/ComponentModel/VO/ResponseMethodVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/VO/ResponseMethodVO.cs	2005-10-16 16:05:44 UTC (rev 540)
++++ ComponentModel/trunk/src/ComponentModel/VO/ResponseMethodVO.cs	2005-10-17 07:35:33 UTC (rev 541)
+@@ -20,7 +20,8 @@
+ using System;
+ 
+ namespace ComponentModel.VO {
+-    public class ResponseMethodVO {
++    [Obsolete (&quot;ResponseMethodVO is being removed at next version.  Please use ResponseMethodDto instead&quot;)]
++    public sealed class ResponseMethodVO {
+         private bool executionSuccess;
+         private object methodResult;
+ 
+
+Modified: ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs	2005-10-16 16:05:44 UTC (rev 540)
++++ ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs	2005-10-17 07:35:33 UTC (rev 541)
+@@ -67,12 +67,13 @@
+         public void ExecuteRedirectNewView () {
+             int x = 4;
+             ResponseMethodVO responseMethodVO;
+-            int returnValue;
+ 
+             IComponentModel componentModel = DefaultContainer.Instance.GetComponentByName (&quot;TestUnidad1&quot;);
+             responseMethodVO = componentModel.Execute (&quot;ReturnValue&quot;, new object[]{x});
+             Assert.AreEqual (responseMethodVO.ExecutionSuccess, true);
+             Assert.IsNotNull (responseMethodVO.MethodResult);
++            Assert.AreEqual (responseMethodVO.MethodResult, x);
++            Assert.IsTrue (componentModel.ViewHandlerCollection.Count != 0);
+         }
+ 
+         [Test]
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000253.html">[Mspace-checkins] r540 - in ComponentModel/trunk/src/ComponentModel: . Collections Container/Dao
+</A></li>
+	<LI>Next message: <A HREF="000255.html">[Mspace-checkins] r542 - in ComponentModel/trunk/src/ComponentModel: . Container/Dao
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#254">[ date ]</a>
+              <a href="thread.html#254">[ thread ]</a>
+              <a href="subject.html#254">[ subject ]</a>
+              <a href="author.html#254">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

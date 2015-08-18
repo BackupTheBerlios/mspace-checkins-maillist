@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r545 - in ComponentModel/trunk: . src/ComponentModel/Container src/ComponentModel/Container/Dao
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r545%20-%20in%20ComponentModel/trunk%3A%20.%20src/ComponentModel/Container%20src/ComponentModel/Container/Dao&In-Reply-To=%3C200510182102.j9IL2nFV018335%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000257.html">
+   <LINK REL="Next"  HREF="000259.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r545 - in ComponentModel/trunk: . src/ComponentModel/Container src/ComponentModel/Container/Dao</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r545%20-%20in%20ComponentModel/trunk%3A%20.%20src/ComponentModel/Container%20src/ComponentModel/Container/Dao&In-Reply-To=%3C200510182102.j9IL2nFV018335%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r545 - in ComponentModel/trunk: . src/ComponentModel/Container src/ComponentModel/Container/Dao">nestor at berlios.de
+       </A><BR>
+    <I>Tue Oct 18 23:02:49 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000257.html">[Mspace-checkins] r544 - ComponentModel/trunk
+</A></li>
+        <LI>Next message: <A HREF="000259.html">[Mspace-checkins] r546 - in BabuineComponentBuilder/trunk: . lib src src/ComponentBuilder src/ComponentBuilder/Bo src/ComponentBuilder/Dto src/ComponentBuilder/Exceptions src/ComponentBuilder/Forms src/ComponentBuilder/Resources src/MainComponent src/MainComponent/Bo src/MainComponent/Forms
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#258">[ date ]</a>
+              <a href="thread.html#258">[ thread ]</a>
+              <a href="subject.html#258">[ subject ]</a>
+              <a href="author.html#258">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-10-18 23:02:48 +0200 (Tue, 18 Oct 2005)
+New Revision: 545
+
+Modified:
+   ComponentModel/trunk/ChangeLog
+   ComponentModel/trunk/src/ComponentModel/Container/Dao/DefaultContainerDao.cs
+   ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs
+Log:
+
+
+Modified: ComponentModel/trunk/ChangeLog
+===================================================================
+--- ComponentModel/trunk/ChangeLog	2005-10-17 18:13:23 UTC (rev 544)
++++ ComponentModel/trunk/ChangeLog	2005-10-18 21:02:48 UTC (rev 545)
+@@ -1,3 +1,12 @@
++18-10-2005 -- N&#233;stor Salceda &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">nestor.salceda at gmail.com</A>&gt;
++    DefaultContainer:
++	Se bloquea la tabla hash hasta que termina de cargar todos los
++	componentes.
++17-10-2005 -- N&#233;stor Salceda &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">nestor.salceda at gmail.com</A>&gt;
++    Refactorization:
++	Use of DTO instead of VO.  Marked as obsolete.
++    DefaultComponentModel:
++	Reference implementation of ViewCache.
+ 29-09-2005 -- N&#233;stor Salceda &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">nestor.salceda at gmail.com</A>&gt;
+     DefaultComponentModel:
+ 	Support for property management.
+
+Modified: ComponentModel/trunk/src/ComponentModel/Container/Dao/DefaultContainerDao.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Container/Dao/DefaultContainerDao.cs	2005-10-17 18:13:23 UTC (rev 544)
++++ ComponentModel/trunk/src/ComponentModel/Container/Dao/DefaultContainerDao.cs	2005-10-18 21:02:48 UTC (rev 545)
+@@ -61,12 +61,12 @@
+             ArrayList list = new ArrayList ();
+             //VAmos a comprobar que no se procesen ensamblados que sean del
+             //core.
+-            
++           
+             if (assembly.FullName.StartsWith (&quot;mscorlib&quot;) ||
+                 assembly.FullName.StartsWith (&quot;System&quot;)
+                     ) {
+                 logger.Debug (&quot;Core Assembly detected: &quot; + assembly.FullName);
+-                logger.Info (&quot;* SKIPPING * Core Assembly: &quot; + assembly.FullName);
++                logger.Debug (&quot;* SKIPPING * Core Assembly: &quot; + assembly.FullName);
+                 return list;
+             }
+             
+
+Modified: ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs	2005-10-17 18:13:23 UTC (rev 544)
++++ ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs	2005-10-18 21:02:48 UTC (rev 545)
+@@ -50,9 +50,11 @@
+             
+             //Getting data from assembly resolv.
+             componentHashtable = new Hashtable ();
++            lock (componentHashtable) {
+             //En cada ensamblado, cargar&#225; el / los componente y lo registrar&#225; con el
+             //nombre que se le ha dado al atributo.
+-            GetAllComponents (); 
++            GetAllComponents ();
++            }
+         }
+         
+         private void LoadAssembliesInPath () {
+@@ -109,11 +111,13 @@
+         }
+ 
+         public IComponentModel GetComponentByName (string componentName) {
++            lock (componentHashtable) {
+             IComponentModel componentModel = (IComponentModel) componentHashtable[componentName];
+             if (componentModel == null) {
+                 throw new ComponentNotFoundException (&quot;Component &quot; + componentName + &quot; not found in container.&quot;);
+             }
+             return componentModel;
++            }
+         }
+ 
+         public void Add (IComponentModel component) {
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000257.html">[Mspace-checkins] r544 - ComponentModel/trunk
+</A></li>
+	<LI>Next message: <A HREF="000259.html">[Mspace-checkins] r546 - in BabuineComponentBuilder/trunk: . lib src src/ComponentBuilder src/ComponentBuilder/Bo src/ComponentBuilder/Dto src/ComponentBuilder/Exceptions src/ComponentBuilder/Forms src/ComponentBuilder/Resources src/MainComponent src/MainComponent/Bo src/MainComponent/Forms
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#258">[ date ]</a>
+              <a href="thread.html#258">[ thread ]</a>
+              <a href="subject.html#258">[ subject ]</a>
+              <a href="author.html#258">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

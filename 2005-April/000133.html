@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r420 - in SimpleP/trunk: . src src/Contexts/SourceContext ui-data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r420%20-%20in%20SimpleP/trunk%3A%20.%20src%20src/Contexts/SourceContext%20ui-data&In-Reply-To=%3C200504082223.j38MNdxv013733%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000132.html">
+   <LINK REL="Next"  HREF="000134.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r420 - in SimpleP/trunk: . src src/Contexts/SourceContext ui-data</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r420%20-%20in%20SimpleP/trunk%3A%20.%20src%20src/Contexts/SourceContext%20ui-data&In-Reply-To=%3C200504082223.j38MNdxv013733%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r420 - in SimpleP/trunk: . src src/Contexts/SourceContext ui-data">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Sat Apr  9 00:23:39 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000132.html">[Mspace-checkins] r419 - SimpleP/trunk
+</A></li>
+        <LI>Next message: <A HREF="000134.html">[Mspace-checkins] r421 - in Red.ProjectManager/trunk: . src/Red.ProjectManager
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#133">[ date ]</a>
+              <a href="thread.html#133">[ thread ]</a>
+              <a href="subject.html#133">[ subject ]</a>
+              <a href="author.html#133">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-09 00:23:37 +0200 (Sat, 09 Apr 2005)
+New Revision: 420
+
+Modified:
+   SimpleP/trunk/ChangeLog
+   SimpleP/trunk/src/Contexts/SourceContext/ProjectBrowser.boo
+   SimpleP/trunk/src/MainWindow.boo
+   SimpleP/trunk/ui-data/simplep.glade
+Log:
+
+	* src/Contexts/SourceContext/ProjectBrowser.boo: Implemented Add new file
+	functionaliy
+	* src/MainWindow.boo: Fixed typo
+	* ui-data/simplep.glade: Added New File dialog
+
+
+
+Modified: SimpleP/trunk/ChangeLog
+===================================================================
+--- SimpleP/trunk/ChangeLog	2005-04-08 14:12:34 UTC (rev 419)
++++ SimpleP/trunk/ChangeLog	2005-04-08 22:23:37 UTC (rev 420)
+@@ -1,3 +1,10 @@
++2005-04-09  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
++	* src/Contexts/SourceContext/ProjectBrowser.boo: Implemented Add new file
++	functionaliy
++	* src/MainWindow.boo: Fixed typo
++	* ui-data/simplep.glade: Added New File dialog
++
+ 2005-04-08  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
+ 	* src/MainWindow.boo: Used the the dialog factory methods in Red.Gtk
+
+Modified: SimpleP/trunk/src/Contexts/SourceContext/ProjectBrowser.boo
+===================================================================
+--- SimpleP/trunk/src/Contexts/SourceContext/ProjectBrowser.boo	2005-04-08 14:12:34 UTC (rev 419)
++++ SimpleP/trunk/src/Contexts/SourceContext/ProjectBrowser.boo	2005-04-08 22:23:37 UTC (rev 420)
+@@ -139,14 +139,34 @@
+ 			if response == cast(int,ResponseType.Yes):
+ 				currentProject.RemoveDir (file, true)
+ 		else:
+-			relPath = file.Replace (currentProject.Location, &quot;&quot;)
+-			msg = &quot;&lt;b&gt;Remove file&lt;/b&gt;\n\nDo you want to remove the file &lt;b&gt;${relPath}&lt;/b&gt; from the disk?&quot;
+-			response = DialogFactory.ShowQuestionDialog (null, msg)
++			relPath = System.IO.Path.GetFileName (file)
++			response = DialogFactory.ShowQuestionDialog (null, &quot;Remove file from disk&quot;,
++													&quot;You are going to remove the file &lt;b&gt;${relPath}&lt;/b&gt; from the disk, Are you sure?&quot;)
+ 			if response == cast(int,ResponseType.Yes):
+ 				currentProject.RemoveFile (file, true)
+ 
+ 	private def AddNewFileClicked ():
+-		print &quot;Adding new file&quot;
++		currentProject = Services.ProjectManager.CurrentProject
++		if currentProject:
++			xml = Glade.XML (Globals.Resources, &quot;simplep.glade&quot;, &quot;newFileDialog&quot;, null)
++			dialog = xml[&quot;newFileDialog&quot;] as Dialog
++			entry = xml[&quot;entry&quot;] as Entry
++			response = dialog.Run ()
++			if response == cast (int,ResponseType.Ok):
++				if entry.Text != string.Empty:
++					file = System.IO.Path.Combine (currentProject.Navigator.CurrentPath , entry.Text)
++					if currentProject.Contains (file):
++						DialogFactory.ShowInfoDialog (null, &quot;File exists&quot;, &quot;The file you are trying to add already exist in the project. Choose another name&quot;)
++					else:
++						try :
++							currentProject.NewFile (file)
++						except:
++							DialogFactory.ShowErrorDialog (null, &quot;Unknown error&quot;, &quot;Something happened creating the file&quot;)
++				else:
++					DialogFactory.ShowInfoDialog (null, &quot;Invalid file name&quot;, &quot;File name is invalid or empty. Please use a correct file name.&quot;)
++			dialog.Destroy ()
++				
++			
+ 
+ 	private def AddNewDirectoryClicked ():
+ 		print &quot;Adding new folder&quot;
+
+Modified: SimpleP/trunk/src/MainWindow.boo
+===================================================================
+--- SimpleP/trunk/src/MainWindow.boo	2005-04-08 14:12:34 UTC (rev 419)
++++ SimpleP/trunk/src/MainWindow.boo	2005-04-08 22:23:37 UTC (rev 420)
+@@ -95,7 +95,7 @@
+ 			try:
+ 				Services.ProjectManager.SetActiveProject (name)
+ 				if Services.ProjectManager.MissingFiles != null: 
+-					DialogFactory.ShowInfoDialog (self,&quot;Missing filesgc&quot;, &quot;Some files in the project are missing.&quot;)
++					DialogFactory.ShowInfoDialog (self,&quot;Missing files&quot;, &quot;Some files in the project are missing.&quot;)
+ 				Title = &quot;SimpleP - ${name}&quot;
+ 
+ 			except ex as InvalidProjectFileException:
+
+Modified: SimpleP/trunk/ui-data/simplep.glade
+===================================================================
+--- SimpleP/trunk/ui-data/simplep.glade	2005-04-08 14:12:34 UTC (rev 419)
++++ SimpleP/trunk/ui-data/simplep.glade	2005-04-08 22:23:37 UTC (rev 420)
+@@ -1025,4 +1025,128 @@
+   &lt;/child&gt;
+ &lt;/widget&gt;
+ 
++&lt;widget class=&quot;GtkDialog&quot; id=&quot;newFileDialog&quot;&gt;
++  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;title&quot; translatable=&quot;yes&quot;&gt;New File&lt;/property&gt;
++  &lt;property name=&quot;type&quot;&gt;GTK_WINDOW_TOPLEVEL&lt;/property&gt;
++  &lt;property name=&quot;window_position&quot;&gt;GTK_WIN_POS_NONE&lt;/property&gt;
++  &lt;property name=&quot;modal&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;resizable&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;destroy_with_parent&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;decorated&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;skip_taskbar_hint&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;skip_pager_hint&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;type_hint&quot;&gt;GDK_WINDOW_TYPE_HINT_DIALOG&lt;/property&gt;
++  &lt;property name=&quot;gravity&quot;&gt;GDK_GRAVITY_NORTH_WEST&lt;/property&gt;
++  &lt;property name=&quot;focus_on_map&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;has_separator&quot;&gt;True&lt;/property&gt;
++
++  &lt;child internal-child=&quot;vbox&quot;&gt;
++    &lt;widget class=&quot;GtkVBox&quot; id=&quot;dialog-vbox1&quot;&gt;
++      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++      &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
++      &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
++
++      &lt;child internal-child=&quot;action_area&quot;&gt;
++	&lt;widget class=&quot;GtkHButtonBox&quot; id=&quot;dialog-action_area1&quot;&gt;
++	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;layout_style&quot;&gt;GTK_BUTTONBOX_END&lt;/property&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkButton&quot; id=&quot;cancelbutton1&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot;&gt;gtk-cancel&lt;/property&gt;
++	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;response_id&quot;&gt;-6&lt;/property&gt;
++	    &lt;/widget&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkButton&quot; id=&quot;okbutton1&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;has_default&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot;&gt;gtk-ok&lt;/property&gt;
++	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;response_id&quot;&gt;-5&lt;/property&gt;
++	    &lt;/widget&gt;
++	  &lt;/child&gt;
++	&lt;/widget&gt;
++	&lt;packing&gt;
++	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;pack_type&quot;&gt;GTK_PACK_END&lt;/property&gt;
++	&lt;/packing&gt;
++      &lt;/child&gt;
++
++      &lt;child&gt;
++	&lt;widget class=&quot;GtkHBox&quot; id=&quot;hbox4&quot;&gt;
++	  &lt;property name=&quot;border_width&quot;&gt;12&lt;/property&gt;
++	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
++	  &lt;property name=&quot;spacing&quot;&gt;4&lt;/property&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkLabel&quot; id=&quot;label7&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;Name:&lt;/property&gt;
++	      &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;use_markup&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_LEFT&lt;/property&gt;
++	      &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;xalign&quot;&gt;0.5&lt;/property&gt;
++	      &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
++	      &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
++	      &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
++	      &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;entry&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;has_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;visibility&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;max_length&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;text&quot; translatable=&quot;yes&quot;&gt;&lt;/property&gt;
++	      &lt;property name=&quot;has_frame&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;invisible_char&quot;&gt;*&lt;/property&gt;
++	      &lt;property name=&quot;activates_default&quot;&gt;True&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;expand&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++	&lt;/widget&gt;
++	&lt;packing&gt;
++	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
++	&lt;/packing&gt;
++      &lt;/child&gt;
++    &lt;/widget&gt;
++  &lt;/child&gt;
++&lt;/widget&gt;
++
+ &lt;/glade-interface&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000132.html">[Mspace-checkins] r419 - SimpleP/trunk
+</A></li>
+	<LI>Next message: <A HREF="000134.html">[Mspace-checkins] r421 - in Red.ProjectManager/trunk: . src/Red.ProjectManager
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#133">[ date ]</a>
+              <a href="thread.html#133">[ thread ]</a>
+              <a href="subject.html#133">[ subject ]</a>
+              <a href="author.html#133">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

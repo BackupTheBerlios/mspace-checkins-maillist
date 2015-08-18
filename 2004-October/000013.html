@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r277 - in monkeypop/releases: . monkeypop-0.1.2 monkeypop-0.1.2/debian
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r277%20-%20in%20monkeypop/releases%3A%20.%20monkeypop-0.1.2%20monkeypop-0.1.2/debian&In-Reply-To=%3C200410121259.i9CCxSS6007683%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000012.html">
+   <LINK REL="Next"  HREF="000014.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r277 - in monkeypop/releases: . monkeypop-0.1.2 monkeypop-0.1.2/debian</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r277%20-%20in%20monkeypop/releases%3A%20.%20monkeypop-0.1.2%20monkeypop-0.1.2/debian&In-Reply-To=%3C200410121259.i9CCxSS6007683%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r277 - in monkeypop/releases: . monkeypop-0.1.2 monkeypop-0.1.2/debian">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Tue Oct 12 14:59:28 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000012.html">[Mspace-checkins] r276 - in Chicken/releases: . chicken-0.1.4 chicken-0.1.4/debian
+</A></li>
+        <LI>Next message: <A HREF="000014.html">[Mspace-checkins] r278 - Chicken/branches
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#13">[ date ]</a>
+              <a href="thread.html#13">[ thread ]</a>
+              <a href="subject.html#13">[ subject ]</a>
+              <a href="author.html#13">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2004-10-12 14:59:24 +0200 (Tue, 12 Oct 2004)
+New Revision: 277
+
+Added:
+   monkeypop/releases/monkeypop-0.1.2/
+   monkeypop/releases/monkeypop-0.1.2/configure.in
+   monkeypop/releases/monkeypop-0.1.2/debian/changelog
+Removed:
+   monkeypop/releases/monkeypop-0.1.2/configure.in
+   monkeypop/releases/monkeypop-0.1.2/debian/changelog
+Log:
+added release
+
+
+
+Copied: monkeypop/releases/monkeypop-0.1.2 (from rev 271, monkeypop/trunk)
+
+Deleted: monkeypop/releases/monkeypop-0.1.2/configure.in
+===================================================================
+--- monkeypop/trunk/configure.in	2004-10-12 12:28:57 UTC (rev 271)
++++ monkeypop/releases/monkeypop-0.1.2/configure.in	2004-10-12 12:59:24 UTC (rev 277)
+@@ -1,61 +0,0 @@
+-AC_PREREQ(2.59)
+-AC_INIT(MonkeyPop, 0.1.1)
+-
+-AM_MAINTAINER_MODE
+-
+-AM_INIT_AUTOMAKE()
+-
+-# Checks for programs.
+-AC_PROG_INSTALL
+-
+-dnl Version dependencies
+-MONO_REQUIRED=1.0
+-GTKSHARP_REQUIRED=1.0
+-CHICKEN_REQUIRED=0.1
+-
+-#
+-# Configure PKG_CONFIG
+-#
+-AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+-if test &quot;x$PKG_CONFIG&quot; = &quot;xno&quot;; then
+-    AC_MSG_ERROR([You need to install pkg-config])
+-fi
+-
+-
+-dnl Pkgconfig
+-PKG_CHECK_MODULES(MONO,
+-		  mono &gt;= $MONO_REQUIRED)
+-MCS_FLAGS=
+-MONO_FLAGS=
+-if test $USE_MAINTAINER_MODE = yes; then
+-	MCS_FLAGS=&quot;-g&quot;
+-	MONO_FLAGS=&quot;--debug&quot;
+-fi
+-AC_SUBST(MCS_FLAGS)
+-AC_SUBST(MONO_FLAGS)
+-
+-PKG_CHECK_MODULES(GTKSHARP,
+-		  gtk-sharp &gt;= $GTKSHARP_REQUIRED \
+-		  gnome-sharp &gt;= $GTKSHARP_REQUIRED \
+-		  glade-sharp &gt;= $GTKSHARP_REQUIRED \
+-		  gconf-sharp &gt;= $GTKSHARP_REQUIRED)
+-AC_SUBST(GTKSHARP_LIBS)
+-
+-
+-PKG_CHECK_MODULES(CHICKEN,
+-		    chicken &gt;= $CHICKEN_REQUIRED)
+-AC_SUBST(CHICKEN_LIBS)
+-
+-
+-dnl Check for Mono
+-AC_PATH_PROG(MCS, mcs)
+-AC_PATH_PROG(MONO, mono)
+-
+-
+-AC_OUTPUT([
+-Makefile
+-monkeypopd/Makefile
+-src/Makefile
+-images/Makefile
+-src/monkeypop
+-])
+
+Copied: monkeypop/releases/monkeypop-0.1.2/configure.in (from rev 273, monkeypop/trunk/configure.in)
+
+Deleted: monkeypop/releases/monkeypop-0.1.2/debian/changelog
+===================================================================
+--- monkeypop/trunk/debian/changelog	2004-10-12 12:28:57 UTC (rev 271)
++++ monkeypop/releases/monkeypop-0.1.2/debian/changelog	2004-10-12 12:59:24 UTC (rev 277)
+@@ -1,6 +0,0 @@
+-monkeypop (0.1.1-1) unstable; urgency=low
+-
+-  * Initial Release.
+-
+- -- Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;  Tue, 12 Oct 2004 02:54:50 +0200
+-
+
+Copied: monkeypop/releases/monkeypop-0.1.2/debian/changelog (from rev 275, monkeypop/trunk/debian/changelog)
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000012.html">[Mspace-checkins] r276 - in Chicken/releases: . chicken-0.1.4 chicken-0.1.4/debian
+</A></li>
+	<LI>Next message: <A HREF="000014.html">[Mspace-checkins] r278 - Chicken/branches
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#13">[ date ]</a>
+              <a href="thread.html#13">[ thread ]</a>
+              <a href="subject.html#13">[ subject ]</a>
+              <a href="author.html#13">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

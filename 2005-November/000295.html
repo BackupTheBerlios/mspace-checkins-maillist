@@ -1,0 +1,431 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r583 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Resources
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-November/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r583%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20Forms%20Resources&In-Reply-To=%3C200511142341.jAENfvBI005359%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000294.html">
+   <LINK REL="Next"  HREF="000296.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r583 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Resources</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r583%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20Forms%20Resources&In-Reply-To=%3C200511142341.jAENfvBI005359%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r583 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Resources">nestor at berlios.de
+       </A><BR>
+    <I>Tue Nov 15 00:41:57 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000294.html">[Mspace-checkins] r582 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Resources
+</A></li>
+        <LI>Next message: <A HREF="000296.html">[Mspace-checkins] r584 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Interfaces Resources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#295">[ date ]</a>
+              <a href="thread.html#295">[ thread ]</a>
+              <a href="subject.html#295">[ subject ]</a>
+              <a href="author.html#295">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-11-15 00:41:53 +0100 (Tue, 15 Nov 2005)
+New Revision: 583
+
+Added:
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/PreferencesView.cs
+Modified:
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MethodView.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak
+Log:
+Edicion de componentes.
+RWX para las entidades del sistema.
+
+
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs	2005-11-14 12:07:07 UTC (rev 582)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs	2005-11-14 23:41:53 UTC (rev 583)
+@@ -17,6 +17,8 @@
+         
+         FormView formView;
+         MethodView methodView;
++       
++        ComponentDTO componentDTO;
+         
+         internal ComponentView () {
+             componentView = new Glade.XML (null, &quot;MainComponentBuilderForm.glade&quot;, &quot;table5&quot;, null);
+@@ -110,6 +112,7 @@
+         public void LoadDataForm (IDataTransferObject dto) {
+             if (dto is ComponentDTO) {
+                 ComponentDTO componentDTO = (ComponentDTO) dto; 
++                this.componentDTO = componentDTO;
+                 componentNameEntry.Text = componentDTO.ComponentName;
+                 exceptionManagerEntry.Text = componentDTO.ClassExceptionManager;
+                 viewTableModel = new ViewTableModel (componentDTO.ViewCollection);
+@@ -117,6 +120,10 @@
+                 methodTableModel = new MethodTableModel (componentDTO.MethodCollection);
+                 methodsTreeView.Model = methodTableModel.ListStore;
+             }
++            else {
++                //Lo ponemos en modo de creaci&#243;n de uno nuevo.
++                this.componentDTO = null;
++            }
+         }
+ 
+         public void ClearForm () {
+@@ -129,14 +136,44 @@
+         }
+ 
+         public IDataTransferObject GetDataForm () {
+-            ComponentDTO componentDTO = new ComponentDTO ();
+-            componentDTO.ComponentName = componentNameEntry.Text;
+-            componentDTO.ClassExceptionManager = exceptionManagerEntry.Text;
+-            componentDTO.ViewCollection = viewTableModel.ListModel;
+-            componentDTO.MethodCollection = methodTableModel.ListModel;
+-            return componentDTO;
++            if (ValidateForm ()) {
++                //Hay una referencia asociada para este componente.
++                if (this.componentDTO != null) {
++                    //Ejecuci&#243;n del modo edici&#243;n.
++                    this.componentDTO.ComponentName = componentNameEntry.Text;
++                    this.componentDTO.ClassExceptionManager = exceptionManagerEntry.Text;
++                    this.componentDTO.ViewCollection = viewTableModel.ListModel;
++                    this.componentDTO.MethodCollection = methodTableModel.ListModel;
++                    //Recogemos y devolvemos los nuevos datos editados.
++                    return componentDTO;
++                }
++                //No existe una referencia asociada al componentDTO.
++                else {
++                    //Creamos uno nuevo.
++                    ComponentDTO componentDTO = new ComponentDTO ();
++                    componentDTO.ComponentName = componentNameEntry.Text;
++                    componentDTO.ClassExceptionManager = exceptionManagerEntry.Text;
++                    componentDTO.ViewCollection = viewTableModel.ListModel;
++                    componentDTO.MethodCollection = methodTableModel.ListModel;
++                    return componentDTO;
++                }
++            }
++            this.componentDTO = null;
++            return null;
+         }
+ 
++        private void OnTestClicked (object sender, EventArgs args) {
++            componentDTO = (ComponentDTO) GetDataForm ();
++        }
++        
++        private bool ValidateForm () {
++            //Diremos que un componente debe solo tener completo el nombre.
++            if (componentNameEntry.Text.Length != 0) {
++                return true;
++            }
++            return false;
++        }
++
+         public Widget GetWidget () {
+             return componentView[&quot;table5&quot;];
+         }
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs	2005-11-14 12:07:07 UTC (rev 582)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs	2005-11-14 23:41:53 UTC (rev 583)
+@@ -105,8 +105,31 @@
+         private void OnAddComponentClicked (object sender, EventArgs args) {
+             ProjectDTO projectDTO = (ProjectDTO) projectView.GetDataForm ();
+             if (projectDTO != null) {
++                //Con esta linea decimos que vamos a a&#241;adir uno nuevo.
++                componentView.LoadDataForm (null);
+                 ComponentDTO componentDTO = (ComponentDTO) componentView.GetDataForm ();
+-                projectDTO.ComponentCollection.Add (componentDTO);
++                if (componentDTO != null) {
++                    projectDTO.ComponentCollection.Add (componentDTO);
++                    LoadDataForm (projectDTO);
++                    componentView.ClearForm ();
++                }
++            }
++        }
++
++        private void OnDeleteComponentClicked (object sender, EventArgs args) {
++            ComponentDTO componentDTO = (ComponentDTO) componentView.GetDataForm ();
++            if (componentDTO != null) {
++                ProjectDTO projectDTO = (ProjectDTO) projectView.GetDataForm ();
++                if (projectDTO != null) {
++                    foreach (ComponentDTO auxComponentDTO in projectDTO.ComponentCollection) {
++                        if (componentDTO.ComponentName.Equals (auxComponentDTO.ComponentName)) {
++                            //Igual se deberian a&#241;adir m&#225;s condiciones
++                            componentDTO = auxComponentDTO;
++                            break;
++                        }
++                    }
++                }
++                projectDTO.ComponentCollection.Remove (componentDTO);
+                 LoadDataForm (projectDTO);
+                 componentView.ClearForm ();
+             }
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MethodView.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MethodView.cs	2005-11-14 12:07:07 UTC (rev 582)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MethodView.cs	2005-11-14 23:41:53 UTC (rev 583)
+@@ -36,6 +36,32 @@
+             parameterView = null;
+         }
+ 
++        private void OnDeleteParameterClicked (object sender, EventArgs args) {
++            TreeIter iter;
++            if (parametersTreeView.Selection.GetSelected (out iter)) {
++                string typeName = parameterTableModel.ListStore.GetValue (iter, 0).ToString ();
++                string varName = parameterTableModel.ListStore.GetValue (iter, 1).ToString ();
++                ParameterDTO auxParameterDTO = null;
++                foreach (ParameterDTO parameterDTO in parameterTableModel.ListModel) {
++                    if (parameterDTO.TypeName.Equals (typeName)) {
++                        if (parameterDTO.VarName.Equals (varName)) {
++                            auxParameterDTO = parameterDTO;
++                            break;
++                        }
++                    }
++                }
++                if (auxParameterDTO != null) {
++                    parameterTableModel.ListModel.Remove (auxParameterDTO);
++                    parameterTableModel = new ParameterTableModel (parameterTableModel.ListModel);
++                    parametersTreeView.Model = parameterTableModel.ListStore;
++                }
++            }
++        }
++
++        private void OnClearParametersClicked (object sender, EventArgs args) {
++            parameterTableModel.Clear ();
++        }
++
+         /* Interface Implementation */
+ 
+         public void ClearForm () {
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/PreferencesView.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/PreferencesView.cs	2005-11-14 12:07:07 UTC (rev 582)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/PreferencesView.cs	2005-11-14 23:41:53 UTC (rev 583)
+@@ -0,0 +1,77 @@
++using System;
++using ComponentModel.Interfaces;
++using ComponentBuilder.Interfaces;
++using ComponentBuilder.DTO;
++using Gtk;
++using Glade;
++
++namespace ComponentBuilder.Forms {
++    internal class PreferencesView : IViewHandler, IGtkView {
++        private static PreferencesView instance;
++        Glade.XML preferencesForm;
++
++        [Widget] Entry defaultOutputPathEntry, prefixNamespaceEntry; 
++        
++        internal PreferencesView () {
++            preferencesForm = new Glade.XML (null, &quot;MainComponentBuilderForm.glade&quot;, &quot;preferencesDialog&quot;, null);
++            preferencesForm.Autoconnect (this);
++        }
++
++        private void OnBrowseButtonClicked (object sender, EventArgs args) {
++            FileChooserDialog chooser = new FileChooserDialog (&quot;Select a path:&quot;, (Window)preferencesForm[&quot;preferencesDialog&quot;], FileChooserAction.SelectFolder, Stock.Ok);
++            if (defaultOutputPathEntry.Text.Length != 0) {
++                chooser.SetCurrentFolder (defaultOutputPathEntry.Text);
++            }
++            chooser.AddButton (Stock.Ok, ResponseType.Accept);
++            ResponseType responseType = (ResponseType) chooser.Run ();
++            switch (responseType) {
++                case ResponseType.Accept:
++                    defaultOutputPathEntry.Text = chooser.CurrentFolder;
++                    break;
++                default:
++                    break;
++            }
++            chooser.Destroy ();
++        }
++
++        /* Interface Implementation */
++
++        public void ClearForm () {
++            defaultOutputPathEntry.Text = String.Empty;
++            prefixNamespaceEntry.Text = String.Empty;
++        }
++
++        public IDataTransferObject GetDataForm () {
++            Dialog preferencesDialog = (Dialog) GetWidget ();
++            PreferencesDTO preferencesDTO = null;
++            switch (preferencesDialog.Run ()) {
++                case (int) ResponseType.Ok:
++                    if (defaultOutputPathEntry.Text.Length != 0 &amp;&amp; prefixNamespaceEntry.Text.Length != 0) {
++                        preferencesDTO = new PreferencesDTO ();
++                        preferencesDTO.OutputPath = defaultOutputPathEntry.Text;
++                        preferencesDTO.PrefixNamespace = prefixNamespaceEntry.Text;
++                    }
++                    break;
++                case (int) ResponseType.Cancel:
++                    break;
++                default:
++                    break;
++            }
++            preferencesDialog.Destroy ();
++            preferencesDialog = null;
++            return preferencesDTO;
++        }
++
++        public void LoadDataForm (IDataTransferObject dto) {
++            if (dto is PreferencesDTO) {
++                PreferencesDTO preferencesDTO = (PreferencesDTO) dto;
++                defaultOutputPathEntry.Text = preferencesDTO.OutputPath;
++                prefixNamespaceEntry.Text = preferencesDTO.PrefixNamespace;
++            }
++        }
++
++        public Widget GetWidget () {
++            return preferencesForm [&quot;preferencesDialog&quot;];
++        }
++    }
++}
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade	2005-11-14 12:07:07 UTC (rev 582)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade	2005-11-14 23:41:53 UTC (rev 583)
+@@ -219,7 +219,18 @@
+ 	  &lt;/child&gt;
+ 
+ 	  &lt;child&gt;
+-	    &lt;placeholder/&gt;
++	    &lt;widget class=&quot;GtkToolButton&quot; id=&quot;toolbutton5&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;stock_id&quot;&gt;gtk-remove&lt;/property&gt;
++	      &lt;property name=&quot;visible_horizontal&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;visible_vertical&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;is_important&quot;&gt;False&lt;/property&gt;
++	      &lt;signal name=&quot;clicked&quot; handler=&quot;OnDeleteComponentClicked&quot; last_modification_time=&quot;Mon, 14 Nov 2005 23:15:34 GMT&quot;/&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;homogeneous&quot;&gt;True&lt;/property&gt;
++	    &lt;/packing&gt;
+ 	  &lt;/child&gt;
+ 
+ 	  &lt;child&gt;
+@@ -659,6 +670,7 @@
+ 		  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+ 		  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+ 		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++		  &lt;signal name=&quot;clicked&quot; handler=&quot;OnDeleteParameterClicked&quot; last_modification_time=&quot;Mon, 14 Nov 2005 13:19:03 GMT&quot;/&gt;
+ 		&lt;/widget&gt;
+ 	      &lt;/child&gt;
+ 
+@@ -671,6 +683,7 @@
+ 		  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+ 		  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+ 		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++		  &lt;signal name=&quot;clicked&quot; handler=&quot;OnClearParametersClicked&quot; last_modification_time=&quot;Mon, 14 Nov 2005 13:19:44 GMT&quot;/&gt;
+ 		&lt;/widget&gt;
+ 	      &lt;/child&gt;
+ 	    &lt;/widget&gt;
+@@ -1658,6 +1671,26 @@
+ 	  &lt;property name=&quot;y_options&quot;&gt;expand&lt;/property&gt;
+ 	&lt;/packing&gt;
+       &lt;/child&gt;
++
++      &lt;child&gt;
++	&lt;widget class=&quot;GtkButton&quot; id=&quot;button17&quot;&gt;
++	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;button17&lt;/property&gt;
++	  &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++	  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	  &lt;signal name=&quot;clicked&quot; handler=&quot;OnTestClicked&quot; last_modification_time=&quot;Mon, 14 Nov 2005 23:31:40 GMT&quot;/&gt;
++	&lt;/widget&gt;
++	&lt;packing&gt;
++	  &lt;property name=&quot;left_attach&quot;&gt;0&lt;/property&gt;
++	  &lt;property name=&quot;right_attach&quot;&gt;1&lt;/property&gt;
++	  &lt;property name=&quot;top_attach&quot;&gt;5&lt;/property&gt;
++	  &lt;property name=&quot;bottom_attach&quot;&gt;6&lt;/property&gt;
++	  &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	  &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
++	&lt;/packing&gt;
++      &lt;/child&gt;
+     &lt;/widget&gt;
+   &lt;/child&gt;
+ &lt;/widget&gt;
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak	2005-11-14 12:07:07 UTC (rev 582)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak	2005-11-14 23:41:53 UTC (rev 583)
+@@ -219,7 +219,18 @@
+ 	  &lt;/child&gt;
+ 
+ 	  &lt;child&gt;
+-	    &lt;placeholder/&gt;
++	    &lt;widget class=&quot;GtkToolButton&quot; id=&quot;toolbutton5&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;stock_id&quot;&gt;gtk-remove&lt;/property&gt;
++	      &lt;property name=&quot;visible_horizontal&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;visible_vertical&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;is_important&quot;&gt;False&lt;/property&gt;
++	      &lt;signal name=&quot;clicked&quot; handler=&quot;OnDeleteComponentClicked&quot; last_modification_time=&quot;Mon, 14 Nov 2005 23:15:34 GMT&quot;/&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;homogeneous&quot;&gt;True&lt;/property&gt;
++	    &lt;/packing&gt;
+ 	  &lt;/child&gt;
+ 
+ 	  &lt;child&gt;
+@@ -659,6 +670,7 @@
+ 		  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+ 		  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+ 		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++		  &lt;signal name=&quot;clicked&quot; handler=&quot;OnDeleteParameterClicked&quot; last_modification_time=&quot;Mon, 14 Nov 2005 13:19:03 GMT&quot;/&gt;
+ 		&lt;/widget&gt;
+ 	      &lt;/child&gt;
+ 
+@@ -671,6 +683,7 @@
+ 		  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+ 		  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+ 		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++		  &lt;signal name=&quot;clicked&quot; handler=&quot;OnClearParametersClicked&quot; last_modification_time=&quot;Mon, 14 Nov 2005 13:19:44 GMT&quot;/&gt;
+ 		&lt;/widget&gt;
+ 	      &lt;/child&gt;
+ 	    &lt;/widget&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000294.html">[Mspace-checkins] r582 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Resources
+</A></li>
+	<LI>Next message: <A HREF="000296.html">[Mspace-checkins] r584 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Interfaces Resources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#295">[ date ]</a>
+              <a href="thread.html#295">[ thread ]</a>
+              <a href="subject.html#295">[ subject ]</a>
+              <a href="author.html#295">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

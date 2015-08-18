@@ -1,0 +1,383 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r490 - koolboy/trunk/src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r490%20-%20koolboy/trunk/src&In-Reply-To=%3C200505152203.j4FM3o38020671%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000202.html">
+   <LINK REL="Next"  HREF="000204.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r490 - koolboy/trunk/src</H1>
+    <B>Isaac Clerencia at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r490%20-%20koolboy/trunk/src&In-Reply-To=%3C200505152203.j4FM3o38020671%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r490 - koolboy/trunk/src">isaaccp at sheep.berlios.de
+       </A><BR>
+    <I>Mon May 16 00:03:50 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000202.html">[Mspace-checkins] r489 - ComponentModel/trunk/src
+</A></li>
+        <LI>Next message: <A HREF="000204.html">[Mspace-checkins] r491 - scripts
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#203">[ date ]</a>
+              <a href="thread.html#203">[ thread ]</a>
+              <a href="subject.html#203">[ subject ]</a>
+              <a href="author.html#203">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: isaaccp
+Date: 2005-05-16 00:03:49 +0200 (Mon, 16 May 2005)
+New Revision: 490
+
+Modified:
+   koolboy/trunk/src/koolboy.rb
+   koolboy/trunk/src/libkoolnotes.rb
+   koolboy/trunk/src/noteview.rb
+Log:
+Foo!
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-05-14 12:15:09 UTC (rev 489)
++++ koolboy/trunk/src/koolboy.rb	2005-05-15 22:03:49 UTC (rev 490)
+@@ -2,10 +2,11 @@
+ 
+ require 'Korundum'
+ require 'libkoolnotes.rb'
++require 'noteview.rb'
+ 
+ class Koolboy &lt; KDE::SystemTray
+-	slots   'sNewNote()', 'sShowNote(int)', 'sRecentChanges()',
+-			'sRemoveWindow(char*)', 'showAbout()', 'sSearchNotes()'
++	slots 'sNewNote()', 'sShowNote(int)', 'sRecentChanges()',
++		'sRemoveWindow(char*)', 'showAbout()', 'sSearchNotes()'
+ 	
+ 	k_dcop 'QStringList lastNotes()'
+ 
+@@ -41,7 +42,8 @@
+ 	end
+ 
+ 	def sNewNote
+-		window = NoteWindow.new(nil)
++		note = NoteManager.newNote
++		window = NoteView.new(note)
+ 		connect(window, SIGNAL('aboutToClose(char*)'),
+ 			self, SLOT('sRemoveWindow(char*)'))
+ 		window.show
+@@ -54,11 +56,14 @@
+ 			@windows[title].setActiveWindow
+ 			@windows[title].raise
+ 		else
+-			window = NoteWindow.new(title)
++			# get note
++			note = NoteManager.instance.getNote(title)
++
++			window = NoteView.new(note)
+ 			connect(window, SIGNAL('aboutToClose(char*)'),
+ 				self, SLOT('sRemoveWindow(char*)'))
+ 			window.show
+-			@windows[window.title] = window
++			@windows[note.title] = window
+ 		end
+ 	end
+ 
+@@ -89,54 +94,6 @@
+ 	end
+ end
+ 
+-class NoteWindow &lt; KDE::MainWindow
+-	signals 'aboutToClose(char*)'
+-
+-	def initialize( name )
+-		if not name
+-			name = NoteManager.instance.unusedName
+-			new = true
+-		else
+-			new = false
+-		end
+-		super(nil, name)
+-		setCaption(name)
+-
+-		# we need to increase refCount to be able
+-		# to use kmainwindows in this manner
+-		$kapp.ref
+-
+-		# get note
+-		@note = NoteManager.instance.getNote(name)
+-
+-		if not new
+-			resize(@note.size)
+-			move(@note.pos)
+-		end
+-
+-		@text = KDE::TextEdit.new(self)
+-		@text.setText(@note.text)
+-		self.setCentralWidget(@text)
+-	end
+-
+-	def title
+-		@note.title
+-	end
+-
+-	def queryClose
+-		text = @text.text.strip
+-		emit aboutToClose(@note.title)
+-		if text.length != 0
+-		then
+-			title = text.split(&quot;\n&quot;).first
+-			NoteManager.instance.change(@note,title,text,size,pos)
+-		else
+-			NoteManager.instance.delete(@note)
+-		end 
+-		return true
+-	end
+-end
+-
+ if $0 == __FILE__
+ 	description = &quot;Note taking app&quot;
+ 	version     = &quot;0.1&quot;
+
+Modified: koolboy/trunk/src/libkoolnotes.rb
+===================================================================
+--- koolboy/trunk/src/libkoolnotes.rb	2005-05-14 12:15:09 UTC (rev 489)
++++ koolboy/trunk/src/libkoolnotes.rb	2005-05-15 22:03:49 UTC (rev 490)
+@@ -75,7 +75,7 @@
+ class XmlNote
+ 	
+ 	attr_accessor :title, :time
+-	
++
+ 	def initialize(title)
+ 		@title = title
+ 		@file = KDE::StandardDirs::locateLocal(
+@@ -94,8 +94,8 @@
+ 	end
+ 
+ 	def read
+-		@xml = IO.readlines(@file).join(&quot;\n&quot;)
+ 		begin
++			@xml = IO.readlines(@file).join(&quot;\n&quot;)
+ 			@doc = REXML::Document.new(@xml)
+ 			@text = @doc.root.elements[&quot;text&quot;].text.to_s
+ 			@size = Qt::Size.new(@doc.root.elements[&quot;height&quot;].text.to_i,
+@@ -132,14 +132,12 @@
+ 		@doc.root &lt;&lt; y
+ 		f = File.new(@file, &quot;w&quot;)
+ 		@doc.write(f)
++		f.close
+ 	end
+ 
+-	def change (title,text,size,pos)
++	def changeTitle(title)
+ 		File.exists?(@file) and File.delete(@file)	
+ 		@title = title
+-		@text = text
+-		@size = size
+-		@pos = pos
+ 		@file = KDE::StandardDirs::locateLocal(
+ 			&quot;appdata&quot;,&quot;notes/#{@title}.note&quot;)
+ 		@time = Time.new
+@@ -151,6 +149,7 @@
+ 	end
+ 
+ 	def to_s
++		@read or read
+ 		return @xml
+ 	end
+ 
+@@ -166,6 +165,7 @@
+ 
+ 			def #{a}= (val)
+ 				@#{a} = val
++				write
+ 			end
+ 			EOF
+ 		end
+
+Modified: koolboy/trunk/src/noteview.rb
+===================================================================
+--- koolboy/trunk/src/noteview.rb	2005-05-14 12:15:09 UTC (rev 489)
++++ koolboy/trunk/src/noteview.rb	2005-05-15 22:03:49 UTC (rev 490)
+@@ -5,9 +5,13 @@
+ #TODO
+ #How can I use custom icons in actions?
+ class NoteView &lt; MainWindow
++	signals 'aboutToClose(char*)'
++
+ 	slots 'slotLink()',
+-	'noteDeleted()', 'slotFind()', 'formatBold()', 'formatUnderline()',
+-	'formatStrikeout()', 'formatItalic()'
++	'sNoteDeleted()', 'slotFind()', 'sFormatBold()', 'sFormatUnderline()',
++	'sFormatStrikeout()', 'sFormatItalic()', 'sTitleChanged()',
++	'sTextChanged()'
++
+ 	attr_reader :note
+ 
+ 	# Receives an XmlNote and handles its content
+@@ -20,26 +24,31 @@
+ 		initWidgets()
+ 		defineActions()
+ 		initToolBar()
+-		
++
++		# we need to increase refCount to be able
++		# to use kmainwindows in this manner
++		$kapp.ref
++
+ 		self.caption = @note.title
++		@titleLineEdit.text = @note.title
+ 		@textEdit.text = @note.text if @note.text
+ 		resize(@note.size) if @note.size
+-		move(@note.pos) if @note.size
++		move(@note.pos) if @note.pos
+ 	end
+ 	
+ 	#####################
+ 	#TEXT formatting	
+-	def formatItalic
++	def sFormatItalic
+ 		puts &quot;FORMAT&quot;
+ 	end
+ 
+-	def formatUnderline
++	def sFormatUnderline
+ 	end
+ 
+-	def formatStrikeout
++	def sFormatStrikeout
+ 	end
+ 
+-	def formatBold
++	def sFormatBold
+ 	end
+ 	###################
+ 
+@@ -49,14 +58,23 @@
+ 	def slotLink
+ 	end
+ 
+-	def noteDeleted
++	def sNoteDeleted
+ 	end
+ 	
+ 	def initWidgets
+ 		@vbox = Qt::VBox.new(self)
+ 		@vbox.show
++		@titleLineEdit = LineEdit.new(@vbox);
++		regex = Qt::RegExp.new(&quot;([A-Z]([a-z]*)){2,}&quot;)
++		validator = Qt::RegExpValidator.new(regex,nil)
++		@titleLineEdit.setValidator(validator)
++		@titleLineEdit.show
++		connect(@titleLineEdit, SIGNAL('returnPressed()'),
++			self, SLOT('sTitleChanged()'))
+ 		@textEdit = TextEdit.new(@vbox)
+ 		@textEdit.show
++		connect(@textEdit, SIGNAL('textChanged()'),
++			self, SLOT('sTextChanged()'))
+ 		self.centralWidget = @vbox
+ 	end
+ 	
+@@ -74,35 +92,53 @@
+ 		@formatAction = ActionMenu.new(i18n(&quot;Format&quot;), &quot;font&quot;)
+ 		
+ 		icon = Qt::IconSet.new(@icons.loadIcon(&quot;text_bold&quot;, KDE::Icon::Toolbar))
+-		@formatAction.insert(Action.new( i18n(&quot;Bold&quot;), icon, Shortcut.new(), self, SLOT('formatBold()'), actionCollection(), &quot;formatBold&quot;))
++		@formatAction.insert(Action.new( i18n(&quot;Bold&quot;), icon, Shortcut.new(), self, SLOT('sFormatBold()'), actionCollection(), &quot;formatBold&quot;))
+ 
+ 		icon = Qt::IconSet.new(@icons.loadIcon(&quot;text_italic&quot;, KDE::Icon::Toolbar))
+-		@formatAction.insert(Action.new( i18n(&quot;Italic&quot;), icon, Shortcut.new(), self, SLOT('formatItalic()'), actionCollection(), &quot;formatItalic&quot;))
++		@formatAction.insert(Action.new( i18n(&quot;Italic&quot;), icon, Shortcut.new(), self, SLOT('sFormatItalic()'), actionCollection(), &quot;formatItalic&quot;))
+ 
+ 		icon = Qt::IconSet.new(@icons.loadIcon(&quot;text_under&quot;, KDE::Icon::Toolbar))
+-		@formatAction.insert(Action.new( i18n(&quot;Underline&quot;), icon, Shortcut.new(), self, SLOT('formatUnderline()'), actionCollection(), &quot;formatUnderline&quot;))
++		@formatAction.insert(Action.new( i18n(&quot;Underline&quot;), icon, Shortcut.new(), self, SLOT('sFormatUnderline()'), actionCollection(), &quot;formatUnderline&quot;))
+ 
+ 		icon = Qt::IconSet.new(@icons.loadIcon(&quot;text_strike&quot;, KDE::Icon::Toolbar))
+-		@formatAction.insert(Action.new( i18n(&quot;Strikeout&quot;), icon, Shortcut.new(), self, SLOT('formatStrikeout()'), actionCollection(), &quot;formatStrikeout&quot;))
++		@formatAction.insert(Action.new( i18n(&quot;Strikeout&quot;), icon, Shortcut.new(), self, SLOT('sFormatStrikeout()'), actionCollection(), &quot;formatStrikeout&quot;))
+ 	end
+-	
++
++	def sTitleChanged
++		if @titleLineEdit.hasAcceptableInput
++			@note.changeTitle(@titleLineEdit.text)
++		end
++	end
++
++	def sTextChanged
++		@note.text = @textEdit.text
++	end
++
+ 	def initToolBar
+ 		@linkAction.plug(toolBar())
+ 		@findAction.plug(toolBar())
+ 		@formatAction.plug(toolBar())
+ 		@deleteAction.plug(toolBar())
+ 	end
++
++	def queryClose
++		emit aboutToClose(@note.title)
++		@note.size = size
++		@note.pos = pos
++		@note.write
++		return true
++	end
+ end
+ 
+ if $0 == __FILE__
+ 	description = &quot;Note taking app&quot;
+ 	version     = &quot;1.0&quot;
+ 	about = AboutData.new(&quot;koolboy&quot;, &quot;Koolboy&quot;, &quot;0.1&quot;,
+-						   description, AboutData::License_GPL,
+-						   &quot;&quot;)
++		   description, AboutData::License_GPL, &quot;&quot;)
+ 
+ 	about.addAuthor(&quot;Isaac Clerencia&quot;, &quot;Core developer&quot;, &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">isaac at sindominio.net</A>&quot;)
+ 	about.addAuthor(&quot;Sergio Rubio&quot;, &quot;Core developer&quot;, &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&quot;)
++	about.setBugAddress(&quot;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">mspace-koolboy at lists.berlios.de</A>&quot;)
+ 
+ 	KDE::CmdLineArgs.init(ARGV,about)
+ 	a = KDE::Application.new()
+@@ -113,4 +149,4 @@
+ 
+ 	a.mainWidget = thing
+ 	a.exec
+-end
+\ No newline at end of file
++end
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000202.html">[Mspace-checkins] r489 - ComponentModel/trunk/src
+</A></li>
+	<LI>Next message: <A HREF="000204.html">[Mspace-checkins] r491 - scripts
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#203">[ date ]</a>
+              <a href="thread.html#203">[ thread ]</a>
+              <a href="subject.html#203">[ subject ]</a>
+              <a href="author.html#203">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

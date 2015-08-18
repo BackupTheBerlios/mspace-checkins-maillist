@@ -1,0 +1,1419 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r376 - in SimpleP/trunk: . images resources src src/Contexts/GladeContext src/Contexts/OthersContext src/Contexts/SourceContext src/Contexts/TargetsContext
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r376%20-%20in%20SimpleP/trunk%3A%20.%20images%20resources%20src%20src/Contexts/GladeContext%20src/Contexts/OthersContext%20src/Contexts/SourceContext%20src/Contexts/TargetsContext&In-Reply-To=%3C200504042210.j34MAWCx014790%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000088.html">
+   <LINK REL="Next"  HREF="000090.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r376 - in SimpleP/trunk: . images resources src src/Contexts/GladeContext src/Contexts/OthersContext src/Contexts/SourceContext src/Contexts/TargetsContext</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r376%20-%20in%20SimpleP/trunk%3A%20.%20images%20resources%20src%20src/Contexts/GladeContext%20src/Contexts/OthersContext%20src/Contexts/SourceContext%20src/Contexts/TargetsContext&In-Reply-To=%3C200504042210.j34MAWCx014790%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r376 - in SimpleP/trunk: . images resources src src/Contexts/GladeContext src/Contexts/OthersContext src/Contexts/SourceContext src/Contexts/TargetsContext">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Tue Apr  5 00:10:32 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000088.html">[Mspace-checkins] r375 - in ComponentModel/trunk: ComponentTest ComponentTest/src ComponentTest/src/Components/MainComponent ComponentTest/src/Components/MainComponent/Bo ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exception src src/ComponentModel.Container src/ComponentModel.Container.Dao
+</A></li>
+        <LI>Next message: <A HREF="000090.html">[Mspace-checkins] r377 - scripts
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#89">[ date ]</a>
+              <a href="thread.html#89">[ thread ]</a>
+              <a href="subject.html#89">[ subject ]</a>
+              <a href="author.html#89">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-05 00:10:30 +0200 (Tue, 05 Apr 2005)
+New Revision: 376
+
+Added:
+   SimpleP/trunk/ChangeLog
+   SimpleP/trunk/default.build
+   SimpleP/trunk/images/images.list
+   SimpleP/trunk/images/makeimages.sh
+   SimpleP/trunk/resources/
+   SimpleP/trunk/resources/res.cs
+Modified:
+   SimpleP/trunk/Makefile
+   SimpleP/trunk/simplep.simplep
+   SimpleP/trunk/src/AboutWindow.boo
+   SimpleP/trunk/src/Contexts/GladeContext/GladeContext.boo
+   SimpleP/trunk/src/Contexts/GladeContext/GladeContextView.boo
+   SimpleP/trunk/src/Contexts/OthersContext/OthersContext.boo
+   SimpleP/trunk/src/Contexts/SourceContext/ProjectBrowser.boo
+   SimpleP/trunk/src/Contexts/SourceContext/SourceContext.boo
+   SimpleP/trunk/src/Contexts/TargetsContext/TargetsContext.boo
+   SimpleP/trunk/src/Globals.boo
+   SimpleP/trunk/src/MainWindow.boo
+Log:
+
+
+Added: SimpleP/trunk/ChangeLog
+===================================================================
+--- SimpleP/trunk/ChangeLog	2005-04-04 21:19:09 UTC (rev 375)
++++ SimpleP/trunk/ChangeLog	2005-04-04 22:10:30 UTC (rev 376)
+@@ -0,0 +1,20 @@
++2005-04-05  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
++	* Makefile: updated to build de resources in a satellite
++	* default.build: NEW nant build file, UNTESTED
++	* images/images.list:
++	* images/makeimages.sh:
++	* resources/res.cs:
++	* simplep.simplep:
++	* src/AboutWindow.boo:
++	* src/Contexts/GladeContext/GladeContext.boo:
++	* src/Contexts/GladeContext/GladeContextView.boo:
++	* src/Contexts/OthersContext/OthersContext.boo:
++	* src/Contexts/SourceContext/ProjectBrowser.boo:
++	* src/Contexts/SourceContext/SourceContext.boo:
++	* src/Contexts/TargetsContext/TargetsContext.boo:
++	* src/Globals.boo:
++	* src/MainWindow.boo:
++
++	Resources are now built inside the Resources.dll assembly
++
+
+Modified: SimpleP/trunk/Makefile
+===================================================================
+--- SimpleP/trunk/Makefile	2005-04-04 21:19:09 UTC (rev 375)
++++ SimpleP/trunk/Makefile	2005-04-04 22:10:30 UTC (rev 376)
+@@ -1,3 +1,5 @@
++include images/images.list
++
+ FILES =						\
+ 		src/*.boo			\
+ 		src/*/*/*.boo			\
+@@ -8,10 +10,14 @@
+ 				-r:ext/Red.Gtk.dll						\
+ 				-r:ext/Red.dll							\
+ 				-r:ext/NLog.dll
+-all: update-refs
++all: update-refs Resources.dll
+ 	booc $(FILES) -out:build/SimpleP.exe -target:winexe -r:./ext/Red.ProjectManager.dll $(REFERENCES)
+ 
++Resources.dll: resources/res.cs
++	mcs -t:library -out:build/Resources.exe -resource:ui-data/simplep.glade $(IMAGES) resources/res.cs
++
+ update-refs:
+-	cp ext/* build/	
+-	cp ui-data/*.glade build/
+-	cp -a images build
++	cp ext/*dll* build/	
++
++clean:
++	rm -rf build/*
+
+Added: SimpleP/trunk/default.build
+===================================================================
+--- SimpleP/trunk/default.build	2005-04-04 21:19:09 UTC (rev 375)
++++ SimpleP/trunk/default.build	2005-04-04 22:10:30 UTC (rev 376)
+@@ -0,0 +1,110 @@
++&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
++
++&lt;!--
++    (c) N&#233;stor Salceda &amp; Sergio Rubio  (Monkey Space Developers)
++    File: 
++        nant.xml
++    Description:
++        base nant file template for automate basic task deployment.
++
++      INSERTAR LA WEB DE MONKEY SPACE Y TAL  
++--&gt;
++
++&lt;project basedir=&quot;.&quot; default=&quot;build&quot; name=&quot;SimpleP Project Manager&quot;&gt;
++&lt;!-- Properties --&gt;
++   
++    &lt;property name=&quot;nant.settings.currentframework&quot; value=&quot;mono-1.0&quot;/&gt;
++   
++    &lt;property name=&quot;version&quot; value=&quot;1.0&quot;/&gt;
++    &lt;property name=&quot;description&quot; value=&quot;SimpleP project manager&quot;/&gt;
++    &lt;property name=&quot;bindir&quot; value=&quot;build/&quot;/&gt;
++    &lt;property name=&quot;docdir&quot; value=&quot;doc/&quot;/&gt;
++
++&lt;!-- Targets --&gt;
++
++    &lt;!-- Elimina los ficheros existentes en bin y en doc --&gt;
++    &lt;target name=&quot;clean&quot;&gt;
++        &lt;delete dir=&quot;${bindir}&quot; if=&quot;${directory::exists(bindir)}&quot; failonerror=&quot;false&quot;/&gt; 
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++    &lt;!-- Crea una nueva jerarquia con bin y doc para la compilaci&#243;n --&gt;
++    &lt;target name=&quot;create-skeleton&quot; depends=&quot;clean&quot;&gt;
++        &lt;mkdir dir=&quot;${bindir}&quot;/&gt;
++        &lt;mkdir dir=&quot;${docdir}&quot;/&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++	&lt;target name=&quot;resources&quot;&gt;
++		&lt;csc target=&quot;library&quot; output=&quot;${bindir}/Resources.exe&quot;&gt;
++			&lt;sources basedir=&quot;.&quot;&gt;
++				&lt;include name=&quot;resources/res.cs&quot;/&gt;
++			&lt;/sources&gt;
++			&lt;resources&gt;
++				&lt;include name=&quot;images/*.png&quot;/&gt;
++				&lt;include name=&quot;ui-data/*.glade&quot;/&gt;
++			&lt;/resources&gt;
++		&lt;/csc&gt;
++        &lt;tstamp/&gt;
++	&lt;/target&gt;
++    
++    &lt;!-- Compila el componente y lo guarda en bin --&gt;
++    &lt;target name=&quot;build&quot;  depends=&quot;create-skeleton,resources&quot;&gt;
++        &lt;booc output=&quot;${bindir}/SimpleP&quot;&gt;
++			&lt;sources basedir=&quot;.&quot;&gt;
++				&lt;include name=&quot;src/**/*.boo&quot;/&gt;
++			&lt;/sources&gt;
++			&lt;references&gt;
++				&lt;include name=&quot;gtk-sharp.dll&quot;/&gt;
++				&lt;include name=&quot;glade-sharp&quot;/&gt;
++				&lt;include name=&quot;gdk-sharp&quot;/&gt;
++				&lt;include name=&quot;../../RedLib/trunk/build/Red.dll&quot;/&gt;
++				&lt;include name=&quot;../../Red.ProjectManager/trunk/build/Red.ProjectManager.dll&quot;/&gt;
++				&lt;include name=&quot;../../Red.Gtk/trunk/build/Red.Gtk.dll&quot;/&gt;
++				&lt;include name=&quot;ext/NLog.dll&quot;/&gt;
++			&lt;/references&gt;
++        &lt;/booc&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++    &lt;!-- Por defecto compilar&#225; el componente y escribir&#225; la documentaci&#243;n--&gt;
++    &lt;target name=&quot;all&quot; depends=&quot;build,doc&quot;&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++    &lt;!-- Documenta el componente y lo guarda en doc--&gt;
++    &lt;target name=&quot;doc&quot; depends=&quot;build&quot;&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++    &lt;!-- Ayuda sobre este fichero --&gt;
++    &lt;target name=&quot;usage&quot;&gt;
++        &lt;echo&gt;
++            ${description}
++
++            Available task:
++                
++                -all
++                    Compile, and creates binary files.
++
++                -doc
++                    Creates documentation.  &#191;Monodoc or ndoc?
++
++                -clean
++                    Delete component binaries.
++                
++                -run
++                    Runs the application.
++               
++                -build
++                    Build component.
++               
++                -all
++                    Builds component and document it.
++                
++                -usage
++                    Show this help.
++        &lt;/echo&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++&lt;/project&gt;
+
+Added: SimpleP/trunk/images/images.list
+===================================================================
+--- SimpleP/trunk/images/images.list	2005-04-04 21:19:09 UTC (rev 375)
++++ SimpleP/trunk/images/images.list	2005-04-04 22:10:30 UTC (rev 376)
+@@ -0,0 +1,13 @@
++IMAGES =
++IMAGES += /resource:images/Data-icon.png,Data-icon.png
++IMAGES += /resource:images/empty.png,empty.png
++IMAGES += /resource:images/file.png,file.png
++IMAGES += /resource:images/folder.png,folder.png
++IMAGES += /resource:images/glade-20.png,glade-20.png
++IMAGES += /resource:images/Other-icon.png,Other-icon.png
++IMAGES += /resource:images/SimpleP-full-logo.png,SimpleP-full-logo.png
++IMAGES += /resource:images/SimpleP-icon-gears.png,SimpleP-icon-gears.png
++IMAGES += /resource:images/simplep.png,simplep.png
++IMAGES += /resource:images/Source-icon.png,Source-icon.png
++IMAGES += /resource:images/target.png,target.png
++IMAGES += /resource:images/UI-icon.png,UI-icon.png
+
+Added: SimpleP/trunk/images/makeimages.sh
+===================================================================
+--- SimpleP/trunk/images/makeimages.sh	2005-04-04 21:19:09 UTC (rev 375)
++++ SimpleP/trunk/images/makeimages.sh	2005-04-04 22:10:30 UTC (rev 376)
+@@ -0,0 +1,4 @@
++#!/bin/bash 
++
++echo 'IMAGES =' &gt; images.list
++for i in `ls *.png`; do echo IMAGES += /resource:images/$i,$i &gt;&gt; images.list ;done
+
+Added: SimpleP/trunk/resources/res.cs
+===================================================================
+--- SimpleP/trunk/resources/res.cs	2005-04-04 21:19:09 UTC (rev 375)
++++ SimpleP/trunk/resources/res.cs	2005-04-04 22:10:30 UTC (rev 376)
+@@ -0,0 +1,6 @@
++namespace SimpleP
++{
++	class Res
++	{
++	}
++}
+
+Modified: SimpleP/trunk/simplep.simplep
+===================================================================
+--- SimpleP/trunk/simplep.simplep	2005-04-04 21:19:09 UTC (rev 375)
++++ SimpleP/trunk/simplep.simplep	2005-04-04 22:10:30 UTC (rev 376)
+@@ -3,233 +3,887 @@
+     &lt;Name&gt;SimpleP&lt;/Name&gt;
+     &lt;FileSet&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/SimpleP-full-logo.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/GladeContext/.svn/text-base/GladeContext.boo.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/OthersContext/OthersContext.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/prop-base/glade-16.png.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/Data-icon.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/props/empty.png.svn-work&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/SimpleP.exe&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Services.boo&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/ICSharpCode.SharpZipLib.dll&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/GladeContext/.svn/entries&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/Red.Gtk.dll&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/installer/.svn/README.txt&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/Red.ProjectManager.dll&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/text-base/NLog.dll.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/glade-20.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/Data-icon.png&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/Makefile&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/PopupMenuService/.svn/text-base/PopupMenuService.boo.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/ContextManager.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/text-base/Red.dll.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/glade-16.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/Other-icon.png&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/GladeContext/GladeContext.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/.svn/text-base/InvalidPathException.boo.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ui-data/simplep.glade&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/Boo.dll&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/Other-icon.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/prop-base/ICSharpCode.SharpZipLib.dll.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/NewProjectWindow.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/text-base/Boo.dll.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/simplep.simplep&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/Source-icon.png&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ui-data/simplep.gladep.bak&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/README.txt&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ext/Boo.dll&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/NLog.dll&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/folder.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/SourceContext/.svn/text-base/ProjectBrowser.boo.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/UI-icon.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/installer/.svn/props/postinstallation.sh.svn-work&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Run.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/text-base/Red.dll.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/target.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/prop-base/SimpleP-icon-gears.png.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ext/Red.Gtk.dll&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/prop-base/Red.dll.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/Other-icon.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/installer/.svn/text-base/simplep.inc.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Services.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/text-base/file.png.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/file.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/GladeContext/.svn/README.txt&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/NLog.dll.nlog&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/PathNavigator.boo&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/file.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/prop-base/Data-icon.png.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/SimpleP-full-logo.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/TargetsContext/.svn/README.txt&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ext/NLog.dll&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/MainWindow.boo&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/simplep.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Run.boo&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/glade-20.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/UI-icon.png&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/PathNavigator.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ui-data/.svn/format&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/Boo.dll&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/installer/.svn/empty-file&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/installer/simplep.inc&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/SourceContext/.svn/format&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/.simplep&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/props/file.png.svn-work&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/simplep.desktop&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/THANKS&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/GladeContext/GladeContextView.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/prop-base/glade-20.png.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/LICENSE&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/empty-file&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ext/ICSharpCode.SharpZipLib.dll&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/.svn/text-base/Run.boo.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/README&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/props/ICSharpCode.SharpZipLib.dll.svn-work&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/PopupMenuService/PopupMenuService.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/Makefile&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/Source-icon.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/StatusbarService.boo&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ext/NLog.dll.nlog&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/.svn/format&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/IProjectContext.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/SimpleP-full-logo.png&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ui-data/simplep.glade.bak&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Globals.boo&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/PopupMenuService/FileOperationsMenu.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ui-data/.svn/text-base/simplep.glade.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/simplep.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/format&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/simplep&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/.svn/text-base/Services.boo.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/SourceContext/ProjectStore.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/SimpleP-icon-gears.png&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/target.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/props/SimpleP.exe.svn-work&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/installer/postinstallation.sh&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/installer/.svn/entries&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/SimpleP-icon-gears.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/props/Red.Gtk.dll.svn-work&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/Data-icon.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/ICSharpCode.SharpZipLib.dll&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/AUTHORS&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/prop-base/folder.png.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/THANKS&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/PopupMenuService/.svn/entries&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/SimpleP-icon-gears.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/NLog.dll.nlog&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/TargetsContext/TargetsContext.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ui-data/.svn/README.txt&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/NLog.dll&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/prop-base/Red.Gtk.dll.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/empty.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/props/empty.png.svn-work&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/AboutWindow.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/.svn/entries&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ext/Red.dll&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/OthersContext/.svn/entries&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/empty.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/Red.dll&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/UI-icon.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/.svn/props/simplep.svn-work&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/folder.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/props/SimpleP-full-logo.png.svn-work&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/InvalidPathException.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/.svn/format&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ext/Red.ProjectManager.dll&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/prop-base/Data-icon.png.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/SourceContext/ProjectBrowser.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/OthersContext/.svn/text-base/OthersContext.boo.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/Red.dll&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/props/Boo.dll.svn-work&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ui-data/simplep.gladep&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/prop-base/empty.png.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Globals.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/prop-base/SimpleP.exe.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/Source-icon.png&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/PopupMenuService/.svn/text-base/FileOperationsMenu.boo.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/StatusbarService.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/.svn/text-base/README.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/MainWindow.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/props/target.png.svn-work&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/SourceContext/SourceContext.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/prop-base/Red.Gtk.dll.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/MimetypeService.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/prop-base/Source-icon.png.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/prop-base/NLog.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/OthersContext/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/doc/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/text-base/ICSharpCode.SharpZipLib.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/Data-icon.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/folder.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/.svn/text-base/ContextManager.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/text-base/Red.ProjectManager.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/text-base/report.log.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/prop-base/Red.ProjectManager.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/SimpleP-full-logo.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/doc-html/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/text-base/folder.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/text-base/simplep.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/SimpleP-icon-gears.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/text-base/SimpleP-full-logo.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/simplep.simplep&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/text-base/Red.Gtk.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/prop-base/ICSharpCode.SharpZipLib.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/.svn/text-base/IProjectContext.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/installer/.svn/text-base/postinstallation.sh.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/props/ICSharpCode.SharpZipLib.dll.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/prop-base/simplep.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/.svn/text-base/THANKS.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/prop-base/file.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/empty.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/prop-base/UI-icon.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/props/glade-20.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/text-base/SimpleP.exe.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/props/Other-icon.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/ContextManager.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/PopupMenuService/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/props/folder.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/prop-base/empty.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/UI-icon.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/.svn/text-base/Globals.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/TargetsContext/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/installer/.svn/prop-base/postinstallation.sh.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/NLog.dll&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/props/Red.ProjectManager.dll.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/AboutWindow.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/SourceContext/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/text-base/Data-icon.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/props/UI-icon.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/text-base/Source-icon.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/text-base/glade-20.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/text-base/glade-20.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/SourceContext/ProjectBrowser.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/InvalidPathException.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/props/Red.dll.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/.svn/text-base/MainWindow.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/PopupMenuService/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/text-base/SimpleP-full-logo.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/empty.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/simplep.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/prop-base/Boo.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/Red.Gtk.dll&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/text-base/target.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/prop-base/target.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/SimpleP.exe&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/props/Other-icon.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/Boo.dll&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/TargetsContext/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/LICENSE&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/prop-base/Other-icon.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/SourceContext/ProjectStore.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/text-base/glade-16.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/target.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/text-base/file.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/prop-base/NLog.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/.svn/text-base/Makefile.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/SourceContext/.svn/text-base/SourceContext.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/props/glade-16.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/prop-base/folder.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/OthersContext/OthersContext.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/prop-base/target.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/glade-20.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/TargetsContext/.svn/text-base/TargetsContext.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/text-base/NLog.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/text-base/empty.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/installer/simplep.inc&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/Red.ProjectManager.dll&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/.svn/text-base/simplep.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/doc/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/.svn/prop-base/simplep.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/text-base/SimpleP-icon-gears.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/IProjectContext.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/doc-html/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/text-base/NLog.dll.nlog.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/.svn/text-base/AUTHORS.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/Source-icon.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/simplep.glade&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/text-base/ICSharpCode.SharpZipLib.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/props/target.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/GladeContext/GladeContext.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/props/Red.Gtk.dll.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/props/SimpleP-icon-gears.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/PopupMenuService/FileOperationsMenu.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/glade-20.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/props/NLog.dll.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/text-base/NLog.dll.nlog.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/text-base/empty.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/prop-base/SimpleP-full-logo.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/text-base/simplep.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/Red.ProjectManager.dll&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/doc/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/doc-html/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/text-base/Red.ProjectManager.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/text-base/UI-icon.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/.svn/text-base/MimetypeService.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/Red.dll&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/file.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/SourceContext/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ui-data/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/installer/postinstallation.sh&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/props/simplep.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/README&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ui-data/simplep.glade&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/SourceContext/.svn/text-base/ProjectStore.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/props/UI-icon.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/OthersContext/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/props/file.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/file.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/TargetsContext/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/doc/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/prop-base/Source-icon.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/report.log&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/text-base/Other-icon.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/props/folder.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/PopupMenuService/PopupMenuService.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/.svn/text-base/LICENSE.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/prop-base/SimpleP-full-logo.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/props/Data-icon.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/simplep.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/prop-base/SimpleP-icon-gears.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/prop-base/Red.ProjectManager.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/props/SimpleP-icon-gears.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/ICSharpCode.SharpZipLib.dll&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/doc-html/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/props/simplep.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/props/glade-20.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/prop-base/simplep.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/text-base/Red.Gtk.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/installer/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/prop-base/UI-icon.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/prop-base/glade-20.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/GladeContext/GladeContextView.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/props/Source-icon.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/props/Data-icon.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/text-base/SimpleP-icon-gears.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/MimetypeService.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/text-base/Source-icon.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/props/Boo.dll.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/text-base/Data-icon.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/Other-icon.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/TargetsContext/TargetsContext.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/simplep&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/SourceContext/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/glade-16.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ui-data/.svn/text-base/simplep.gladep.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/text-base/Boo.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/NLog.dll.nlog&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/prop-base/Boo.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/props/Red.dll.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/folder.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/props/Red.ProjectManager.dll.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/GladeContext/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/.svn/text-base/simplep.desktop.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/AUTHORS&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/text-base/folder.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/text-base/target.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/prop-base/file.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/prop-base/Red.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/.svn/text-base/NewProjectWindow.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/target.png&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/Red.Gtk.dll&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/SourceContext/SourceContext.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/text-base/Other-icon.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/GladeContext/.svn/text-base/GladeContextView.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/text-base/UI-icon.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/.svn/text-base/simplep.simplep.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/prop-base/Other-icon.png.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/.svn/text-base/StatusbarService.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/OthersContext/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/props/NLog.dll.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/GladeContext/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/props/SimpleP-full-logo.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ext/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/.svn/text-base/PathNavigator.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ui-data/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/images/.svn/props/Source-icon.png.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/images/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/simplep.desktop&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/ui-data/simplep.gladep&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/PopupMenuService/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/.svn/text-base/AboutWindow.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/NewProjectWindow.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/src/Contexts/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/SimpleP/trunk/build/.svn/text-base/simplep.glade.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
+     &lt;/FileSet&gt;
+     &lt;FolderSet&gt;
+ &lt;/FolderSet&gt;
+
+Modified: SimpleP/trunk/src/AboutWindow.boo
+===================================================================
+--- SimpleP/trunk/src/AboutWindow.boo	2005-04-04 21:19:09 UTC (rev 375)
++++ SimpleP/trunk/src/AboutWindow.boo	2005-04-04 22:10:30 UTC (rev 376)
+@@ -23,7 +23,7 @@
+ 		gxml = XML (&quot;simplep.glade&quot;, &quot;aboutWindow&quot;, null)
+ 		gxml.Autoconnect (self)
+ 		self.Raw = gxml[&quot;aboutWindow&quot;].Raw
+-		aboutImage.FromFile = &quot;images/SimpleP-full-logo.png&quot;
++		aboutImage.FromPixbuf = Gdk.Pixbuf (Globals.Resources, &quot;SimpleP-full-logo.png&quot;)
+ 
+ 	def OnCloseClicked (sender, args):
+ 		Destroy ()
+
+Modified: SimpleP/trunk/src/Contexts/GladeContext/GladeContext.boo
+===================================================================
+--- SimpleP/trunk/src/Contexts/GladeContext/GladeContext.boo	2005-04-04 21:19:09 UTC (rev 375)
++++ SimpleP/trunk/src/Contexts/GladeContext/GladeContext.boo	2005-04-04 22:10:30 UTC (rev 376)
+@@ -5,7 +5,7 @@
+ 
+ class GladeContext (IProjectContext):
+ 
+-	_icon = Pixbuf (&quot;images/UI-icon.png&quot;)
++	_icon = Pixbuf (Globals.Resources, &quot;UI-icon.png&quot;)
+ 	public Icon as Gdk.Pixbuf:
+ 		get:
+ 			return _icon
+
+Modified: SimpleP/trunk/src/Contexts/GladeContext/GladeContextView.boo
+===================================================================
+--- SimpleP/trunk/src/Contexts/GladeContext/GladeContextView.boo	2005-04-04 21:19:09 UTC (rev 375)
++++ SimpleP/trunk/src/Contexts/GladeContext/GladeContextView.boo	2005-04-04 22:10:30 UTC (rev 376)
+@@ -74,7 +74,7 @@
+ 			files = currentProject.GetFilesWithExtension ([&quot;.glade&quot;])
+ 			for file as ProjectFile in files:
+ 				fileText = &quot;${file.Name}\n&lt;span foreground='grey' size='small'&gt;${file.FullName}&lt;/span&gt;&quot;
+-				_store.AppendValues ( (Gdk.Pixbuf (&quot;images/glade-20.png&quot;),
++				_store.AppendValues ( (Gdk.Pixbuf (Globals.Resources, &quot;glade-20.png&quot;),
+ 										fileText, file.FullName) )
+ 
+ 	private def ProjectChanged (sender, args):
+
+Modified: SimpleP/trunk/src/Contexts/OthersContext/OthersContext.boo
+===================================================================
+--- SimpleP/trunk/src/Contexts/OthersContext/OthersContext.boo	2005-04-04 21:19:09 UTC (rev 375)
++++ SimpleP/trunk/src/Contexts/OthersContext/OthersContext.boo	2005-04-04 22:10:30 UTC (rev 376)
+@@ -5,7 +5,7 @@
+ 
+ class OthersContext (IProjectContext):
+ 
+-	_icon = Pixbuf (&quot;images/Other-icon.png&quot;)
++	_icon = Pixbuf (Globals.Resources, &quot;Other-icon.png&quot;)
+ 	public Icon as Gdk.Pixbuf:
+ 		get:
+ 			return _icon
+
+Modified: SimpleP/trunk/src/Contexts/SourceContext/ProjectBrowser.boo
+===================================================================
+--- SimpleP/trunk/src/Contexts/SourceContext/ProjectBrowser.boo	2005-04-04 21:19:09 UTC (rev 375)
++++ SimpleP/trunk/src/Contexts/SourceContext/ProjectBrowser.boo	2005-04-04 22:10:30 UTC (rev 376)
+@@ -111,10 +111,10 @@
+ 	private def AddDirectoriesToView ():
+ 		for subdir as string in _currentProject.Navigator.CurrentSubdirs:
+ 			subdir = System.IO.Path.Combine (_currentProject.Navigator.CurrentPath, subdir)
+-			store.AppendValues ( (subdir.Split ( (sep,) )[-1], Gdk.Pixbuf (&quot;images/folder.png&quot;), subdir, true) )
++			store.AppendValues ( (subdir.Split ( (sep,) )[-1], Gdk.Pixbuf (Globals.Resources, &quot;folder.png&quot;), subdir, true) )
+ 		
+ 		if _currentProject.Navigator.HasParent:
+-			store.AppendValues ( (&quot;../&quot;, Gdk.Pixbuf (&quot;images/folder.png&quot;), _currentProject.Navigator.Parent, true) )
++			store.AppendValues ( (&quot;../&quot;, Gdk.Pixbuf (Globals.Resources,&quot;folder.png&quot;), _currentProject.Navigator.Parent, true) )
+ 		
+ 
+ 	_filters = Globals.SourceExtensions
+@@ -126,7 +126,7 @@
+ 				extension = pfile.FullName
+ 			if not extension in _filters:
+ 				continue
+-			store.AppendValues ( (pfile.Name, Gdk.Pixbuf (&quot;images/file.png&quot;), pfile.FullName, false) )
++			store.AppendValues ( (pfile.Name, Gdk.Pixbuf (Globals.Resources,&quot;file.png&quot;), pfile.FullName, false) )
+ 
+ 	private def RemoveFromDiskClicked ():
+ 		file as string = GetRowValue (store.FullNameCol)
+
+Modified: SimpleP/trunk/src/Contexts/SourceContext/SourceContext.boo
+===================================================================
+--- SimpleP/trunk/src/Contexts/SourceContext/SourceContext.boo	2005-04-04 21:19:09 UTC (rev 375)
++++ SimpleP/trunk/src/Contexts/SourceContext/SourceContext.boo	2005-04-04 22:10:30 UTC (rev 376)
+@@ -6,7 +6,7 @@
+ 
+ 	public Icon as Gdk.Pixbuf:
+ 		get:
+-			return Gdk.Pixbuf (&quot;images/Source-icon.png&quot;)
++			return Gdk.Pixbuf (Globals.Resources, &quot;Source-icon.png&quot;)
+ 
+ 	_name = &quot;Source&quot;
+ 	public Name as string:
+
+Modified: SimpleP/trunk/src/Contexts/TargetsContext/TargetsContext.boo
+===================================================================
+--- SimpleP/trunk/src/Contexts/TargetsContext/TargetsContext.boo	2005-04-04 21:19:09 UTC (rev 375)
++++ SimpleP/trunk/src/Contexts/TargetsContext/TargetsContext.boo	2005-04-04 22:10:30 UTC (rev 376)
+@@ -5,7 +5,7 @@
+ 
+ class TargetsContext (IProjectContext):
+ 
+-	_icon = Pixbuf (&quot;images/target.png&quot;)
++	_icon = Pixbuf (Globals.Resources, &quot;target.png&quot;)
+ 	public Icon as Gdk.Pixbuf:
+ 		get:
+ 			return _icon
+
+Modified: SimpleP/trunk/src/Globals.boo
+===================================================================
+--- SimpleP/trunk/src/Globals.boo	2005-04-04 21:19:09 UTC (rev 375)
++++ SimpleP/trunk/src/Globals.boo	2005-04-04 22:10:30 UTC (rev 376)
+@@ -9,9 +9,11 @@
+ */
+ 
+ namespace SimpleP
++import System.Reflection
+ 
+ class Globals:
+ 
+ 	public static SourceExtensions = [&quot;.boo&quot;, &quot;.cs&quot;, &quot;.java&quot;, &quot;.c&quot;, &quot;.cpp&quot;, &quot;.py&quot;, &quot;.pl&quot;, &quot;.vb&quot;, &quot;.php&quot;, &quot;.rb&quot;]
+ 	public static DataExtensions = [&quot;.xml&quot;]
+ 	public static UIExtensions = [&quot;.glade&quot;]
++	public final static Resources = Assembly.Load (&quot;Resources&quot;)
+
+Modified: SimpleP/trunk/src/MainWindow.boo
+===================================================================
+--- SimpleP/trunk/src/MainWindow.boo	2005-04-04 21:19:09 UTC (rev 375)
++++ SimpleP/trunk/src/MainWindow.boo	2005-04-04 22:10:30 UTC (rev 376)
+@@ -35,14 +35,14 @@
+ 
+ 	def constructor ():
+ 		super (&quot;SimpleP&quot;)
+-		gxml = XML (&quot;simplep.glade&quot;, &quot;projectManagerWindow&quot;, null)
++		gxml = XML (Globals.Resources, &quot;simplep.glade&quot;, &quot;projectManagerWindow&quot;, null)
+ 		gxml.Autoconnect (self)
+ 		self.Raw = gxml[&quot;projectManagerWindow&quot;].Raw
+ 		Init ()
+ 	
+ 	private def Init ():
+ 		DeleteEvent += Application.Quit
+-		Icon = Gdk.Pixbuf (&quot;images/SimpleP-icon-gears.png&quot;)
++		Icon = Gdk.Pixbuf (Globals.Resources,&quot;SimpleP-icon-gears.png&quot;)
+ 
+ 		SetupProjectView ()
+ 		Services.Statusbar.MessagePushed += MessagePushed
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000088.html">[Mspace-checkins] r375 - in ComponentModel/trunk: ComponentTest ComponentTest/src ComponentTest/src/Components/MainComponent ComponentTest/src/Components/MainComponent/Bo ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exception src src/ComponentModel.Container src/ComponentModel.Container.Dao
+</A></li>
+	<LI>Next message: <A HREF="000090.html">[Mspace-checkins] r377 - scripts
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#89">[ date ]</a>
+              <a href="thread.html#89">[ thread ]</a>
+              <a href="subject.html#89">[ subject ]</a>
+              <a href="author.html#89">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

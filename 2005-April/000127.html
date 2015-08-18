@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r414 - Red.ProjectManager/trunk
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r414%20-%20Red.ProjectManager/trunk&In-Reply-To=%3C200504072222.j37MMV03013203%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000126.html">
+   <LINK REL="Next"  HREF="000128.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r414 - Red.ProjectManager/trunk</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r414%20-%20Red.ProjectManager/trunk&In-Reply-To=%3C200504072222.j37MMV03013203%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r414 - Red.ProjectManager/trunk">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Fri Apr  8 00:22:31 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000126.html">[Mspace-checkins] r413 - SimpleP/trunk
+</A></li>
+        <LI>Next message: <A HREF="000128.html">[Mspace-checkins] r415 - in ComponentModel/trunk: ComponentTest ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions ComponentTest/src/Components/Saludator/Form src src/ComponentModel.VO
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#127">[ date ]</a>
+              <a href="thread.html#127">[ thread ]</a>
+              <a href="subject.html#127">[ subject ]</a>
+              <a href="author.html#127">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-08 00:22:28 +0200 (Fri, 08 Apr 2005)
+New Revision: 414
+
+Modified:
+   Red.ProjectManager/trunk/ChangeLog
+   Red.ProjectManager/trunk/default.build
+Log:
+
+	* default.build: Do not delete the build dir, only its contents
+
+
+
+Modified: Red.ProjectManager/trunk/ChangeLog
+===================================================================
+--- Red.ProjectManager/trunk/ChangeLog	2005-04-07 22:20:01 UTC (rev 413)
++++ Red.ProjectManager/trunk/ChangeLog	2005-04-07 22:22:28 UTC (rev 414)
+@@ -1,3 +1,7 @@
++2005-04-08  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
++	* default.build: Do not delete the build dir, only its contents
++
+ 2005-04-05  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
+ 	* Makefile: Not needed anymore
+
+Modified: Red.ProjectManager/trunk/default.build
+===================================================================
+--- Red.ProjectManager/trunk/default.build	2005-04-07 22:20:01 UTC (rev 413)
++++ Red.ProjectManager/trunk/default.build	2005-04-07 22:22:28 UTC (rev 414)
+@@ -24,7 +24,11 @@
+ 
+     &lt;!-- Elimina los ficheros existentes en bin y en doc --&gt;
+     &lt;target name=&quot;clean&quot;&gt;
+-        &lt;delete dir=&quot;${bindir}&quot; if=&quot;${directory::exists(bindir)}&quot; failonerror=&quot;false&quot;/&gt; 
++        &lt;delete failonerror=&quot;false&quot;&gt;
++			&lt;fileset&gt;
++				&lt;include name=&quot;build/*&quot;/&gt;
++			&lt;/fileset&gt;
++		&lt;/delete&gt;
+         &lt;tstamp/&gt;
+     &lt;/target&gt;
+ 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000126.html">[Mspace-checkins] r413 - SimpleP/trunk
+</A></li>
+	<LI>Next message: <A HREF="000128.html">[Mspace-checkins] r415 - in ComponentModel/trunk: ComponentTest ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions ComponentTest/src/Components/Saludator/Form src src/ComponentModel.VO
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#127">[ date ]</a>
+              <a href="thread.html#127">[ thread ]</a>
+              <a href="subject.html#127">[ subject ]</a>
+              <a href="author.html#127">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

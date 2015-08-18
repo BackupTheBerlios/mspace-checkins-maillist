@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r566 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Resources Resources/Templates
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r566%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20Bo%20Resources%20Resources/Templates&In-Reply-To=%3C200510301423.j9UENu39000208%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000278.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r566 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Resources Resources/Templates</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r566%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20Bo%20Resources%20Resources/Templates&In-Reply-To=%3C200510301423.j9UENu39000208%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r566 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Resources Resources/Templates">nestor at berlios.de
+       </A><BR>
+    <I>Sun Oct 30 15:23:56 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000278.html">[Mspace-checkins] r565 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Dto Forms Resources Resources/Templates
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#279">[ date ]</a>
+              <a href="thread.html#279">[ thread ]</a>
+              <a href="subject.html#279">[ subject ]</a>
+              <a href="author.html#279">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-10-30 15:23:55 +0100 (Sun, 30 Oct 2005)
+New Revision: 566
+
+Modified:
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/BusinessObject.template
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/MethodBody.template
+Log:
+Bugfixes for ${prefix} namespace.
+
+
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs	2005-10-29 13:46:21 UTC (rev 565)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs	2005-10-30 14:23:55 UTC (rev 566)
+@@ -161,7 +161,20 @@
+                     methodStringBuilder.Remove (methodStringBuilder.Length -2, 2);
+                 stringBuilder = stringBuilder.Replace (TagValuesDTO.Parameters, methodStringBuilder.ToString ());
+                 //Attributes.
++                //Set up prefix
++                
++                if (preferencesDTO.PrefixNamespace.Length != 0) {
++                    //Lo setear&#225; y a&#241;adir&#225; un punto.
++                    StringBuilder prefixBuilder = new StringBuilder (preferencesDTO.PrefixNamespace);
++                    prefixBuilder = prefixBuilder.Append (&quot;.&quot;);
++                    stringBuilder = stringBuilder.Replace (TagValuesDTO.Prefix, prefixBuilder.ToString ());
++                }
++                else {
++                    //No lo seteara el prefix namespace
++                    stringBuilder = stringBuilder.Replace (TagValuesDTO.Prefix, preferencesDTO.PrefixNamespace);
++                } 
+                 stringBuilder = stringBuilder.Replace (TagValuesDTO.ComponentName, componentSettingsDTO.ComponentName);
++            
+                 stringBuilder = stringBuilder.Replace (TagValuesDTO.ViewName, methodDTO.ViewToResponse);
+                 stringBuilder = stringBuilder.Replace (TagValuesDTO.ResponseName, methodDTO.ResponseMethod);
+             }
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak	2005-10-29 13:46:21 UTC (rev 565)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak	2005-10-30 14:23:55 UTC (rev 566)
+@@ -1356,6 +1356,7 @@
+ 	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+ 	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	      &lt;signal name=&quot;clicked&quot; handler=&quot;OnBrowseButtonClicked&quot; last_modification_time=&quot;Sat, 29 Oct 2005 13:16:19 GMT&quot;/&gt;
+ 
+ 	      &lt;child&gt;
+ 		&lt;widget class=&quot;GtkAlignment&quot; id=&quot;alignment1&quot;&gt;
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/BusinessObject.template
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/BusinessObject.template	2005-10-29 13:46:21 UTC (rev 565)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/BusinessObject.template	2005-10-30 14:23:55 UTC (rev 566)
+@@ -7,7 +7,7 @@
+ using ComponentModel;
+ 
+ namespace ${prefix}${component_name}.Bo {
+-    [Component (&quot;${component_name}&quot;, &quot;${component_name}.Exceptions.${exception_manager_class_name}&quot;)]
++    [Component (&quot;${component_name}&quot;, &quot;${prefix}${component_name}.Exceptions.${exception_manager_class_name}&quot;)]
+     public sealed class ${component_name}ComponentModel : DefaultComponentModel {
+ ${body} 
+     }
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/MethodBody.template
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/MethodBody.template	2005-10-29 13:46:21 UTC (rev 565)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/MethodBody.template	2005-10-30 14:23:55 UTC (rev 566)
+@@ -1,3 +1,3 @@
+-        [ComponentMethod (&quot;${component_name}.Forms.${view_name}&quot;, &quot;${response_name}&quot;)]
++        [ComponentMethod (&quot;${prefix}${component_name}.Forms.${view_name}&quot;, &quot;${response_name}&quot;)]
+         public ${return_type} ${method_name} (${parameters}) {
+         }
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000278.html">[Mspace-checkins] r565 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Dto Forms Resources Resources/Templates
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#279">[ date ]</a>
+              <a href="thread.html#279">[ thread ]</a>
+              <a href="subject.html#279">[ subject ]</a>
+              <a href="author.html#279">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

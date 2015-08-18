@@ -1,0 +1,18 @@
+From luis at mail.berlios.de  Wed Mar  7 21:31:56 2007
+From: luis at mail.berlios.de (luis at mail.berlios.de)
+Date: Wed, 7 Mar 2007 21:31:56 +0100
+Subject: [Mspace-checkins] r595 - /
+Message-ID: <200703072031.l27KVux2027963@sheep.berlios.de>
+
+Author: luis
+Date: 2007-03-07 21:31:27 +0100 (Wed, 07 Mar 2007)
+New Revision: 595
+
+Added:
+   perl_ha/
+Log:
+High Availabilty scripts in Perl
+
+
+
+

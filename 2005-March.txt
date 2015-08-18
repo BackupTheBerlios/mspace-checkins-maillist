@@ -1,0 +1,486 @@
+From nestor at sheep.berlios.de  Tue Mar 22 11:56:52 2005
+From: nestor at sheep.berlios.de (Néstor Salceda at BerliOS)
+Date: Tue, 22 Mar 2005 11:56:52 +0100
+Subject: [Mspace-checkins] r339 - / mvim/trunk/doc mvim/trunk/src/Vim.Test vfs
+Message-ID: <200503221056.j2MAuqTm014338@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-03-22 11:56:50 +0100 (Tue, 22 Mar 2005)
+New Revision: 339
+
+Added:
+   vfs/
+   vfs/branches/
+   vfs/releases/
+   vfs/trunk/
+Modified:
+   mvim/trunk/doc/org.vim.tree
+   mvim/trunk/doc/org.vim.zip
+   mvim/trunk/src/Vim.Test/VimBufferStrategyTest.cs
+Log:
+Added svn tree for VFS.
+
+
+Modified: mvim/trunk/doc/org.vim.tree
+===================================================================
+(Binary files differ)
+
+Modified: mvim/trunk/doc/org.vim.zip
+===================================================================
+(Binary files differ)
+
+Modified: mvim/trunk/src/Vim.Test/VimBufferStrategyTest.cs
+===================================================================
+--- mvim/trunk/src/Vim.Test/VimBufferStrategyTest.cs	2005-02-17 09:45:25 UTC (rev 338)
++++ mvim/trunk/src/Vim.Test/VimBufferStrategyTest.cs	2005-03-22 10:56:50 UTC (rev 339)
+@@ -8,10 +8,13 @@
+         IVimBufferStrategy vimBufferStrategy;
+         string text;
+         
++        public VimBufferStrategyTest () {
++        }
++        
+         [SetUp]
+         public void Init () {
+             vimBufferStrategy = new GapVimBufferStrategy ();
+-            text = "TestingBuffer";
++            text = "TestingBufferALot of Large AND extrangeaseras \t yeahhhh \n";
+             vimBufferStrategy.SetContent(text);
+         }
+         [TearDown]    
+@@ -49,6 +52,46 @@
+             TestLength ();
+             TestItemAt ();
+         }
+-            
++
++        [Test]
++        public void TestInsert2 () {
++            string textInserted = "TexToINsertado\n";
++            vimBufferStrategy.Insert (vimBufferStrategy.Length / 2, textInserted);
++            text = text.Insert (text.Length / 2, textInserted);
++            TestLength ();
++            TestItemAt ();
++        }
++       
++        [Test]
++        public void TestRemove () {
++            int charsToRemove = 4;
++            int oldLength = vimBufferStrategy.Length;
++            vimBufferStrategy.Remove (0, charsToRemove);
++            Assert.AreEqual (vimBufferStrategy.Length, oldLength - charsToRemove );
++            text = text.Remove (0, charsToRemove);
++            TestLength ();
++            TestItemAt ();
++        }
++
++        [Test]
++        public void TestReplace () {
++            string textForReplace = "REEMPLAZANDO !!";
++            int charsToReplace = 4;
++            string auxString = "";
++            vimBufferStrategy.Replace (0, charsToReplace, textForReplace);
++            auxString = text.Substring (0, charsToReplace);
++            text = text.Replace (auxString, textForReplace);
++            TestLength ();
++            TestItemAt ();
++        }
++
++        [Test]
++        public void TextGetText () {
++            string auxString = vimBufferStrategy.GetText (0,5);
++            string auxString1 = text.Substring (0,5);
++            Assert.AreEqual (auxString.Length, auxString1.Length);
++            for (int i = 0; i < auxString.Length; i++) 
++                Assert.AreEqual (auxString[i], auxString1[i]);
++        }
+     }
+ }
+
+
+
+From nestor at sheep.berlios.de  Thu Mar 31 03:15:19 2005
+From: nestor at sheep.berlios.de (Néstor Salceda at BerliOS)
+Date: Thu, 31 Mar 2005 03:15:19 +0200
+Subject: [Mspace-checkins] r340 - scripts
+Message-ID: <200503310115.j2V1FJpe029102@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-03-31 03:15:12 +0200 (Thu, 31 Mar 2005)
+New Revision: 340
+
+Added:
+   scripts/nant.xml
+Log:
+Nant base template for Monkey Space Components.
+
+
+
+Added: scripts/nant.xml
+===================================================================
+--- scripts/nant.xml	2005-03-22 10:56:50 UTC (rev 339)
++++ scripts/nant.xml	2005-03-31 01:15:12 UTC (rev 340)
+@@ -0,0 +1,23 @@
++<?xml version="1.0" encoding="utf-8"?>
++
++<!--
++    (c) N?stor Salceda & Sergio Rubio  (Monkey Space)
++    File: 
++        nant.xml
++    Description:
++        base nant file for automate basic task deployment.
++
++      INSERTAR LA WEB DE MONKEY SPACE Y TAL  
++-->
++
++<project basedir="." default="all" name="Monkey Space --">
++    <!--
++        PENSAR LAS PROPIEDADES Y PONERLAS
++    -->
++
++    <target name="clean">
++    </target>
++
++    <target name="all">
++    </target>
++</project>
+
+
+
+From nestor at sheep.berlios.de  Thu Mar 31 19:30:29 2005
+From: nestor at sheep.berlios.de (Néstor Salceda at BerliOS)
+Date: Thu, 31 Mar 2005 19:30:29 +0200
+Subject: [Mspace-checkins] r341 - scripts
+Message-ID: <200503311730.j2VHUThR021247@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-03-31 19:30:07 +0200 (Thu, 31 Mar 2005)
+New Revision: 341
+
+Modified:
+   scripts/nant.xml
+Log:
+Added clean task and generate skeleton.
+
+
+
+Modified: scripts/nant.xml
+===================================================================
+--- scripts/nant.xml	2005-03-31 01:15:12 UTC (rev 340)
++++ scripts/nant.xml	2005-03-31 17:30:07 UTC (rev 341)
+@@ -11,13 +11,81 @@
+ -->
+ 
+ <project basedir="." default="all" name="Monkey Space --">
++<!-- Properties -->
+     <!--
+         PENSAR LAS PROPIEDADES Y PONERLAS
++        DEBER?N SER AS? COMO VARIABLES QUE SOLO HAYA QUE CAMBIAR
++        PARA ADAPTAR EL COMPONENTE.  EL RESTO DE CONFIGURACI?N Y COMPILACI?N
++        SER? IGUAL.
+     -->
++    
++    <!--Configuracion (Igual ser?a recomendable que coincidieran con el
++    manifiesto del ensamblado)-->
++    <property name="version" value="0.1"/>
++    <property name="description" value="A little description"/>
++    <property name="component_name" value="MSpace -- "/> 
++    
++    <!--Localizacion de dependencias -->
++    <property name="src" value="src"/>
++    <property name="lib" value="lib"/>
++    <property name="doc" value="doc"/>
++    <property name="resources" value="resources"/>
++        <!--Aqui se guardar?n los ejecutables generados-->
++    <property name="bin" value="bin"/>
+ 
++<!-- Targets -->
++
++    <!-- Elimina los ficheros existentes en bin y en doc -->
+     <target name="clean">
++        <delete dir="${bin}" if="${directory::exists(bin)}" failonerror="false"/> 
++        <delete dir="${doc}" if="${directory::exists(doc)}" failonerror="false"/> 
++        <tstamp/>
+     </target>
+ 
+-    <target name="all">
++    <!-- Crea una nueva jerarquia con bin y doc para la compilaci?n -->
++    <target name="create-skeleton" depends="clean">
++        <mkdir dir="${bin}" />
++        <mkdir dir="${doc}" />
+     </target>
++    
++    <!-- Compila el componente y lo guarda en bin -->
++    <target name="all" depends="create-skeleton">
++        <tstamp/>
++    </target>
++
++    <!-- Ejecuta el componente -->
++    <target name="run" depends="all">
++        <tstamp/>
++    </target>
++
++    <!-- Documenta el componente -->
++    <target name="doc" depends="all">
++        <tstamp/>
++    </target>
++
++    <!-- Ayuda sobre este fichero -->
++    <target name="usage">
++        <echo>
++            Monkey Space NAnt buildfile for component 
++            ${component_name} version ${version}.
++
++            Component's Description:
++                ${description}
++
++            Available task:
++                
++                -all
++                    Compile, and creates binary files.
++
++                -doc
++                    Creates documentation.  ?Monodoc or ndoc?
++
++                -clean
++                    Delete component binaries.
++                
++                -usage
++                    Show this help.
++        </echo>
++        <tstamp/>
++    </target>
+ </project>
+
+
+
+From nestor at sheep.berlios.de  Thu Mar 31 21:45:10 2005
+From: nestor at sheep.berlios.de (Néstor Salceda at BerliOS)
+Date: Thu, 31 Mar 2005 21:45:10 +0200
+Subject: [Mspace-checkins] r342 - / CodeConventions CodeConventions/AppExample CodeConventions/AppExample/src CodeConventions/AppExample/src/AppExample CodeConventions/AppExample/src/AppExample.Components CodeConventions/AppExample/src/AppExample.Components/MainComponent CodeConventions/AppExample/src/AppExample.Components/MainComponent/Bo CodeConventions/AppExample/src/AppExample.Components/Saludator CodeConventions/AppExample/src/AppExample.Components/Saludator/Bo
+Message-ID: <200503311945.j2VJjAS3004004@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-03-31 21:45:09 +0200 (Thu, 31 Mar 2005)
+New Revision: 342
+
+Added:
+   CodeConventions/
+   CodeConventions/AppExample/
+   CodeConventions/AppExample/AppExample.build
+   CodeConventions/AppExample/bin/
+   CodeConventions/AppExample/doc/
+   CodeConventions/AppExample/lib/
+   CodeConventions/AppExample/resources/
+   CodeConventions/AppExample/src/
+   CodeConventions/AppExample/src/AppExample.Components/
+   CodeConventions/AppExample/src/AppExample.Components/MainComponent/
+   CodeConventions/AppExample/src/AppExample.Components/MainComponent/Bo/
+   CodeConventions/AppExample/src/AppExample.Components/MainComponent/Bo/MainComponentComponentModel.cs
+   CodeConventions/AppExample/src/AppExample.Components/MainComponent/Dao/
+   CodeConventions/AppExample/src/AppExample.Components/MainComponent/Form/
+   CodeConventions/AppExample/src/AppExample.Components/MainComponent/Interfaces/
+   CodeConventions/AppExample/src/AppExample.Components/MainComponent/Resources/
+   CodeConventions/AppExample/src/AppExample.Components/Saludator/
+   CodeConventions/AppExample/src/AppExample.Components/Saludator/Bo/
+   CodeConventions/AppExample/src/AppExample.Components/Saludator/Bo/SaludatorComponentModel.cs
+   CodeConventions/AppExample/src/AppExample.Components/Saludator/Dao/
+   CodeConventions/AppExample/src/AppExample.Components/Saludator/Exception/
+   CodeConventions/AppExample/src/AppExample.Components/Saludator/Factory/
+   CodeConventions/AppExample/src/AppExample.Components/Saludator/Form/
+   CodeConventions/AppExample/src/AppExample.Components/Saludator/Intefaces/
+   CodeConventions/AppExample/src/AppExample.Components/Saludator/Resources/
+   CodeConventions/AppExample/src/AppExample.Components/Saludator/VO/
+   CodeConventions/AppExample/src/AppExample/
+   CodeConventions/AppExample/src/AppExample/LauncherAppExample.cs
+Log:
+Added Example app.
+
+
+
+Added: CodeConventions/AppExample/AppExample.build
+===================================================================
+--- CodeConventions/AppExample/AppExample.build	2005-03-31 17:30:07 UTC (rev 341)
++++ CodeConventions/AppExample/AppExample.build	2005-03-31 19:45:09 UTC (rev 342)
+@@ -0,0 +1,96 @@
++<?xml version="1.0" encoding="utf-8"?>
++
++<!--
++    (c) N?stor Salceda & Sergio Rubio  (Monkey Space)
++    File: 
++        nant.xml
++    Description:
++        base nant file for automate basic task deployment.
++
++      INSERTAR LA WEB DE MONKEY SPACE Y TAL  
++-->
++
++<project basedir="." default="all" name="Monkey Space --">
++<!-- Properties -->
++    <!--
++        PENSAR LAS PROPIEDADES Y PONERLAS
++        DEBER?N SER AS? COMO VARIABLES QUE SOLO HAYA QUE CAMBIAR
++        PARA ADAPTAR EL COMPONENTE.  EL RESTO DE CONFIGURACI?N Y COMPILACI?N
++        SER? IGUAL.
++    -->
++    
++    <!--Configuracion (Igual ser?a recomendable que coincidieran con el
++    manifiesto del ensamblado)-->
++    <property name="version" value="0.1"/>
++    <property name="description" value="A little description"/>
++    <property name="component_name" value="MSpace -- "/> 
++    
++    <!--Localizacion de dependencias -->
++    <property name="src" value="src"/>
++    <property name="lib" value="lib"/>
++    <property name="doc" value="doc"/>
++    <property name="resources" value="resources"/>
++        <!--Aqui se guardar?n los ejecutables generados-->
++    <property name="bin" value="bin"/>
++
++<!-- Targets -->
++
++    <!-- Elimina los ficheros existentes en bin y en doc -->
++    <target name="clean">
++        <delete dir="${bin}" if="${directory::exists(bin)}" failonerror="false"/> 
++        <delete dir="${doc}" if="${directory::exists(doc)}" failonerror="false"/> 
++        <tstamp/>
++    </target>
++
++    <!-- Crea una nueva jerarquia con bin y doc para la compilaci?n -->
++    <target name="create-skeleton" depends="clean">
++        <mkdir dir="${bin}" />
++        <mkdir dir="${doc}" />
++    </target>
++    
++    <!-- Compila el componente y lo guarda en bin -->
++    <target name="build" depends="create-skeleton">
++        <tstamp/>
++    </target>
++
++    <!-- Ejecuta el componente -->
++    <target name="run" depends="build">
++        <tstamp/>
++    </target>
++
++    <!-- Por defecto compilar? el componente y escribir? la documentaci?n-->
++    <target name="all" depends="build,doc">
++        <tstamp/>
++    </target>
++
++    <!-- Documenta el componente -->
++    <target name="doc" depends="build">
++        <tstamp/>
++    </target>
++
++    <!-- Ayuda sobre este fichero -->
++    <target name="usage">
++        <echo>
++            Monkey Space NAnt buildfile for component 
++            ${component_name} version ${version}.
++
++            Component's Description:
++                ${description}
++
++            Available task:
++                
++                -all
++                    Compile, and creates binary files.
++
++                -doc
++                    Creates documentation.  ?Monodoc or ndoc?
++
++                -clean
++                    Delete component binaries.
++                
++                -usage
++                    Show this help.
++        </echo>
++        <tstamp/>
++    </target>
++</project>
+
+Added: CodeConventions/AppExample/src/AppExample/LauncherAppExample.cs
+===================================================================
+--- CodeConventions/AppExample/src/AppExample/LauncherAppExample.cs	2005-03-31 17:30:07 UTC (rev 341)
++++ CodeConventions/AppExample/src/AppExample/LauncherAppExample.cs	2005-03-31 19:45:09 UTC (rev 342)
+@@ -0,0 +1,16 @@
++using System;
++//Esto tendr? uno menos de entrada o incluso no debe ser necesario para el
++//desacople entre componentes.
++//
++//Falta tambi?n la instancia ?nica del componente.
++using AppExample.Components.MainComponent.Bo;
++
++namespace AppExample {
++            //OR AppExample
++    
++    public class Launcher {
++        public static void Main () {
++            new MainComponentComponentHandler ().InitApp ();
++        }
++    }
++}
+
+Added: CodeConventions/AppExample/src/AppExample.Components/MainComponent/Bo/MainComponentComponentModel.cs
+===================================================================
+--- CodeConventions/AppExample/src/AppExample.Components/MainComponent/Bo/MainComponentComponentModel.cs	2005-03-31 17:30:07 UTC (rev 341)
++++ CodeConventions/AppExample/src/AppExample.Components/MainComponent/Bo/MainComponentComponentModel.cs	2005-03-31 19:45:09 UTC (rev 342)
+@@ -0,0 +1,15 @@
++using System;
++
++using AppExample.Components.Saludator.Bo;
++
++namespace AppExample.Components.MainComponent.Bo {
++    public class MainComponentComponentModel {
++        public MainComponentComponentModel () {
++        }
++
++        //Use case initApp
++        public void InitApp () {
++            new SaludatorComponentModel ().Saluda ();
++        }
++    }
++}
+
+Added: CodeConventions/AppExample/src/AppExample.Components/Saludator/Bo/SaludatorComponentModel.cs
+===================================================================
+--- CodeConventions/AppExample/src/AppExample.Components/Saludator/Bo/SaludatorComponentModel.cs	2005-03-31 17:30:07 UTC (rev 341)
++++ CodeConventions/AppExample/src/AppExample.Components/Saludator/Bo/SaludatorComponentModel.cs	2005-03-31 19:45:09 UTC (rev 342)
+@@ -0,0 +1,13 @@
++using System;
++
++namespace AppExample.Components.Saludator.Bo {
++    public class SaludatorComponentModel //:Hypotetic Component Model{
++        public SaludatorComponentModel () {
++        }
++
++        //Use case of BO
++        public void Saluda () {
++            Console.WriteLine ("Hola !!");
++        }
++    }
++}
+
+
+
+From nestor at sheep.berlios.de  Thu Mar 31 21:53:55 2005
+From: nestor at sheep.berlios.de (Néstor Salceda at BerliOS)
+Date: Thu, 31 Mar 2005 21:53:55 +0200
+Subject: [Mspace-checkins] r343 - in CodeConventions/AppExample: . lib
+Message-ID: <200503311953.j2VJrtn7004489@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-03-31 21:53:54 +0200 (Thu, 31 Mar 2005)
+New Revision: 343
+
+Added:
+   CodeConventions/AppExample/lib/components/
+Removed:
+   CodeConventions/AppExample/bin/
+   CodeConventions/AppExample/doc/
+Log:
+
+
+
+

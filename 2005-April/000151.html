@@ -1,0 +1,968 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r438 - / Red.Components Red.Components/trunk Red.Components/trunk/Project Red.Components/trunk/Project/Base Red.Components/trunk/Project/Interface Red.Components/trunk/ProjectManager Red.Components/trunk/bin Red.Components/trunk/ext
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r438%20-%20/%20Red.Components%20Red.Components/trunk%20Red.Components/trunk/Project%20Red.Components/trunk/Project/Base%20Red.Components/trunk/Project/Interface%20Red.Components/trunk/ProjectManager%20Red.Components/trunk/bin%20Red.Components/trunk/ext&In-Reply-To=%3C200504152124.j3FLOUu3031942%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000150.html">
+   <LINK REL="Next"  HREF="000152.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r438 - / Red.Components Red.Components/trunk Red.Components/trunk/Project Red.Components/trunk/Project/Base Red.Components/trunk/Project/Interface Red.Components/trunk/ProjectManager Red.Components/trunk/bin Red.Components/trunk/ext</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r438%20-%20/%20Red.Components%20Red.Components/trunk%20Red.Components/trunk/Project%20Red.Components/trunk/Project/Base%20Red.Components/trunk/Project/Interface%20Red.Components/trunk/ProjectManager%20Red.Components/trunk/bin%20Red.Components/trunk/ext&In-Reply-To=%3C200504152124.j3FLOUu3031942%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r438 - / Red.Components Red.Components/trunk Red.Components/trunk/Project Red.Components/trunk/Project/Base Red.Components/trunk/Project/Interface Red.Components/trunk/ProjectManager Red.Components/trunk/bin Red.Components/trunk/ext">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Fri Apr 15 23:24:30 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000150.html">[Mspace-checkins] r437 - in Red.ProjectManager/trunk: . src src/Interface src/Red.ProjectManager
+</A></li>
+        <LI>Next message: <A HREF="000152.html">[Mspace-checkins] r439 - /
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#151">[ date ]</a>
+              <a href="thread.html#151">[ thread ]</a>
+              <a href="subject.html#151">[ subject ]</a>
+              <a href="author.html#151">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-15 23:24:28 +0200 (Fri, 15 Apr 2005)
+New Revision: 438
+
+Added:
+   Red.Components/
+   Red.Components/trunk/
+   Red.Components/trunk/ACKNOWLEDGEMENTS
+   Red.Components/trunk/AUTHORS
+   Red.Components/trunk/ChangeLog
+   Red.Components/trunk/LICENSE
+   Red.Components/trunk/Project/
+   Red.Components/trunk/Project/Base/
+   Red.Components/trunk/Project/Base/Project.boo
+   Red.Components/trunk/Project/Base/ProjectFile.boo
+   Red.Components/trunk/Project/Base/ProjectNavigator.boo
+   Red.Components/trunk/Project/Base/ProjectNode.boo
+   Red.Components/trunk/Project/Interface/
+   Red.Components/trunk/Project/Interface/IProject.boo
+   Red.Components/trunk/Project/Interface/IProjectEventListener.boo
+   Red.Components/trunk/Project/Interface/IProjectFile.boo
+   Red.Components/trunk/Project/Interface/IProjectNavigator.boo
+   Red.Components/trunk/ProjectManager/
+   Red.Components/trunk/ProjectManager/Base/
+   Red.Components/trunk/ProjectManager/Interface/
+   Red.Components/trunk/README
+   Red.Components/trunk/bin/
+   Red.Components/trunk/bin/Red.Project.Default.dll
+   Red.Components/trunk/bin/Red.Project.dll
+   Red.Components/trunk/default.build
+   Red.Components/trunk/doc/
+   Red.Components/trunk/ext/
+   Red.Components/trunk/ext/Red.dll
+Log:
+* Added a new directory with the components
+* Red.Project component almost done
+
+
+
+Added: Red.Components/trunk/ACKNOWLEDGEMENTS
+===================================================================
+
+Added: Red.Components/trunk/AUTHORS
+===================================================================
+--- Red.Components/trunk/AUTHORS	2005-04-15 12:18:54 UTC (rev 437)
++++ Red.Components/trunk/AUTHORS	2005-04-15 21:24:28 UTC (rev 438)
+@@ -0,0 +1 @@
++Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+
+Added: Red.Components/trunk/ChangeLog
+===================================================================
+
+Added: Red.Components/trunk/LICENSE
+===================================================================
+--- Red.Components/trunk/LICENSE	2005-04-15 12:18:54 UTC (rev 437)
++++ Red.Components/trunk/LICENSE	2005-04-15 21:24:28 UTC (rev 438)
+@@ -0,0 +1,9 @@
++MIT License
++
++Copyright (c) 2005 Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
++Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Added: Red.Components/trunk/Project/Base/Project.boo
+===================================================================
+--- Red.Components/trunk/Project/Base/Project.boo	2005-04-15 12:18:54 UTC (rev 437)
++++ Red.Components/trunk/Project/Base/Project.boo	2005-04-15 21:24:28 UTC (rev 438)
+@@ -0,0 +1,291 @@
++namespace Red.ProjectManager
++
++import System
++import System.Xml
++import System.IO
++import System.Collections
++import Red.IO
++
++class Project (IProject):
++
++	fileCollection as Hashtable
++	_folderCollection = []
++
++	_watcher as FileSystemWatcher
++	_beginInit = false
++
++	_name as string
++	public Name as string:
++		get:
++			return _name
++
++	def constructor ([required]name as string, [required]location as string):
++		_location = location
++		_name = name
++		Init ()
++	
++	private def Init ():
++		file = Path.Combine (Location, (Name + &quot;.simplep&quot;).ToLower ())
++		if not File.Exists (file):
++			stream = File.Create (file)
++			stream.Close ()
++		fileCollection = Hashtable ()
++		_projectFile = file
++		_navigator = ProjectNavigator (self)
++
++	_navigator as ProjectNavigator
++	public Navigator as IProjectNavigator:
++		get:
++			return _navigator
++
++	_projectFile as string
++	public ProjectFile as string:
++		get:
++			assert File.Exists (_projectFile)
++			return _projectFile
++		
++	_location as string
++	public Location as string:
++		get:
++			return _location
++		set:
++			assert value != null
++			assert Directory.Exists (value)
++			if value[-1:] == Path.DirectorySeparatorChar.ToString ():
++				_location = value[:-1]
++			else:
++				_location = value
++
++	public Files as ICollection:
++		get:
++			return fileCollection.Values
++	
++	public Folders as ICollection:
++		get:
++			return _folderCollection
++
++	def Contains ([required]fileName as string) as bool:
++		return fileCollection.Contains (fileName)
++
++	//Move this out of here
++	def GetFilesFromSubdir ([required]subdir as string) as IList:
++		dir = Path.Combine (Location, subdir)
++		if dir[-1:] == Path.DirectorySeparatorChar.ToString ():
++			dir = dir[:-1]
++		
++		files as IList = []
++		for file as IProjectFile in Files:
++			dirname = System.IO.Path.GetDirectoryName (file.FullName)
++			files.Add (file) if dirname == dir
++		return files
++
++	//Move this out of here
++	def GetFilesWithExtension (extensions as IList) as IList:
++		files as IList = []
++		for file as IProjectFile in fileCollection.Values:
++			if Path.GetExtension (file.Name) in extensions:
++				files.Add (file)
++		return files
++	
++	//Move this out of here
++	def GetFilesWithoutExtension (extensions as IList) as IList:
++		files as IList = []
++		for file as IProjectFile in fileCollection.Values:
++			if not (Path.GetExtension (file.Name) in extensions):
++				files.Add (file)
++		return files
++
++	def Clear ():
++		fileCollection.Clear ()
++		Cleared (self, EventArgs.Empty) if Cleared
++		ContentsChanged (self, EventArgs.Empty) if ContentsChanged
++		Save ()
++
++	def NewFile ([required]relPath as string) as IProjectFile:
++		fullPath = System.IO.Path.Combine (Location, relPath)
++		if File.Exists (fullPath):
++			raise ArgumentException (&quot;File already exists&quot;)
++		stream as FileStream = File.Create (fullPath)
++		stream.Close ()
++		file as IProjectFile = Red.ProjectManager.ProjectFile(fullPath)
++		AddFile (file)
++		return file
++
++	def AddFile ([required]file as IProjectFile):
++		if not File.Exists (file.FullName):
++			raise FileNotFoundException (&quot;File does not exist&quot;, file.FullName)
++		fileCollection.Add (file.FullName, file)
++		if not _beginInit:
++			FileAdded (self, FileChangedArgs (file.FullName)) if FileAdded
++			ContentsChanged (self, EventArgs.Empty) if ContentsChanged
++			Save ()
++	
++	def NewFolder ([required]path as string):
++		if not path.StartsWith (Location):
++			raise ArgumentException (&quot;Path is not inside the project tree.&quot;)
++		if Directory.Exists (path) or File.Exists (path):
++			raise IOException (&quot;Cannot create the folder.&quot;)
++		Directory.CreateDirectory (path)
++		_folderCollection.Add (path)
++		Save ()
++			
++
++	def AddFolder ([required]path as string):
++		if not Directory.Exists (path):
++			raise FileNotFoundException (&quot;Folder does not exist&quot;, path)
++		_folderCollection.Add (path)
++		//FIXME Add events for folders
++		#FileAdded (self, FileChangedArgs (file.FullName)) if FileAdded
++		if not _beginInit:
++			ContentsChanged (self, EventArgs.Empty) if ContentsChanged
++			Save ()
++	
++	def ImportMatchingFiles (pattern as regex, discardHidden as bool):
++		BeginInit ()
++		for file as string in FileUtils.GetAllDirectoryFiles (Location, discardHidden):
++			//HACK: Dunno how to ask if a File is a directory
++			if not Directory.Exists (file):
++				if pattern:
++					if file =~ pattern:
++						if not fileCollection.Contains (file):
++							AddFile (Red.ProjectManager.ProjectFile (file))
++				else:
++					if not fileCollection.Contains (file):
++						AddFile (Red.ProjectManager.ProjectFile (file))
++		EndInit ()
++		Save ()
++
++	// Import a list of files that matches the extension list
++	// each extension in the list should not have the dot 
++	// (i.e. .txt is wrong, txt is right)
++	def ImportFiles ([required]extensions as IList, discardHidden as bool):
++		BeginInit ()
++		
++		for file as string in FileUtils.GetAllDirectoryFiles (Location, discardHidden):
++			//HACK: Dunno how to ask if a File is a directory
++			if not Directory.Exists (file):
++				if not fileCollection.Contains (file):
++					//Stript the dot from the extension
++					fname = Path.GetFileName (file)
++					extension = Path.GetExtension (file)[1:]
++					if (extension in extensions) or (fname in extensions):
++						AddFile (Red.ProjectManager.ProjectFile (file)) 
++		EndInit ()
++		Save ()
++		
++	def ImportFiles (discardHidden as bool):
++		ImportMatchingFiles (null, discardHidden)
++
++	def GetEnumerator () as IEnumerator:
++		return fileCollection.Values.GetEnumerator ()
++
++	def RemoveFile ([required]file as string):
++		RemoveFile (file, false)
++	
++	def RemoveFile ([required]file as string, delete as bool):
++	&quot;&quot;&quot; Can raise a IOException
++	
++	&quot;&quot;&quot;
++		if not fileCollection.Contains (file):
++			raise ArgumentException (&quot;No such file in the project.&quot;)
++		fileCollection.Remove (file)
++		if delete:
++			File.Delete (file)
++		FileRemoved (self, FileChangedArgs (file)) if FileRemoved
++		ContentsChanged (self, EventArgs.Empty) if ContentsChanged
++		Save ()
++
++	def RemoveDir ([required]dir as string):
++		RemoveDir (dir, false)
++
++	def RemoveDir ([required]dir as string, delete as bool):
++		files = []
++		for file as ProjectFile in fileCollection.Values:
++			if file.FullName.StartsWith (dir):
++				files.Add (file.FullName)
++
++		for f as string in files:
++			fileCollection.Remove (f)
++			if delete:
++				File.Delete (f)
++
++		if files.Count &gt; 0:
++			ContentsChanged (self, EventArgs.Empty) if ContentsChanged
++		Save ()
++	
++	def BeginInit ():
++		_beginInit = true
++
++	def EndInit ():
++		_beginInit = false
++		ContentsChanged (self, EventArgs.Empty) if ContentsChanged
++		
++
++	def Save ():
++
++		stream = StreamWriter (ProjectFile)
++		writer = XmlTextWriter (stream)
++		writer.Formatting = Formatting.Indented
++		writer.Indentation = 4
++		writer.WriteStartDocument ()
++		writer.WriteStartElement (null, &quot;Project&quot;, null)
++		writer.WriteStartElement (null, &quot;Name&quot;, null)
++		writer.WriteString (Name)
++		writer.WriteEndElement ()
++		writer.WriteStartElement (null, &quot;FileSet&quot;, null)
++		if fileCollection.Count == 0:
++			writer.WriteString (Environment.NewLine)
++		else:
++			for file as ProjectFile in self:
++				writer.WriteStartElement (null, &quot;File&quot;, null)
++				writer.WriteStartElement (null, &quot;Path&quot;, null)
++				writer.WriteString (file.FullName)
++				writer.WriteEndElement ()
++				writer.WriteEndElement ()
++
++		#fileset
++		writer.WriteEndElement ()
++		writer.WriteStartElement (null, &quot;FolderSet&quot;, null)
++		if _folderCollection.Count == 0:
++			writer.WriteString (Environment.NewLine)
++		else:
++			for dir as string in _folderCollection:
++				writer.WriteStartElement (null, &quot;Folder&quot;, null)
++				writer.WriteStartElement (null, &quot;Path&quot;, null)
++				writer.WriteString (dir)
++				writer.WriteEndElement ()
++				writer.WriteEndElement ()
++		#folderset
++		writer.WriteEndElement ()
++		#project
++		writer.WriteEndElement ()
++		writer.WriteEndDocument ()
++		writer.Close ()
++		stream.Close ()
++
++	private event FileAdded as callable (object, FileChangedArgs)
++	private event FileRemoved as callable (object, FileChangedArgs)
++	private event ContentsChanged as callable (object, EventArgs)
++	private event Cleared as callable (object, EventArgs)
++
++	def AddListener ([required]listener as IProjectEventListener,
++				etype as ProjectEventType):
++		if etype == ProjectEventType.FileAdded:
++			FileAdded += listener.OnFileAdded
++		if etype == ProjectEventType.FileRemoved:
++			FileRemoved += listener.OnFileRemoved
++		if etype == ProjectEventType.ContentsChanged:
++			ContentsChanged += listener.OnContentsChanged
++		if etype == ProjectEventType.Cleared:
++			Cleared += listener.OnCleared
++
++	def RemoveListener ([required]listener as IProjectEventListener,
++					etype as ProjectEventType):
++		if etype == ProjectEventType.FileAdded:
++			FileAdded -= listener.OnFileAdded
++		if etype == ProjectEventType.FileRemoved:
++			FileRemoved -= listener.OnFileRemoved
++		if etype == ProjectEventType.ContentsChanged:
++			ContentsChanged -= listener.OnContentsChanged
++		if etype == ProjectEventType.Cleared:
++			Cleared -= listener.OnCleared
+
+Added: Red.Components/trunk/Project/Base/ProjectFile.boo
+===================================================================
+--- Red.Components/trunk/Project/Base/ProjectFile.boo	2005-04-15 12:18:54 UTC (rev 437)
++++ Red.Components/trunk/Project/Base/ProjectFile.boo	2005-04-15 21:24:28 UTC (rev 438)
+@@ -0,0 +1,21 @@
++namespace Red.ProjectManager
++
++import System
++import System.IO
++
++class ProjectFile (IProjectFile):
++
++	_name as string
++	public Name as string:
++		get:
++			return _name
++			
++	_fullName as string
++	public FullName as string:
++		get:
++			return _fullName
++
++	def constructor (fullName as string):
++		assert fullName; assert Path.IsPathRooted (fullName)
++		_fullName = fullName
++		_name = Path.GetFileName (fullName)
+
+Added: Red.Components/trunk/Project/Base/ProjectNavigator.boo
+===================================================================
+--- Red.Components/trunk/Project/Base/ProjectNavigator.boo	2005-04-15 12:18:54 UTC (rev 437)
++++ Red.Components/trunk/Project/Base/ProjectNavigator.boo	2005-04-15 21:24:28 UTC (rev 438)
+@@ -0,0 +1,150 @@
++/*
++	Copyright (c) 2005 Sergio Rubio, &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
++Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++*/
++
++namespace Red.ProjectManager
++
++import System
++import Red.IO from Red
++import System.Collections
++import System.IO
++
++class ProjectNavigator (IProjectNavigator):
++
++	dirs = {}
++	sep = System.IO.Path.DirectorySeparatorChar
++	backHistory = Stack ()
++	forwardHistory = Stack ()
++	_project as Project
++	_root as ProjectNode
++
++	private def constructor ():
++		pass
++
++	internal def constructor ([required]project as Project):
++		_project = project
++		_current = _project.Location
++		_project.ContentsChanged += ProjectContentsChanged
++		Init ()	
++
++	_current as string
++	public CurrentPath as string:
++		get:
++			assert _current != null
++			assert _current.StartsWith (_project.Location)
++			return _current
++	
++	public CurrentSubdirs as IList:
++		get:
++			return GetCurrentNodes ()
++						
++	public CurrentFiles as IList:
++		get:
++			return _project.GetFilesFromSubdir (_current)
++
++	public HasParent as bool:
++		get:
++			return _current != _project.Location
++
++	def MoveUp ():
++		if not HasParent:
++			return
++			
++		backHistory.Push (_current)
++		MoveToSubdir (GetParent (_current))
++
++	public HasNext as bool:
++		get:
++			return forwardHistory.Count &gt; 0
++
++	public HasPrevious as bool:
++		get:
++			return backHistory.Count &gt; 0
++
++	def Next ():
++		if not HasNext:
++			return
++		_current = forwardHistory.Peek () as string
++		backHistory.Push (forwardHistory.Pop)
++
++	def Previous ():
++		if not HasPrevious:
++			return
++		_current = backHistory.Peek () as string
++		forwardHistory.Push (backHistory.Pop)
++		
++	def MoveToSubdir ([required]dir as string):
++		assert dir != string.Empty
++		assert dir.StartsWith (_project.Location)
++		backHistory.Push (_current)
++		_current = dir 
++
++	public Parent as string:
++		get:
++			if not HasParent:
++				return _project.Location
++			return GetParent (_current)
++
++	private def GetParent (path as string) as string:
++		path2 as string
++		if path.EndsWith (sep.ToString ()):
++			path2 = System.IO.Path.GetDirectoryName (path)
++			path2 = System.IO.Path.GetDirectoryName (path2)
++		else:
++			path2 = System.IO.Path.GetDirectoryName (path)
++		return path2
++
++
++	private def Init ():
++		BuildNodes ()
++		forwardHistory.Clear ()
++		backHistory.Clear ()
++	
++	private def BuildNodes ():
++		#time = DateTime.Now.Millisecond
++		_root = ProjectNode (&quot;/&quot;)
++		for file as ProjectFile in _project.Files:
++			dirname = Path.GetDirectoryName (file.FullName).Replace (_project.Location, &quot;&quot;)
++			elements = PathUtils.GetPathElements (dirname)
++			currentNode = _root
++			for e in elements:
++				if currentNode.Childs.Count == 0:
++					n = ProjectNode (e)
++					currentNode.Childs.Add (n)
++					currentNode = n
++				else:
++					for i in range (currentNode.Childs.Count):
++						node = currentNode.Childs[i] as ProjectNode
++						if node.Name == e:
++							currentNode = node
++							break;
++						if i == currentNode.Childs.Count -1:
++							n = ProjectNode (e)
++							currentNode.Childs.Add (n)
++							currentNode = n
++		#print endTime = DateTime.Now.Millisecond - time
++		
++
++	private	def GetCurrentNodes () as IList:
++		dirname = CurrentPath.Replace (_project.Location, &quot;&quot;)
++		elements = PathUtils.GetPathElements (dirname)
++		currentNode = _root
++		for e in elements:
++			for i in range (currentNode.Childs.Count):
++				node = currentNode.Childs[i] as ProjectNode
++				if node.Name == e:
++					currentNode = node
++					break;
++		list = []
++		for node as ProjectNode in currentNode.Childs:
++			list.Add (node.Name)
++		return list
++
++	private def ProjectContentsChanged (sender, args):
++		BuildNodes ()
+
+Added: Red.Components/trunk/Project/Base/ProjectNode.boo
+===================================================================
+--- Red.Components/trunk/Project/Base/ProjectNode.boo	2005-04-15 12:18:54 UTC (rev 437)
++++ Red.Components/trunk/Project/Base/ProjectNode.boo	2005-04-15 21:24:28 UTC (rev 438)
+@@ -0,0 +1,22 @@
++namespace Red.ProjectManager
++
++import System.Text
++
++class ProjectNode:
++
++	def constructor (name as string):
++		Name = name
++
++	public Name as string
++	public Childs = []
++
++	def HasChilds () as bool:
++		return Childs.Count &gt; 0
++		
++	override def ToString ():
++		builder = StringBuilder ()
++		builder.Append (&quot;${Name}:[&quot;)
++		for node as ProjectNode in Childs:
++			builder.Append (&quot;${node.Name},&quot;)
++		builder.Append (&quot;]&quot;)
++		return builder.ToString ()
+
+Added: Red.Components/trunk/Project/Interface/IProject.boo
+===================================================================
+--- Red.Components/trunk/Project/Interface/IProject.boo	2005-04-15 12:18:54 UTC (rev 437)
++++ Red.Components/trunk/Project/Interface/IProject.boo	2005-04-15 21:24:28 UTC (rev 438)
+@@ -0,0 +1,51 @@
++namespace Red.ProjectManager
++
++import System
++import System.IO
++import System.Text.RegularExpressions
++import System.Collections
++
++interface IProject(IEnumerable):
++	Name as string:
++		get
++	
++	Navigator as IProjectNavigator:
++		get
++	
++	ProjectFile as string:
++		get
++	
++	Location as string:
++		get
++		set
++	
++	Files as ICollection:
++		get
++	
++	Folders as ICollection:
++		get
++	
++	def Contains(fileName as string) as bool
++	def GetFilesFromSubdir(subdir as string) as IList
++	def GetFilesWithExtension(extensions as IList) as IList
++	def GetFilesWithoutExtension(extensions as IList) as IList
++	def NewFile(relPath as string) as IProjectFile
++	def Clear()
++	def AddFile(file as IProjectFile)
++	def NewFolder(path as string)
++	def ImportMatchingFiles(pattern as Regex, discardHidden as bool)
++	def ImportFiles(extensions as IList, discardHidden as bool)
++	def AddFolder(path as string)
++	def ImportFiles(discardHidden as bool)
++	def RemoveFile(file as string)
++	def RemoveFile(file as string, delete as bool)
++	def RemoveDir(dir as string)
++	def RemoveDir(dir as string, delete as bool)
++	def BeginInit()
++	def EndInit()
++	def Save()
++	def AddListener ([required]listener as IProjectEventListener,
++				evt as ProjectEventType)
++	def RemoveListener ([required]listener as IProjectEventListener,
++					evt as ProjectEventType)
++
+
+Added: Red.Components/trunk/Project/Interface/IProjectEventListener.boo
+===================================================================
+--- Red.Components/trunk/Project/Interface/IProjectEventListener.boo	2005-04-15 12:18:54 UTC (rev 437)
++++ Red.Components/trunk/Project/Interface/IProjectEventListener.boo	2005-04-15 21:24:28 UTC (rev 438)
+@@ -0,0 +1,24 @@
++namespace Red.ProjectManager
++import System
++
++[Flags]
++enum ProjectEventType:
++	FileAdded
++	FileRemoved
++	ContentsChanged
++	Cleared
++	
++interface IProjectEventListener:
++	def OnFileAdded(sender as object, args as FileChangedArgs)
++	def OnFileRemoved(sender as object, args as FileChangedArgs)
++	def OnContentsChanged(sender as object, args as EventArgs)
++	def OnCleared(sender as object, args as EventArgs)
++
++class FileChangedArgs(EventArgs):
++	def constructor(file as string):
++		File = file
++	
++	public File as string
++	
++
++
+
+Added: Red.Components/trunk/Project/Interface/IProjectFile.boo
+===================================================================
+--- Red.Components/trunk/Project/Interface/IProjectFile.boo	2005-04-15 12:18:54 UTC (rev 437)
++++ Red.Components/trunk/Project/Interface/IProjectFile.boo	2005-04-15 21:24:28 UTC (rev 438)
+@@ -0,0 +1,11 @@
++namespace Red.ProjectManager
++
++import System
++
++interface IProjectFile:
++
++	Name as string:
++		get
++		
++	FullName as string:
++		get
+
+Added: Red.Components/trunk/Project/Interface/IProjectNavigator.boo
+===================================================================
+--- Red.Components/trunk/Project/Interface/IProjectNavigator.boo	2005-04-15 12:18:54 UTC (rev 437)
++++ Red.Components/trunk/Project/Interface/IProjectNavigator.boo	2005-04-15 21:24:28 UTC (rev 438)
+@@ -0,0 +1,41 @@
++namespace Red.ProjectManager
++
++import System.Collections
++
++interface IProjectNavigator:
++
++	/************************
++			Properties
++	*************************/
++	CurrentPath as string:
++		get
++	
++	CurrentSubdirs as IList:
++		get
++						
++	CurrentFiles as IList:
++		get
++
++	HasParent as bool:
++		get
++	
++	HasNext as bool:
++		get
++
++	HasPrevious as bool:
++		get
++
++	Parent as string:
++		get
++	
++	/************************
++			Methods	
++	*************************/
++	def MoveUp ()
++
++	def Next ()
++
++	def Previous ()
++		
++	def MoveToSubdir ([required]dir as string)
++
+
+Added: Red.Components/trunk/README
+===================================================================
+--- Red.Components/trunk/README	2005-04-15 12:18:54 UTC (rev 437)
++++ Red.Components/trunk/README	2005-04-15 21:24:28 UTC (rev 438)
+@@ -0,0 +1,2 @@
++
++
+
+Added: Red.Components/trunk/bin/Red.Project.Default.dll
+===================================================================
+(Binary files differ)
+
+
+Property changes on: Red.Components/trunk/bin/Red.Project.Default.dll
+___________________________________________________________________
+Name: svn:executable
+   + *
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: Red.Components/trunk/bin/Red.Project.dll
+===================================================================
+(Binary files differ)
+
+
+Property changes on: Red.Components/trunk/bin/Red.Project.dll
+___________________________________________________________________
+Name: svn:executable
+   + *
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: Red.Components/trunk/default.build
+===================================================================
+--- Red.Components/trunk/default.build	2005-04-15 12:18:54 UTC (rev 437)
++++ Red.Components/trunk/default.build	2005-04-15 21:24:28 UTC (rev 438)
+@@ -0,0 +1,131 @@
++&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
++
++&lt;!--
++    (c) N&#233;stor Salceda &amp; Sergio Rubio  (Monkey Space Developers)
++    File: 
++        nant.xml
++    Description:
++        base nant file template for automate basic task deployment.
++
++      INSERTAR LA WEB DE MONKEY SPACE Y TAL  
++--&gt;
++
++&lt;project basedir=&quot;.&quot; default=&quot;all&quot; name=&quot;Red.Components&quot;&gt;
++&lt;!-- Properties --&gt;
++   
++    &lt;property name=&quot;nant.settings.currentframework&quot; value=&quot;mono-1.0&quot;/&gt;
++   
++    &lt;property name=&quot;version&quot; value=&quot;1.0&quot;/&gt;
++    &lt;property name=&quot;description&quot; value=&quot;Red Components Library&quot;/&gt;
++    &lt;property name=&quot;bindir&quot; value=&quot;bin/&quot;/&gt;
++    &lt;property name=&quot;docdir&quot; value=&quot;doc/&quot;/&gt;
++    &lt;property name=&quot;extdir&quot; value=&quot;ext/&quot;/&gt;
++
++&lt;!-- Targets --&gt;
++
++    &lt;target name=&quot;clean&quot;&gt;
++        &lt;delete failonerror=&quot;false&quot;&gt;
++			&lt;fileset&gt;
++				&lt;include name=&quot;build/*&quot;/&gt;
++			&lt;/fileset&gt;
++		&lt;/delete&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++    &lt;!-- Crea una nueva jerarquia con bin y doc para la compilaci&#243;n --&gt;
++    &lt;target name=&quot;create-skeleton&quot;&gt;
++        &lt;mkdir dir=&quot;${bindir}&quot;/&gt;
++        &lt;mkdir dir=&quot;${docdir}&quot;/&gt;
++        &lt;mkdir dir=&quot;${extdir}&quot;/&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++	&lt;target name=&quot;update-refs&quot;&gt;
++		&lt;copy todir=&quot;ext&quot;&gt;
++			&lt;fileset&gt;
++				&lt;include name=&quot;../../RedLib/trunk/build/Red.dll&quot;/&gt;
++			&lt;/fileset&gt;
++		&lt;/copy&gt;
++	&lt;/target&gt;
++
++    &lt;target name=&quot;build-project&quot; depends=&quot;update-refs&quot;&gt; 
++        &lt;booc target=&quot;library&quot; output=&quot;${bindir}/Red.Project.dll&quot;&gt;
++			&lt;sources basedir=&quot;.&quot;&gt;
++				&lt;include name=&quot;Project/Interface/*.boo&quot;/&gt;
++			&lt;/sources&gt;
++        &lt;/booc&gt;
++        &lt;booc target=&quot;library&quot; output=&quot;${bindir}/Red.Project.Default.dll&quot;&gt;
++			&lt;sources basedir=&quot;.&quot;&gt;
++				&lt;include name=&quot;Project/Base/*.boo&quot;/&gt;
++			&lt;/sources&gt;
++			&lt;references&gt;
++				&lt;include name=&quot;${extdir}/Red.dll&quot;/&gt;
++				&lt;include name=&quot;System.Xml.dll&quot;/&gt;
++				&lt;include name=&quot;${bindir}/Red.Project.dll&quot;/&gt;
++			&lt;/references&gt;
++        &lt;/booc&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++	&lt;!--
++    &lt;target name=&quot;build&quot;  depends=&quot;create-skeleton build-interface&quot;&gt;
++		&lt;copy todir=&quot;ext&quot;&gt;
++			&lt;fileset&gt;
++				&lt;include name=&quot;../../RedLib/trunk/build/Red.dll&quot;/&gt;
++			&lt;/fileset&gt;
++		&lt;/copy&gt;
++        &lt;booc target=&quot;library&quot; output=&quot;${bindir}/Red.ProjectManager.dll&quot;&gt;
++			&lt;sources basedir=&quot;.&quot;&gt;
++				&lt;include name=&quot;src/Red.ProjectManager/*.boo&quot;/&gt;
++			&lt;/sources&gt;
++			&lt;references&gt;
++				&lt;include name=&quot;build/I.Red.ProjectManager.dll&quot;/&gt;
++				&lt;include name=&quot;ext/Red.dll&quot;/&gt;
++				&lt;include name=&quot;System.Xml.dll&quot;/&gt;
++			&lt;/references&gt;
++        &lt;/booc&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++	--&gt;
++
++    &lt;!-- Por defecto compilar&#225; el componente y escribir&#225; la documentaci&#243;n--&gt;
++    &lt;target name=&quot;all&quot;&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++    &lt;!-- Documenta el componente y lo guarda en doc--&gt;
++    &lt;target name=&quot;doc&quot;&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++    &lt;!-- Ayuda sobre este fichero --&gt;
++    &lt;target name=&quot;usage&quot;&gt;
++        &lt;echo&gt;
++            ${description}
++
++            Available task:
++                
++                -all
++                    Compile, and creates binary files.
++
++                -doc
++                    Creates documentation.  &#191;Monodoc or ndoc?
++
++                -clean
++                    Delete component binaries.
++                
++                -run
++                    Runs the application.
++               
++                -build
++                    Build component.
++               
++                -all
++                    Builds component and document it.
++                
++                -usage
++                    Show this help.
++        &lt;/echo&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++&lt;/project&gt;
+
+Added: Red.Components/trunk/ext/Red.dll
+===================================================================
+(Binary files differ)
+
+
+Property changes on: Red.Components/trunk/ext/Red.dll
+___________________________________________________________________
+Name: svn:executable
+   + *
+Name: svn:mime-type
+   + application/octet-stream
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000150.html">[Mspace-checkins] r437 - in Red.ProjectManager/trunk: . src src/Interface src/Red.ProjectManager
+</A></li>
+	<LI>Next message: <A HREF="000152.html">[Mspace-checkins] r439 - /
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#151">[ date ]</a>
+              <a href="thread.html#151">[ thread ]</a>
+              <a href="subject.html#151">[ subject ]</a>
+              <a href="author.html#151">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

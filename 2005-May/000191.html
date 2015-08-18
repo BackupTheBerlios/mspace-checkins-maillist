@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r478 - koolboy/trunk/src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r478%20-%20koolboy/trunk/src&In-Reply-To=%3C200505031941.j43JfDwS013169%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000190.html">
+   <LINK REL="Next"  HREF="000192.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r478 - koolboy/trunk/src</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r478%20-%20koolboy/trunk/src&In-Reply-To=%3C200505031941.j43JfDwS013169%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r478 - koolboy/trunk/src">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Tue May  3 21:41:13 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000190.html">[Mspace-checkins] r477 - koolboy/trunk/src
+</A></li>
+        <LI>Next message: <A HREF="000192.html">[Mspace-checkins] r479 - in ComponentModel/trunk: ComponentTest ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container src/ComponentModel.Container.Dao src/ComponentModel.Interfaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#191">[ date ]</a>
+              <a href="thread.html#191">[ thread ]</a>
+              <a href="subject.html#191">[ subject ]</a>
+              <a href="author.html#191">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-05-03 21:41:12 +0200 (Tue, 03 May 2005)
+New Revision: 478
+
+Modified:
+   koolboy/trunk/src/noteview.rb
+Log:
+* remove uneeded queryClose
+* add access to the note
+
+
+
+Modified: koolboy/trunk/src/noteview.rb
+===================================================================
+--- koolboy/trunk/src/noteview.rb	2005-05-03 19:33:36 UTC (rev 477)
++++ koolboy/trunk/src/noteview.rb	2005-05-03 19:41:12 UTC (rev 478)
+@@ -8,6 +8,7 @@
+ 	slots 'slotLink()',
+ 	'noteDeleted()', 'slotFind()', 'formatBold()', 'formatUnderline()',
+ 	'formatStrikeout()', 'formatItalic()'
++	attr_reader :note
+ 
+ 	# Receives an XmlNote and handles its content
+ 	def initialize(note)
+@@ -25,12 +26,6 @@
+ 		resize(@note.size) if @note.size
+ 		move(@note.pos) if @note.size
+ 	end
+-
+-	def queryClose
+-		puts &quot;CLOSING&quot;
+-		puts &quot;Title: &quot; + self.name
+-		return true
+-	end
+ 	
+ 	#####################
+ 	#TEXT formatting	
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000190.html">[Mspace-checkins] r477 - koolboy/trunk/src
+</A></li>
+	<LI>Next message: <A HREF="000192.html">[Mspace-checkins] r479 - in ComponentModel/trunk: ComponentTest ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container src/ComponentModel.Container.Dao src/ComponentModel.Interfaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#191">[ date ]</a>
+              <a href="thread.html#191">[ thread ]</a>
+              <a href="subject.html#191">[ subject ]</a>
+              <a href="author.html#191">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

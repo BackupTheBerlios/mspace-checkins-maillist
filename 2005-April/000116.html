@@ -1,0 +1,383 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r403 - in ComponentModel/trunk: ComponentTest/src/Components/MainComponent ComponentTest/src/Components/MainComponent/Bo ComponentTest/src/Components/MainComponent/Exception ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exception src src/ComponentModel.Container src/ComponentModel.Exceptions src/ComponentModel.Interfaces src/ComponentModel.VO
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r403%20-%20in%20ComponentModel/trunk%3A%20ComponentTest/src/Components/MainComponent%20ComponentTest/src/Components/MainComponent/Bo%20ComponentTest/src/Components/MainComponent/Exception%20ComponentTest/src/Components/Saludator/Bo%20ComponentTest/src/Components/Saludator/Exception%20src%20src/ComponentModel.Container%20src/ComponentModel.Exceptions%20src/ComponentModel.Interfaces%20src/ComponentModel.VO&In-Reply-To=%3C200504052358.j35NwxfI017498%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000115.html">
+   <LINK REL="Next"  HREF="000117.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r403 - in ComponentModel/trunk: ComponentTest/src/Components/MainComponent ComponentTest/src/Components/MainComponent/Bo ComponentTest/src/Components/MainComponent/Exception ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exception src src/ComponentModel.Container src/ComponentModel.Exceptions src/ComponentModel.Interfaces src/ComponentModel.VO</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r403%20-%20in%20ComponentModel/trunk%3A%20ComponentTest/src/Components/MainComponent%20ComponentTest/src/Components/MainComponent/Bo%20ComponentTest/src/Components/MainComponent/Exception%20ComponentTest/src/Components/Saludator/Bo%20ComponentTest/src/Components/Saludator/Exception%20src%20src/ComponentModel.Container%20src/ComponentModel.Exceptions%20src/ComponentModel.Interfaces%20src/ComponentModel.VO&In-Reply-To=%3C200504052358.j35NwxfI017498%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r403 - in ComponentModel/trunk: ComponentTest/src/Components/MainComponent ComponentTest/src/Components/MainComponent/Bo ComponentTest/src/Components/MainComponent/Exception ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exception src src/ComponentModel.Container src/ComponentModel.Exceptions src/ComponentModel.Interfaces src/ComponentModel.VO">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Wed Apr  6 01:58:59 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000115.html">[Mspace-checkins] r402 - in ComponentModel/trunk: ComponentTest/lib ComponentTest/src ComponentTest/src/Components/MainComponent/Bo ComponentTest/src/Components/Saludator ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form lib src src/ComponentModel.Container src/ComponentModel.Interfaces src/ComponentModel.VO
+</A></li>
+        <LI>Next message: <A HREF="000117.html">[Mspace-checkins] r404 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#116">[ date ]</a>
+              <a href="thread.html#116">[ thread ]</a>
+              <a href="subject.html#116">[ subject ]</a>
+              <a href="author.html#116">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-04-06 01:58:52 +0200 (Wed, 06 Apr 2005)
+New Revision: 403
+
+Added:
+   ComponentModel/trunk/ComponentTest/src/Components/MainComponent/Exception/
+   ComponentModel/trunk/ComponentTest/src/Components/MainComponent/Exception/MainComponentExceptionManager.cs
+   ComponentModel/trunk/src/ComponentModel.Exceptions/
+   ComponentModel/trunk/src/ComponentModel.Exceptions/ComponentModelException.cs
+   ComponentModel/trunk/src/ComponentModel.Factory/
+   ComponentModel/trunk/src/ComponentModel.Interfaces/IViewHandler.cs
+Modified:
+   ComponentModel/trunk/ComponentTest/src/Components/MainComponent/Bo/MainComponentComponentModel.cs
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exception/SaludatorExceptionManager.cs
+   ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+   ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Added Exception support.
+
+Need a fucking refactor now !!
+
+Change namespace Exception --&gt; Exceptions; in order to break name collision with
+namespaces &amp; System.Exception class.
+
+
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/MainComponent/Bo/MainComponentComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/MainComponent/Bo/MainComponentComponentModel.cs	2005-04-05 21:30:32 UTC (rev 402)
++++ ComponentModel/trunk/ComponentTest/src/Components/MainComponent/Bo/MainComponentComponentModel.cs	2005-04-05 23:58:52 UTC (rev 403)
+@@ -2,7 +2,7 @@
+ using ComponentModel;
+ 
+ namespace ComponentModel.ComponentTest.Components.MainComponent.Bo {
+-    [Component (ComponentName=&quot;MainComponent&quot;, ExceptionManager=&quot;ComponentModel.ComponentTest.MainComponent.Exception.MainComponentExceptionManager&quot;)]
++    [Component (ComponentName=&quot;MainComponent&quot;, ExceptionManager=&quot;ComponentModel.ComponentTest.Components.MainComponent.Exception.MainComponentExceptionManager&quot;)]
+     public class MainComponentComponentModel : DefaultComponentModel {
+     }
+ }
+
+Added: ComponentModel/trunk/ComponentTest/src/Components/MainComponent/Exception/MainComponentExceptionManager.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/MainComponent/Exception/MainComponentExceptionManager.cs	2005-04-05 21:30:32 UTC (rev 402)
++++ ComponentModel/trunk/ComponentTest/src/Components/MainComponent/Exception/MainComponentExceptionManager.cs	2005-04-05 23:58:52 UTC (rev 403)
+@@ -0,0 +1,12 @@
++using System;
++using ComponentModel.ExceptionManager;
++
++namespace ComponentModel.ComponentTest.Components.MainComponent.Exception {
++    public class MainComponentExceptionManager : DefaultExceptionManager {
++        public MainComponentExceptionManager () {
++        }
++        //public override void ProcessException (Exception exception) {
++        //    base.ProcessException (exception); 
++        //}
++    }
++}
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-04-05 21:30:32 UTC (rev 402)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-04-05 23:58:52 UTC (rev 403)
+@@ -11,6 +11,7 @@
+        [ComponentMethod (ViewName = &quot;ComponentModel.ComponentTest.Components.Saludator.Form.SaludatorForm&quot;, ResponseName = &quot;ResponseSaluda&quot;)]
+        public int Saluda () {
+            Console.WriteLine (&quot;Que pasa co !!&quot;);
++           throw new System.Exception (&quot;Yeahhh&quot;);
+            return 1;
+        }
+    }
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exception/SaludatorExceptionManager.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exception/SaludatorExceptionManager.cs	2005-04-05 21:30:32 UTC (rev 402)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exception/SaludatorExceptionManager.cs	2005-04-05 23:58:52 UTC (rev 403)
+@@ -1,12 +1,14 @@
+ using System;
+ using ComponentModel.ExceptionManager;
+ 
+-namespace ComponentModel.ComponentTest.Saludator.Exception {
+-/**
++namespace ComponentModel.ComponentTest.Components.Saludator.Exception {
++
++    
+     public class SaludatorExceptionManager : DefaultExceptionManager {
+-        public override void ProcessException (Exception exception) {
+-            base.ProcessException (exception); 
++        public SaludatorExceptionManager () {
+         }
++        //public override void ProcessException (Exception exception) {
++        //    base.ProcessException (exception); 
++        //}
+     }
+-    */
+ }
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-04-05 21:30:32 UTC (rev 402)
++++ ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-04-05 23:58:52 UTC (rev 403)
+@@ -6,17 +6,23 @@
+ using ComponentModel.Container.Dao;
+ using NLog;
+ 
++using System.Threading;
++
+ namespace ComponentModel.Container {
+     public class DefaultContainer : IContainer {
+         private static DefaultContainer instance = null; 
+-        private Assembly[] assemblies; 
++        private static Assembly[] assemblies; 
+         private IList componentList;
+-        
+         //Logging
+         Logger logger = LogManager.GetLogger (&quot;ComponentModel.Container.DefaultContainer&quot;);
+         
+         internal Assembly[] Assemblies {
+             get {
++                if (assemblies == null) {
++                    AppDomain appDomain = AppDomain.CurrentDomain;
++                    assemblies = appDomain.GetAssemblies ();
++                }
++                logger.Debug (&quot;Finded: &quot; + assemblies.Length +&quot; assemblies.&quot;);
+                 return assemblies;
+             }
+         }
+@@ -24,35 +30,37 @@
+         private DefaultContainer () {
+             logger.Debug (&quot;Init DefaultContainer&quot;);
+             componentList = new ArrayList ();
+-            //Toma el &#250;nico dominio de la aplicacion
+-            AppDomain appDomain = AppDomain.CurrentDomain;
+-            assemblies = appDomain.GetAssemblies ();
+-            foreach (Assembly ass  in assemblies) {
+-                ICollection collection = DefaultContainerDao.Instance.ProcessAssembly (ass);
+-                //DEbugg
+-                //foreach (Type type in ass.GetTypes ()) {
+-                //    logger.Debug (&quot;Type finded: &quot; + type.ToString ());
+-                //}
+-                //
+-                RegisterComponent (collection);
+-            }
+             //En cada ensamblado, cargar&#225; el / los componente y lo registrar&#225; con el
+             //nombre que se le ha dado al atributo.
++            GetAllComponents (); 
++        }
+ 
++        public void GetAllComponents () {
++            foreach (Assembly ass  in Assemblies) {
++                ICollection collection = DefaultContainerDao.Instance.ProcessAssembly (ass);
++                if (collection.Count != 0)
++                    RegisterComponent (collection);
++            }
+         }
+-
++        
+         private void RegisterComponent (ICollection collection) {
++            logger.Debug (&quot;Entering RegisterComponent.&quot;);
++            logger.Debug (&quot;Finded &quot; + collection.Count + &quot; components&quot;);
+             IEnumerator enumerator = collection.GetEnumerator ();
+             while (enumerator.MoveNext ()) {
+                 DefaultComponentModel defaultComponentModel = (DefaultComponentModel)enumerator.Current;
++                //Registrar aqui el exceptionClass
+                 this.Add (defaultComponentModel); 
+             }
++            logger.Debug (&quot;Exiting RegisterComponent.&quot;);
+         }
+         
+         public static DefaultContainer Instance {
+             get {
++                Console.WriteLine (&quot;Getting default Instance of Container.&quot;);
+                 if (instance == null)
+                     instance = new DefaultContainer ();
++                Console.WriteLine (&quot;Exiting getting default instance of Container.&quot;);
+                 return instance;
+             }
+         }
+
+Added: ComponentModel/trunk/src/ComponentModel.Exceptions/ComponentModelException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Exceptions/ComponentModelException.cs	2005-04-05 21:30:32 UTC (rev 402)
++++ ComponentModel/trunk/src/ComponentModel.Exceptions/ComponentModelException.cs	2005-04-05 23:58:52 UTC (rev 403)
+@@ -0,0 +1,7 @@
++using System;
++
++namespace ComponentModel.Exceptions {
++    public class ComponentModelException : Exception {
++        public ComponentModelException (string message) : base (message) {}
++    }
++}
+
+Added: ComponentModel/trunk/src/ComponentModel.Interfaces/IViewHandler.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Interfaces/IViewHandler.cs	2005-04-05 21:30:32 UTC (rev 402)
++++ ComponentModel/trunk/src/ComponentModel.Interfaces/IViewHandler.cs	2005-04-05 23:58:52 UTC (rev 403)
+@@ -0,0 +1,6 @@
++using System;
++
++namespace ComponentModel.Interfaces {
++    public interface IViewHandler {
++    }
++}
+
+Modified: ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs	2005-04-05 21:30:32 UTC (rev 402)
++++ ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs	2005-04-05 23:58:52 UTC (rev 403)
+@@ -4,7 +4,6 @@
+ namespace ComponentModel.VO {
+     public class ComponentModelVO {
+         private string name;
+-        private string interfaceFile;
+         private Hashtable methods;
+ 
+         private string className;
+@@ -29,11 +28,6 @@
+             get {return methods;}
+             set {methods = value;}
+         }
+-        
+-        public string InterfaceFile {
+-            get {return interfaceFile;}
+-            set {interfaceFile = value;}
+-        }
+ 
+         public string Name {
+             get {return name;}
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-04-05 21:30:32 UTC (rev 402)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-04-05 23:58:52 UTC (rev 403)
+@@ -4,12 +4,19 @@
+ using ComponentModel.VO;
+ using NLog;
+ using ComponentModel.Container;
++using ComponentModel.ExceptionManager;
+ 
+ namespace ComponentModel {
+     public class DefaultComponentModel : IComponentModel {
+         //Logging
+-        Logger logger = LogManager.GetLogger (&quot;ComponentModel.DefaultComponentModel&quot;);
+-        ComponentModelVO vO;
++        private Logger logger = LogManager.GetLogger (&quot;ComponentModel.DefaultComponentModel&quot;);
++        private ComponentModelVO vO;
++        private DefaultExceptionManager defaultExceptionManager;
++
++        public DefaultExceptionManager DefaultExceptionManager {
++            get {return defaultExceptionManager;}
++            set {defaultExceptionManager = value;}
++        }
+         
+         //Properties
+         public ComponentModelVO VO {
+@@ -19,7 +26,25 @@
+         protected DefaultComponentModel () {
+             logger.Debug (&quot;Executing ctor for: &quot; + this.GetType ().FullName);
+         }
++      
++        private Type GetTypeExceptionManager (string exceptionManagerClassName) {
++            foreach (Assembly assembly in DefaultContainer.Instance.Assemblies) {
++                foreach (Type type in assembly.GetTypes ()) {
++                    if (type.IsSubclassOf (typeof (DefaultExceptionManager)) || type.IsSubclassOf (typeof (IExceptionManager))) {
++                        logger.Debug (&quot;Subclass is from exceptionmanager. &quot; + type.ToString ());
++                        logger.Debug (type.ToString ());
++                        if (type.ToString().Equals (exceptionManagerClassName)) {
++                            logger.Debug (&quot;Getting type of exception manager: &quot; + type.ToString ());
++                            return type;
++                        }
++                    }
++                }
++            }
++            return null;
++        }
+         
++        
++        
+         public ResponseMethodVO Execute (string methodName, params object[] parameters) {
+             logger.Debug (&quot;Enter method Execute.&quot;);
+             Type type = this.GetType ();
+@@ -31,19 +56,31 @@
+             //Cumple requisitos de ejecuci&#243;n?
+             Attribute[] attributes = (Attribute[])methodInfo.GetCustomAttributes (typeof (ComponentMethodAttribute),false);
+             if (attributes.Length == 1) {
++                if (defaultExceptionManager == null) {
++                    logger.Debug (&quot;Try instantiate defaultExceptionManager&quot;);
++                    //FIXME esto es bastante cambiable
++                    //defaultExceptionManager = this.GetExceptionManager ();
++                    Type typeManager = this.GetTypeExceptionManager (this.VO.ExceptionClassName); 
++                    defaultExceptionManager = (DefaultExceptionManager)typeManager.GetConstructor (null).Invoke (null);
++                    logger.Debug (&quot;ExceptionManagerInstanciated.&quot;);
++                }
+                 ComponentMethodAttribute componentMethodAttribute = (ComponentMethodAttribute)attributes[0];
+                 logger.Debug (&quot;Finded Attribute: &quot; + componentMethodAttribute.GetType ());
+                 logger.Debug (&quot;Reading attribute viewName: &quot; + componentMethodAttribute.ViewName);
+                 Type viewType = this.GetViewType (componentMethodAttribute);
+                 logger.Debug (&quot;Finded view Type: &quot; + viewType.ToString ());
+-                //Execute Method here !! 
+-                object ret = methodInfo.Invoke (this, parameters);
+-                responseMethodVO.ResponseValue = ret;
+-                //Redirecting to view.
+-                object obj = viewType.GetConstructor (null).Invoke (null);
+-                methodInfo = viewType.GetMethod (componentMethodAttribute.ResponseName, BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public);
++                try {
++                    //Execute Method here !!
++                    object ret = methodInfo.Invoke (this, parameters);
++                    responseMethodVO.ResponseValue = ret;
++                    //Redirecting to view.
++                    object obj = viewType.GetConstructor (null).Invoke (null);
++                    methodInfo = viewType.GetMethod (componentMethodAttribute.ResponseName, BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public);
+                 //Executing response.
+-                methodInfo.Invoke (obj, new object[]{responseMethodVO});
++                    methodInfo.Invoke (obj, new object[]{responseMethodVO});
++                } catch (Exception e) {
++                    defaultExceptionManager.ProcessException (e);
++                }
+                 logger.Debug (&quot;Finded response Method in view: &quot; + viewType.ToString() + &quot; &quot; + methodInfo.ToString ());
+             }
+             logger.Debug (&quot;Exiting method Execute&quot;);
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000115.html">[Mspace-checkins] r402 - in ComponentModel/trunk: ComponentTest/lib ComponentTest/src ComponentTest/src/Components/MainComponent/Bo ComponentTest/src/Components/Saludator ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form lib src src/ComponentModel.Container src/ComponentModel.Interfaces src/ComponentModel.VO
+</A></li>
+	<LI>Next message: <A HREF="000117.html">[Mspace-checkins] r404 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#116">[ date ]</a>
+              <a href="thread.html#116">[ thread ]</a>
+              <a href="subject.html#116">[ subject ]</a>
+              <a href="author.html#116">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

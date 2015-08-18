@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r473 - koolboy/trunk/src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r473%20-%20koolboy/trunk/src&In-Reply-To=%3C200505030730.j437U9HO007857%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000185.html">
+   <LINK REL="Next"  HREF="000187.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r473 - koolboy/trunk/src</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r473%20-%20koolboy/trunk/src&In-Reply-To=%3C200505030730.j437U9HO007857%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r473 - koolboy/trunk/src">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Tue May  3 09:30:09 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000185.html">[Mspace-checkins] r472 - koolboy/trunk/src
+</A></li>
+        <LI>Next message: <A HREF="000187.html">[Mspace-checkins] r474 - koolboy/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#186">[ date ]</a>
+              <a href="thread.html#186">[ thread ]</a>
+              <a href="subject.html#186">[ subject ]</a>
+              <a href="author.html#186">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-05-03 09:30:08 +0200 (Tue, 03 May 2005)
+New Revision: 473
+
+Added:
+   koolboy/trunk/src/noteview.rb
+Log:
+* Basic skel of noteview with some eyecandy ;)
+(It still lacks any logic)
+
+
+
+Added: koolboy/trunk/src/noteview.rb
+===================================================================
+--- koolboy/trunk/src/noteview.rb	2005-05-03 07:28:47 UTC (rev 472)
++++ koolboy/trunk/src/noteview.rb	2005-05-03 07:30:08 UTC (rev 473)
+@@ -0,0 +1,121 @@
++require &quot;Korundum&quot;
++include KDE
++require &quot;libkoolnotes&quot;
++
++#TODO
++#How can I use custom icons in actions?
++class NoteView &lt; MainWindow
++	slots 'slotLink()',
++	'noteDeleted()', 'slotFind()', 'formatBold()', 'formatUnderline()',
++	'formatStrikeout()', 'formatItalic()'
++
++	# Receives an XmlNote and handles its content
++	def initialize(note)
++		msecs = Time.now.usec.to_s
++		puts &quot;new note view at &quot; + msecs
++		super(nil, &quot;note-&quot; + Time.now.usec.to_s)	
++		@note = note
++		@icons = KDE::IconLoader.new()
++		initWidgets()
++		defineActions()
++		initToolBar()
++		
++		self.caption = @note.title
++		@textEdit.text = @note.text if @note.text
++		resize(@note.size) if @note.size
++		move(@note.pos) if @note.size
++	end
++
++	def queryClose
++		puts &quot;CLOSING&quot;
++		puts &quot;Title: &quot; + self.name
++		return true
++	end
++	
++	#####################
++	#TEXT formatting	
++	def formatItalic
++		puts &quot;FORMAT&quot;
++	end
++
++	def formatUnderline
++	end
++
++	def formatStrikeout
++	end
++
++	def formatBold
++	end
++	###################
++
++	def slotFind
++	end
++
++	def slotLink
++	end
++
++	def noteDeleted
++	end
++	
++	def initWidgets
++		@vbox = Qt::VBox.new(self)
++		@vbox.show
++		@textEdit = TextEdit.new(@vbox)
++		@textEdit.show
++		self.centralWidget = @vbox
++	end
++	
++	def defineActions
++		#@aboutAction = StdAction.aboutApp(self, SLOT('slotAbout()'), actionCollection())
++		
++		@linkAction = Action.new(i18n(&quot;Link&quot;), Shortcut.new(), self, SLOT('slotLink()'), actionCollection(), &quot;link&quot;)
++		@linkAction.setIcon(&quot;connect_established&quot;)
++		
++		@deleteAction = Action.new(i18n(&quot;Delete&quot;), Shortcut.new(), self, SLOT('slotDelete()'), actionCollection(), &quot;delete&quot;)
++		@deleteAction.setIcon(&quot;trashcan_empty&quot;)
++		
++		@findAction = StdAction.find(self, SLOT('slotFind()'), actionCollection())
++
++		@formatAction = ActionMenu.new(i18n(&quot;Format&quot;), &quot;font&quot;)
++		
++		icon = Qt::IconSet.new(@icons.loadIcon(&quot;text_bold&quot;, KDE::Icon::Toolbar))
++		@formatAction.insert(Action.new( i18n(&quot;Bold&quot;), icon, Shortcut.new(), self, SLOT('formatBold()'), actionCollection(), &quot;formatBold&quot;))
++
++		icon = Qt::IconSet.new(@icons.loadIcon(&quot;text_italic&quot;, KDE::Icon::Toolbar))
++		@formatAction.insert(Action.new( i18n(&quot;Italic&quot;), icon, Shortcut.new(), self, SLOT('formatItalic()'), actionCollection(), &quot;formatItalic&quot;))
++
++		icon = Qt::IconSet.new(@icons.loadIcon(&quot;text_under&quot;, KDE::Icon::Toolbar))
++		@formatAction.insert(Action.new( i18n(&quot;Underline&quot;), icon, Shortcut.new(), self, SLOT('formatUnderline()'), actionCollection(), &quot;formatUnderline&quot;))
++
++		icon = Qt::IconSet.new(@icons.loadIcon(&quot;text_strike&quot;, KDE::Icon::Toolbar))
++		@formatAction.insert(Action.new( i18n(&quot;Strikeout&quot;), icon, Shortcut.new(), self, SLOT('formatStrikeout()'), actionCollection(), &quot;formatStrikeout&quot;))
++	end
++	
++	def initToolBar
++		@linkAction.plug(toolBar())
++		@findAction.plug(toolBar())
++		@formatAction.plug(toolBar())
++		@deleteAction.plug(toolBar())
++	end
++end
++
++if $0 == __FILE__
++	description = &quot;Note taking app&quot;
++	version     = &quot;1.0&quot;
++	about = AboutData.new(&quot;koolboy&quot;, &quot;Koolboy&quot;, &quot;0.1&quot;,
++						   description, AboutData::License_GPL,
++						   &quot;&quot;)
++
++	about.addAuthor(&quot;Isaac Clerencia&quot;, &quot;Core developer&quot;, &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">isaac at sindominio.net</A>&quot;)
++	about.addAuthor(&quot;Sergio Rubio&quot;, &quot;Core developer&quot;, &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&quot;)
++
++	KDE::CmdLineArgs.init(ARGV,about)
++	a = KDE::Application.new()
++	note = XmlNote.new(&quot;test&quot;)
++	note.text = &quot;This is koolsoft!&quot;
++	thing = NoteView.new(note)
++	thing.show
++
++	a.mainWidget = thing
++	a.exec
++end
+\ No newline at end of file
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000185.html">[Mspace-checkins] r472 - koolboy/trunk/src
+</A></li>
+	<LI>Next message: <A HREF="000187.html">[Mspace-checkins] r474 - koolboy/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#186">[ date ]</a>
+              <a href="thread.html#186">[ thread ]</a>
+              <a href="subject.html#186">[ subject ]</a>
+              <a href="author.html#186">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

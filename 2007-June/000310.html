@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r598 - twittinho
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2007-June/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r598%20-%20twittinho&In-Reply-To=%3C200706032221.l53MLwuw019508%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000309.html">
+   <LINK REL="Next"  HREF="000311.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r598 - twittinho</H1>
+    <B>luis at mail.berlios.de</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r598%20-%20twittinho&In-Reply-To=%3C200706032221.l53MLwuw019508%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r598 - twittinho">luis at mail.berlios.de
+       </A><BR>
+    <I>Mon Jun  4 00:21:58 CEST 2007</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000309.html">[Mspace-checkins] r597 - twittinho
+</A></li>
+        <LI>Next message: <A HREF="000311.html">[Mspace-checkins] r599 - in twittinho: . bin data data/images lib	lib/twittinho
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#310">[ date ]</a>
+              <a href="thread.html#310">[ thread ]</a>
+              <a href="subject.html#310">[ subject ]</a>
+              <a href="author.html#310">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: luis
+Date: 2007-06-04 00:21:54 +0200 (Mon, 04 Jun 2007)
+New Revision: 598
+
+Modified:
+   twittinho/controller.rb
+Log:
+Si no existe configuraci?\195?\179n de gconf, crea una por defecto.
+
+
+Modified: twittinho/controller.rb
+===================================================================
+--- twittinho/controller.rb	2007-06-03 15:33:10 UTC (rev 597)
++++ twittinho/controller.rb	2007-06-03 22:21:54 UTC (rev 598)
+@@ -11,7 +11,7 @@
+ if client.dir_exists?(gconfPath.chomp(&quot;\/&quot;))
+ 	config = readConfig(client)
+ else
+-	WindowPreferences.new(client, false)
++	writeConfig(client, gconfPath, &quot;user&quot;, &quot;pass&quot;, 2, true )
+ end
+ 
+ initState = true
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000309.html">[Mspace-checkins] r597 - twittinho
+</A></li>
+	<LI>Next message: <A HREF="000311.html">[Mspace-checkins] r599 - in twittinho: . bin data data/images lib	lib/twittinho
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#310">[ date ]</a>
+              <a href="thread.html#310">[ thread ]</a>
+              <a href="subject.html#310">[ subject ]</a>
+              <a href="author.html#310">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

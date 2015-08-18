@@ -1,0 +1,301 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r415 - in ComponentModel/trunk: ComponentTest ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions ComponentTest/src/Components/Saludator/Form src src/ComponentModel.VO
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r415%20-%20in%20ComponentModel/trunk%3A%20ComponentTest%20ComponentTest/src%20ComponentTest/src/Components/Saludator/Bo%20ComponentTest/src/Components/Saludator/Exceptions%20ComponentTest/src/Components/Saludator/Form%20src%20src/ComponentModel.VO&In-Reply-To=%3C200504072224.j37MOoVO013570%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000127.html">
+   <LINK REL="Next"  HREF="000129.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r415 - in ComponentModel/trunk: ComponentTest ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions ComponentTest/src/Components/Saludator/Form src src/ComponentModel.VO</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r415%20-%20in%20ComponentModel/trunk%3A%20ComponentTest%20ComponentTest/src%20ComponentTest/src/Components/Saludator/Bo%20ComponentTest/src/Components/Saludator/Exceptions%20ComponentTest/src/Components/Saludator/Form%20src%20src/ComponentModel.VO&In-Reply-To=%3C200504072224.j37MOoVO013570%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r415 - in ComponentModel/trunk: ComponentTest ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions ComponentTest/src/Components/Saludator/Form src src/ComponentModel.VO">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Fri Apr  8 00:24:50 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000127.html">[Mspace-checkins] r414 - Red.ProjectManager/trunk
+</A></li>
+        <LI>Next message: <A HREF="000129.html">[Mspace-checkins] r416 - in SimpleP/trunk: . build ext src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#128">[ date ]</a>
+              <a href="thread.html#128">[ thread ]</a>
+              <a href="subject.html#128">[ subject ]</a>
+              <a href="author.html#128">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-04-08 00:24:48 +0200 (Fri, 08 Apr 2005)
+New Revision: 415
+
+Modified:
+   ComponentModel/trunk/ComponentTest/ComponentTest.build
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs
+   ComponentModel/trunk/ComponentTest/src/Launcher.cs
+   ComponentModel/trunk/src/ComponentModel.VO/ResponseMethodVO.cs
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+
+
+Modified: ComponentModel/trunk/ComponentTest/ComponentTest.build
+===================================================================
+--- ComponentModel/trunk/ComponentTest/ComponentTest.build	2005-04-07 22:22:28 UTC (rev 414)
++++ ComponentModel/trunk/ComponentTest/ComponentTest.build	2005-04-07 22:24:48 UTC (rev 415)
+@@ -66,6 +66,9 @@
+                 &lt;include name=&quot;**/${lib}/*.dll&quot;/&gt;
+                 &lt;include name=&quot;**/${lib}/components/*.dll&quot;/&gt;
+             &lt;/references&gt;
++            &lt;pkg-references&gt;
++                &lt;package name=&quot;gtk-sharp-2.0&quot;/&gt;
++            &lt;/pkg-references&gt;
+         &lt;/csc&gt;
+         &lt;tstamp/&gt;
+     &lt;/target&gt;
+@@ -82,6 +85,9 @@
+                 &lt;include name=&quot;**/${lib}/components/*.dll&quot;/&gt;
+                 &lt;include name=&quot;**/${bin}/*.dll&quot;/&gt;    
+             &lt;/references&gt;
++            &lt;pkg-references&gt;
++                &lt;package name=&quot;gtk-sharp-2.0&quot;/&gt;
++            &lt;/pkg-references&gt;
+         &lt;/csc&gt;
+           
+         &lt;exec program=&quot;${bin}/${component_name}.exe&quot; useruntimeengine=&quot;true&quot;&gt;
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-04-07 22:22:28 UTC (rev 414)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-04-07 22:24:48 UTC (rev 415)
+@@ -2,7 +2,7 @@
+ using ComponentModel;
+ 
+ namespace ComponentModel.ComponentTest.Components.Saludator.Bo {
+-   [Component (ComponentName=&quot;Saludator&quot;, ExceptionManager=&quot;ComponentModel.ComponentTest.Components.Saludator.Exception.SaludatorExceptionManager&quot;)] 
++   [Component (ComponentName=&quot;Saludator&quot;, ExceptionManager=&quot;ComponentModel.ComponentTest.Components.Saludator.Exceptions.SaludatorExceptionManager&quot;)] 
+    public sealed class SaludatorComponentModel : DefaultComponentModel {
+        public SaludatorComponentModel () : base () {
+        }
+@@ -14,6 +14,7 @@
+         [ComponentMethod (ViewName = &quot;ComponentModel.ComponentTest.Components.Saludator.Form.SaludatorForm&quot;, ResponseName = &quot;ResponseSaluda&quot;)]
+         public int Saluda () {
+             Console.WriteLine (&quot;Que pasa co !!&quot;);
++            throw new Exception (&quot;Yeahhhh&quot;);
+             return 1;
+         }
+ 
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs	2005-04-07 22:22:28 UTC (rev 414)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs	2005-04-07 22:24:48 UTC (rev 415)
+@@ -8,7 +8,8 @@
+         public SaludatorExceptionManager () {
+         }
+         public override void ProcessException (Exception exception) {
+-            base.ProcessException (exception); 
++            base.ProcessException (exception);
++            Console.WriteLine (&quot;Ha ocurrido una exception.&quot;);
+         }
+     }
+ }
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs	2005-04-07 22:22:28 UTC (rev 414)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs	2005-04-07 22:24:48 UTC (rev 415)
+@@ -2,25 +2,29 @@
+ using ComponentModel;
+ using ComponentModel.Container;
+ using ComponentModel.VO;
++using ComponentModel.Interfaces;
+ using Gtk;
+ 
+ namespace ComponentModel.ComponentTest.Components.Saludator.Form {
+-    public class SaludatorForm  {
++    public class SaludatorForm : IViewHandler {
+         private Window window;
+         private Button button;
+         
+         public SaludatorForm ()  {
++        /**
+             Application.Init ();
+             window = new Window (&quot;Saludator Form from Component Test&quot;);
+             button = new Button (&quot;Pulsame&quot;);
+             button.Clicked += new EventHandler (OnButtonClicked);
+             window.Add (button);
++       */
+         }
+        
+         public void ResponseInitApp (ResponseMethodVO response) {
+-            window.ShowAll ();
++         //   window.ShowAll ();
++         //   Application.Run ();
++         //   Application.RunIteration ();
+             Console.WriteLine (&quot;Response Initapp executed.&quot;);
+-            Application.Run ();
+         }
+         
+         public void ResponseSaluda (ResponseMethodVO response) {
+
+Modified: ComponentModel/trunk/ComponentTest/src/Launcher.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Launcher.cs	2005-04-07 22:22:28 UTC (rev 414)
++++ ComponentModel/trunk/ComponentTest/src/Launcher.cs	2005-04-07 22:24:48 UTC (rev 415)
+@@ -14,10 +14,8 @@
+                 Console.WriteLine (&quot;Dcm no es null&quot;);
+             else
+                 Console.WriteLine (&quot;Dcm es null&quot;);
++            dcm.Execute (&quot;InitApp&quot;, null);
+             dcm.Execute (&quot;Saluda&quot;, null);
+-            dcm.Execute (&quot;SaludaATodos&quot;, null);
+-            dcm = (DefaultComponentModel)defaultContainer.GetComponentByName (&quot;Saludador!&quot;);
+-            Console.WriteLine (&quot;Fin exec terminated program.&quot;);
+         }
+     }
+ }
+
+Modified: ComponentModel/trunk/src/ComponentModel.VO/ResponseMethodVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.VO/ResponseMethodVO.cs	2005-04-07 22:22:28 UTC (rev 414)
++++ ComponentModel/trunk/src/ComponentModel.VO/ResponseMethodVO.cs	2005-04-07 22:24:48 UTC (rev 415)
+@@ -3,7 +3,20 @@
+ namespace ComponentModel.VO {
+     public class ResponseMethodVO {
+         private object responseValue; 
++        private bool executionSuccess;
+ 
++        public ResponseMethodVO () {
++            this.ExecutionSuccess = false;
++        }
++        
++        public bool IsExecutionSuccess {
++            get {return executionSuccess;}
++        }
++
++        internal bool ExecutionSuccess {
++            set {executionSuccess = value;}
++        }
++        
+         public object ResponseValue {
+             get {return responseValue;}
+             set {responseValue = value;}
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-04-07 22:22:28 UTC (rev 414)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-04-07 22:24:48 UTC (rev 415)
+@@ -12,13 +12,14 @@
+         //Logging
+         private Logger logger = LogManager.GetLogger (&quot;ComponentModel.DefaultComponentModel&quot;);
+         private ComponentModelVO vO;
+-        private DefaultExceptionManager defaultExceptionManager;
++        private IExceptionManager defaultExceptionManager;
+ 
+-        public DefaultExceptionManager DefaultExceptionManager {
++        public IExceptionManager DefaultExceptionManager {
+             get {return defaultExceptionManager;}
+             set {defaultExceptionManager = value;}
+         }
+-        
++
++ 
+         //Properties
+         public ComponentModelVO VO {
+             get {return vO;}
+@@ -42,7 +43,7 @@
+                     }
+                 }
+             }
+-            //Si llega aqu&#237;, no ha encontrado el exceptionManager.
++            //Si llega aqu&#237;, no ha encontrado el tipo del exceptionManager.
+             throw new ExceptionManagerNotFoundException (&quot;Exception Manager Can't be found in Component.&quot;);
+             //return null;
+         }
+@@ -61,12 +62,15 @@
+         }
+         
+         private MethodInfo GetMethodResponse (Type viewType, ComponentMethodAttribute componentMethodAttribute) {
++            if (componentMethodAttribute == null) {
++                throw new ResponseNotFoundException (&quot;Please set up correctly Response Attribute.&quot;);    
++            }
+             MethodInfo responseMethod = viewType.GetMethod (componentMethodAttribute.ResponseName, BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public) ;
+             if (responseMethod == null) {
+                 throw new ResponseNotFoundException (&quot;Response: &quot; + componentMethodAttribute.ResponseName + &quot; not found in: &quot; + viewType.ToString ());
+             } 
+             else {
+-            logger.Debug (&quot;Finded response to execute: &quot; + responseMethod.ToString () + &quot; in: &quot; + viewType.ToString ());
++                logger.Debug (&quot;Finded response to execute: &quot; + responseMethod.ToString () + &quot; in: &quot; + viewType.ToString ());
+             }
+             return responseMethod;
+         } 
+@@ -75,7 +79,7 @@
+             if (defaultExceptionManager == null) {
+                 logger.Debug (&quot;Trying to instantiate ExceptionManager.&quot;);
+                 Type typeManager = this.GetTypeExceptionManager (this.VO.ExceptionClassName);
+-                this.defaultExceptionManager = (DefaultExceptionManager)typeManager.GetConstructor (null).Invoke (null);
++                this.defaultExceptionManager = (IExceptionManager)typeManager.GetConstructor (null).Invoke (null);
+                 logger.Debug (&quot;Exception manager instatiated.&quot;);
+             }
+             logger.Debug (&quot;Exception manager already instatiated.&quot;);
+@@ -91,6 +95,7 @@
+                 object obj = viewType.GetConstructor (null).Invoke (null);
+                 logger.Debug (&quot;Executing response method: &quot; + methodResponse.ToString ());
+                 methodResponse.Invoke (obj, new object[] {responseMethodVO});
++                responseMethodVO.ExecutionSuccess = true;
+                 return responseMethodVO;
+             }
+             catch (TargetInvocationException exception) {
+@@ -122,11 +127,14 @@
+         }
+         
+         private Type GetViewType (ComponentMethodAttribute componentMethodAttribute) {
++            if (componentMethodAttribute == null)
++                throw new ViewNotFoundException (&quot;Please set up attributes correctly.&quot;);
+             foreach (Assembly assembly in DefaultContainer.Instance.Assemblies) {
+                 foreach (Type type in assembly.GetTypes ()) {
+                     if ((type.ToString ()).Equals (componentMethodAttribute.ViewName)) {
+                         logger.Debug (&quot;ViewType finded: &quot; + type.ToString ());
+-                        return type;
++                        if (type.GetInterface (&quot;IViewHandler&quot;) != null)    
++                            return type;
+                     }
+                 }
+             }
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000127.html">[Mspace-checkins] r414 - Red.ProjectManager/trunk
+</A></li>
+	<LI>Next message: <A HREF="000129.html">[Mspace-checkins] r416 - in SimpleP/trunk: . build ext src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#128">[ date ]</a>
+              <a href="thread.html#128">[ thread ]</a>
+              <a href="subject.html#128">[ subject ]</a>
+              <a href="author.html#128">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

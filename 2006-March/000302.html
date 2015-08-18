@@ -1,0 +1,746 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r590 - / HA HA/etc HA/etc/HA HA/etc/init.d HA/usr HA/usr/local HA/usr/local/sbin HA/usr/local/sbin/HA
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r590%20-%20/%20HA%20HA/etc%20HA/etc/HA%20HA/etc/init.d%20HA/usr%20HA/usr/local%20HA/usr/local/sbin%20HA/usr/local/sbin/HA&In-Reply-To=%3C200603142136.k2ELatJO008091%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000303.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r590 - / HA HA/etc HA/etc/HA HA/etc/init.d HA/usr HA/usr/local HA/usr/local/sbin HA/usr/local/sbin/HA</H1>
+    <B>luis at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r590%20-%20/%20HA%20HA/etc%20HA/etc/HA%20HA/etc/init.d%20HA/usr%20HA/usr/local%20HA/usr/local/sbin%20HA/usr/local/sbin/HA&In-Reply-To=%3C200603142136.k2ELatJO008091%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r590 - / HA HA/etc HA/etc/HA HA/etc/init.d HA/usr HA/usr/local HA/usr/local/sbin HA/usr/local/sbin/HA">luis at berlios.de
+       </A><BR>
+    <I>Tue Mar 14 22:36:55 CET 2006</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000303.html">[Mspace-checkins] r591 - HA/usr/local/sbin/HA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#302">[ date ]</a>
+              <a href="thread.html#302">[ thread ]</a>
+              <a href="subject.html#302">[ subject ]</a>
+              <a href="author.html#302">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: luis
+Date: 2006-03-14 22:36:53 +0100 (Tue, 14 Mar 2006)
+New Revision: 590
+
+Added:
+   HA/
+   HA/etc/
+   HA/etc/HA/
+   HA/etc/HA/ha.cf
+   HA/etc/init.d/
+   HA/etc/init.d/firewall
+   HA/etc/init.d/ha
+   HA/etc/init.d/remote_ha
+   HA/etc/init.d/routes
+   HA/usr/
+   HA/usr/local/
+   HA/usr/local/sbin/
+   HA/usr/local/sbin/HA/
+   HA/usr/local/sbin/HA/fw_check.sh
+   HA/usr/local/sbin/HA/ha.sh
+   HA/usr/local/sbin/HA/ip_check.sh
+   HA/usr/local/sbin/HA/remote_ha.sh
+   HA/usr/local/sbin/HA/routes_check.sh
+Log:
+High Availability project created
+
+
+Added: HA/etc/HA/ha.cf
+===================================================================
+--- HA/etc/HA/ha.cf	2005-11-28 11:40:13 UTC (rev 589)
++++ HA/etc/HA/ha.cf	2006-03-14 21:36:53 UTC (rev 590)
+@@ -0,0 +1,28 @@
++#!/bin/bash
++
++BASE_PATH=/etc/HA/
++BIN_PATH=/usr/local/sbin/HA/
++PATH_LOG=/var/log/ha_log
++
++IFCONFIG=/sbin/ifconfig
++PING=/bin/ping
++
++SLEEP_TIME=15
++
++### Recursos de HA
++IFACES=&quot;eth0:0_10.1.1.1/255.255.0.0
++eth0:1_10.99.1.1/255.255.255.0
++eth1:0_10.20.1.12/255.255.0.0&quot;
++
++SERVICES=&quot;bind9
++dhcp3-server&quot;
++
++### Modulos de precheck de servicios
++IPS_SERVICE_PRECHECK=${BIN_PATH}ips_service_precheck.sh
++
++### Modulos de comprobacion de los recursos
++IP_CHECK=${BIN_PATH}ip_check.sh
++ROUTES_CHECK=${BIN_PATH}routes_check.sh
++FW_CHECK=${BIN_PATH}fw_check.sh
++SERVICE_CHECK=${BIN_PATH}service_check.sh
++
+
+
+Property changes on: HA/etc/HA/ha.cf
+___________________________________________________________________
+Name: svn:executable
+   + *
+
+Added: HA/etc/init.d/firewall
+===================================================================
+--- HA/etc/init.d/firewall	2005-11-28 11:40:13 UTC (rev 589)
++++ HA/etc/init.d/firewall	2006-03-14 21:36:53 UTC (rev 590)
+@@ -0,0 +1,56 @@
++#!/bin/bash
++
++###################################
++# Script de init para el Firewall.
++# 
++# AUTHOR: Luis Bosque
++# DATE:   20060309.
++# NAME:   firewall
++#
++
++
++FIREWALL_SCRIPT=/usr/local/sbin/firewall/firewall.sh
++FW_PIDFILE=/var/run/firewall.pid
++
++#######
++# Comprobaciones basicas
++#
++if test ! -f ${FIREWALL_SCRIPT};
++then
++	echo &quot;No se encuentra el script del firewall. Se suspende.&quot;
++	exit 1
++else
++	. ${FIREWALL_SCRIPT}
++fi
++
++
++case &quot;${1}&quot; in
++  start)
++        Start
++        if [ ${?} = 0 ]
++	then
++		touch ${FW_PIDFILE}
++	fi	
++	;;
++  stop)
++        Stop
++        if [ ${?} = 0 ]
++	then
++		rm -f ${FW_PIDFILE}
++	fi	
++	;;
++  restart)
++        Stop
++	Start
++        ;;
++  status)
++	if [ -f ${FW_PIDFILE} ]
++	then
++		echo &quot;OK&quot;
++	else
++		echo &quot;stopped&quot;
++	fi
++	;;
++  *)
++        Usage
++esac
+
+
+Property changes on: HA/etc/init.d/firewall
+___________________________________________________________________
+Name: svn:executable
+   + *
+
+Added: HA/etc/init.d/ha
+===================================================================
+--- HA/etc/init.d/ha	2005-11-28 11:40:13 UTC (rev 589)
++++ HA/etc/init.d/ha	2006-03-14 21:36:53 UTC (rev 590)
+@@ -0,0 +1,90 @@
++#!/bin/bash
++
++#################################
++# Script de init para la HA.
++# 
++# AUTHOR: Luis Bosque
++# DATE:   20060309.
++# NAME:   ha
++#
++
++
++BASE_PATH=/etc/HA/
++BIN_PATH=/usr/local/sbin/HA/
++CONF_FILE=${BASE_PATH}ha.cf
++HA_PIDFILE=/var/run/ha.pid
++HA_SCRIPT=${BIN_PATH}ha.sh
++
++#######
++# Comprobaciones basicas
++#
++if [ ! -f ${HA_SCRIPT} ]
++then
++        echo &quot;No se encuentra el script de HA. Se suspende.&quot;
++        exit 1
++fi
++
++if [ ! -f ${CONF_FILE} ]
++then
++        echo &quot;No se encuentra el script de HA. Se suspende.&quot;
++        exit 1
++else
++	. ${CONF_FILE}
++fi
++
++
++Usage ()
++{
++  PROGRAM=&quot;$0&quot;
++  echo &quot;Usage: ${PROGRAM} {start|stop|restart|status|help}&quot;
++}
++
++. ${CONF_FILE}
++
++
++Start ()
++{
++	${HA_SCRIPT} &amp;	
++}
++
++Stop ()
++{
++	/etc/init.d/dhcp3-server stop
++	/etc/init.d/bind9 stop
++	/etc/init.d/firewall stop
++	/etc/init.d/routes stop
++	for i in ${IFACES}
++	do
++		IFACE=`echo ${i} |cut -d_ -f1`
++		${IFCONFIG} ${IFACE} down
++	done
++}
++
++
++case &quot;$1&quot; in
++  start)
++        Start
++	sleep 5
++	ps ax | grep ha.sh |grep -v ps | grep -v grep |awk '{print $1}' &gt; ${HA_PIDFILE}
++	;;
++  stop)
++	kill `cat ${HA_PIDFILE}`
++	rm ${HA_PIDFILE}
++        Stop
++        ;;
++  restart)
++        Stop
++	Start
++        ;;
++  status)
++	if [ -f ${HA_PIDFILE} ]
++	then
++		echo &quot;OK&quot;
++	else
++		echo &quot;stopped&quot;
++	fi
++	;;
++  *)
++        Usage
++	;;
++esac
+
+
+Property changes on: HA/etc/init.d/ha
+___________________________________________________________________
+Name: svn:executable
+   + *
+
+Added: HA/etc/init.d/remote_ha
+===================================================================
+--- HA/etc/init.d/remote_ha	2005-11-28 11:40:13 UTC (rev 589)
++++ HA/etc/init.d/remote_ha	2006-03-14 21:36:53 UTC (rev 590)
+@@ -0,0 +1,84 @@
++#!/bin/bash
++
++#####################################
++# Script de init para la comprobacion
++# del nodoA y sustitucion en caso de
++# perdida.
++# 
++# AUTHOR: Luis Bosque
++# DATE:   20060309.
++# NAME:   remote_ha
++#
++
++
++BASE_PATH=/etc/HA/
++BIN_PATH=/usr/local/sbin/HA/
++CONF_FILE=${BASE_PATH}ha.cf
++REMOTE_HA_PIDFILE=/var/run/remote_ha.pid
++REMOTE_HA_SCRIPT=${BIN_PATH}remote_ha.sh
++
++#######
++# Comprobaciones basicas
++#
++if [ ! -f ${REMOTE_HA_SCRIPT} ]
++then
++        echo &quot;No se encuentra el script de HA. Se suspende.&quot;
++        exit 1
++fi
++
++if [ ! -f ${CONF_FILE} ]
++then
++        echo &quot;No se encuentra el script de HA. Se suspende.&quot;
++        exit 1
++else
++	. ${CONF_FILE}
++fi
++
++
++Usage ()
++{
++  PROGRAM=&quot;$0&quot;
++  echo &quot;Usage: ${PROGRAM} {start|stop|restart|status|help}&quot;
++}
++
++. ${CONF_FILE}
++
++
++Start ()
++{
++	${REMOTE_HA_SCRIPT} &amp;	
++}
++
++Stop ()
++{
++	echo &quot;Stopping&quot;
++}
++
++
++case &quot;$1&quot; in
++  start)
++        Start
++	sleep 5
++	ps ax | grep ha.sh |grep -v ps | grep -v grep |awk '{print $1}' &gt; ${REMOTE_HA_PIDFILE}
++	;;
++  stop)
++	kill `cat ${REMOTE_HA_PIDFILE}`
++	rm ${REMOTE_HA_PIDFILE}
++        Stop
++        ;;
++  restart)
++        Stop
++	Start
++        ;;
++  status)
++	if [ -f ${REMOTE_HA_PIDFILE} ]
++	then
++		echo &quot;OK&quot;
++	else
++		echo &quot;stopped&quot;
++	fi
++	;;
++  *)
++        Usage
++	;;
++esac
+
+
+Property changes on: HA/etc/init.d/remote_ha
+___________________________________________________________________
+Name: svn:executable
+   + *
+
+Added: HA/etc/init.d/routes
+===================================================================
+--- HA/etc/init.d/routes	2005-11-28 11:40:13 UTC (rev 589)
++++ HA/etc/init.d/routes	2006-03-14 21:36:53 UTC (rev 590)
+@@ -0,0 +1,55 @@
++#!/bin/bash
++
++###################################
++# Script de init para las rutas.
++# 
++# AUTHOR: Luis Bosque
++# DATE:   20060309.
++# NAME:   routes
++#
++
++ROUTES_SCRIPT=/usr/local/sbin/routes.sh
++ROUTES_PIDFILE=/var/run/routes.pid
++
++######
++# Comprobaciones basicas
++#
++if test ! -f ${ROUTES_SCRIPT};
++then
++  echo &quot;No se encuentra el script de las rutas. Se suspende.&quot;
++  exit 1
++else
++  . ${ROUTES_SCRIPT}
++fi
++
++
++case ${1} in
++  start)
++  	Rutas add
++	if [ ${?} = 0 ]
++	then
++		touch ${ROUTES_PIDFILE}
++	else
++		Rutas del &gt; /dev/null
++		exit 1
++	fi
++	;;
++  stop)
++  	Rutas del
++	rm ${ROUTES_PIDFILE}
++	;;
++  restart)
++  	Rutas del
++	Rutas add
++	;;
++   status)
++	if [ -f ${ROUTES_PIDFILE} ]
++	then
++		echo &quot;OK&quot;
++	else
++		echo &quot;stopped&quot;
++	fi
++	;;
++  *)
++  	Usage
++esac
+
+
+Property changes on: HA/etc/init.d/routes
+___________________________________________________________________
+Name: svn:executable
+   + *
+
+Added: HA/usr/local/sbin/HA/fw_check.sh
+===================================================================
+--- HA/usr/local/sbin/HA/fw_check.sh	2005-11-28 11:40:13 UTC (rev 589)
++++ HA/usr/local/sbin/HA/fw_check.sh	2006-03-14 21:36:53 UTC (rev 590)
+@@ -0,0 +1,33 @@
++#!/bin/bash
++
++################################################
++#
++#  SCRIPT PARA COMPROBAR SI LAS IPS VIRTUALES
++#  ESTAN LEVANTADAS. SI NO LO ESTAN SE LEVANTAN
++#
++
++
++CONF_FILE=${BASE_PATH}ha.cf
++. ${CONF_FILE}
++FW_STATUS=&quot;CHECK&quot;
++RETRY_COUNT=2
++COUNTER=0
++
++while [[ ${FW_STATUS} != &quot;OK&quot; &amp;&amp; ${COUNTER} -lt ${RETRY_COUNT} ]]
++do
++	if [[ `/etc/init.d/firewall status` = &quot;stopped&quot; ]]
++	then
++		/etc/init.d/firewall start
++		if [ ${?} != 0 ]
++		then
++			FW_STATUS=&quot;FAIL&quot;
++			break;
++		else
++			FW_STATUS=&quot;OK&quot;
++		fi
++	else
++		FW_STATUS=&quot;OK&quot;
++	fi
++	let &quot;COUNTER+=1&quot;
++done
++echo &quot;`date &quot;+%x %X&quot;` ESTADO DEL FIREWALL: ${IP_STATUS}&quot; &gt;&gt; ${PATH_LOG}
+
+
+Property changes on: HA/usr/local/sbin/HA/fw_check.sh
+___________________________________________________________________
+Name: svn:executable
+   + *
+
+Added: HA/usr/local/sbin/HA/ha.sh
+===================================================================
+--- HA/usr/local/sbin/HA/ha.sh	2005-11-28 11:40:13 UTC (rev 589)
++++ HA/usr/local/sbin/HA/ha.sh	2006-03-14 21:36:53 UTC (rev 590)
+@@ -0,0 +1,29 @@
++#!/bin/bash
++
++#############################################
++# Script principal de gestion de la HA.
++# No es usable directamente. Para utilizarlo,
++# se ha de hacer desde /etc/init.d/ha
++#
++# AUTHOR: Luis Bosque
++# DATE:   20060309.
++# NAME:   ha.sh
++#
++
++BASE_PATH=/etc/HA/
++CONF_FILE=${BASE_PATH}ha.cf
++HA_PIDFILE=/var/run/ha.pid
++
++sleep 2
++. ${CONF_FILE}
++
++
++### Bucle principal del sistema de HA
++while [ true ]
++do
++	. ${IP_CHECK}
++	. ${ROUTES_CHECK}
++	. ${FW_CHECK}
++	. ${SERVICE_CHECK}
++	sleep ${SLEEP_TIME}
++done
+
+
+Property changes on: HA/usr/local/sbin/HA/ha.sh
+___________________________________________________________________
+Name: svn:executable
+   + *
+
+Added: HA/usr/local/sbin/HA/ip_check.sh
+===================================================================
+--- HA/usr/local/sbin/HA/ip_check.sh	2005-11-28 11:40:13 UTC (rev 589)
++++ HA/usr/local/sbin/HA/ip_check.sh	2006-03-14 21:36:53 UTC (rev 590)
+@@ -0,0 +1,41 @@
++#!/bin/bash
++
++################################################
++#
++#  SCRIPT PARA COMPROBAR SI LAS IPS VIRTUALES
++#  ESTAN LEVANTADAS. SI NO LO ESTAN SE LEVANTAN
++#
++
++
++CONF_FILE=${BASE_PATH}ha.cf
++. ${CONF_FILE}
++IP_STATUS=&quot;CHECK&quot;
++RETRY_COUNT=2
++COUNTER=0
++
++while [[ ${IP_STATUS} != &quot;OK&quot; &amp;&amp; ${COUNTER} -lt ${RETRY_COUNT} ]]
++do
++	for i in ${IFACES}
++	do
++		IFACE=`echo ${i} |cut -d_ -f1`
++		HOST=`echo ${i} |cut -d_ -f2 |cut -d/ -f1`
++		NETMASK=`echo ${i} |cut -d_ -f2 |cut -d/ -f2`
++		if [[ -z `${IFCONFIG} ${IFACE} |grep inet` ]]
++		then
++			${IFCONFIG} ${IFACE} ${HOST} netmask ${NETMASK} up
++			if [ ${?} != 0 ]
++			then
++				IP_STATUS=&quot;FAIL&quot;
++				break;
++			else
++				IP_STATUS=&quot;OK&quot;
++				arping -q -w 5 -U ${HOST}
++								
++			fi
++		else
++			IP_STATUS=&quot;OK&quot;
++		fi 
++	done
++	let &quot;COUNTER+=1&quot;
++done
++echo &quot;`date &quot;+%x %X&quot;` ESTADO DE LA RED: ${IP_STATUS}&quot; &gt;&gt; ${PATH_LOG}
+
+
+Property changes on: HA/usr/local/sbin/HA/ip_check.sh
+___________________________________________________________________
+Name: svn:executable
+   + *
+
+Added: HA/usr/local/sbin/HA/remote_ha.sh
+===================================================================
+--- HA/usr/local/sbin/HA/remote_ha.sh	2005-11-28 11:40:13 UTC (rev 589)
++++ HA/usr/local/sbin/HA/remote_ha.sh	2006-03-14 21:36:53 UTC (rev 590)
+@@ -0,0 +1,91 @@
++#!/bin/bash
++
++############################################
++# Script demonio para HA que monitoriza
++# el estado del nodoA y en caso de perdida
++# de comunicacion con el mismo, arranca
++# todos los recursos sustituyendo por
++# completo al nodoA. El script solo funciona
++# ejecutandose desde /etc/init.d/remota_ha.
++# No tiene funcionamiento independiente.
++# 
++# AUTHOR: Luis Bosque
++# DATE:   20060309.
++# NAME:   remote_ha
++#
++
++HA_INIT_SCRIPT=/etc/init.d/ha
++
++PING=/bin/ping
++
++REPEAT=1
++TIMEOUT=10
++TIMESLEEP=5
++TTL=1
++
++CONTINUE=YES
++CRITICAL_STATUS=NO
++
++CHECK_IPS=&quot;ip_fija1
++ip_fija2&quot;
++
++NODE_IPS=&quot;virtual_ip1
++virtual_ip2
++virtual_ip3&quot;
++
++
++IP_STATUS ()
++{
++	${PING} -c ${REPEAT} -w ${TIMEOUT} -t ${TTL} ${1} &gt; /dev/null 2&gt;&amp;1
++}
++
++
++while [ ${CONTINUE} = &quot;YES&quot; ]
++do
++	echo &quot;**** COMPROBANDO COMUNICACION LOCAL ****&quot;
++	LOCAL=CHECK
++	while [[ ${LOCAL} != &quot;OK&quot; ]]
++	do
++		LOCAL=CHECK
++		for i in ${CHECK_IPS}
++		do
++			IP_STATUS ${i}
++			if [[ ${?} = 0 &amp;&amp; ${LOCAL} != &quot;FAIL&quot; ]]
++			then
++				LOCAL=OK
++			else
++				LOCAL=FAIL
++			fi
++		done
++	done
++	echo &quot;**** COMUNICACION LOCAL CORRECTA ****&quot;
++	
++	echo &quot;**** COMPROBANDO COMUNICACION REMOTA ****&quot;
++	REMOTE=CHECK
++	for i in ${NODE_IPS}
++	do
++		IP_STATUS ${i}
++		if [[ ${?} = 0 &amp;&amp; ${REMOTE} != &quot;FAIL&quot; ]]
++		then
++			REMOTE=OK
++		else
++			REMOTE=FAIL
++			break;
++		fi
++	done
++	if [ ${REMOTE} = &quot;OK&quot; ]
++	then
++		echo &quot;**** COMUNICACION REMOTA CORRECTA ****&quot;
++		sleep 10
++	else
++		echo &quot;**** COMUNICACION REMOTA CRITICA ****&quot;
++		CONTINUE=NO
++		CRITICAL_STATUS=YES
++	fi	
++done
++
++if [[ ${CRITICAL_STATUS} = &quot;YES&quot; ]]
++then
++	${HA_INIT_SCRIPT} start
++	/etc/init.d/remote_ha stop
++fi
+
+
+Property changes on: HA/usr/local/sbin/HA/remote_ha.sh
+___________________________________________________________________
+Name: svn:executable
+   + *
+
+Added: HA/usr/local/sbin/HA/routes_check.sh
+===================================================================
+--- HA/usr/local/sbin/HA/routes_check.sh	2005-11-28 11:40:13 UTC (rev 589)
++++ HA/usr/local/sbin/HA/routes_check.sh	2006-03-14 21:36:53 UTC (rev 590)
+@@ -0,0 +1,33 @@
++#!/bin/bash
++
++################################################
++#
++#  SCRIPT PARA COMPROBAR SI LAS IPS VIRTUALES
++#  ESTAN LEVANTADAS. SI NO LO ESTAN SE LEVANTAN
++#
++
++
++CONF_FILE=${BASE_PATH}ha.cf
++. ${CONF_FILE}
++ROUTES_STATUS=&quot;CHECK&quot;
++RETRY_COUNT=2
++COUNTER=0
++
++while [[ ${ROUTES_STATUS} != &quot;OK&quot; &amp;&amp; ${COUNTER} -lt ${RETRY_COUNT} ]]
++do
++	if [[ `/etc/init.d/routes status` = &quot;stopped&quot; ]]
++	then
++		/etc/init.d/routes start
++		if [ ${?} != 0 ]
++		then
++			ROUTES_STATUS=&quot;FAIL&quot;
++			break;
++		else
++			ROUTES_STATUS=&quot;OK&quot;
++		fi
++	else
++		ROUTES_STATUS=&quot;OK&quot;
++	fi
++	let &quot;COUNTER+=1&quot;
++done
++echo &quot;`date &quot;+%x %X&quot;` ESTADO DE LAS RUTAS: ${ROUTES_STATUS}&quot; &gt;&gt; ${PATH_LOG}
+
+
+Property changes on: HA/usr/local/sbin/HA/routes_check.sh
+___________________________________________________________________
+Name: svn:executable
+   + *
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000303.html">[Mspace-checkins] r591 - HA/usr/local/sbin/HA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#302">[ date ]</a>
+              <a href="thread.html#302">[ thread ]</a>
+              <a href="subject.html#302">[ subject ]</a>
+              <a href="author.html#302">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

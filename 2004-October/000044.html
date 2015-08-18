@@ -1,0 +1,3454 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r308 - in Muine.Sdk: . DataKits/Sqlite PlayerKits/Gstreamer doc doc/arch doc/en doc/en/Player.Configuration doc/en/Player.Data doc/en/Player.Player doc/en/Player.Playlist doc/en/Player.Services examples src src/Configuration src/Data src/Player src/Playlist src/Services
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r308%20-%20in%20Muine.Sdk%3A%20.%20DataKits/Sqlite%20PlayerKits/Gstreamer%20doc%20doc/arch%20doc/en%20doc/en/Player.Configuration%20doc/en/Player.Data%20doc/en/Player.Player%20doc/en/Player.Playlist%20doc/en/Player.Services%20examples%20src%20src/Configuration%20src/Data%20src/Player%20src/Playlist%20src/Services&In-Reply-To=%3C200410242030.i9OKUjLx002790%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000043.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r308 - in Muine.Sdk: . DataKits/Sqlite PlayerKits/Gstreamer doc doc/arch doc/en doc/en/Player.Configuration doc/en/Player.Data doc/en/Player.Player doc/en/Player.Playlist doc/en/Player.Services examples src src/Configuration src/Data src/Player src/Playlist src/Services</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r308%20-%20in%20Muine.Sdk%3A%20.%20DataKits/Sqlite%20PlayerKits/Gstreamer%20doc%20doc/arch%20doc/en%20doc/en/Player.Configuration%20doc/en/Player.Data%20doc/en/Player.Player%20doc/en/Player.Playlist%20doc/en/Player.Services%20examples%20src%20src/Configuration%20src/Data%20src/Player%20src/Playlist%20src/Services&In-Reply-To=%3C200410242030.i9OKUjLx002790%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r308 - in Muine.Sdk: . DataKits/Sqlite PlayerKits/Gstreamer doc doc/arch doc/en doc/en/Player.Configuration doc/en/Player.Data doc/en/Player.Player doc/en/Player.Playlist doc/en/Player.Services examples src src/Configuration src/Data src/Player src/Playlist src/Services">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Sun Oct 24 22:30:45 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000043.html">[Mspace-checkins] r307 - in Muine.Sdk: . doc doc/arch
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#44">[ date ]</a>
+              <a href="thread.html#44">[ thread ]</a>
+              <a href="subject.html#44">[ subject ]</a>
+              <a href="author.html#44">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2004-10-24 22:30:43 +0200 (Sun, 24 Oct 2004)
+New Revision: 308
+
+Added:
+   Muine.Sdk/PlayerSdk.ini
+   Muine.Sdk/doc/en/Player.Configuration/
+   Muine.Sdk/doc/en/Player.Configuration/Configuration.xml
+   Muine.Sdk/doc/en/Player.Configuration/FileStore.xml
+   Muine.Sdk/doc/en/Player.Data/
+   Muine.Sdk/doc/en/Player.Data/Album.xml
+   Muine.Sdk/doc/en/Player.Data/AlbumMetadata.xml
+   Muine.Sdk/doc/en/Player.Data/Cover.xml
+   Muine.Sdk/doc/en/Player.Data/IAlbumComparer.xml
+   Muine.Sdk/doc/en/Player.Data/ICoverDb.xml
+   Muine.Sdk/doc/en/Player.Data/IMusicDb.xml
+   Muine.Sdk/doc/en/Player.Data/ISearchable.xml
+   Muine.Sdk/doc/en/Player.Data/ISongComparer.xml
+   Muine.Sdk/doc/en/Player.Data/SimpleAlbumComparer.xml
+   Muine.Sdk/doc/en/Player.Data/SimpleSongComparer.xml
+   Muine.Sdk/doc/en/Player.Data/Song.xml
+   Muine.Sdk/doc/en/Player.Data/SongMetadata.xml
+   Muine.Sdk/doc/en/Player.Player/
+   Muine.Sdk/doc/en/Player.Player/EOSEventHandler.xml
+   Muine.Sdk/doc/en/Player.Player/IPlayer.xml
+   Muine.Sdk/doc/en/Player.Player/RepetitionType.xml
+   Muine.Sdk/doc/en/Player.Player/StateEventHandler.xml
+   Muine.Sdk/doc/en/Player.Player/TickEventHandler.xml
+   Muine.Sdk/doc/en/Player.Playlist/
+   Muine.Sdk/doc/en/Player.Playlist/ClearedEventHandler.xml
+   Muine.Sdk/doc/en/Player.Playlist/IPlaylist.xml
+   Muine.Sdk/doc/en/Player.Playlist/Playlist.xml
+   Muine.Sdk/doc/en/Player.Playlist/SongAddedEventHandler.xml
+   Muine.Sdk/doc/en/Player.Playlist/SongChangedEventHandler.xml
+   Muine.Sdk/doc/en/Player.Playlist/SongRemovedEventHandler.xml
+   Muine.Sdk/doc/en/Player.Services/
+   Muine.Sdk/doc/en/Player.Services/SdkServices.xml
+   Muine.Sdk/doc/en/Player.Services/ServiceUnavailableException.xml
+   Muine.Sdk/doc/player-sdk.source
+   Muine.Sdk/src/player-sdk.pc.in
+Removed:
+   Muine.Sdk/MuineSdk.ini
+   Muine.Sdk/doc/en/Muine.Sdk.Configuration/
+   Muine.Sdk/doc/en/Muine.Sdk.Data/
+   Muine.Sdk/doc/en/Muine.Sdk.Player/
+   Muine.Sdk/doc/en/Muine.Sdk.Playlist/
+   Muine.Sdk/doc/en/Muine.Sdk.Services/
+   Muine.Sdk/doc/muine-sdk.source
+   Muine.Sdk/src/muine-sdk.pc.in
+Modified:
+   Muine.Sdk/COPYING
+   Muine.Sdk/ChangeLog
+   Muine.Sdk/DataKits/Sqlite/Makefile.am
+   Muine.Sdk/DataKits/Sqlite/SqliteDataKit.cs
+   Muine.Sdk/Makefile.am
+   Muine.Sdk/PlayerKits/Gstreamer/GstPlayer.cs
+   Muine.Sdk/PlayerKits/Gstreamer/Makefile.am
+   Muine.Sdk/configure.in
+   Muine.Sdk/doc/Makefile.am
+   Muine.Sdk/doc/arch/NamespaceOverview.txt
+   Muine.Sdk/examples/DbTest.cs
+   Muine.Sdk/examples/Makefile.am
+   Muine.Sdk/src/Configuration/Configuration.cs
+   Muine.Sdk/src/Configuration/FileStore.cs
+   Muine.Sdk/src/Data/Album.cs
+   Muine.Sdk/src/Data/AlbumMetadata.cs
+   Muine.Sdk/src/Data/Cover.cs
+   Muine.Sdk/src/Data/IAlbumComparer.cs
+   Muine.Sdk/src/Data/ICoverDb.cs
+   Muine.Sdk/src/Data/IMusicDb.cs
+   Muine.Sdk/src/Data/ISearchable.cs
+   Muine.Sdk/src/Data/ISongComparer.cs
+   Muine.Sdk/src/Data/Song.cs
+   Muine.Sdk/src/Data/SongMetadata.cs
+   Muine.Sdk/src/Makefile.am
+   Muine.Sdk/src/Player/IPlayer.cs
+   Muine.Sdk/src/Playlist/IPlaylist.cs
+   Muine.Sdk/src/Playlist/Playlist.cs
+   Muine.Sdk/src/Services/SdkServices.cs
+   Muine.Sdk/src/Services/ServiceUnavailableException.cs
+Log:
+2004-10-24  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+
+    * Docs regenerated
+    * Changed namespaces name from Muine.Sdk to Player
+    * Added BSD license
+    * Changed all muine references to player
+
+
+
+Modified: Muine.Sdk/COPYING
+===================================================================
+--- Muine.Sdk/COPYING	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/COPYING	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,22 @@
++Copyright (c) 2004,
++
++Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++Fredrik Hedberg &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">fredrik.hedberg at hedbergs.com</A>&gt;
++
++All rights reserved.
++
++Redistribution and use in source and binary forms, with or without modification,
++are permitted provided that the following conditions are met:
++
++	* Redistributions of source code must retain the above copyright notice, 
++	this list of conditions and the following disclaimer.
++
++    * Redistributions in binary form must reproduce the above copyright notice,
++	this list of conditions and the following disclaimer in the documentation 
++	and/or other materials provided with the distribution.
++
++    * Neither the name of the authors nor the names of its contributors 
++	may be used to endorse or promote products derived from this software 
++	without specific prior written permission.
++
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Modified: Muine.Sdk/ChangeLog
+===================================================================
+--- Muine.Sdk/ChangeLog	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/ChangeLog	2004-10-24 20:30:43 UTC (rev 308)
+@@ -1,5 +1,12 @@
+ 2004-10-24  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++	
++	* Docs regenerated
++	* Changed namespaces name from Muine.Sdk to Player
++	* Added BSD license
++	* Changed all muine references to player
+ 
++2004-10-24  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
+ 	* README:
+ 	* TODO:
+ 	* doc/arch/DirectoryOverview.txt:
+
+Modified: Muine.Sdk/DataKits/Sqlite/Makefile.am
+===================================================================
+--- Muine.Sdk/DataKits/Sqlite/Makefile.am	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/DataKits/Sqlite/Makefile.am	2004-10-24 20:30:43 UTC (rev 308)
+@@ -1,11 +1,11 @@
+-REFERENCES= /r:Mono.Data.SqliteClient /r:../../src/Muine.Sdk.dll
++REFERENCES= /r:Mono.Data.SqliteClient /r:../../src/Player.Sdk.dll
+ 
+ all: SqliteDataKit.dll
+ 
+ SqliteDataKit.dll: *.cs
+ 	mcs -o $@ -target:library *.cs $(REFERENCES)
+ 
+-kitdir = $(prefix)/lib/Muine.Sdk/DataKits
++kitdir = $(prefix)/lib/Player.Sdk/DataKits
+ kit_DATA = SqliteDataKit.dll
+ 
+ CLEANFILES= *.dll
+
+Modified: Muine.Sdk/DataKits/Sqlite/SqliteDataKit.cs
+===================================================================
+--- Muine.Sdk/DataKits/Sqlite/SqliteDataKit.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/DataKits/Sqlite/SqliteDataKit.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,11 +17,11 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Data.Kits 
++namespace Player.Data.Kits 
+ {
+     using System;
+-    using Muine.Sdk.Data;
+-    using Muine.Sdk.Configuration;
++    using Player.Data;
++    using Player.Configuration;
+     using System.Collections;
+     using Mono.Data.SqliteClient;
+     using System.IO;
+
+Modified: Muine.Sdk/Makefile.am
+===================================================================
+--- Muine.Sdk/Makefile.am	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/Makefile.am	2004-10-24 20:30:43 UTC (rev 308)
+@@ -1,3 +1,3 @@
+ SUBDIRS = src PlayerKits DataKits examples doc
+ 
+-EXTRA_DIST = MuineSdk.ini
++EXTRA_DIST = PlayerSdk.ini
+
+Deleted: Muine.Sdk/MuineSdk.ini
+===================================================================
+--- Muine.Sdk/MuineSdk.ini	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/MuineSdk.ini	2004-10-24 20:30:43 UTC (rev 308)
+@@ -1,9 +0,0 @@
+-[Player]
+-PlayerKit.Type = GstPlayer
+-PlayerKit.Assembly = GstPlayer
+-
+-[Data]
+-DataKit.Type = Muine.Sdk.Data.Kits.SqliteDataKit
+-DataKit.Assembly = SqliteDataKit
+-
+-[Playlist]
+
+Modified: Muine.Sdk/PlayerKits/Gstreamer/GstPlayer.cs
+===================================================================
+--- Muine.Sdk/PlayerKits/Gstreamer/GstPlayer.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/PlayerKits/Gstreamer/GstPlayer.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -22,9 +22,9 @@
+ using System;
+ using System.Runtime.InteropServices;
+ using GLib;
+-using Muine.Sdk.Player;
+-using Muine.Sdk.Playlist;
+-using Muine.Sdk.Data;
++using Player.Player;
++using Player.Playlist;
++using Player.Data;
+ 
+ public class GstPlayer : GLib.Object, IPlayer
+ {
+
+Modified: Muine.Sdk/PlayerKits/Gstreamer/Makefile.am
+===================================================================
+--- Muine.Sdk/PlayerKits/Gstreamer/Makefile.am	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/PlayerKits/Gstreamer/Makefile.am	2004-10-24 20:30:43 UTC (rev 308)
+@@ -1,4 +1,4 @@
+-REFERENCES = -pkg:gtk-sharp /r:$(top_srcdir)/src/Muine.Sdk.dll
++REFERENCES = -pkg:gtk-sharp /r:$(top_srcdir)/src/Player.Sdk.dll
+ 
+ CSSOURCES = GstPlayer.cs
+ CSOURCES = player-gst.c
+@@ -13,7 +13,7 @@
+ 
+ all: GstPlayer.dll libgstplayer.so
+ 
+-libgstplayerdir = $(prefix)/lib/Muine.Sdk/PlayerKits
++libgstplayerdir = $(prefix)/lib/Player.Sdk/PlayerKits
+ libgstplayer_DATA = GstPlayer.dll libgstplayer.so GstPlayer.dll.config
+ 
+ EXTRA_DIST = GstPlayer.dll.config $(CSSOURCES) $(CSOURCES) $(CHEADERS)
+
+Copied: Muine.Sdk/PlayerSdk.ini (from rev 306, Muine.Sdk/MuineSdk.ini)
+===================================================================
+--- Muine.Sdk/MuineSdk.ini	2004-10-24 12:49:58 UTC (rev 306)
++++ Muine.Sdk/PlayerSdk.ini	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,9 @@
++[Player]
++PlayerKit.Type = GstPlayer
++PlayerKit.Assembly = GstPlayer
++
++[Data]
++DataKit.Type = Player.Data.Kits.SqliteDataKit
++DataKit.Assembly = SqliteDataKit
++
++[Playlist]
+
+Modified: Muine.Sdk/configure.in
+===================================================================
+--- Muine.Sdk/configure.in	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/configure.in	2004-10-24 20:30:43 UTC (rev 308)
+@@ -1,6 +1,6 @@
+ AC_INIT(Makefile.am)
+ AC_CANONICAL_SYSTEM
+-AM_INIT_AUTOMAKE(MuineSdk, 0.1)
++AM_INIT_AUTOMAKE(player-sdk, 0.1)
+ AM_MAINTAINER_MODE
+ 
+ dnl Version dependencies
+@@ -38,7 +38,7 @@
+ examples/Makefile
+ doc/Makefile
+ src/Makefile
+-src/muine-sdk.pc
++src/player-sdk.pc
+ PlayerKits/Makefile
+ PlayerKits/Gstreamer/Makefile
+ DataKits/Makefile
+
+Modified: Muine.Sdk/doc/Makefile.am
+===================================================================
+--- Muine.Sdk/doc/Makefile.am	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/Makefile.am	2004-10-24 20:30:43 UTC (rev 308)
+@@ -3,18 +3,18 @@
+ 
+ all: assemble
+ 
+-assemble: muine-sdk.zip muine-sdk.tree
++assemble: player-sdk.zip player-sdk.tree
+ 
+-muine-sdk.zip muine-sdk.tree: en/*/*.xml
+-	$(ASSEMBLER) --ecma $(srcdir)/en -o muine-sdk 
++player-sdk.zip player-sdk.tree: en/*/*.xml
++	$(ASSEMBLER) --ecma $(srcdir)/en -o player-sdk 
+ 
+ update:
+-	monodoc --update ../src/Muine.Sdk.dll -o ./en
++	monodoc --update ../src/Player.Sdk.dll -o ./en
+ 
+ docsdir = `monodoc --get-sourcesdir`
+-docs_DATA = muine-sdk.source muine-sdk.tree muine-sdk.zip
++docs_DATA = player-sdk.source player-sdk.tree player-sdk.zip
+ 
+-CLEANFILES = muine-sdk.tree muine-sdk.zip 
++CLEANFILES = player-sdk.tree player-sdk.zip 
+ 
+ EXTRA_DIST =			\
+-	muine-sdk.source
++	player-sdk.source
+
+Modified: Muine.Sdk/doc/arch/NamespaceOverview.txt
+===================================================================
+--- Muine.Sdk/doc/arch/NamespaceOverview.txt	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/arch/NamespaceOverview.txt	2004-10-24 20:30:43 UTC (rev 308)
+@@ -1,9 +1,9 @@
+-* Muine.Sdk.Data: abstract data types and Db services.
++* Player.Data: abstract data types and Db services.
+ 
+-* Muine.Sdk.Configuration: Basic configuration logic for the framework. Currently I am using Nini (<A HREF="http://nini.sf.net">http://nini.sf.net</A>) to keep the config in a .ini file. We could write a Nini backend to use gconf if we want. Although i think it is not necessary ATM.
++* Player.Configuration: Basic configuration logic for the framework. Currently I am using Nini (<A HREF="http://nini.sf.net">http://nini.sf.net</A>) to keep the config in a .ini file. We could write a Nini backend to use gconf if we want. Although i think it is not necessary ATM.
+ 
+-* Muine.Sdk.Player: player services.
++* Player.Player: player services.
+ 
+-* Muine.Sdk.Playlist: playlist services.
++* Player.Playlist: playlist services.
+ 
+-* Muine.Sdk.Services: basic logic to load the kits and so on. 
++* Player.Services: basic logic to load the kits and so on. 
+
+Added: Muine.Sdk/doc/en/Player.Configuration/Configuration.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Configuration/Configuration.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Configuration/Configuration.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,101 @@
++&lt;Type Name=&quot;Configuration&quot; FullName=&quot;Player.Configuration.Configuration&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class Configuration&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces /&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;GetInstance&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public static Player.Configuration.Configuration GetInstance ();&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Configuration.Configuration&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Configuration.Configuration&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;UserConfigDir&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string UserConfigDir { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;PlayerKitType&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string PlayerKitType { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;PlayerKitAssembly&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string PlayerKitAssembly { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;DataKitType&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string DataKitType { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;DataKitAssembly&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string DataKitAssembly { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Configuration/FileStore.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Configuration/FileStore.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Configuration/FileStore.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,88 @@
++&lt;Type Name=&quot;FileStore&quot; FullName=&quot;Player.Configuration.FileStore&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class FileStore&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces /&gt;
++  &lt;Attributes&gt;
++    &lt;Attribute&gt;
++      &lt;AttributeName&gt;System.Reflection.DefaultMemberAttribute&lt;/AttributeName&gt;
++    &lt;/Attribute&gt;
++  &lt;/Attributes&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;CreateFile&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public System.IO.FileStream CreateFile (string name, bool truncate);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.IO.FileStream&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;name&quot; Type=&quot;System.String&quot; /&gt;
++        &lt;Parameter Name=&quot;truncate&quot; Type=&quot;System.Boolean&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;name&quot;&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/param&gt;
++        &lt;param name=&quot;truncate&quot;&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.IO.FileStream&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public FileStore (string storeName);&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;ReturnValue /&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;storeName&quot; Type=&quot;System.String&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;storeName&quot;&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Configuration.FileStore&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Location&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string Location { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Item&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string Item { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;objName&quot; Type=&quot;System.String&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;objName&quot;&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Data/Album.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Data/Album.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Data/Album.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,188 @@
++&lt;Type Name=&quot;Album&quot; FullName=&quot;Player.Data.Album&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class Album : ISearchable, IComparable&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;Player.Data.ISearchable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.IComparable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;Compare&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public static int Compare (Player.Data.Album one, Player.Data.Album two);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;one&quot; Type=&quot;Player.Data.Album&quot; /&gt;
++        &lt;Parameter Name=&quot;two&quot; Type=&quot;Player.Data.Album&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;one&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Album&quot; /&gt;&lt;/param&gt;
++        &lt;param name=&quot;two&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Album&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;FitsCriteria&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual bool FitsCriteria (string [] search_bits);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;search_bits&quot; Type=&quot;System.String[]&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;search_bits&quot;&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Equals&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public override bool Equals (object obj);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;obj&quot; Type=&quot;System.Object&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;obj&quot;&gt;a &lt;see cref=&quot;T:System.Object&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;CompareTo&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual int CompareTo (object obj);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;obj&quot; Type=&quot;System.Object&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;obj&quot;&gt;a &lt;see cref=&quot;T:System.Object&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public Album (Player.Data.AlbumMetadata metadata);&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;ReturnValue /&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;metadata&quot; Type=&quot;Player.Data.AlbumMetadata&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;metadata&quot;&gt;a &lt;see cref=&quot;T:Player.Data.AlbumMetadata&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Data.Album&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Name&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string Name { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Songs&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public System.Collections.ArrayList Songs { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Collections.ArrayList&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Collections.ArrayList&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Artists&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public System.Collections.ArrayList Artists { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Collections.ArrayList&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Collections.ArrayList&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Performers&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public System.Collections.ArrayList Performers { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Collections.ArrayList&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Collections.ArrayList&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Year&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public int Year { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Comparer&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public Player.Data.IAlbumComparer Comparer { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Data.IAlbumComparer&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Data.IAlbumComparer&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Data/AlbumMetadata.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Data/AlbumMetadata.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Data/AlbumMetadata.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,99 @@
++&lt;Type Name=&quot;AlbumMetadata&quot; FullName=&quot;Player.Data.AlbumMetadata&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class AlbumMetadata&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces /&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;Name&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string Name;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Songs&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public System.Collections.ArrayList Songs;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Collections.ArrayList&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Artists&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public System.Collections.ArrayList Artists;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Collections.ArrayList&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Performers&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public System.Collections.ArrayList Performers;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Collections.ArrayList&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Year&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public int Year;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public AlbumMetadata ();&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;ReturnValue /&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Data.AlbumMetadata&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Data/Cover.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Data/Cover.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Data/Cover.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,76 @@
++&lt;Type Name=&quot;Cover&quot; FullName=&quot;Player.Data.Cover&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class Cover&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces /&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;Equals&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public override bool Equals (object obj);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;obj&quot; Type=&quot;System.Object&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;obj&quot;&gt;a &lt;see cref=&quot;T:System.Object&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public Cover ();&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;ReturnValue /&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Data.Cover&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Id&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public int Id { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Filename&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string Filename { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Data/IAlbumComparer.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Data/IAlbumComparer.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Data/IAlbumComparer.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,39 @@
++&lt;Type Name=&quot;IAlbumComparer&quot; FullName=&quot;Player.Data.IAlbumComparer&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public abstract interface IAlbumComparer&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base /&gt;
++  &lt;Interfaces /&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;Compare&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual int Compare (Player.Data.Album one, Player.Data.Album two);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;one&quot; Type=&quot;Player.Data.Album&quot; /&gt;
++        &lt;Parameter Name=&quot;two&quot; Type=&quot;Player.Data.Album&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;one&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Album&quot; /&gt;&lt;/param&gt;
++        &lt;param name=&quot;two&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Album&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Data/ICoverDb.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Data/ICoverDb.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Data/ICoverDb.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,66 @@
++&lt;Type Name=&quot;ICoverDb&quot; FullName=&quot;Player.Data.ICoverDb&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public abstract interface ICoverDb&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base /&gt;
++  &lt;Interfaces /&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;AddCover&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual bool AddCover (Player.Data.Cover cover);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;cover&quot; Type=&quot;Player.Data.Cover&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;cover&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Cover&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;RemoveCover&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual bool RemoveCover (Player.Data.Cover cover);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;cover&quot; Type=&quot;Player.Data.Cover&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;cover&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Cover&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Covers&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual System.Collections.ArrayList Covers { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Collections.ArrayList&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Collections.ArrayList&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Data/IMusicDb.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Data/IMusicDb.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Data/IMusicDb.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,111 @@
++&lt;Type Name=&quot;IMusicDb&quot; FullName=&quot;Player.Data.IMusicDb&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public abstract interface IMusicDb&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base /&gt;
++  &lt;Interfaces /&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;AddSong&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual bool AddSong (Player.Data.Song song);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;song&quot; Type=&quot;Player.Data.Song&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;song&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Song&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;AddAlbum&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual bool AddAlbum (Player.Data.Album album);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;album&quot; Type=&quot;Player.Data.Album&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;album&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Album&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;RemoveSong&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual bool RemoveSong (Player.Data.Song song);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;song&quot; Type=&quot;Player.Data.Song&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;song&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Song&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;RemoveAlbum&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual bool RemoveAlbum (Player.Data.Album album);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;album&quot; Type=&quot;Player.Data.Album&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;album&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Album&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Songs&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual System.Collections.ArrayList Songs { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Collections.ArrayList&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Collections.ArrayList&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Albums&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual System.Collections.ArrayList Albums { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Collections.ArrayList&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Collections.ArrayList&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Data/ISearchable.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Data/ISearchable.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Data/ISearchable.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,37 @@
++&lt;Type Name=&quot;ISearchable&quot; FullName=&quot;Player.Data.ISearchable&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public abstract interface ISearchable&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base /&gt;
++  &lt;Interfaces /&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;FitsCriteria&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual bool FitsCriteria (string [] searchBits);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;searchBits&quot; Type=&quot;System.String[]&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;searchBits&quot;&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Data/ISongComparer.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Data/ISongComparer.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Data/ISongComparer.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,39 @@
++&lt;Type Name=&quot;ISongComparer&quot; FullName=&quot;Player.Data.ISongComparer&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public abstract interface ISongComparer&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base /&gt;
++  &lt;Interfaces /&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;Compare&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual int Compare (Player.Data.Song one, Player.Data.Song two);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;one&quot; Type=&quot;Player.Data.Song&quot; /&gt;
++        &lt;Parameter Name=&quot;two&quot; Type=&quot;Player.Data.Song&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;one&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Song&quot; /&gt;&lt;/param&gt;
++        &lt;param name=&quot;two&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Song&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Data/SimpleAlbumComparer.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Data/SimpleAlbumComparer.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Data/SimpleAlbumComparer.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,56 @@
++&lt;Type Name=&quot;SimpleAlbumComparer&quot; FullName=&quot;Player.Data.SimpleAlbumComparer&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class SimpleAlbumComparer : IAlbumComparer&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;Player.Data.IAlbumComparer&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;Compare&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual int Compare (Player.Data.Album one, Player.Data.Album two);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;one&quot; Type=&quot;Player.Data.Album&quot; /&gt;
++        &lt;Parameter Name=&quot;two&quot; Type=&quot;Player.Data.Album&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;one&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Album&quot; /&gt;&lt;/param&gt;
++        &lt;param name=&quot;two&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Album&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public SimpleAlbumComparer ();&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;ReturnValue /&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Data.SimpleAlbumComparer&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Data/SimpleSongComparer.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Data/SimpleSongComparer.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Data/SimpleSongComparer.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,56 @@
++&lt;Type Name=&quot;SimpleSongComparer&quot; FullName=&quot;Player.Data.SimpleSongComparer&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class SimpleSongComparer : ISongComparer&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;Player.Data.ISongComparer&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;Compare&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual int Compare (Player.Data.Song one, Player.Data.Song two);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;one&quot; Type=&quot;Player.Data.Song&quot; /&gt;
++        &lt;Parameter Name=&quot;two&quot; Type=&quot;Player.Data.Song&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;one&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Song&quot; /&gt;&lt;/param&gt;
++        &lt;param name=&quot;two&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Song&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public SimpleSongComparer ();&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;ReturnValue /&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Data.SimpleSongComparer&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Data/Song.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Data/Song.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Data/Song.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,280 @@
++&lt;Type Name=&quot;Song&quot; FullName=&quot;Player.Data.Song&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class Song : ISearchable, IComparable&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;Player.Data.ISearchable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.IComparable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;FitsCriteria&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual bool FitsCriteria (string [] search_bits);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;search_bits&quot; Type=&quot;System.String[]&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;search_bits&quot;&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Equals&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public override bool Equals (object obj);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;obj&quot; Type=&quot;System.Object&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;obj&quot;&gt;a &lt;see cref=&quot;T:System.Object&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;CompareTo&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual int CompareTo (object obj);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;obj&quot; Type=&quot;System.Object&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;obj&quot;&gt;a &lt;see cref=&quot;T:System.Object&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Compare&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public int Compare (Player.Data.Song one, Player.Data.Song two);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;one&quot; Type=&quot;Player.Data.Song&quot; /&gt;
++        &lt;Parameter Name=&quot;two&quot; Type=&quot;Player.Data.Song&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;one&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Song&quot; /&gt;&lt;/param&gt;
++        &lt;param name=&quot;two&quot;&gt;a &lt;see cref=&quot;T:Player.Data.Song&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public Song (Player.Data.SongMetadata metadata);&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;ReturnValue /&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;metadata&quot; Type=&quot;Player.Data.SongMetadata&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;metadata&quot;&gt;a &lt;see cref=&quot;T:Player.Data.SongMetadata&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Data.Song&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public Song (string filename);&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;ReturnValue /&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;filename&quot; Type=&quot;System.String&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;filename&quot;&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Data.Song&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Filename&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string Filename { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Title&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string Title { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Artists&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public System.Collections.ArrayList Artists { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Collections.ArrayList&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Collections.ArrayList&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Performers&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public System.Collections.ArrayList Performers { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Collections.ArrayList&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Collections.ArrayList&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Album&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string Album { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;TrackNumber&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public int TrackNumber { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Year&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public int Year { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Duration&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public int Duration { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;MTime&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public int MTime { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Gain&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public double Gain { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Double&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Double&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Peak&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public double Peak { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Double&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Double&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Comparer&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public Player.Data.ISongComparer Comparer { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Data.ISongComparer&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Data.ISongComparer&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Data/SongMetadata.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Data/SongMetadata.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Data/SongMetadata.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,177 @@
++&lt;Type Name=&quot;SongMetadata&quot; FullName=&quot;Player.Data.SongMetadata&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class SongMetadata&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces /&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;Filename&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string Filename;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Title&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string Title;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Artists&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public System.Collections.ArrayList Artists;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Collections.ArrayList&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Performers&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public System.Collections.ArrayList Performers;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Collections.ArrayList&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Album&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string Album;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;TrackNumber&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public int TrackNumber;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Year&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public int Year;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Duration&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public int Duration;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;MTime&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public int MTime;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Gain&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public double Gain;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Double&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Peak&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public double Peak;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Double&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public SongMetadata ();&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;ReturnValue /&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Data.SongMetadata&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Player/EOSEventHandler.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Player/EOSEventHandler.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Player/EOSEventHandler.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,33 @@
++&lt;Type Name=&quot;EOSEventHandler&quot; FullName=&quot;Player.Player.EOSEventHandler&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public sealed delegate void EOSEventHandler ();&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Delegate&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.ICloneable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.Runtime.Serialization.ISerializable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Attributes /&gt;
++  &lt;Members /&gt;
++  &lt;ReturnValue&gt;
++    &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++  &lt;/ReturnValue&gt;
++  &lt;Parameters /&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Player/IPlayer.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Player/IPlayer.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Player/IPlayer.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,184 @@
++&lt;Type Name=&quot;IPlayer&quot; FullName=&quot;Player.Player.IPlayer&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public abstract interface IPlayer&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base /&gt;
++  &lt;Interfaces /&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;Play&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual void Play ();&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Pause&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual void Pause ();&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Stop&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual void Stop ();&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Next&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual void Next ();&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Previous&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual void Previous ();&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Repeat&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual void Repeat (Player.Player.RepetitionType type);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;type&quot; Type=&quot;Player.Player.RepetitionType&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;type&quot;&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/param&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Playing&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual bool Playing { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Position&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual int Position { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Volume&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual int Volume { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Playlist&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual Player.Playlist.IPlaylist Playlist { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Playlist.IPlaylist&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Playlist.IPlaylist&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;EOSEvent&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual event Player.Player.EOSEventHandler EOSEvent;&quot; /&gt;
++      &lt;MemberType&gt;Event&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Player.EOSEventHandler&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;TickEvent&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual event Player.Player.TickEventHandler TickEvent;&quot; /&gt;
++      &lt;MemberType&gt;Event&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Player.TickEventHandler&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;StateEvent&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual event Player.Player.StateEventHandler StateEvent;&quot; /&gt;
++      &lt;MemberType&gt;Event&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Player.StateEventHandler&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Player/RepetitionType.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Player/RepetitionType.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Player/RepetitionType.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,72 @@
++&lt;Type Name=&quot;RepetitionType&quot; FullName=&quot;Player.Player.RepetitionType&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public enum RepetitionType&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Enum&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.IComparable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.IConvertible&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.IFormattable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;RepeatSong&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;RepeatSong&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Player.RepetitionType&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;RepeatPlaylist&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;RepeatPlaylist&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Player.RepetitionType&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;value__&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;value__&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Player/StateEventHandler.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Player/StateEventHandler.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Player/StateEventHandler.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,35 @@
++&lt;Type Name=&quot;StateEventHandler&quot; FullName=&quot;Player.Player.StateEventHandler&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public sealed delegate void StateEventHandler (bool playing);&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Delegate&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.ICloneable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.Runtime.Serialization.ISerializable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Attributes /&gt;
++  &lt;Members /&gt;
++  &lt;ReturnValue&gt;
++    &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++  &lt;/ReturnValue&gt;
++  &lt;Parameters&gt;
++    &lt;Parameter Name=&quot;playing&quot; Type=&quot;System.Boolean&quot; /&gt;
++  &lt;/Parameters&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Player/TickEventHandler.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Player/TickEventHandler.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Player/TickEventHandler.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,35 @@
++&lt;Type Name=&quot;TickEventHandler&quot; FullName=&quot;Player.Player.TickEventHandler&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public sealed delegate void TickEventHandler (int pos);&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Delegate&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.ICloneable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.Runtime.Serialization.ISerializable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Attributes /&gt;
++  &lt;Members /&gt;
++  &lt;ReturnValue&gt;
++    &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++  &lt;/ReturnValue&gt;
++  &lt;Parameters&gt;
++    &lt;Parameter Name=&quot;pos&quot; Type=&quot;System.Int32&quot; /&gt;
++  &lt;/Parameters&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Playlist/ClearedEventHandler.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Playlist/ClearedEventHandler.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Playlist/ClearedEventHandler.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,35 @@
++&lt;Type Name=&quot;ClearedEventHandler&quot; FullName=&quot;Player.Playlist.ClearedEventHandler&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public sealed delegate void ClearedEventHandler (object obj);&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Delegate&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.ICloneable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.Runtime.Serialization.ISerializable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Attributes /&gt;
++  &lt;Members /&gt;
++  &lt;ReturnValue&gt;
++    &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++  &lt;/ReturnValue&gt;
++  &lt;Parameters&gt;
++    &lt;Parameter Name=&quot;obj&quot; Type=&quot;System.Object&quot; /&gt;
++  &lt;/Parameters&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Playlist/IPlaylist.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Playlist/IPlaylist.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Playlist/IPlaylist.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,70 @@
++&lt;Type Name=&quot;IPlaylist&quot; FullName=&quot;Player.Playlist.IPlaylist&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public abstract interface IPlaylist&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base /&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.Collections.IList&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.Collections.ICollection&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.Collections.IEnumerable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;Current&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual Player.Data.Song Current { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Data.Song&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Data.Song&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Next&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual Player.Data.Song Next { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Data.Song&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Data.Song&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Previous&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual Player.Data.Song Previous { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Data.Song&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Data.Song&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Playlist/Playlist.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Playlist/Playlist.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Playlist/Playlist.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,356 @@
++&lt;Type Name=&quot;Playlist&quot; FullName=&quot;Player.Playlist.Playlist&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class Playlist : IPlaylist, IList, ICollection, IEnumerable&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;Player.Playlist.IPlaylist&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.Collections.IList&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.Collections.ICollection&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.Collections.IEnumerable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Attributes&gt;
++    &lt;Attribute&gt;
++      &lt;AttributeName&gt;System.Reflection.DefaultMemberAttribute&lt;/AttributeName&gt;
++    &lt;/Attribute&gt;
++  &lt;/Attributes&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;Add&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual int Add (object obj);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;obj&quot; Type=&quot;System.Object&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;obj&quot;&gt;a &lt;see cref=&quot;T:System.Object&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Insert&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual void Insert (int index, object obj);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;index&quot; Type=&quot;System.Int32&quot; /&gt;
++        &lt;Parameter Name=&quot;obj&quot; Type=&quot;System.Object&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;index&quot;&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/param&gt;
++        &lt;param name=&quot;obj&quot;&gt;a &lt;see cref=&quot;T:System.Object&quot; /&gt;&lt;/param&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Remove&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual void Remove (object obj);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;obj&quot; Type=&quot;System.Object&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;obj&quot;&gt;a &lt;see cref=&quot;T:System.Object&quot; /&gt;&lt;/param&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;RemoveAt&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual void RemoveAt (int index);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;index&quot; Type=&quot;System.Int32&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;index&quot;&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/param&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Clear&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual void Clear ();&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Contains&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual bool Contains (object obj);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;obj&quot; Type=&quot;System.Object&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;obj&quot;&gt;a &lt;see cref=&quot;T:System.Object&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;IndexOf&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual int IndexOf (object obj);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;obj&quot; Type=&quot;System.Object&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;obj&quot;&gt;a &lt;see cref=&quot;T:System.Object&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;CopyTo&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual void CopyTo (Array array, int index);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;array&quot; Type=&quot;System.Array&quot; /&gt;
++        &lt;Parameter Name=&quot;index&quot; Type=&quot;System.Int32&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;array&quot;&gt;a &lt;see cref=&quot;T:System.Array&quot; /&gt;&lt;/param&gt;
++        &lt;param name=&quot;index&quot;&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/param&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;GetEnumerator&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual System.Collections.IEnumerator GetEnumerator ();&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Collections.IEnumerator&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Collections.IEnumerator&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public Playlist ();&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;ReturnValue /&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Playlist.Playlist&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;IsReadOnly&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual bool IsReadOnly { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;IsFixedSize&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual bool IsFixedSize { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Count&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual int Count { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Int32&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;IsSynchronized&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual bool IsSynchronized { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Boolean&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Boolean&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;SyncRoot&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual object SyncRoot { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Object&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Object&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Current&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual Player.Data.Song Current { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Data.Song&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Data.Song&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Next&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual Player.Data.Song Next { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Data.Song&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Data.Song&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Previous&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual Player.Data.Song Previous { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Data.Song&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Data.Song&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Item&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public virtual object Item { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Object&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;index&quot; Type=&quot;System.Int32&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;index&quot;&gt;a &lt;see cref=&quot;T:System.Int32&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:System.Object&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;SongAddedEvent&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public event Player.Playlist.SongAddedEventHandler SongAddedEvent;&quot; /&gt;
++      &lt;MemberType&gt;Event&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Playlist.SongAddedEventHandler&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;SongRemovedEvent&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public event Player.Playlist.SongRemovedEventHandler SongRemovedEvent;&quot; /&gt;
++      &lt;MemberType&gt;Event&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Playlist.SongRemovedEventHandler&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;ClearedEvent&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public event Player.Playlist.ClearedEventHandler ClearedEvent;&quot; /&gt;
++      &lt;MemberType&gt;Event&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Playlist.ClearedEventHandler&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;SongChangedEvent&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public event Player.Playlist.SongChangedEventHandler SongChangedEvent;&quot; /&gt;
++      &lt;MemberType&gt;Event&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Playlist.SongChangedEventHandler&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Playlist/SongAddedEventHandler.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Playlist/SongAddedEventHandler.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Playlist/SongAddedEventHandler.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,36 @@
++&lt;Type Name=&quot;SongAddedEventHandler&quot; FullName=&quot;Player.Playlist.SongAddedEventHandler&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public sealed delegate void SongAddedEventHandler (object obj, Player.Data.Song song);&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Delegate&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.ICloneable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.Runtime.Serialization.ISerializable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Attributes /&gt;
++  &lt;Members /&gt;
++  &lt;ReturnValue&gt;
++    &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++  &lt;/ReturnValue&gt;
++  &lt;Parameters&gt;
++    &lt;Parameter Name=&quot;obj&quot; Type=&quot;System.Object&quot; /&gt;
++    &lt;Parameter Name=&quot;song&quot; Type=&quot;Player.Data.Song&quot; /&gt;
++  &lt;/Parameters&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Playlist/SongChangedEventHandler.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Playlist/SongChangedEventHandler.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Playlist/SongChangedEventHandler.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,36 @@
++&lt;Type Name=&quot;SongChangedEventHandler&quot; FullName=&quot;Player.Playlist.SongChangedEventHandler&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public sealed delegate void SongChangedEventHandler (object obj, Player.Data.Song song);&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Delegate&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.ICloneable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.Runtime.Serialization.ISerializable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Attributes /&gt;
++  &lt;Members /&gt;
++  &lt;ReturnValue&gt;
++    &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++  &lt;/ReturnValue&gt;
++  &lt;Parameters&gt;
++    &lt;Parameter Name=&quot;obj&quot; Type=&quot;System.Object&quot; /&gt;
++    &lt;Parameter Name=&quot;song&quot; Type=&quot;Player.Data.Song&quot; /&gt;
++  &lt;/Parameters&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Playlist/SongRemovedEventHandler.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Playlist/SongRemovedEventHandler.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Playlist/SongRemovedEventHandler.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,36 @@
++&lt;Type Name=&quot;SongRemovedEventHandler&quot; FullName=&quot;Player.Playlist.SongRemovedEventHandler&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public sealed delegate void SongRemovedEventHandler (object obj, Player.Data.Song song);&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Delegate&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.ICloneable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.Runtime.Serialization.ISerializable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Attributes /&gt;
++  &lt;Members /&gt;
++  &lt;ReturnValue&gt;
++    &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++  &lt;/ReturnValue&gt;
++  &lt;Parameters&gt;
++    &lt;Parameter Name=&quot;obj&quot; Type=&quot;System.Object&quot; /&gt;
++    &lt;Parameter Name=&quot;song&quot; Type=&quot;Player.Data.Song&quot; /&gt;
++  &lt;/Parameters&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Services/SdkServices.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Services/SdkServices.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Services/SdkServices.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,73 @@
++&lt;Type Name=&quot;SdkServices&quot; FullName=&quot;Player.Services.SdkServices&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class SdkServices&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces /&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;Player&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public static Player.Player.IPlayer Player;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Player.IPlayer&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;MusicDb&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public static Player.Data.IMusicDb MusicDb;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Data.IMusicDb&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Playlist&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public static Player.Playlist.IPlaylist Playlist;&quot; /&gt;
++      &lt;MemberType&gt;Field&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;Player.Playlist.IPlaylist&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public SdkServices ();&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;ReturnValue /&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Services.SdkServices&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Added: Muine.Sdk/doc/en/Player.Services/ServiceUnavailableException.xml
+===================================================================
+--- Muine.Sdk/doc/en/Player.Services/ServiceUnavailableException.xml	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/en/Player.Services/ServiceUnavailableException.xml	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,57 @@
++&lt;Type Name=&quot;ServiceUnavailableException&quot; FullName=&quot;Player.Services.ServiceUnavailableException&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class ServiceUnavailableException : System.Exception, ISerializable&quot; Maintainer=&quot;auto&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;Player.Sdk&lt;/AssemblyName&gt;
++    &lt;AssemblyPublicKey&gt;
++    &lt;/AssemblyPublicKey&gt;
++    &lt;AssemblyVersion&gt;0.0.0.0&lt;/AssemblyVersion&gt;
++    &lt;AssemblyCulture&gt;neutral&lt;/AssemblyCulture&gt;
++    &lt;Attributes /&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;ThreadSafetyStatement&gt;Gtk# is thread aware, but not thread safe; See the &lt;link location=&quot;node:gtk-sharp/programming/threads&quot;&gt;Gtk# Thread Programming&lt;/link&gt; for details.&lt;/ThreadSafetyStatement&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added&lt;/summary&gt;
++    &lt;remarks&gt;To be added&lt;/remarks&gt;
++  &lt;/Docs&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Exception&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;System.Runtime.Serialization.ISerializable&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Attributes /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public ServiceUnavailableException (string message, Exception innerException);&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;ReturnValue /&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;message&quot; Type=&quot;System.String&quot; /&gt;
++        &lt;Parameter Name=&quot;innerException&quot; Type=&quot;System.Exception&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;message&quot;&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/param&gt;
++        &lt;param name=&quot;innerException&quot;&gt;a &lt;see cref=&quot;T:System.Exception&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Services.ServiceUnavailableException&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public ServiceUnavailableException (string message);&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;ReturnValue /&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;message&quot; Type=&quot;System.String&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added&lt;/summary&gt;
++        &lt;param name=&quot;message&quot;&gt;a &lt;see cref=&quot;T:System.String&quot; /&gt;&lt;/param&gt;
++        &lt;returns&gt;a &lt;see cref=&quot;T:Player.Services.ServiceUnavailableException&quot; /&gt;&lt;/returns&gt;
++        &lt;remarks&gt;To be added&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++&lt;/Type&gt;
+\ No newline at end of file
+
+Deleted: Muine.Sdk/doc/muine-sdk.source
+===================================================================
+--- Muine.Sdk/doc/muine-sdk.source	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/doc/muine-sdk.source	2004-10-24 20:30:43 UTC (rev 308)
+@@ -1,5 +0,0 @@
+-&lt;?xml version=&quot;1.0&quot;?&gt;
+-&lt;monodoc&gt;
+-    &lt;node label=&quot;Muine Sdk&quot; name=&quot;muine-sdk&quot;/&gt;
+-    &lt;source basefile=&quot;muine-sdk&quot; path=&quot;muine-sdk&quot; provider=&quot;ecma&quot;/&gt;
+-&lt;/monodoc&gt;
+
+Copied: Muine.Sdk/doc/player-sdk.source (from rev 250, Muine.Sdk/doc/muine-sdk.source)
+===================================================================
+--- Muine.Sdk/doc/muine-sdk.source	2004-10-09 20:44:50 UTC (rev 250)
++++ Muine.Sdk/doc/player-sdk.source	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,5 @@
++&lt;?xml version=&quot;1.0&quot;?&gt;
++&lt;monodoc&gt;
++    &lt;node label=&quot;Player Sdk&quot; name=&quot;player-sdk&quot;/&gt;
++    &lt;source basefile=&quot;player-sdk&quot; path=&quot;player-sdk&quot; provider=&quot;ecma&quot;/&gt;
++&lt;/monodoc&gt;
+
+Modified: Muine.Sdk/examples/DbTest.cs
+===================================================================
+--- Muine.Sdk/examples/DbTest.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/examples/DbTest.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -18,8 +18,8 @@
+  */
+ 
+ using System;    
+-using Muine.Sdk.Data;
+-using Muine.Sdk.Services;
++using Player.Data;
++using Player.Services;
+ using Gtk;
+ 
+ public class DbTest
+
+Modified: Muine.Sdk/examples/Makefile.am
+===================================================================
+--- Muine.Sdk/examples/Makefile.am	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/examples/Makefile.am	2004-10-24 20:30:43 UTC (rev 308)
+@@ -1,6 +1,6 @@
+ REFERENCES =				\
+ 	-pkg:gtk-sharp				\
+-	-r:../src/Muine.Sdk.dll
++	-r:../src/Player.Sdk.dll
+ 
+ all: db-test.exe
+ 
+
+Modified: Muine.Sdk/src/Configuration/Configuration.cs
+===================================================================
+--- Muine.Sdk/src/Configuration/Configuration.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Configuration/Configuration.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,7 +17,7 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Configuration 
++namespace Player.Configuration 
+ {
+     using System;
+     using Nini.Config;
+@@ -31,22 +31,22 @@
+ 
+ 	private Configuration ()
+ 	{
+-	    objStore = new FileStore (&quot;Muine.Sdk&quot;);
+-	    if (objStore[&quot;MuineSdk.ini&quot;] == null)
++	    objStore = new FileStore (&quot;Player.Sdk&quot;);
++	    if (objStore[&quot;PlayerSdk.ini&quot;] == null)
+ 	    {
+ 			CopyDefaultConfigFile ();
+ 	    }
+-	    configSource = new IniConfigSource (objStore[&quot;MuineSdk.ini&quot;]); 
++	    configSource = new IniConfigSource (objStore[&quot;PlayerSdk.ini&quot;]); 
+ 	}
+ 
+ 	private void CopyDefaultConfigFile ()
+ 	{
+ 	    Assembly assembly = System.Reflection.Assembly.GetCallingAssembly ();
+-	    System.IO.Stream s = assembly.GetManifestResourceStream (&quot;MuineSdk.ini&quot;);
++	    System.IO.Stream s = assembly.GetManifestResourceStream (&quot;PlayerSdk.ini&quot;);
+ 	    StreamReader reader = new StreamReader (s);
+ 	    string config = reader.ReadToEnd ();
+ 	    reader.Close ();
+-	    StreamWriter writer = new StreamWriter (objStore.CreateFile (&quot;MuineSdk.ini&quot;, false));
++	    StreamWriter writer = new StreamWriter (objStore.CreateFile (&quot;PlayerSdk.ini&quot;, false));
+ 	    writer.Write (config);
+ 	    writer.Close ();
+ 	}
+
+Modified: Muine.Sdk/src/Configuration/FileStore.cs
+===================================================================
+--- Muine.Sdk/src/Configuration/FileStore.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Configuration/FileStore.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,7 +17,7 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Configuration 
++namespace Player.Configuration 
+ {
+     using System;
+     using System.IO;
+
+Modified: Muine.Sdk/src/Data/Album.cs
+===================================================================
+--- Muine.Sdk/src/Data/Album.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Data/Album.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,7 +17,7 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Data
++namespace Player.Data
+ {
+     using System;
+     using System.Collections;
+
+Modified: Muine.Sdk/src/Data/AlbumMetadata.cs
+===================================================================
+--- Muine.Sdk/src/Data/AlbumMetadata.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Data/AlbumMetadata.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,7 +17,7 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Data
++namespace Player.Data
+ {
+     using System;
+     using System.Collections;
+
+Modified: Muine.Sdk/src/Data/Cover.cs
+===================================================================
+--- Muine.Sdk/src/Data/Cover.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Data/Cover.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,7 +17,7 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Data 
++namespace Player.Data 
+ {
+     using System;    
+ 
+
+Modified: Muine.Sdk/src/Data/IAlbumComparer.cs
+===================================================================
+--- Muine.Sdk/src/Data/IAlbumComparer.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Data/IAlbumComparer.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,7 +17,7 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Data 
++namespace Player.Data 
+ {
+     using System;    
+ 
+
+Modified: Muine.Sdk/src/Data/ICoverDb.cs
+===================================================================
+--- Muine.Sdk/src/Data/ICoverDb.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Data/ICoverDb.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,7 +17,7 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Data 
++namespace Player.Data 
+ {
+     using System;    
+     using System.Collections;
+
+Modified: Muine.Sdk/src/Data/IMusicDb.cs
+===================================================================
+--- Muine.Sdk/src/Data/IMusicDb.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Data/IMusicDb.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,7 +17,7 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Data 
++namespace Player.Data 
+ {
+     using System;
+     using System.Collections;
+
+Modified: Muine.Sdk/src/Data/ISearchable.cs
+===================================================================
+--- Muine.Sdk/src/Data/ISearchable.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Data/ISearchable.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,7 +17,7 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Data
++namespace Player.Data
+ {
+     public interface ISearchable
+     {
+
+Modified: Muine.Sdk/src/Data/ISongComparer.cs
+===================================================================
+--- Muine.Sdk/src/Data/ISongComparer.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Data/ISongComparer.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,7 +17,7 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Data 
++namespace Player.Data 
+ {
+     using System;    
+ 
+
+Modified: Muine.Sdk/src/Data/Song.cs
+===================================================================
+--- Muine.Sdk/src/Data/Song.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Data/Song.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,7 +17,7 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Data
++namespace Player.Data
+ {
+     using System;
+     using System.Collections;
+
+Modified: Muine.Sdk/src/Data/SongMetadata.cs
+===================================================================
+--- Muine.Sdk/src/Data/SongMetadata.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Data/SongMetadata.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,7 +17,7 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Data
++namespace Player.Data
+ {
+     using System;
+     using System.Collections;
+
+Modified: Muine.Sdk/src/Makefile.am
+===================================================================
+--- Muine.Sdk/src/Makefile.am	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Makefile.am	2004-10-24 20:30:43 UTC (rev 308)
+@@ -1,17 +1,17 @@
+ include sources.list
+ 
+-MISCRS = /resource:../MuineSdk.ini,MuineSdk.ini
++MISCRS = /resource:../PlayerSdk.ini,PlayerSdk.ini
+ REFERENCES = -pkg:chicken
+ 
+-Muine.Sdk.dll: $(CSSOURCES)
++Player.Sdk.dll: $(CSSOURCES)
+ 	mcs /out:$@ $(CSSOURCES) /target:library $(MISCRS) $(REFERENCES)
+ 
+-all: Muine.Sdk.dll
++all: Player.Sdk.dll
+ 
+ sdklibdir = $(prefix)/lib
+-sdklib_DATA = Muine.Sdk.dll
++sdklib_DATA = Player.Sdk.dll
+ pkgconfigdir = $(libdir)/pkgconfig
+-pkgconfig_DATA = muine-sdk.pc
++pkgconfig_DATA = player-sdk.pc
+ 
+-EXTRA_DIST = sources.list muine-sdk.pc.in $(CSSOURCES)
+-CLEANFILES = Muine.Sdk.dll muine-sdk.pc
++EXTRA_DIST = sources.list player-sdk.pc.in $(CSSOURCES)
++CLEANFILES = Player.Sdk.dll player-sdk.pc
+
+Modified: Muine.Sdk/src/Player/IPlayer.cs
+===================================================================
+--- Muine.Sdk/src/Player/IPlayer.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Player/IPlayer.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -1,8 +1,8 @@
+ // created on 08/31/2004 at 13:24
+-namespace Muine.Sdk.Player
++namespace Player.Player
+ {
+ 
+-    using Muine.Sdk.Playlist;
++    using Player.Playlist;
+ 
+ 	public enum RepetitionType {
+ 				    RepeatSong,
+
+Modified: Muine.Sdk/src/Playlist/IPlaylist.cs
+===================================================================
+--- Muine.Sdk/src/Playlist/IPlaylist.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Playlist/IPlaylist.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,11 +17,11 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Playlist 
++namespace Player.Playlist 
+ {
+     using System; 
+     using System.Collections;
+-    using Muine.Sdk.Data;
++    using Player.Data;
+ 
+     public interface IPlaylist : IList
+     {
+
+Modified: Muine.Sdk/src/Playlist/Playlist.cs
+===================================================================
+--- Muine.Sdk/src/Playlist/Playlist.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Playlist/Playlist.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,12 +17,12 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Playlist
++namespace Player.Playlist
+ {
+ 
+     using System.Collections;
+     using System;
+-    using Muine.Sdk.Data;
++    using Player.Data;
+ 
+     /* 
+      * Custom ArrayList that fires events when the content is modified
+
+Modified: Muine.Sdk/src/Services/SdkServices.cs
+===================================================================
+--- Muine.Sdk/src/Services/SdkServices.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Services/SdkServices.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,13 +17,13 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Services 
++namespace Player.Services 
+ {
+     using System;    
+-    using Muine.Sdk.Configuration;
+-    using Muine.Sdk.Player;
+-    using Muine.Sdk.Playlist;
+-    using Muine.Sdk.Data;
++    using Player.Configuration;
++    using Player.Player;
++    using Player.Playlist;
++    using Player.Data;
+     using System.Reflection;
+     using System.IO;
+ 
+@@ -67,7 +67,7 @@
+ 			} else {
+ 				Console.WriteLine (&quot;Loading {0} from SYSTEM services&quot;, serviceAssembly);
+ 				string sdkDir = Path.GetDirectoryName (Assembly.GetCallingAssembly ().Location);
+-				string systemServiceLocation = sdkDir + separator + &quot;Muine.Sdk&quot; + 
++				string systemServiceLocation = sdkDir + separator + &quot;Player.Sdk&quot; + 
+ 							separator + serviceDir + separator + serviceAssembly + &quot;.dll&quot;;
+ 				Console.WriteLine (&quot;Service location: {0}&quot;, systemServiceLocation);
+ 				asm = Assembly.LoadFrom (systemServiceLocation);
+
+Modified: Muine.Sdk/src/Services/ServiceUnavailableException.cs
+===================================================================
+--- Muine.Sdk/src/Services/ServiceUnavailableException.cs	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/Services/ServiceUnavailableException.cs	2004-10-24 20:30:43 UTC (rev 308)
+@@ -17,7 +17,7 @@
+  * Boston, MA 02111-1307, USA.
+  */
+ 
+-namespace Muine.Sdk.Services 
++namespace Player.Services 
+ {
+     using System;    
+ 
+
+Deleted: Muine.Sdk/src/muine-sdk.pc.in
+===================================================================
+--- Muine.Sdk/src/muine-sdk.pc.in	2004-10-24 14:12:04 UTC (rev 307)
++++ Muine.Sdk/src/muine-sdk.pc.in	2004-10-24 20:30:43 UTC (rev 308)
+@@ -1,9 +0,0 @@
+-prefix=@prefix@
+-exec_prefix=${prefix}
+-libdir=${exec_prefix}/lib
+-
+-
+-Name: Muine Sdk
+-Description: Muine Player Development Kit
+-Version: 0.1
+-Libs: -r:${libdir}/Muine.Sdk.dll
+
+Copied: Muine.Sdk/src/player-sdk.pc.in (from rev 250, Muine.Sdk/src/muine-sdk.pc.in)
+===================================================================
+--- Muine.Sdk/src/muine-sdk.pc.in	2004-10-09 20:44:50 UTC (rev 250)
++++ Muine.Sdk/src/player-sdk.pc.in	2004-10-24 20:30:43 UTC (rev 308)
+@@ -0,0 +1,9 @@
++prefix=@prefix@
++exec_prefix=${prefix}
++libdir=${exec_prefix}/lib
++
++
++Name: Player.Sdk
++Description: Music Player Development Kit
++Version: 0.1
++Libs: -r:${libdir}/Player.Sdk.dll
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000043.html">[Mspace-checkins] r307 - in Muine.Sdk: . doc doc/arch
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#44">[ date ]</a>
+              <a href="thread.html#44">[ thread ]</a>
+              <a href="subject.html#44">[ subject ]</a>
+              <a href="author.html#44">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

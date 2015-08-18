@@ -1,0 +1,592 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r380 - in RedLib/trunk: . build src/Red.IO
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r380%20-%20in%20RedLib/trunk%3A%20.%20build%20src/Red.IO&In-Reply-To=%3C200504051034.j35AYVZ3010477%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000092.html">
+   <LINK REL="Next"  HREF="000094.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r380 - in RedLib/trunk: . build src/Red.IO</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r380%20-%20in%20RedLib/trunk%3A%20.%20build%20src/Red.IO&In-Reply-To=%3C200504051034.j35AYVZ3010477%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r380 - in RedLib/trunk: . build src/Red.IO">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Tue Apr  5 12:34:31 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000092.html">[Mspace-checkins] r379 - in Red.ProjectManager/trunk: . build ext src/Red.ProjectManager
+</A></li>
+        <LI>Next message: <A HREF="000094.html">[Mspace-checkins] r381 - Red.ProjectManager/trunk/ext
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#93">[ date ]</a>
+              <a href="thread.html#93">[ thread ]</a>
+              <a href="subject.html#93">[ subject ]</a>
+              <a href="author.html#93">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-05 12:34:18 +0200 (Tue, 05 Apr 2005)
+New Revision: 380
+
+Modified:
+   RedLib/trunk/build/Red.dll
+   RedLib/trunk/redlib.simplep
+   RedLib/trunk/src/Red.IO/FileUtils.boo
+Log:
+Added the option to ignore hidden files
+
+
+
+Modified: RedLib/trunk/build/Red.dll
+===================================================================
+(Binary files differ)
+
+Modified: RedLib/trunk/redlib.simplep
+===================================================================
+--- RedLib/trunk/redlib.simplep	2005-04-05 10:32:47 UTC (rev 379)
++++ RedLib/trunk/redlib.simplep	2005-04-05 10:34:18 UTC (rev 380)
+@@ -3,107 +3,431 @@
+     &lt;Name&gt;RedLib&lt;/Name&gt;
+     &lt;FileSet&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc-html/Red.IO/FileUtils.html&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Resources/.svn/text-base/ProcessBuilder.xml.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc-html/Red.Compression/ZipEntryExcludedArgs.html&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/build/.svn/text-base/ICSharpCode.SharpZipLib.dll.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/src/AssemblyInfo.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Compression/.svn/entries&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc-html/Red.IO/ZipEntryExcludedArgs.html&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.Compression/.svn/props/Archiver.boo.svn-work&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc/index.xml&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/.svn/text-base/Red.Compression.xml.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc/Red.IO/ZipEntryExcludedArgs.xml.remove&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.IO/.svn/text-base/index.html.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc-html/Red.Compression/Archiver.html&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.Compression/.svn/entries&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/src/Red.Resources/ProcessBuilder.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.Resources/.svn/entries&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc/Red.IO.xml&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.Compression/.svn/text-base/Archiver.boo.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc-html/Red.Resources/ProcessBuilder.html&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.IO/.svn/empty-file&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/build/ICSharpCode.SharpZipLib.dll&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/.svn/text-base/Makefile.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc/Red.Compression/ZipEntryAddedArgs.xml&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.IO/FileUtils.boo&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc/Red.IO/FileUtils.xml&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/build/.svn/empty-file&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/src/Red.IO/FileUtils.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Resources/index.html&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc/Red.IO/Archiver.xml.remove&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.IO.xml&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/redlib.simplep&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Compression/ZipEntryAddedArgs.xml&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc-html/Red.Resources/index.html&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.IO/.svn/text-base/FileUtils.boo.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/ext/ICSharpCode.SharpZipLib.dll&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.IO/.svn/format&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc/Red.IO/ZipEntryAddedArgs.xml.remove&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.Resources/ProcessBuilder.boo&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc-html/Red.IO/ZipEntryAddedArgs.html&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Resources/.svn/text-base/ProcessBuilder.html.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc-html/Red.Compression/ZipEntryAddedArgs.html&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.IO/index.html&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc/Red.Resources.xml&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.IO/.svn/entries&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/src/Red.Compression/Archiver.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Compression/.svn/text-base/ZipEntryAddedArgs.xml.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/Makefile&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Resources/ProcessBuilder.xml&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc/Red.Compression/Archiver.xml&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.IO/.svn/README.txt&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/build/Red.dll&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/index.xml&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc-html/Red.Compression/index.html&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/ext/.svn/format&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc-html/Red.IO/Archiver.html&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/build/.svn/props/Red.dll.svn-work&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc/Red.Compression/ZipEntryExcludedArgs.xml&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Compression/ZipEntryExcludedArgs.xml&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc-html/index.html&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Resources/.svn/README.txt&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc/Red.Resources/ProcessBuilder.xml&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Compression/.svn/empty-file&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc-html/Red.IO/index.html&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/ext/.svn/prop-base/ICSharpCode.SharpZipLib.dll.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/doc/Red.Compression.xml&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/ext/ICSharpCode.SharpZipLib.dll&lt;/Path&gt;
+         &lt;/File&gt;
+         &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/RedLib/src/Red.IO/PathUtils.boo&lt;/Path&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.IO/.svn/text-base/ZipEntryAddedArgs.html.svn-base&lt;/Path&gt;
+         &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.Resources/.svn/prop-base/ProcessBuilder.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Resources/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/AssemblyInfo.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Resources/ProcessBuilder.html&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/build/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.IO/.svn/text-base/ZipEntryAddedArgs.xml.remove.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.IO/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/build/.svn/text-base/Red.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Compression/.svn/text-base/index.html.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/redlib.simplep&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.IO/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.IO/PathUtils.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Compression/ZipEntryAddedArgs.html&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Resources/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Compression.xml&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.Resources/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.IO/ZipEntryAddedArgs.html&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/ext/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/build/.svn/prop-base/ICSharpCode.SharpZipLib.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Resources/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/.svn/props/AssemblyInfo.boo.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/build/Red.dll&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.IO/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Compression/index.html&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.IO/ZipEntryExcludedArgs.xml.remove&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Compression/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/build/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/Makefile&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.IO/FileUtils.xml&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.IO/Archiver.xml.remove&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.IO/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.Compression/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/.svn/text-base/index.html.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.IO/.svn/text-base/PathUtils.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Resources/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Compression/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/build/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.IO/.svn/text-base/FileUtils.html.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Compression/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/.svn/text-base/Red.IO.xml.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.IO/.svn/prop-base/FileUtils.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Resources/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Resources/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Compression/Archiver.xml&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/ext/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Compression/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Compression/.svn/text-base/ZipEntryExcludedArgs.html.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/.svn/text-base/Red.Resources.xml.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.Resources/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/build/.svn/props/ICSharpCode.SharpZipLib.dll.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.IO/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.IO/.svn/text-base/FileUtils.xml.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/build/.svn/prop-base/Red.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.IO/Archiver.html&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.Compression/Archiver.boo&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.IO/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.Compression/.svn/prop-base/Archiver.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.Resources/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Resources/.svn/text-base/index.html.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.Resources/.svn/props/ProcessBuilder.boo.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Resources.xml&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Compression/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Compression/.svn/text-base/ZipEntryAddedArgs.html.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/ext/.svn/props/ICSharpCode.SharpZipLib.dll.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.IO/.svn/text-base/Archiver.html.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.IO/ZipEntryExcludedArgs.html&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.IO/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.Compression/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Compression/.svn/text-base/Archiver.html.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.IO/.svn/text-base/Archiver.xml.remove.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.IO/ZipEntryAddedArgs.xml.remove&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/index.html&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Compression/Archiver.html&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.IO/FileUtils.html&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/ext/.svn/text-base/ICSharpCode.SharpZipLib.dll.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/build/ICSharpCode.SharpZipLib.dll&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/.svn/prop-base/AssemblyInfo.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/.svn/entries&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/.svn/text-base/AssemblyInfo.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/.svn/format&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Compression/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.Compression/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Compression/.svn/text-base/Archiver.xml.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/.svn/text-base/redlib.simplep.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.IO/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.Resources/.svn/text-base/ProcessBuilder.boo.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.Compression/.svn/text-base/ZipEntryExcludedArgs.xml.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/.svn/text-base/index.xml.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Resources/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc/Red.IO/.svn/text-base/ZipEntryExcludedArgs.xml.remove.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/ext/.svn/README.txt&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/src/Red.IO/.svn/props/FileUtils.boo.svn-work&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.IO/.svn/text-base/ZipEntryExcludedArgs.html.svn-base&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/Red.Compression/ZipEntryExcludedArgs.html&lt;/Path&gt;
++        &lt;/File&gt;
++        &lt;File&gt;
++            &lt;Path&gt;/home/rubiojr/Projects/mspace/RedLib/trunk/doc-html/.svn/empty-file&lt;/Path&gt;
++        &lt;/File&gt;
+     &lt;/FileSet&gt;
+     &lt;FolderSet&gt;
+ &lt;/FolderSet&gt;
+
+Modified: RedLib/trunk/src/Red.IO/FileUtils.boo
+===================================================================
+--- RedLib/trunk/src/Red.IO/FileUtils.boo	2005-04-05 10:32:47 UTC (rev 379)
++++ RedLib/trunk/src/Red.IO/FileUtils.boo	2005-04-05 10:34:18 UTC (rev 380)
+@@ -19,16 +19,17 @@
+ 		
+ 		return dirs
+ 	
+-	private	static def GetAllDirectoryFiles (dir as string, rx as regex, files as ArrayList) as ArrayList:
++	private	static def GetAllDirectoryFiles (dir as string, rx as regex, files as ArrayList, discardHidden as bool) as ArrayList:
+ 		//Recurse through the directories
+ 		for d in Directory.GetDirectories (dir):
+-			for f in Directory.GetFiles (d):
+-				if rx:
+-					if f =~ rx:
++			if not (d.StartsWith (&quot;.&quot;) and discardHidden):
++				for f in Directory.GetFiles (d):
++					if rx:
++						if f =~ rx:
++							files.Add (f)
++					else:
+ 						files.Add (f)
+-				else:
+-					files.Add (f)
+-			GetAllDirectoryFiles (d, rx, files)
++				GetAllDirectoryFiles (d, rx, files, discardHidden)
+ 		
+ 		//Add the files from the top directory
+ 		for f in Directory.GetFiles (dir):
+@@ -42,7 +43,10 @@
+ 	
+ 
+ 	static def GetAllDirectoryFiles (dir as string) as IList:
+-		return GetAllDirectoryFiles (dir, null, ArrayList ())
++		return GetAllDirectoryFiles (dir, null, ArrayList (), false)
+ 	
++	static def GetAllDirectoryFiles (dir as string, discardHidden as bool) as IList:
++		return GetAllDirectoryFiles (dir, null, ArrayList (), discardHidden)
++	
+ 	static def GetAllDirectoryFiles (dir as string, rx as regex) as IList:
+-		return GetAllDirectoryFiles (dir, rx, ArrayList ())
++		return GetAllDirectoryFiles (dir, rx, ArrayList (), false)
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000092.html">[Mspace-checkins] r379 - in Red.ProjectManager/trunk: . build ext src/Red.ProjectManager
+</A></li>
+	<LI>Next message: <A HREF="000094.html">[Mspace-checkins] r381 - Red.ProjectManager/trunk/ext
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#93">[ date ]</a>
+              <a href="thread.html#93">[ thread ]</a>
+              <a href="subject.html#93">[ subject ]</a>
+              <a href="author.html#93">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

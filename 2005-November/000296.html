@@ -1,0 +1,344 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r584 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Interfaces Resources
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-November/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r584%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20Forms%20Interfaces%20Resources&In-Reply-To=%3C200511210946.jAL9kMH6022063%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000295.html">
+   <LINK REL="Next"  HREF="000297.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r584 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Interfaces Resources</H1>
+    <B>nestor at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r584%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20Forms%20Interfaces%20Resources&In-Reply-To=%3C200511210946.jAL9kMH6022063%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r584 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Interfaces Resources">nestor at berlios.de
+       </A><BR>
+    <I>Mon Nov 21 10:46:22 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000295.html">[Mspace-checkins] r583 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Resources
+</A></li>
+        <LI>Next message: <A HREF="000297.html">[Mspace-checkins] r585 - BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#296">[ date ]</a>
+              <a href="thread.html#296">[ thread ]</a>
+              <a href="subject.html#296">[ subject ]</a>
+              <a href="author.html#296">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-11-21 10:46:20 +0100 (Mon, 21 Nov 2005)
+New Revision: 584
+
+Added:
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Interfaces/IViewHandlerwActionState.cs
+Modified:
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ProjectView.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak
+Log:
+A?\195?\177adido un sistema para poder ver el estado del DTO en memoria, y la acci?\195?\179n a
+realizar:
+    Esto significa, que GetDataForm (); se invoca siempre y devuelve un DTO;
+    pero nos puede interesar editar un DTO, entonces se cargar?\195?\161 con el
+    LoadDataForm (DTO) y para pedir, antes del GetDataForm, con la propiedad
+    ActionState, se conseguir?\195?\161 una u otra opci?\195?\179n.
+    Si queremos crear un nuevo DTO, instanciaremos la clase DTO y crearemos el
+    objeto nuevo; pero para la edici?\195?\179n conseguiremos el DTO que queremos editar
+    y cambiaremos sus valores; y autom?\195?\161ticamente los cambios se deber?\195?\161n ver
+    reflejados.
+Ademas, las Views deber?\195?\161n contener un DTO del DTO que representan; para permitir
+edici?\195?\179n, lo que ha sugerido la opci?\195?\179n de hacer varios componentes entidad con
+una granularidad mucho m?\195?\161s fina, pero he descartado esa opci?\195?\179n.
+
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs	2005-11-14 23:41:53 UTC (rev 583)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs	2005-11-21 09:46:20 UTC (rev 584)
+@@ -7,7 +7,8 @@
+ using Glade;
+ 
+ namespace ComponentBuilder.Forms {
+-    internal class ComponentView : IViewHandler, IGtkView {
++    internal class ComponentView : IViewHandler, IGtkView, IViewHandlerActionState {
++        ActionState actionState;
+         Glade.XML componentView;
+         [Widget] TreeView viewsTreeView, methodsTreeView;
+         [Widget] Entry componentNameEntry, exceptionManagerEntry;
+@@ -40,11 +41,13 @@
+             viewsTreeView.Model = viewTableModel.ListStore;
+             methodTableModel = new MethodTableModel ();
+             methodsTreeView.Model = methodTableModel.ListStore;
++            actionState = ActionState.None;
+         }
+         
+         /* GUI Events */
+         private void OnNewMethodClicked (object sender, EventArgs args) {
+             methodView = new MethodView ();
++            ActionState = ActionState.Create;
+             methodView.LoadDataForm ((ComponentDTO) GetDataForm ());
+             MethodDTO methodDTO = (MethodDTO) methodView.GetDataForm ();
+             if (methodDTO != null) {
+@@ -120,10 +123,6 @@
+                 methodTableModel = new MethodTableModel (componentDTO.MethodCollection);
+                 methodsTreeView.Model = methodTableModel.ListStore;
+             }
+-            else {
+-                //Lo ponemos en modo de creaci&#243;n de uno nuevo.
+-                this.componentDTO = null;
+-            }
+         }
+ 
+         public void ClearForm () {
+@@ -137,32 +136,34 @@
+ 
+         public IDataTransferObject GetDataForm () {
+             if (ValidateForm ()) {
+-                //Hay una referencia asociada para este componente.
+-                if (this.componentDTO != null) {
+-                    //Ejecuci&#243;n del modo edici&#243;n.
+-                    this.componentDTO.ComponentName = componentNameEntry.Text;
+-                    this.componentDTO.ClassExceptionManager = exceptionManagerEntry.Text;
+-                    this.componentDTO.ViewCollection = viewTableModel.ListModel;
+-                    this.componentDTO.MethodCollection = methodTableModel.ListModel;
+-                    //Recogemos y devolvemos los nuevos datos editados.
+-                    return componentDTO;
++                switch (ActionState) {
++                    case ActionState.Create:
++                        ComponentDTO componentDTO = new ComponentDTO ();
++                        componentDTO.ComponentName = componentNameEntry.Text;
++                        componentDTO.ClassExceptionManager = exceptionManagerEntry.Text;
++                        componentDTO.ViewCollection = viewTableModel.ListModel;
++                        componentDTO.MethodCollection = methodTableModel.ListModel;
++                        ActionState = ActionState.None;
++                        return componentDTO;
++                    case ActionState.Edit:
++                        this.componentDTO.ComponentName = componentNameEntry.Text;
++                        this.componentDTO.ClassExceptionManager = exceptionManagerEntry.Text;
++                        this.componentDTO.ViewCollection = viewTableModel.ListModel;
++                        this.componentDTO.MethodCollection = methodTableModel.ListModel;
++                        ActionState = ActionState.None;
++                        return this.componentDTO; 
++                    case ActionState.None:
++                        break;
++                    default:
++                        ActionState = ActionState.None;
++                        break;
+                 }
+-                //No existe una referencia asociada al componentDTO.
+-                else {
+-                    //Creamos uno nuevo.
+-                    ComponentDTO componentDTO = new ComponentDTO ();
+-                    componentDTO.ComponentName = componentNameEntry.Text;
+-                    componentDTO.ClassExceptionManager = exceptionManagerEntry.Text;
+-                    componentDTO.ViewCollection = viewTableModel.ListModel;
+-                    componentDTO.MethodCollection = methodTableModel.ListModel;
+-                    return componentDTO;
+-                }
+             }
+-            this.componentDTO = null;
+             return null;
+         }
+ 
+-        private void OnTestClicked (object sender, EventArgs args) {
++        private void RefreshComponent (object sender, EventArgs args) {
++            ActionState = ActionState.Edit;
+             componentDTO = (ComponentDTO) GetDataForm ();
+         }
+         
+@@ -177,5 +178,14 @@
+         public Widget GetWidget () {
+             return componentView[&quot;table5&quot;];
+         }
+-    }
++
++        public ActionState ActionState {
++            get {
++                return actionState;
++            }
++            set{
++                actionState = value;
++            }
++        }
++    }   
+ }
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs	2005-11-14 23:41:53 UTC (rev 583)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs	2005-11-21 09:46:20 UTC (rev 584)
+@@ -3,6 +3,7 @@
+ using ComponentModel.Interfaces;
+ using ComponentModel.DTO;
+ using ComponentBuilder.DTO;
++using ComponentBuilder.Interfaces;
+ using Gtk;
+ using Glade;
+ 
+@@ -106,7 +107,8 @@
+             ProjectDTO projectDTO = (ProjectDTO) projectView.GetDataForm ();
+             if (projectDTO != null) {
+                 //Con esta linea decimos que vamos a a&#241;adir uno nuevo.
+-                componentView.LoadDataForm (null);
++                //OJO AQUI!!
++                componentView.ActionState = ActionState.Create;
+                 ComponentDTO componentDTO = (ComponentDTO) componentView.GetDataForm ();
+                 if (componentDTO != null) {
+                     projectDTO.ComponentCollection.Add (componentDTO);
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ProjectView.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ProjectView.cs	2005-11-14 23:41:53 UTC (rev 583)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ProjectView.cs	2005-11-21 09:46:20 UTC (rev 584)
+@@ -13,34 +13,41 @@
+         ScrolledWindow componentScrolledWindow;
+         NodeView componentNodeView;
+         NodeStore componentNodeStore;
+-        
++        /*Model*/ 
++        ProjectDTO projectDTO;
++
+         internal ProjectView () {
+             componentNodeStore = new NodeStore (typeof (GenericNode));
+             componentNodeView = new NodeView (componentNodeStore);
+             componentNodeView.AppendColumn (&quot;Project Tree&quot;, new CellRendererText (),&quot;text&quot;, 0);
+             componentScrolledWindow = new ScrolledWindow ();
+             componentScrolledWindow.Add (componentNodeView);
+-
+-            //Event Handling
+             componentNodeView.NodeSelection.Mode = SelectionMode.Single;
+             componentNodeView.NodeSelection.Changed += new EventHandler (OnSelectionChanged);
+         }
+ 
+         /* Interface Implementation */
++
++        /*
++         * Cargar&#225; el proyecto.
++         * Coge el ProjectDTO que le pasamos y asignamos la referencia al modelo
++         * del projectDTO.  Adem&#225;s con ese nuevo DTO crea un nuevo Nodo y
++         * rellenar&#225; tambi&#233;n sus componentes.
++         */
+         public void LoadDataForm (IDataTransferObject dto) {
+             if (dto is ProjectDTO) {
++                //Refresca el proyecto.
+                 ProjectDTO projectDTO = (ProjectDTO) dto;
++                this.projectDTO = projectDTO;
+                 ClearForm ();
+-                componentNodeStore.AddNode (new ProjectNode (projectDTO));
++                componentNodeStore.AddNode (new ProjectNode (this.projectDTO));
+             }
+-            else if (dto is ComponentDTO) {
+-                ComponentDTO componentDTO = (ComponentDTO) dto;
+-                ProjectNode projectNode = (ProjectNode) componentNodeStore.GetNode (TreePath.NewFirst ());
+-                projectNode.AddChild (new ComponentNode (componentDTO)); 
+-            }
+             componentNodeView.ExpandAll ();
+         }
+ 
++        /*
++         * Limpia el formulario.
++         */
+         public void ClearForm () {
+             componentNodeStore.Clear ();
+         }
+@@ -65,11 +72,7 @@
+                 if (nodeSelection.SelectedNode is ComponentNode) {
+                     ComponentNode componentNode = (ComponentNode) nodeSelection.SelectedNode;
+                     ComponentDTO componentDTO = (ComponentDTO) componentNode.DataTransferObject;
+-                    //Ahora truco de gestion de vista.
+-                    //IComponentModel componentModel = DefaultContainer.Instance.GetComponentByName (&quot;ComponentBuilder&quot;);
+                     IComponentModel componentModel = DefaultContainer.Instance[&quot;ComponentBuilder&quot;];
+-                    //Responder&#225; a la vista y ejecutar&#225; el loadDataForm de
+-                    //MainComponentForm
+                     componentModel.ViewHandlerCollection[0].LoadDataForm (componentDTO);
+                 }
+             }
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/Interfaces/IViewHandlerwActionState.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Interfaces/IViewHandlerwActionState.cs	2005-11-14 23:41:53 UTC (rev 583)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Interfaces/IViewHandlerwActionState.cs	2005-11-21 09:46:20 UTC (rev 584)
+@@ -0,0 +1,15 @@
++using System;
++
++namespace ComponentBuilder.Interfaces {
++    internal enum ActionState {
++        Create,
++        Delete,
++        Edit,
++        Selection,
++        None
++    }
++    
++    internal interface IViewHandlerActionState {
++        ActionState ActionState {get; set;}
++    }
++}
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak	2005-11-14 23:41:53 UTC (rev 583)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak	2005-11-21 09:46:20 UTC (rev 584)
+@@ -1671,6 +1671,26 @@
+ 	  &lt;property name=&quot;y_options&quot;&gt;expand&lt;/property&gt;
+ 	&lt;/packing&gt;
+       &lt;/child&gt;
++
++      &lt;child&gt;
++	&lt;widget class=&quot;GtkButton&quot; id=&quot;button17&quot;&gt;
++	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;button17&lt;/property&gt;
++	  &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++	  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	  &lt;signal name=&quot;clicked&quot; handler=&quot;OnTestClicked&quot; last_modification_time=&quot;Mon, 14 Nov 2005 23:31:40 GMT&quot;/&gt;
++	&lt;/widget&gt;
++	&lt;packing&gt;
++	  &lt;property name=&quot;left_attach&quot;&gt;0&lt;/property&gt;
++	  &lt;property name=&quot;right_attach&quot;&gt;1&lt;/property&gt;
++	  &lt;property name=&quot;top_attach&quot;&gt;5&lt;/property&gt;
++	  &lt;property name=&quot;bottom_attach&quot;&gt;6&lt;/property&gt;
++	  &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	  &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
++	&lt;/packing&gt;
++      &lt;/child&gt;
+     &lt;/widget&gt;
+   &lt;/child&gt;
+ &lt;/widget&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000295.html">[Mspace-checkins] r583 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Resources
+</A></li>
+	<LI>Next message: <A HREF="000297.html">[Mspace-checkins] r585 - BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#296">[ date ]</a>
+              <a href="thread.html#296">[ thread ]</a>
+              <a href="subject.html#296">[ subject ]</a>
+              <a href="author.html#296">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,32 @@
+From nestor at berlios.de  Mon Aug 29 13:26:27 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Mon, 29 Aug 2005 13:26:27 +0200
+Subject: [Mspace-checkins] r505 - ComponentModel/trunk/src
+Message-ID: <200508291126.j7TBQRP1011558@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-08-29 13:26:19 +0200 (Mon, 29 Aug 2005)
+New Revision: 505
+
+Modified:
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-07-19 20:19:08 UTC (rev 504)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-08-29 11:26:19 UTC (rev 505)
+@@ -11,6 +11,9 @@
+ using NLog;
+ 
+ namespace ComponentModel {
++    // TODO: En los getMethodXXX --> se deber?a realizar tambi?n una b?squeda
++    // con par?metros para poder permitir la sobrecarga de m?todos.  Y para las
++    // respuestas nos tapar?a un error muy majo :)
+     public class DefaultComponentModel : IComponentModel {
+         //Logging
+         private Logger logger = LogManager.GetLogger ("ComponentModel.DefaultComponentModel");
+
+
+

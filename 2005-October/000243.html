@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r530 - in Cronus: Control libmonotimer pruebas
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r530%20-%20in%20Cronus%3A%20Control%20libmonotimer%20pruebas&In-Reply-To=%3C200510011650.j91GoSd1004022%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000242.html">
+   <LINK REL="Next"  HREF="000244.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r530 - in Cronus: Control libmonotimer pruebas</H1>
+    <B>Luis Bosque at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r530%20-%20in%20Cronus%3A%20Control%20libmonotimer%20pruebas&In-Reply-To=%3C200510011650.j91GoSd1004022%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r530 - in Cronus: Control libmonotimer pruebas">luis at berlios.de
+       </A><BR>
+    <I>Sat Oct  1 18:50:28 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000242.html">[Mspace-checkins] r529 - in Cronus: . Control
+</A></li>
+        <LI>Next message: <A HREF="000244.html">[Mspace-checkins] r531 - in ComponentModel/trunk: . src/UnitTest/Components/TestComponent src/UnitTest/Components/TestComponent/Bo src/UnitTest/Components/TestComponent/Exceptions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#243">[ date ]</a>
+              <a href="thread.html#243">[ thread ]</a>
+              <a href="subject.html#243">[ subject ]</a>
+              <a href="author.html#243">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: luis
+Date: 2005-10-01 18:50:27 +0200 (Sat, 01 Oct 2005)
+New Revision: 530
+
+Modified:
+   Cronus/Control/Controller.cs
+   Cronus/libmonotimer/Communication.cs
+   Cronus/pruebas/Principal.cs
+Log:
+Limpieza de codigo inservible para dejar una base relativamente limpia.
+
+
+Modified: Cronus/Control/Controller.cs
+===================================================================
+--- Cronus/Control/Controller.cs	2005-10-01 14:53:17 UTC (rev 529)
++++ Cronus/Control/Controller.cs	2005-10-01 16:50:27 UTC (rev 530)
+@@ -33,6 +33,8 @@
+ 	}
+ 	
+ 	public sealed class Controller{
++	
++		private Project CurrentProject;
+ 		
+ 		CollabProject[] Array_Projects;
+ 		public event EventHandler timer;
+@@ -46,5 +48,3 @@
+ 	}
+ 	
+ }
+-
+-
+
+Modified: Cronus/libmonotimer/Communication.cs
+===================================================================
+--- Cronus/libmonotimer/Communication.cs	2005-10-01 14:53:17 UTC (rev 529)
++++ Cronus/libmonotimer/Communication.cs	2005-10-01 16:50:27 UTC (rev 530)
+@@ -3,45 +3,30 @@
+ using System.Security.Cryptography;
+ using System.Text;
+ 
+-
+ namespace libmonotimer {
+ 	
+-
+-[XmlRpcUrl(&quot;URL_del_server_xmlrpc&quot;)]
+-interface IStateName
+-{
+-
+-	[XmlRpcMethod(&quot;phpcollab.timeControl&quot;)]
+-	CollabProject[] timeControl (string usuario, string pass); 
+-}
+-
+-public class Communication {
++	[XmlRpcUrl(&quot;<A HREF="http://fragg.homeip.net/phpcollab/xmlrpc_server.php">http://fragg.homeip.net/phpcollab/xmlrpc_server.php</A>&quot;)]
++	interface IStateName
++	{
+ 	
+-
+-	public static CollabProject[] login (string name, string password) {		
+-		IStateName proxy = (IStateName)XmlRpcProxyGen.Create(typeof(IStateName));	
+-		CollabProject[] valor = proxy.timeControl (&quot;&quot;, &quot;&quot;);
+-		foreach ( CollabProject i in valor ) {
+-			Console.WriteLine (i.id);
+-			Console.WriteLine (i.nombre);
+-		}
+-		return valor;
++		[XmlRpcMethod(&quot;phpcollab.timeControl&quot;)]
++		CollabProject[] timeControl (string usuario, string pass); 
+ 	}
+ 	
+-
+-}
++	public class Communication {
+ 		
+-}
+-
+-/*
+-		string textToHash = &quot;&quot;;
+-		byte[] byteRepresentation = UnicodeEncoding.UTF8.GetBytes (textToHash);
+-		byte[] hashedTextInBytes = null;
+-		MD5CryptoServiceProvider myMD5 = new MD5CryptoServiceProvider();
+-		hashedTextInBytes = myMD5.ComputeHash (byteRepresentation);
+-		foreach ( byte i in hashedTextInBytes ) {
+-			Console.WriteLine (i);
++	
++		public static CollabProject[] login (string name, string password) {		
++			IStateName proxy = (IStateName)XmlRpcProxyGen.Create(typeof(IStateName));	
++			CollabProject[] valor = proxy.timeControl (login, name);
++			foreach ( CollabProject i in valor ) {
++				Console.WriteLine (i.id);
++				Console.WriteLine (i.nombre);
++			}
++			return valor;
+ 		}
+-		string hashedText = Convert.ToBase64String (hashedTextInBytes);
+-		*/
+-
++		
++	
++	}
++		
++}
+
+Modified: Cronus/pruebas/Principal.cs
+===================================================================
+--- Cronus/pruebas/Principal.cs	2005-10-01 14:53:17 UTC (rev 529)
++++ Cronus/pruebas/Principal.cs	2005-10-01 16:50:27 UTC (rev 530)
+@@ -8,7 +8,7 @@
+ 	public string nombre;
+ }
+ 
+-[XmlRpcUrl(&quot;URL_del_servidor_xmlrpc&quot;)]
++[XmlRpcUrl(&quot;<A HREF="http://fragg.homeip.net/phpcollab/xmlrpc_server.php">http://fragg.homeip.net/phpcollab/xmlrpc_server.php</A>&quot;)]
+ interface IStateName
+ {
+ 
+@@ -22,7 +22,7 @@
+ 
+ 		
+ 		IStateName proxy = (IStateName)XmlRpcProxyGen.Create(typeof(IStateName));	
+-		proyecto[] valor = proxy.timeControl (&quot;&quot;, &quot;&quot;);
++		proyecto[] valor = proxy.timeControl (&quot;admin&quot;, &quot;collab_proyectos&quot;);
+ 		if (valor.Length == 0) {
+ 			Console.WriteLine (&quot;Respuesta vacia&quot;);
+ 		}
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000242.html">[Mspace-checkins] r529 - in Cronus: . Control
+</A></li>
+	<LI>Next message: <A HREF="000244.html">[Mspace-checkins] r531 - in ComponentModel/trunk: . src/UnitTest/Components/TestComponent src/UnitTest/Components/TestComponent/Bo src/UnitTest/Components/TestComponent/Exceptions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#243">[ date ]</a>
+              <a href="thread.html#243">[ thread ]</a>
+              <a href="subject.html#243">[ subject ]</a>
+              <a href="author.html#243">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

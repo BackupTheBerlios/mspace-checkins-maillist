@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r427 - in SimpleP/trunk: . resources src src/Contexts/StartPage ui-data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r427%20-%20in%20SimpleP/trunk%3A%20.%20resources%20src%20src/Contexts/StartPage%20ui-data&In-Reply-To=%3C200504101136.j3ABao8c023385%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000139.html">
+   <LINK REL="Next"  HREF="000141.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r427 - in SimpleP/trunk: . resources src src/Contexts/StartPage ui-data</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r427%20-%20in%20SimpleP/trunk%3A%20.%20resources%20src%20src/Contexts/StartPage%20ui-data&In-Reply-To=%3C200504101136.j3ABao8c023385%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r427 - in SimpleP/trunk: . resources src src/Contexts/StartPage ui-data">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Sun Apr 10 13:36:50 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000139.html">[Mspace-checkins] r426 - in SimpleP/trunk: . images resources src src/Contexts src/Contexts/StartPage
+</A></li>
+        <LI>Next message: <A HREF="000141.html">[Mspace-checkins] r428 - in SimpleP/trunk: . resources src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#140">[ date ]</a>
+              <a href="thread.html#140">[ thread ]</a>
+              <a href="subject.html#140">[ subject ]</a>
+              <a href="author.html#140">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-10 13:36:40 +0200 (Sun, 10 Apr 2005)
+New Revision: 427
+
+Modified:
+   SimpleP/trunk/ChangeLog
+   SimpleP/trunk/resources/welcome.html
+   SimpleP/trunk/src/Contexts/StartPage/StartPageWidget.boo
+   SimpleP/trunk/src/MainWindow.boo
+   SimpleP/trunk/ui-data/simplep.glade
+Log:
+
+	* resources/welcome.html: improved a little
+	* src/Contexts/StartPage/StartPageWidget.boo: improved a little
+	* src/MainWindow.boo: Save the position of the HPaned when exit
+	* ui-data/simplep.glade: Cosmetic changes
+
+
+Modified: SimpleP/trunk/ChangeLog
+===================================================================
+--- SimpleP/trunk/ChangeLog	2005-04-09 18:39:10 UTC (rev 426)
++++ SimpleP/trunk/ChangeLog	2005-04-10 11:36:40 UTC (rev 427)
+@@ -1,3 +1,10 @@
++2005-04-10  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
++	* resources/welcome.html: improved a little
++	* src/Contexts/StartPage/StartPageWidget.boo: improved a little
++	* src/MainWindow.boo: Save the position of the HPaned when exit
++	* ui-data/simplep.glade: Cosmetic changes
++
+ 2005-04-09  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
+ 	* Makefile: added gtkhtml-sharp reference
+
+Modified: SimpleP/trunk/resources/welcome.html
+===================================================================
+--- SimpleP/trunk/resources/welcome.html	2005-04-09 18:39:10 UTC (rev 426)
++++ SimpleP/trunk/resources/welcome.html	2005-04-10 11:36:40 UTC (rev 427)
+@@ -0,0 +1,19 @@
++&lt;table width=&quot;100%&quot; border=&quot;0&quot; bgcolor=&quot;#f6ff8d&quot;&gt;
++  &lt;tbody&gt;
++    &lt;tr&gt;
++      &lt;td&gt;&lt;strong&gt;&lt;big&gt;Start Here&lt;/big&gt;&lt;/strong&gt;&lt;/td&gt;
++   &lt;/tr&gt;
++  &lt;/tbody&gt;
++&lt;/table&gt;
++&lt;br&gt;
++&lt;br&gt;
++&lt;table width=&quot;50%&quot; bgcolor=&quot;#F6FF8D&quot;&gt;
++  &lt;tbody&gt;
++    &lt;tr&gt;
++      &lt;td&gt;&lt;SPAN&gt;&lt;big&gt;&lt;strong&gt;Projects&lt;/strong&gt;&lt;/big&gt;&lt;/SPAN&gt;&lt;/td&gt;
++   &lt;/tr&gt;
++  &lt;/tbody&gt;
++&lt;/table&gt;
++&lt;br&gt;
++&lt;b&gt;&lt;A href=&quot;OpenProject&quot;&gt;Open last project&lt;/A&gt;&lt;/b&gt;
++
+
+Modified: SimpleP/trunk/src/Contexts/StartPage/StartPageWidget.boo
+===================================================================
+--- SimpleP/trunk/src/Contexts/StartPage/StartPageWidget.boo	2005-04-09 18:39:10 UTC (rev 426)
++++ SimpleP/trunk/src/Contexts/StartPage/StartPageWidget.boo	2005-04-10 11:36:40 UTC (rev 427)
+@@ -1,11 +1,18 @@
+ namespace SimpleP
+ 
+ import Gtk
++import System.Reflection
++import System.IO
+ 
+ class StartPageWidget (VBox):
+ 	
+ 	html as HTML
+ 	
+ 	def constructor ():
+-		html = HTML (&quot;&lt;b&gt;Hello&lt;/b&gt;&quot;)
++		stream = Globals.Resources.GetManifestResourceStream (&quot;welcome.html&quot;)
++		reader = StreamReader (stream)
++		content = reader.ReadToEnd ()
++		reader.Close ()
++		stream.Close ()
++		html = HTML (content)
+ 		Add (html)
+
+Modified: SimpleP/trunk/src/MainWindow.boo
+===================================================================
+--- SimpleP/trunk/src/MainWindow.boo	2005-04-09 18:39:10 UTC (rev 426)
++++ SimpleP/trunk/src/MainWindow.boo	2005-04-10 11:36:40 UTC (rev 427)
+@@ -26,6 +26,7 @@
+ 	[Glade.Widget] projectCombo as ComboBox
+ 	[Glade.Widget] statusbar as Statusbar
+ 	[Glade.Widget] contextMenues as MenuItem
++	[Glade.Widget] hpaned as HPaned
+ 	iContextMenues as Menu
+ 	projectView as TreeView 
+ 	_lastWidget as Widget 
+@@ -45,6 +46,7 @@
+ 		x, y = Int32.Parse (Services.Config[&quot;XPos&quot;]), Int32.Parse (Services.Config[&quot;YPos&quot;])
+ 		Move (x, y)
+ 		gxml.Autoconnect (self)
++		hpaned.Position = Services.Config.MainConfig.GetInt (&quot;HPanedPosition&quot;, 150)
+ 		Init ()
+ 
+ 	private def Init ():
+@@ -78,6 +80,7 @@
+ 		GetPosition (x, y)
+ 		Services.Config[&quot;XPos&quot;] = x.ToString ()
+ 		Services.Config[&quot;YPos&quot;] = y.ToString ()
++		Services.Config[&quot;HPanedPosition&quot;] = hpaned.Position.ToString ()
+ 		Services.Config.SaveConfig ()
+ 		Application.Quit ()
+ 
+
+Modified: SimpleP/trunk/ui-data/simplep.glade
+===================================================================
+--- SimpleP/trunk/ui-data/simplep.glade	2005-04-09 18:39:10 UTC (rev 426)
++++ SimpleP/trunk/ui-data/simplep.glade	2005-04-10 11:36:40 UTC (rev 427)
+@@ -4,10 +4,10 @@
+ &lt;glade-interface&gt;
+ 
+ &lt;widget class=&quot;GtkWindow&quot; id=&quot;projectManagerWindow&quot;&gt;
+-  &lt;property name=&quot;width_request&quot;&gt;450&lt;/property&gt;
++  &lt;property name=&quot;width_request&quot;&gt;300&lt;/property&gt;
+   &lt;property name=&quot;height_request&quot;&gt;350&lt;/property&gt;
+   &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-  &lt;property name=&quot;title&quot; translatable=&quot;yes&quot;&gt;R Project Manager&lt;/property&gt;
++  &lt;property name=&quot;title&quot; translatable=&quot;yes&quot;&gt;SimpleP&lt;/property&gt;
+   &lt;property name=&quot;type&quot;&gt;GTK_WINDOW_TOPLEVEL&lt;/property&gt;
+   &lt;property name=&quot;window_position&quot;&gt;GTK_WIN_POS_NONE&lt;/property&gt;
+   &lt;property name=&quot;modal&quot;&gt;False&lt;/property&gt;
+@@ -238,7 +238,7 @@
+       &lt;/child&gt;
+ 
+       &lt;child&gt;
+-	&lt;widget class=&quot;GtkHPaned&quot; id=&quot;hpaned1&quot;&gt;
++	&lt;widget class=&quot;GtkHPaned&quot; id=&quot;hpaned&quot;&gt;
+ 	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 	  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+ 	  &lt;property name=&quot;position&quot;&gt;160&lt;/property&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000139.html">[Mspace-checkins] r426 - in SimpleP/trunk: . images resources src src/Contexts src/Contexts/StartPage
+</A></li>
+	<LI>Next message: <A HREF="000141.html">[Mspace-checkins] r428 - in SimpleP/trunk: . resources src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#140">[ date ]</a>
+              <a href="thread.html#140">[ thread ]</a>
+              <a href="subject.html#140">[ subject ]</a>
+              <a href="author.html#140">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

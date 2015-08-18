@@ -1,0 +1,314 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r442 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container src/ComponentModel.Container.Dao src/ComponentModel.VO
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r442%20-%20in%20ComponentModel/trunk%3A%20ComponentTest/src/Components/Saludator/Bo%20ComponentTest/src/Components/Saludator/Form%20src%20src/ComponentModel.Container%20src/ComponentModel.Container.Dao%20src/ComponentModel.VO&In-Reply-To=%3C200504161630.j3GGUCEu007525%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000154.html">
+   <LINK REL="Next"  HREF="000156.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r442 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container src/ComponentModel.Container.Dao src/ComponentModel.VO</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r442%20-%20in%20ComponentModel/trunk%3A%20ComponentTest/src/Components/Saludator/Bo%20ComponentTest/src/Components/Saludator/Form%20src%20src/ComponentModel.Container%20src/ComponentModel.Container.Dao%20src/ComponentModel.VO&In-Reply-To=%3C200504161630.j3GGUCEu007525%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r442 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container src/ComponentModel.Container.Dao src/ComponentModel.VO">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Sat Apr 16 18:30:12 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000154.html">[Mspace-checkins] r441 - in ComponentModel/releases: . doc doc/pre-alpha
+</A></li>
+        <LI>Next message: <A HREF="000156.html">[Mspace-checkins] r443 - in ComponentModel/trunk/src: . ComponentModel.Container.Dao ComponentModel.ExceptionManager ComponentModel.Exceptions ComponentModel.Factory ComponentModel.Interfaces ComponentModel.VO
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#155">[ date ]</a>
+              <a href="thread.html#155">[ thread ]</a>
+              <a href="subject.html#155">[ subject ]</a>
+              <a href="author.html#155">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-04-16 18:29:58 +0200 (Sat, 16 Apr 2005)
+New Revision: 442
+
+Added:
+   ComponentModel/trunk/src/AssemblyInfo.cs
+Modified:
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs
+   ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs
+   ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+   ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs
+   ComponentModel/trunk/src/ComponentModel.VO/ResponseMethodVO.cs
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Added assemblyINfo.
+
+Looking for Type.GetType () correct behaviour.
+
+
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-04-16 15:35:25 UTC (rev 441)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-04-16 16:29:58 UTC (rev 442)
+@@ -14,7 +14,7 @@
+         [ComponentMethod (&quot;ComponentModel.ComponentTest.Components.Saludator.Form.SaludatorForm&quot;, &quot;ResponseSaluda&quot;)]
+         public int Saluda () {
+             Console.WriteLine (&quot;Que pasa co !!&quot;);
+-            //throw new Exception (&quot;Yeahhhh&quot;);
++            throw new Exception (&quot;Yeahhhh&quot;);
+             return 1;
+         }
+ 
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs	2005-04-16 15:35:25 UTC (rev 441)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs	2005-04-16 16:29:58 UTC (rev 442)
+@@ -28,11 +28,11 @@
+         }
+         
+         public void ResponseSaluda (ResponseMethodVO response) {
+-            Console.WriteLine (response.IsExecutionSuccess);
+-            if (response.IsExecutionSuccess)  {
++            Console.WriteLine (response.ExecutionSuccess);
++            if (response.ExecutionSuccess)  {
+                 Console.WriteLine (&quot;Hola luis.&quot;);
+                 Console.WriteLine (&quot;Response hola !!&quot;);
+-                Console.WriteLine ((int)response.ResponseValue);
++                Console.WriteLine ((int)response.MethodResult);
+             }
+         }
+ 
+
+Added: ComponentModel/trunk/src/AssemblyInfo.cs
+===================================================================
+--- ComponentModel/trunk/src/AssemblyInfo.cs	2005-04-16 15:35:25 UTC (rev 441)
++++ ComponentModel/trunk/src/AssemblyInfo.cs	2005-04-16 16:29:58 UTC (rev 442)
+@@ -0,0 +1,12 @@
++using System.Reflection;
++using System.Runtime.CompilerServices;
++
++[assembly: AssemblyTitle(&quot;MSpace ComponentModel&quot;)]
++[assembly: AssemblyDescription(&quot;A little component model and framework to write .NET components.&quot;)]
++[assembly: AssemblyConfiguration(&quot;&quot;)]
++[assembly: AssemblyCompany(&quot;MSpace&quot;)]
++[assembly: AssemblyProduct(&quot;ComponentModel&quot;)]
++[assembly: AssemblyCopyright(&quot;2005 (C) N&#233;stor Salceda Alonso&quot;)]
++[assembly: AssemblyTrademark(&quot;&quot;)]
++[assembly: AssemblyCulture(&quot;&quot;)]
++[assembly: AssemblyVersion(&quot;0.1.*&quot;)]
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-04-16 15:35:25 UTC (rev 441)
++++ ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-04-16 16:29:58 UTC (rev 442)
+@@ -66,7 +66,7 @@
+ 
+         public IComponentModel GetComponentByName (string componentName) {
+             for (int i = 0; i &lt; componentList.Count; i++) {
+-                if ((componentList[i] as DefaultComponentModel).VO.Name.Equals (componentName)) {
++                if ((componentList[i] as DefaultComponentModel).VO.ComponentName.Equals (componentName)) {
+                     return (IComponentModel)componentList[i];
+                 }
+             }
+@@ -83,7 +83,7 @@
+             if (componentList.Contains (component))
+                 return;
+             componentList.Add (component);
+-            logger.Debug (&quot;Registering component: &quot; + component + &quot; as Name: &quot; + component.VO.Name);
++            logger.Debug (&quot;Registering component: &quot; + component + &quot; as Name: &quot; + component.VO.ComponentName);
+         }
+ 
+         public void Remove (IComponentModel component) {
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs	2005-04-16 15:35:25 UTC (rev 441)
++++ ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs	2005-04-16 16:29:58 UTC (rev 442)
+@@ -55,9 +55,9 @@
+             ComponentModelVO componentModelVO = new ComponentModelVO ();
+             ComponentAttribute componentAttribute = (ComponentAttribute)(type.GetCustomAttributes (typeof (ComponentAttribute), true)[0]);
+             
+-            componentModelVO.ClassName = type.FullName;
+-            componentModelVO.Name = componentAttribute.ComponentName;
+-            componentModelVO.ExceptionClassName = componentAttribute.ExceptionManager;
++            componentModelVO.ComponentClassName = type.FullName;
++            componentModelVO.ComponentName = componentAttribute.ComponentName;
++            componentModelVO.ExceptionManagerClassName = componentAttribute.ExceptionManager;
+             
+             return componentModelVO;
+         }
+
+Modified: ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs	2005-04-16 15:35:25 UTC (rev 441)
++++ ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs	2005-04-16 16:29:58 UTC (rev 442)
+@@ -3,36 +3,23 @@
+ 
+ namespace ComponentModel.VO {
+     public class ComponentModelVO {
+-        private string name;
+-        private Hashtable methods;
++        private string componentName;
++        private string componentClassName;
++        private string exceptionManagerClassName;
+ 
+-        private string className;
+-        private string exceptionClassName;
+-
+-
+-        public ComponentModelVO () {
+-            methods = new Hashtable ();
++        public string ExceptionManagerClassName {
++            get {return exceptionManagerClassName;}
++            set {exceptionManagerClassName = value;}
+         }
+         
+-        public string ExceptionClassName {
+-            get {return exceptionClassName;}
+-            set {exceptionClassName = value;}
++        public string ComponentClassName {
++            get {return componentClassName;}
++            set {componentClassName = value;}
+         }
+         
+-        public string ClassName {
+-            get {return className;}
+-            set {className = value;}
++        public string ComponentName {
++            get {return componentName;}
++            set {componentName = value;}
+         }
+-        
+-        public Hashtable Methods {
+-            get {return methods;}
+-            set {methods = value;}
+-        }
+-
+-        public string Name {
+-            get {return name;}
+-            set {name = value;}
+-        }
+-
+     }
+ }
+
+Modified: ComponentModel/trunk/src/ComponentModel.VO/ResponseMethodVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.VO/ResponseMethodVO.cs	2005-04-16 15:35:25 UTC (rev 441)
++++ ComponentModel/trunk/src/ComponentModel.VO/ResponseMethodVO.cs	2005-04-16 16:29:58 UTC (rev 442)
+@@ -2,25 +2,25 @@
+ 
+ namespace ComponentModel.VO {
+     public class ResponseMethodVO {
+-        private object responseValue; 
+         private bool executionSuccess;
++        private object methodResult;
+ 
+         public ResponseMethodVO () {
+-            this.ExecutionSuccess = false;
++            this.SetExecutionSuccess (false);
+         }
+         
+-        public bool IsExecutionSuccess {
++        public object MethodResult {
++            get {return methodResult;}
++            set {methodResult = value;}
++        }
++        
++        public bool ExecutionSuccess {
+             get {return executionSuccess;}
+         }
+ 
+-        internal bool ExecutionSuccess {
+-            set {executionSuccess = value;}
++        internal void SetExecutionSuccess (bool executionSuccess) {
++            this.executionSuccess = executionSuccess;
+         }
+         
+-        public object ResponseValue {
+-            get {return responseValue;}
+-            set {responseValue = value;}
+-        }
+-
+     }
+ }
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-04-16 15:35:25 UTC (rev 441)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-04-16 16:29:58 UTC (rev 442)
+@@ -32,6 +32,7 @@
+         }
+       
+         private Type GetTypeExceptionManager (string exceptionManagerClassName) {
++
+             //Precondition: exceptionManagerClassName != null &amp;&amp;
+             //exceptionManagerClassName != String.Empty
+             if ((exceptionManagerClassName == null) | (exceptionManagerClassName.Equals (String.Empty))) {
+@@ -86,7 +87,7 @@
+         private void InstantiateExceptionManager () {
+             if (defaultExceptionManager == null) {
+                 logger.Debug (&quot;Trying to instantiate ExceptionManager.&quot;);
+-                Type typeManager = this.GetTypeExceptionManager (this.VO.ExceptionClassName);
++                Type typeManager = this.GetTypeExceptionManager (this.VO.ExceptionManagerClassName);
+                 this.defaultExceptionManager = (IExceptionManager)typeManager.GetConstructor (null).Invoke (null);
+                 logger.Debug (&quot;Exception manager instatiated.&quot;);
+             }
+@@ -98,11 +99,11 @@
+                 ResponseMethodVO responseMethodVO = new ResponseMethodVO ();
+                 logger.Debug (&quot;Method &quot; + methodToInvoke + &quot; executing.&quot;);
+                 object ret = methodToInvoke.Invoke (this, parameters);
+-                responseMethodVO.ResponseValue = ret;
++                responseMethodVO.MethodResult = ret;
+                 logger.Debug (&quot;Redirecting to view: &quot; + viewType.ToString () + &quot; to response Method: &quot; + methodResponse.ToString ());
+                 object obj = viewType.GetConstructor (null).Invoke (null);
+                 logger.Debug (&quot;Executing response method: &quot; + methodResponse.ToString ());
+-                responseMethodVO.ExecutionSuccess = true;
++                responseMethodVO.SetExecutionSuccess (true);
+                 logger.Debug (&quot;Setting excecuttion success as true.&quot;);
+                 methodResponse.Invoke (obj, new object[] {responseMethodVO});
+                 return responseMethodVO;
+@@ -132,7 +133,6 @@
+                 }
+             }
+             throw new ViewNotFoundException (&quot;View &quot; +componentMethodAttribute.ViewName + &quot; not found&quot;);
+-            //return null;
+         }
+         
+         //Public Methods
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000154.html">[Mspace-checkins] r441 - in ComponentModel/releases: . doc doc/pre-alpha
+</A></li>
+	<LI>Next message: <A HREF="000156.html">[Mspace-checkins] r443 - in ComponentModel/trunk/src: . ComponentModel.Container.Dao ComponentModel.ExceptionManager ComponentModel.Exceptions ComponentModel.Factory ComponentModel.Interfaces ComponentModel.VO
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#155">[ date ]</a>
+              <a href="thread.html#155">[ thread ]</a>
+              <a href="subject.html#155">[ subject ]</a>
+              <a href="author.html#155">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

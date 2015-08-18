@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r268 - in Chicken/branches: . chicken-0.1.3/debian
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r268%20-%20in%20Chicken/branches%3A%20.%20chicken-0.1.3/debian&In-Reply-To=%3C200410121221.i9CCL3bb005801%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000003.html">
+   <LINK REL="Next"  HREF="000005.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r268 - in Chicken/branches: . chicken-0.1.3/debian</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r268%20-%20in%20Chicken/branches%3A%20.%20chicken-0.1.3/debian&In-Reply-To=%3C200410121221.i9CCL3bb005801%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r268 - in Chicken/branches: . chicken-0.1.3/debian">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Tue Oct 12 14:21:03 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000003.html">[Mspace-checkins] r267 - Chicken
+</A></li>
+        <LI>Next message: <A HREF="000005.html">[Mspace-checkins] r269 - Chicken/branches
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4">[ date ]</a>
+              <a href="thread.html#4">[ thread ]</a>
+              <a href="subject.html#4">[ subject ]</a>
+              <a href="author.html#4">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2004-10-12 14:21:01 +0200 (Tue, 12 Oct 2004)
+New Revision: 268
+
+Added:
+   Chicken/branches/chicken-0.1.3/
+   Chicken/branches/chicken-0.1.3/debian/README.Debian
+   Chicken/branches/chicken-0.1.3/debian/changelog
+   Chicken/branches/chicken-0.1.3/debian/control
+   Chicken/branches/chicken-0.1.3/debian/fulldeps.control
+   Chicken/branches/chicken-0.1.3/debian/libchicken.dirs
+   Chicken/branches/chicken-0.1.3/debian/libchicken.docs
+   Chicken/branches/chicken-0.1.3/debian/libchicken.files
+   Chicken/branches/chicken-0.1.3/debian/rules
+Removed:
+   Chicken/branches/chicken-0.1.3/debian/README.Debian
+   Chicken/branches/chicken-0.1.3/debian/changelog
+   Chicken/branches/chicken-0.1.3/debian/control
+   Chicken/branches/chicken-0.1.3/debian/rules
+Log:
+renamed
+
+
+Copied: Chicken/branches/chicken-0.1.3 (from rev 265, Chicken/branches/Chicken-0.1.3)
+
+Deleted: Chicken/branches/chicken-0.1.3/debian/README.Debian
+===================================================================
+--- Chicken/branches/Chicken-0.1.3/debian/README.Debian	2004-10-12 11:52:42 UTC (rev 265)
++++ Chicken/branches/chicken-0.1.3/debian/README.Debian	2004-10-12 12:21:01 UTC (rev 268)
+@@ -1,10 +0,0 @@
+-chicken for Debian
+-------------------
+-
+-This package does not depend on debian mono packages, as current mono packages are only
+-available in Debian Sid/Testing and only in a few architecture. For example, they are not 
+-present in Ubuntu. This will make installing this package possible where mono is not available
+-as a system package, but you will need mono &gt;= 1.0, gtk-sharp &gt;= 1.0 and gecko-sharp &gt;= 0.5 installed
+-if you want to use this library.
+-
+- -- rubiojr &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;, Mon, 11 Oct 2004 19:12:56 +0200
+
+Copied: Chicken/branches/chicken-0.1.3/debian/README.Debian (from rev 266, Chicken/branches/Chicken-0.1.3/debian/README.Debian)
+
+Deleted: Chicken/branches/chicken-0.1.3/debian/changelog
+===================================================================
+--- Chicken/branches/Chicken-0.1.3/debian/changelog	2004-10-12 11:52:42 UTC (rev 265)
++++ Chicken/branches/chicken-0.1.3/debian/changelog	2004-10-12 12:21:01 UTC (rev 268)
+@@ -1,6 +0,0 @@
+-chicken (0.1.3-1) unstable; urgency=low
+-
+-  * Initial Release.
+-
+- -- rubiojr &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;  Mon, 11 Oct 2004 19:12:56 +0200
+-
+
+Copied: Chicken/branches/chicken-0.1.3/debian/changelog (from rev 266, Chicken/branches/Chicken-0.1.3/debian/changelog)
+
+Deleted: Chicken/branches/chicken-0.1.3/debian/control
+===================================================================
+--- Chicken/branches/Chicken-0.1.3/debian/control	2004-10-12 11:52:42 UTC (rev 265)
++++ Chicken/branches/chicken-0.1.3/debian/control	2004-10-12 12:21:01 UTC (rev 268)
+@@ -1,15 +0,0 @@
+-Source: chicken
+-Priority: optional
+-Maintainer: Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+-Build-Depends: debhelper (&gt;= 4.0.0)
+-Standards-Version: 3.6.1
+-
+-Package: libchicken
+-Section: libs
+-Architecture: powerpc i386 sparc s390
+-Depends: ${shlibs:Depends}, ${misc:Depends}
+-Description: Misc .Net/Mono components.
+- .
+- Desktop notification messages, notification bubbles,
+- configuration helpers and many more. Nini framework
+- (see <A HREF="http://nini.sf.net">http://nini.sf.net</A>) is also included.
+
+Copied: Chicken/branches/chicken-0.1.3/debian/control (from rev 266, Chicken/branches/Chicken-0.1.3/debian/control)
+
+Copied: Chicken/branches/chicken-0.1.3/debian/fulldeps.control (from rev 266, Chicken/branches/Chicken-0.1.3/debian/fulldeps.control)
+
+Copied: Chicken/branches/chicken-0.1.3/debian/libchicken.dirs (from rev 266, Chicken/branches/Chicken-0.1.3/debian/libchicken.dirs)
+
+Copied: Chicken/branches/chicken-0.1.3/debian/libchicken.docs (from rev 266, Chicken/branches/Chicken-0.1.3/debian/libchicken.docs)
+
+Copied: Chicken/branches/chicken-0.1.3/debian/libchicken.files (from rev 266, Chicken/branches/Chicken-0.1.3/debian/libchicken.files)
+
+Deleted: Chicken/branches/chicken-0.1.3/debian/rules
+===================================================================
+--- Chicken/branches/Chicken-0.1.3/debian/rules	2004-10-12 11:52:42 UTC (rev 265)
++++ Chicken/branches/chicken-0.1.3/debian/rules	2004-10-12 12:21:01 UTC (rev 268)
+@@ -1,107 +0,0 @@
+-#!/usr/bin/make -f
+-# -*- makefile -*-
+-# Sample debian/rules that uses debhelper.
+-# GNU copyright 1997 to 1999 by Joey Hess.
+-
+-# Uncomment this to turn on verbose mode.
+-#export DH_VERBOSE=1
+-
+-
+-# These are used for cross-compiling and for saving the configure script
+-# from having to guess our platform (since we know it already)
+-DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+-DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+-
+-
+-CFLAGS = -Wall -g
+-
+-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+-	CFLAGS += -O0
+-else
+-	CFLAGS += -O2
+-endif
+-ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+-	INSTALL_PROGRAM += -s
+-endif
+-
+-config.status: configure
+-	dh_testdir
+-	# Add here commands to configure the package.
+-	CFLAGS=&quot;$(CFLAGS)&quot; ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info
+-
+-
+-build: build-stamp
+-
+-build-stamp:  config.status
+-	dh_testdir
+-
+-	# Add here commands to compile the package.
+-	$(MAKE)
+-	#/usr/bin/docbook-to-man debian/chicken.sgml &gt; chicken.1
+-
+-	touch build-stamp
+-
+-clean:
+-	dh_testdir
+-	dh_testroot
+-	rm -f build-stamp 
+-
+-	# Add here commands to clean up after the build process.
+-	-$(MAKE) distclean
+-ifneq &quot;$(wildcard /usr/share/misc/config.sub)&quot; &quot;&quot;
+-	cp -f /usr/share/misc/config.sub config.sub
+-endif
+-ifneq &quot;$(wildcard /usr/share/misc/config.guess)&quot; &quot;&quot;
+-	cp -f /usr/share/misc/config.guess config.guess
+-endif
+-
+-
+-	dh_clean 
+-
+-install: build
+-	dh_testdir
+-	dh_testroot
+-	dh_clean -k 
+-	dh_installdirs
+-
+-	# Add here commands to install the package into debian/chicken.
+-	$(MAKE) install DESTDIR=$(CURDIR)/debian/chicken
+-
+-
+-# Build architecture-independent files here.
+-binary-indep: build install
+-# We have nothing to do by default.
+-
+-# Build architecture-dependent files here.
+-binary-arch: build install
+-	dh_testdir
+-	dh_testroot
+-	dh_installchangelogs ChangeLog
+-	dh_installdocs
+-	dh_installexamples
+-#	dh_install
+-#	dh_installmenu
+-#	dh_installdebconf	
+-#	dh_installlogrotate
+-#	dh_installemacsen
+-#	dh_installpam
+-#	dh_installmime
+-#	dh_installinit
+-#	dh_installcron
+-#	dh_installinfo
+-	dh_installman
+-	dh_link
+-	dh_strip
+-	dh_compress
+-	dh_fixperms
+-#	dh_perl
+-#	dh_python
+-#	dh_makeshlibs
+-	dh_installdeb
+-	dh_shlibdeps
+-	dh_gencontrol
+-	dh_md5sums
+-	dh_builddeb
+-
+-binary: binary-indep binary-arch
+-.PHONY: build clean binary-indep binary-arch binary install 
+
+Copied: Chicken/branches/chicken-0.1.3/debian/rules (from rev 266, Chicken/branches/Chicken-0.1.3/debian/rules)
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000003.html">[Mspace-checkins] r267 - Chicken
+</A></li>
+	<LI>Next message: <A HREF="000005.html">[Mspace-checkins] r269 - Chicken/branches
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#4">[ date ]</a>
+              <a href="thread.html#4">[ thread ]</a>
+              <a href="subject.html#4">[ subject ]</a>
+              <a href="author.html#4">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

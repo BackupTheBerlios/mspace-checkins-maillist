@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r405 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo src src/ComponentModel.Container src/ComponentModel.Exceptions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r405%20-%20in%20ComponentModel/trunk%3A%20ComponentTest/src%20ComponentTest/src/Components/Saludator/Bo%20src%20src/ComponentModel.Container%20src/ComponentModel.Exceptions&In-Reply-To=%3C200504062247.j36MlEw8031230%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000117.html">
+   <LINK REL="Next"  HREF="000119.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r405 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo src src/ComponentModel.Container src/ComponentModel.Exceptions</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r405%20-%20in%20ComponentModel/trunk%3A%20ComponentTest/src%20ComponentTest/src/Components/Saludator/Bo%20src%20src/ComponentModel.Container%20src/ComponentModel.Exceptions&In-Reply-To=%3C200504062247.j36MlEw8031230%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r405 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo src src/ComponentModel.Container src/ComponentModel.Exceptions">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Thu Apr  7 00:47:14 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000117.html">[Mspace-checkins] r404 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src
+</A></li>
+        <LI>Next message: <A HREF="000119.html">[Mspace-checkins] r406 - in ComponentModel/trunk: ComponentTest/src src src/ComponentModel.Container
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#118">[ date ]</a>
+              <a href="thread.html#118">[ thread ]</a>
+              <a href="subject.html#118">[ subject ]</a>
+              <a href="author.html#118">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-04-07 00:47:03 +0200 (Thu, 07 Apr 2005)
+New Revision: 405
+
+Added:
+   ComponentModel/trunk/src/ComponentModel.Exceptions/ComponentNotFoundException.cs
+   ComponentModel/trunk/src/ComponentModel.Exceptions/ExceptionManagerNotFoundException.cs
+   ComponentModel/trunk/src/ComponentModel.Exceptions/MethodNotFoundException.cs
+   ComponentModel/trunk/src/ComponentModel.Exceptions/ResponseNotFoundException.cs
+   ComponentModel/trunk/src/ComponentModel.Exceptions/ViewNotFoundException.cs
+Modified:
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+   ComponentModel/trunk/ComponentTest/src/Launcher.cs
+   ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Added custom Exceptions.
+
+
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-04-06 11:36:22 UTC (rev 404)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-04-06 22:47:03 UTC (rev 405)
+@@ -1,5 +1,6 @@
+ using System;
+ using ComponentModel;
++using ComponentModel.Container;
+ 
+ namespace ComponentModel.ComponentTest.Components.Saludator.Bo {
+    [Component (ComponentName=&quot;Saludator&quot;, ExceptionManager=&quot;ComponentModel.ComponentTest.Components.Saludator.Exception.SaludatorExceptionManager&quot;)] 
+@@ -10,6 +11,7 @@
+        [ComponentMethod (ViewName = &quot;ComponentModel.ComponentTest.Components.Saludator.Form.SaludatorForm&quot;, ResponseName = &quot;ResponseSaluda&quot;)]
+        public int Saluda () {
+            Console.WriteLine (&quot;Que pasa co !!&quot;);
++           DefaultComponentModel dcm = (DefaultComponentModel)DefaultContainer.Instance.GetComponentByName (&quot;Saludatorr&quot;);
+            throw new System.Exception (&quot;Yeahhh&quot;);
+            return 1;
+        }
+
+Modified: ComponentModel/trunk/ComponentTest/src/Launcher.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Launcher.cs	2005-04-06 11:36:22 UTC (rev 404)
++++ ComponentModel/trunk/ComponentTest/src/Launcher.cs	2005-04-06 22:47:03 UTC (rev 405)
+@@ -15,7 +15,8 @@
+             else
+                 Console.WriteLine (&quot;Dcm es null&quot;);
+             dcm.Execute (&quot;Saluda&quot;, null);
+-            dcm.Execute (&quot;SaludaATodos&quot;, null);
++            //dcm.Execute (&quot;SaludaATodos&quot;, null);
++            //dcm = (DefaultComponentModel)defaultContainer.GetComponentByName (&quot;Saludador!&quot;);
+         }
+     }
+ }
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-04-06 11:36:22 UTC (rev 404)
++++ ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-04-06 22:47:03 UTC (rev 405)
+@@ -4,6 +4,7 @@
+ using System.Collections;
+ using ComponentModel.Interfaces;
+ using ComponentModel.Container.Dao;
++using ComponentModel.Exceptions;
+ using NLog;
+ 
+ using System.Threading;
+@@ -57,10 +58,8 @@
+         
+         public static DefaultContainer Instance {
+             get {
+-                Console.WriteLine (&quot;Getting default Instance of Container.&quot;);
+                 if (instance == null)
+                     instance = new DefaultContainer ();
+-                Console.WriteLine (&quot;Exiting getting default instance of Container.&quot;);
+                 return instance;
+             }
+         }
+@@ -71,8 +70,8 @@
+                     return (IComponentModel)componentList[i];
+                 }
+             }
+-            return null;
+-            //Exception
++            throw new ComponentNotFoundException (&quot;Component &quot; + componentName + &quot; not found in container.&quot;);
++            //return null;
+         }
+ 
+         public void Add (IComponentModel component) {
+
+Added: ComponentModel/trunk/src/ComponentModel.Exceptions/ComponentNotFoundException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Exceptions/ComponentNotFoundException.cs	2005-04-06 11:36:22 UTC (rev 404)
++++ ComponentModel/trunk/src/ComponentModel.Exceptions/ComponentNotFoundException.cs	2005-04-06 22:47:03 UTC (rev 405)
+@@ -0,0 +1,7 @@
++using System;
++
++namespace ComponentModel.Exceptions {
++    public class ComponentNotFoundException : ComponentModelException {
++        public ComponentNotFoundException (string message) : base (message) {}
++    }
++}
+
+Added: ComponentModel/trunk/src/ComponentModel.Exceptions/ExceptionManagerNotFoundException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Exceptions/ExceptionManagerNotFoundException.cs	2005-04-06 11:36:22 UTC (rev 404)
++++ ComponentModel/trunk/src/ComponentModel.Exceptions/ExceptionManagerNotFoundException.cs	2005-04-06 22:47:03 UTC (rev 405)
+@@ -0,0 +1,7 @@
++using System;
++
++namespace ComponentModel.Exceptions {
++    public class ExceptionManagerNotFoundException : ComponentModelException {
++        public ExceptionManagerNotFoundException (string message) : base (message) {}
++    }
++}
+
+Added: ComponentModel/trunk/src/ComponentModel.Exceptions/MethodNotFoundException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Exceptions/MethodNotFoundException.cs	2005-04-06 11:36:22 UTC (rev 404)
++++ ComponentModel/trunk/src/ComponentModel.Exceptions/MethodNotFoundException.cs	2005-04-06 22:47:03 UTC (rev 405)
+@@ -0,0 +1,7 @@
++using System;
++
++namespace ComponentModel.Exceptions {
++    public class MethodNotFoundException : ComponentModelException {
++        public MethodNotFoundException (string message) : base (message) {}
++    }
++}
+
+Added: ComponentModel/trunk/src/ComponentModel.Exceptions/ResponseNotFoundException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Exceptions/ResponseNotFoundException.cs	2005-04-06 11:36:22 UTC (rev 404)
++++ ComponentModel/trunk/src/ComponentModel.Exceptions/ResponseNotFoundException.cs	2005-04-06 22:47:03 UTC (rev 405)
+@@ -0,0 +1,7 @@
++using System;
++
++namespace ComponentModel.Exceptions {
++    public class ResponseNotFoundException : ComponentModelException {
++        public ResponseNotFoundException (string message) : base (message) {}
++    }
++}
+
+Added: ComponentModel/trunk/src/ComponentModel.Exceptions/ViewNotFoundException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Exceptions/ViewNotFoundException.cs	2005-04-06 11:36:22 UTC (rev 404)
++++ ComponentModel/trunk/src/ComponentModel.Exceptions/ViewNotFoundException.cs	2005-04-06 22:47:03 UTC (rev 405)
+@@ -0,0 +1,7 @@
++using System;
++
++namespace ComponentModel.Exceptions {
++    public class ViewNotFoundException : ComponentModelException {
++        public ViewNotFoundException (string message) : base (message) {}
++    }
++}
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-04-06 11:36:22 UTC (rev 404)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-04-06 22:47:03 UTC (rev 405)
+@@ -5,6 +5,7 @@
+ using NLog;
+ using ComponentModel.Container;
+ using ComponentModel.ExceptionManager;
++using ComponentModel.Exceptions;
+ 
+ namespace ComponentModel {
+     public class DefaultComponentModel : IComponentModel {
+@@ -77,8 +78,13 @@
+                 return responseMethodVO;
+             }
+             catch (Exception exception) {
+-                this.InstantiateExceptionManager ();
+-                defaultExceptionManager.ProcessException (exception);
++                if (exception is ComponentModelException) {
++                    //Tirar la exception para arriba.
++                }
++                else {
++                    this.InstantiateExceptionManager ();
++                    defaultExceptionManager.ProcessException (exception);
++                }
+             }
+             return null;
+         }
+@@ -99,7 +105,8 @@
+         internal void SetVO (ComponentModelVO vo) {
+             this.vO = vo;
+         }
+-         
++        
++        //Public Methods
+         public ResponseMethodVO Execute (string methodName, object[] parameters) {
+             Type type = this.GetType ();
+             logger.Debug (&quot;Type of component invoke. &quot; + type.ToString ());
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000117.html">[Mspace-checkins] r404 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src
+</A></li>
+	<LI>Next message: <A HREF="000119.html">[Mspace-checkins] r406 - in ComponentModel/trunk: ComponentTest/src src src/ComponentModel.Container
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#118">[ date ]</a>
+              <a href="thread.html#118">[ thread ]</a>
+              <a href="subject.html#118">[ subject ]</a>
+              <a href="author.html#118">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

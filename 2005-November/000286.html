@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r574 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Resources
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-November/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r574%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20Forms%20Resources&In-Reply-To=%3C200511082355.jA8NtZo2017910%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000285.html">
+   <LINK REL="Next"  HREF="000287.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r574 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Resources</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r574%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20Forms%20Resources&In-Reply-To=%3C200511082355.jA8NtZo2017910%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r574 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Resources">nestor at berlios.de
+       </A><BR>
+    <I>Wed Nov  9 00:55:35 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000285.html">[Mspace-checkins] r572 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: . Bo Dao Dto Forms Forms/NodeStore Interfaces Resources
+</A></li>
+        <LI>Next message: <A HREF="000287.html">[Mspace-checkins] r575 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Dto Forms Forms/TableModel Resources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#286">[ date ]</a>
+              <a href="thread.html#286">[ thread ]</a>
+              <a href="subject.html#286">[ subject ]</a>
+              <a href="author.html#286">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-11-09 00:55:30 +0100 (Wed, 09 Nov 2005)
+New Revision: 574
+
+Modified:
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ProjectView.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak
+Log:
+
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs	2005-11-08 23:27:36 UTC (rev 573)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs	2005-11-08 23:55:30 UTC (rev 574)
+@@ -1,23 +1,69 @@
+ using System;
+ using ComponentModel.Interfaces;
+ using ComponentBuilder.Interfaces;
++using ComponentBuilder.DTO;
++using ComponentBuilder.Forms.TableModel;
+ using Gtk;
+ using Glade;
+ 
+ namespace ComponentBuilder.Forms {
+     internal class ComponentView : IViewHandler, IGtkView {
+         Glade.XML componentView;
++        [Widget] TreeView viewsTreeView, methodsTreeView;
++        [Widget] Entry componentNameEntry, exceptionManagerEntry;
++            
++        ViewTableModel viewTableModel;
++        MethodTableModel methodTableModel;
+         
+         internal ComponentView () {
+             componentView = new Glade.XML (null, &quot;MainComponentBuilderForm.glade&quot;, &quot;table5&quot;, null);
+-            //componentView.Autoconnect (this);
++            componentView.Autoconnect (this);
++
++            //
++
++            viewsTreeView.AppendColumn (&quot;View Type Name&quot;, new CellRendererText (), &quot;text&quot;, 0);
++            
++            methodsTreeView.AppendColumn (&quot;Method Name&quot;, new CellRendererText (), &quot;text&quot;, 0);
++            methodsTreeView.AppendColumn (&quot;Return Type&quot;, new CellRendererText (), &quot;text&quot;, 1);
++            methodsTreeView.AppendColumn (&quot;View To Reponse&quot;, new CellRendererText (), &quot;text&quot;, 2);
++            methodsTreeView.AppendColumn (&quot;Response Method&quot;, new CellRendererText (), &quot;text&quot;, 3);
++            methodsTreeView.AppendColumn (&quot;Parameters&quot;, new CellRendererText (), &quot;text&quot;, 4);
++
++            //Vamos a instanciar tambi&#233;n los modelos de las vistas.
++        
++            viewTableModel = new ViewTableModel ();
++            viewsTreeView.Model = viewTableModel.ListStore;
++            methodTableModel = new MethodTableModel ();
++            methodsTreeView.Model = methodTableModel.ListStore;
+         }
++       
++        /* GUI Events */
++        private void OnNewMethodClicked (object sender, EventArgs args) {
++        }
++
++        private void OnNewViewClicked (object sender, EventArgs args) {
++        }
+         
+         /* Interface Implementation */
+         public void LoadDataForm (IDataTransferObject dto) {
++            if (dto is ComponentDTO) {
++                ComponentDTO componentDTO = (ComponentDTO) dto; 
++                componentNameEntry.Text = componentDTO.ComponentName;
++                exceptionManagerEntry.Text = componentDTO.ClassExceptionManager;
++                viewTableModel = new ViewTableModel (componentDTO.ViewCollection);
++                viewsTreeView.Model = viewTableModel.ListStore;
++                methodTableModel = new MethodTableModel (componentDTO.MethodCollection);
++                methodsTreeView.Model = viewTableModel.ListStore;
++            }
+         }
+ 
+         public void ClearForm () {
++            componentNameEntry.Text = String.Empty;
++            exceptionManagerEntry.Text = String.Empty;
++            viewTableModel = new ViewTableModel ();
++            viewsTreeView.Model = viewTableModel.ListStore;
++            methodTableModel = new MethodTableModel ();
++            methodsTreeView.Model = methodTableModel.ListStore;
+         }
+ 
+         public IDataTransferObject GetDataForm () {
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ProjectView.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ProjectView.cs	2005-11-08 23:27:36 UTC (rev 573)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ProjectView.cs	2005-11-08 23:55:30 UTC (rev 574)
+@@ -18,7 +18,6 @@
+             componentNodeView.AppendColumn (&quot;Project Tree&quot;, new CellRendererText (),&quot;text&quot;, 0);
+             componentScrolledWindow = new ScrolledWindow ();
+             componentScrolledWindow.Add (componentNodeView);
+-
+         }
+         
+         /* Interface Implementation */
+@@ -26,6 +25,7 @@
+         }
+ 
+         public void ClearForm () {
++            componentNodeStore.Clear ();
+         }
+ 
+         public IDataTransferObject GetDataForm () {
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade	2005-11-08 23:27:36 UTC (rev 573)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade	2005-11-08 23:55:30 UTC (rev 574)
+@@ -1316,7 +1316,7 @@
+       &lt;property name=&quot;column_spacing&quot;&gt;0&lt;/property&gt;
+ 
+       &lt;child&gt;
+-	&lt;widget class=&quot;GtkEntry&quot; id=&quot;entry1&quot;&gt;
++	&lt;widget class=&quot;GtkEntry&quot; id=&quot;componentNameEntry&quot;&gt;
+ 	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 	  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+ 	  &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
+@@ -1337,7 +1337,7 @@
+       &lt;/child&gt;
+ 
+       &lt;child&gt;
+-	&lt;widget class=&quot;GtkEntry&quot; id=&quot;entry2&quot;&gt;
++	&lt;widget class=&quot;GtkEntry&quot; id=&quot;exceptionManangerEntry&quot;&gt;
+ 	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 	  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+ 	  &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
+@@ -1367,7 +1367,7 @@
+ 	  &lt;property name=&quot;window_placement&quot;&gt;GTK_CORNER_TOP_LEFT&lt;/property&gt;
+ 
+ 	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkTreeView&quot; id=&quot;treeview1&quot;&gt;
++	    &lt;widget class=&quot;GtkTreeView&quot; id=&quot;viewsTreeView&quot;&gt;
+ 	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;headers_visible&quot;&gt;True&lt;/property&gt;
+@@ -1451,7 +1451,7 @@
+ 	  &lt;property name=&quot;window_placement&quot;&gt;GTK_CORNER_TOP_LEFT&lt;/property&gt;
+ 
+ 	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkTreeView&quot; id=&quot;treeview2&quot;&gt;
++	    &lt;widget class=&quot;GtkTreeView&quot; id=&quot;methodsTreeView&quot;&gt;
+ 	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;headers_visible&quot;&gt;True&lt;/property&gt;
+@@ -1529,7 +1529,8 @@
+       &lt;child&gt;
+ 	&lt;widget class=&quot;GtkLabel&quot; id=&quot;label17&quot;&gt;
+ 	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;&lt;b&gt;Exception Manager Class Name:&lt;/b&gt;&lt;/property&gt;
++	  &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;&lt;b&gt;Exception Manager
++ Class Name:&lt;/b&gt;&lt;/property&gt;
+ 	  &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
+ 	  &lt;property name=&quot;use_markup&quot;&gt;True&lt;/property&gt;
+ 	  &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_CENTER&lt;/property&gt;
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak	2005-11-08 23:27:36 UTC (rev 573)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak	2005-11-08 23:55:30 UTC (rev 574)
+@@ -1316,7 +1316,7 @@
+       &lt;property name=&quot;column_spacing&quot;&gt;0&lt;/property&gt;
+ 
+       &lt;child&gt;
+-	&lt;widget class=&quot;GtkEntry&quot; id=&quot;entry1&quot;&gt;
++	&lt;widget class=&quot;GtkEntry&quot; id=&quot;componentNameEntry&quot;&gt;
+ 	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 	  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+ 	  &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
+@@ -1337,7 +1337,7 @@
+       &lt;/child&gt;
+ 
+       &lt;child&gt;
+-	&lt;widget class=&quot;GtkEntry&quot; id=&quot;entry2&quot;&gt;
++	&lt;widget class=&quot;GtkEntry&quot; id=&quot;exceptionManangerEntry&quot;&gt;
+ 	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 	  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+ 	  &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
+@@ -1367,7 +1367,7 @@
+ 	  &lt;property name=&quot;window_placement&quot;&gt;GTK_CORNER_TOP_LEFT&lt;/property&gt;
+ 
+ 	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkTreeView&quot; id=&quot;treeview1&quot;&gt;
++	    &lt;widget class=&quot;GtkTreeView&quot; id=&quot;viewsTreeView&quot;&gt;
+ 	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;headers_visible&quot;&gt;True&lt;/property&gt;
+@@ -1451,7 +1451,7 @@
+ 	  &lt;property name=&quot;window_placement&quot;&gt;GTK_CORNER_TOP_LEFT&lt;/property&gt;
+ 
+ 	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkTreeView&quot; id=&quot;treeview2&quot;&gt;
++	    &lt;widget class=&quot;GtkTreeView&quot; id=&quot;methodsTreeView&quot;&gt;
+ 	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;headers_visible&quot;&gt;True&lt;/property&gt;
+@@ -1529,7 +1529,8 @@
+       &lt;child&gt;
+ 	&lt;widget class=&quot;GtkLabel&quot; id=&quot;label17&quot;&gt;
+ 	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;&lt;b&gt;Exception Manager Class Name:&lt;/b&gt;&lt;/property&gt;
++	  &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;&lt;b&gt;Exception Manager
++ Class Name:&lt;/b&gt;&lt;/property&gt;
+ 	  &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
+ 	  &lt;property name=&quot;use_markup&quot;&gt;True&lt;/property&gt;
+ 	  &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_CENTER&lt;/property&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000285.html">[Mspace-checkins] r572 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: . Bo Dao Dto Forms Forms/NodeStore Interfaces Resources
+</A></li>
+	<LI>Next message: <A HREF="000287.html">[Mspace-checkins] r575 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Dto Forms Forms/TableModel Resources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#286">[ date ]</a>
+              <a href="thread.html#286">[ thread ]</a>
+              <a href="subject.html#286">[ subject ]</a>
+              <a href="author.html#286">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

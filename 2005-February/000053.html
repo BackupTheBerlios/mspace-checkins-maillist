@@ -1,0 +1,499 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r319 - in mvim/trunk: doc/monodoc src src/Vim.Components src/Vim.Components/BufferedVimControl src/Vim.Components/BufferedVimControl/Model src/Vim.Components/VimBuffer src/Vim.Components/VimBuffer/Model src/Vim.Components/VimControl src/Vim.Components/VimControl/Model src/Vim.Components/VimEntry src/Vim.Components/VimEntry/Controller src/Vim.Components/VimEntry/Model src/Vim.Components/VimEntry/View src/Vim.Main
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-February/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r319%20-%20in%20mvim/trunk%3A%20doc/monodoc%20src%20src/Vim.Components%20src/Vim.Components/BufferedVimControl%20src/Vim.Components/BufferedVimControl/Model%20src/Vim.Components/VimBuffer%20src/Vim.Components/VimBuffer/Model%20src/Vim.Components/VimControl%20src/Vim.Components/VimControl/Model%20src/Vim.Components/VimEntry%20src/Vim.Components/VimEntry/Controller%20src/Vim.Components/VimEntry/Model%20src/Vim.Components/VimEntry/View%20src/Vim.Main&In-Reply-To=%3C200502141031.j1EAV2jk009807%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000052.html">
+   <LINK REL="Next"  HREF="000054.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r319 - in mvim/trunk: doc/monodoc src src/Vim.Components src/Vim.Components/BufferedVimControl src/Vim.Components/BufferedVimControl/Model src/Vim.Components/VimBuffer src/Vim.Components/VimBuffer/Model src/Vim.Components/VimControl src/Vim.Components/VimControl/Model src/Vim.Components/VimEntry src/Vim.Components/VimEntry/Controller src/Vim.Components/VimEntry/Model src/Vim.Components/VimEntry/View src/Vim.Main</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r319%20-%20in%20mvim/trunk%3A%20doc/monodoc%20src%20src/Vim.Components%20src/Vim.Components/BufferedVimControl%20src/Vim.Components/BufferedVimControl/Model%20src/Vim.Components/VimBuffer%20src/Vim.Components/VimBuffer/Model%20src/Vim.Components/VimControl%20src/Vim.Components/VimControl/Model%20src/Vim.Components/VimEntry%20src/Vim.Components/VimEntry/Controller%20src/Vim.Components/VimEntry/Model%20src/Vim.Components/VimEntry/View%20src/Vim.Main&In-Reply-To=%3C200502141031.j1EAV2jk009807%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r319 - in mvim/trunk: doc/monodoc src src/Vim.Components src/Vim.Components/BufferedVimControl src/Vim.Components/BufferedVimControl/Model src/Vim.Components/VimBuffer src/Vim.Components/VimBuffer/Model src/Vim.Components/VimControl src/Vim.Components/VimControl/Model src/Vim.Components/VimEntry src/Vim.Components/VimEntry/Controller src/Vim.Components/VimEntry/Model src/Vim.Components/VimEntry/View src/Vim.Main">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Mon Feb 14 11:31:02 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000052.html">[Mspace-checkins] r318 - in mvim/trunk/doc: . monodoc monodoc/org.vim.Components monodoc/org.vim.Components.BufferedVimControl monodoc/org.vim.Components.VimBuffer monodoc/org.vim.Components.VimBuffer.Model monodoc/org.vim.Components.VimControl monodoc/org.vim.Components.VimEntry monodoc/org.vim.Components.VimEntry.Controller monodoc/org.vim.Components.VimEntry.Model monodoc/org.vim.Components.VimEntry.View monodoc/org.vim.Main
+</A></li>
+        <LI>Next message: <A HREF="000054.html">[Mspace-checkins] r320 - in mvim/trunk/src: . Vim.Components
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#53">[ date ]</a>
+              <a href="thread.html#53">[ thread ]</a>
+              <a href="subject.html#53">[ subject ]</a>
+              <a href="author.html#53">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-02-14 11:30:46 +0100 (Mon, 14 Feb 2005)
+New Revision: 319
+
+Added:
+   mvim/trunk/src/Vim.Components/
+   mvim/trunk/src/Vim.Main/
+   mvim/trunk/src/Vim.Main/Launcher.cs
+Removed:
+   mvim/trunk/src/Launcher.cs
+   mvim/trunk/src/org.vim.Components/
+Modified:
+   mvim/trunk/doc/monodoc/index.xml
+   mvim/trunk/src/Makefile.am
+   mvim/trunk/src/Vim.Components/BufferedVimControl/BufferedVimMain.cs
+   mvim/trunk/src/Vim.Components/BufferedVimControl/Model/BufferedVimControl.cs
+   mvim/trunk/src/Vim.Components/BufferedVimControl/Model/IBufferedVimControl.cs
+   mvim/trunk/src/Vim.Components/VimBuffer/Model/IVimBuffer.cs
+   mvim/trunk/src/Vim.Components/VimBuffer/Model/VimBuffer.cs
+   mvim/trunk/src/Vim.Components/VimBuffer/VimBufferMain.cs
+   mvim/trunk/src/Vim.Components/VimControl/Model/IVimControl.cs
+   mvim/trunk/src/Vim.Components/VimControl/VimControlMain.cs
+   mvim/trunk/src/Vim.Components/VimEntry/Controller/IVimEntryController.cs
+   mvim/trunk/src/Vim.Components/VimEntry/Controller/VimEntryController.cs
+   mvim/trunk/src/Vim.Components/VimEntry/Model/IVimEntryHandler.cs
+   mvim/trunk/src/Vim.Components/VimEntry/Model/VimEntryHandler.cs
+   mvim/trunk/src/Vim.Components/VimEntry/View/IVimEntryView.cs
+   mvim/trunk/src/Vim.Components/VimEntry/View/VimEntryView.cs
+   mvim/trunk/src/Vim.Components/VimEntry/VimEntryMain.cs
+   mvim/trunk/src/Vim.Components/VimFactory.cs
+Log:
+Move to Vim.Components
+
+
+Modified: mvim/trunk/doc/monodoc/index.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/index.xml	2005-02-14 09:00:34 UTC (rev 318)
++++ mvim/trunk/doc/monodoc/index.xml	2005-02-14 10:30:46 UTC (rev 319)
+@@ -4,37 +4,57 @@
+   &lt;Copyright&gt;To be added.&lt;/Copyright&gt;
+   &lt;Types&gt;
+     &lt;Namespace Name=&quot;org.vim.Components.VimBuffer.Model&quot;&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Components.VimEntry.Model&quot;&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Components.VimEntry.Controller&quot;&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Components.VimEntry.View&quot;&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Components.BufferedVimControl&quot;&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Components.VimControl&quot;&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Components.VimBuffer&quot;&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Components.VimEntry&quot;&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Components&quot;&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Main&quot;&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;Vim.Components.VimBuffer.Model&quot;&gt;
+       &lt;Type Name=&quot;IVimBuffer&quot; /&gt;
+       &lt;Type Name=&quot;VimBuffer&quot; /&gt;
+     &lt;/Namespace&gt;
+-    &lt;Namespace Name=&quot;org.vim.Components.VimEntry.Model&quot;&gt;
++    &lt;Namespace Name=&quot;Vim.Components.VimEntry.Model&quot;&gt;
+       &lt;Type Name=&quot;IVimEntryHandler&quot; /&gt;
+       &lt;Type Name=&quot;VimEntryHandler&quot; /&gt;
+     &lt;/Namespace&gt;
+-    &lt;Namespace Name=&quot;org.vim.Components.VimEntry.Controller&quot;&gt;
++    &lt;Namespace Name=&quot;Vim.Components.VimEntry.Controller&quot;&gt;
+       &lt;Type Name=&quot;IVimEntryController&quot; /&gt;
+       &lt;Type Name=&quot;VimEntryController&quot; /&gt;
+     &lt;/Namespace&gt;
+-    &lt;Namespace Name=&quot;org.vim.Components.VimEntry.View&quot;&gt;
++    &lt;Namespace Name=&quot;Vim.Components.VimEntry.View&quot;&gt;
+       &lt;Type Name=&quot;IVimEntryView&quot; /&gt;
+       &lt;Type Name=&quot;VimEntryView&quot; /&gt;
+     &lt;/Namespace&gt;
+-    &lt;Namespace Name=&quot;org.vim.Components.BufferedVimControl&quot;&gt;
++    &lt;Namespace Name=&quot;Vim.Components.BufferedVimControl&quot;&gt;
+       &lt;Type Name=&quot;BufferedVimMain&quot; /&gt;
+     &lt;/Namespace&gt;
+-    &lt;Namespace Name=&quot;org.vim.Components.VimControl&quot;&gt;
++    &lt;Namespace Name=&quot;Vim.Components.VimControl&quot;&gt;
+       &lt;Type Name=&quot;VimControlMain&quot; /&gt;
+     &lt;/Namespace&gt;
+-    &lt;Namespace Name=&quot;org.vim.Components.VimBuffer&quot;&gt;
++    &lt;Namespace Name=&quot;Vim.Components.VimBuffer&quot;&gt;
+       &lt;Type Name=&quot;VimBufferMain&quot; /&gt;
+     &lt;/Namespace&gt;
+-    &lt;Namespace Name=&quot;org.vim.Components.VimEntry&quot;&gt;
++    &lt;Namespace Name=&quot;Vim.Components.VimEntry&quot;&gt;
+       &lt;Type Name=&quot;VimEntryMain&quot; /&gt;
+     &lt;/Namespace&gt;
+-    &lt;Namespace Name=&quot;org.vim.Components&quot;&gt;
++    &lt;Namespace Name=&quot;Vim.Components&quot;&gt;
+       &lt;Type Name=&quot;VimFactory&quot; /&gt;
+     &lt;/Namespace&gt;
+-    &lt;Namespace Name=&quot;org.vim.Main&quot;&gt;
++    &lt;Namespace Name=&quot;Vim.Main&quot;&gt;
+       &lt;Type Name=&quot;Launcher&quot; /&gt;
+     &lt;/Namespace&gt;
+   &lt;/Types&gt;
+
+Deleted: mvim/trunk/src/Launcher.cs
+===================================================================
+--- mvim/trunk/src/Launcher.cs	2005-02-14 09:00:34 UTC (rev 318)
++++ mvim/trunk/src/Launcher.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -1,33 +0,0 @@
+-using System;
+-using org.vim.Components.VimEntry.Model;
+-namespace org.vim.Main {
+-    public class Launcher {
+-/**
+-        IView view;
+-
+-        public Launcher () {
+-            view = new View ();
+-        }
+-     
+-     	public Launcher (string fileUri) {
+-            view = new View (fileUri);
+-        }
+-*/        
+-        public static void Main (string[] args) {
+-/*          Launcher launcher = null;
+-            if (args.Length == 1) {
+-                Application.Init ();
+-                launcher = new Launcher (args[0]);
+-            }
+-            else {
+-                Application.Init ();
+-                launcher = new Launcher ();
+-            }
+-            Application.Run ();
+-            Environment.Exit (0);
+-*/
+-//           IVimEntry vimEntry = new VimEntry ();
+-//           vimEntry.Command = &quot;EjecutaEsto&quot;;
+-        }
+-    }
+-}
+
+Modified: mvim/trunk/src/Makefile.am
+===================================================================
+--- mvim/trunk/src/Makefile.am	2005-02-14 09:00:34 UTC (rev 318)
++++ mvim/trunk/src/Makefile.am	2005-02-14 10:30:46 UTC (rev 319)
+@@ -15,24 +15,24 @@
+ RESOURCES_REFERENCES_BUILD=$(foreach res, $(RESOURCES_REFERENCES),$(addprefix -resource:,$(res)),$(notdir $(res)))
+ 
+ SOURCES_REFERENCES=\
+-org.vim.Components/BufferedVimControl/Model/*.cs\
+-org.vim.Components/BufferedVimControl/Controller/*.cs\
+-org.vim.Components/BufferedVimControl/View/*.cs\
+-org.vim.Components/BufferedVimControl/*.cs\
+-org.vim.Components/VimControl/Model/*.cs\
+-org.vim.Components/VimControl/Controller/*.cs\
+-org.vim.Components/VimControl/View/*.cs\
+-org.vim.Components/VimControl/*.cs\
+-org.vim.Components/VimBuffer/Model/*.cs\
+-org.vim.Components/VimBuffer/Controller/*.cs\
+-org.vim.Components/VimBuffer/View/*.cs\
+-org.vim.Components/VimBuffer/*.cs\
+-org.vim.Components/VimEntry/Model/*.cs\
+-org.vim.Components/VimEntry/Controller/*.cs\
+-org.vim.Components/VimEntry/View/*.cs\
+-org.vim.Components/VimEntry/*.cs\
+-org.vim.Components/*.cs\
+-Launcher.cs \
++Vim.Components/BufferedVimControl/Model/*.cs\
++Vim.Components/BufferedVimControl/Controller/*.cs\
++Vim.Components/BufferedVimControl/View/*.cs\
++Vim.Components/BufferedVimControl/*.cs\
++Vim.Components/VimControl/Model/*.cs\
++Vim.Components/VimControl/Controller/*.cs\
++Vim.Components/VimControl/View/*.cs\
++Vim.Components/VimControl/*.cs\
++Vim.Components/VimBuffer/Model/*.cs\
++Vim.Components/VimBuffer/Controller/*.cs\
++Vim.Components/VimBuffer/View/*.cs\
++Vim.Components/VimBuffer/*.cs\
++Vim.Components/VimEntry/Model/*.cs\
++Vim.Components/VimEntry/Controller/*.cs\
++Vim.Components/VimEntry/View/*.cs\
++Vim.Components/VimEntry/*.cs\
++Vim.Components/*.cs\
++Vim.Main/Launcher.cs \
+ AssemblyInfo.cs
+ 
+ SOURCES_REFERENCES_BUILD=$(addprefix $(srcdir)/, $(SOURCES_REFERENCES))
+
+Copied: mvim/trunk/src/Vim.Components (from rev 317, mvim/trunk/src/org.vim.Components)
+
+Modified: mvim/trunk/src/Vim.Components/BufferedVimControl/BufferedVimMain.cs
+===================================================================
+--- mvim/trunk/src/org.vim.Components/BufferedVimControl/BufferedVimMain.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Components/BufferedVimControl/BufferedVimMain.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -1,5 +1,5 @@
+ 
+-namespace org.vim.Components.BufferedVimControl {
++namespace Vim.Components.BufferedVimControl {
+     public class BufferedVimMain {
+     }
+ }
+
+Modified: mvim/trunk/src/Vim.Components/BufferedVimControl/Model/BufferedVimControl.cs
+===================================================================
+--- mvim/trunk/src/org.vim.Components/BufferedVimControl/Model/BufferedVimControl.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Components/BufferedVimControl/Model/BufferedVimControl.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -3,7 +3,7 @@
+ using log4net;
+ using log4net.Config;
+ 
+-namespace org.vim.Components.BufferedVimControl.Model {
++namespace Vim.Components.BufferedVimControl.Model {
+     public class BufferedVimControl : IBufferedVimControl {
+         IList controlList;
+         ILog log;
+
+Modified: mvim/trunk/src/Vim.Components/BufferedVimControl/Model/IBufferedVimControl.cs
+===================================================================
+--- mvim/trunk/src/org.vim.Components/BufferedVimControl/Model/IBufferedVimControl.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Components/BufferedVimControl/Model/IBufferedVimControl.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -1,7 +1,7 @@
+ /*using System.Collections;
+-using org.vim.Components.VimControl.Model;
++using Vim.Components.VimControl.Model;
+ 
+-namespace org.vim.Components.BufferedVimControl.Model {
++namespace Vim.Components.BufferedVimControl.Model {
+     //
+     //&lt;summary
+     //  This interface represents the main component in the Application.
+
+Modified: mvim/trunk/src/Vim.Components/VimBuffer/Model/IVimBuffer.cs
+===================================================================
+--- mvim/trunk/src/org.vim.Components/VimBuffer/Model/IVimBuffer.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Components/VimBuffer/Model/IVimBuffer.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -1,4 +1,4 @@
+-namespace org.vim.Components.VimBuffer.Model {
++namespace Vim.Components.VimBuffer.Model {
+     public interface IVimBuffer {
+         string Text {get; set;}
+     }
+
+Modified: mvim/trunk/src/Vim.Components/VimBuffer/Model/VimBuffer.cs
+===================================================================
+--- mvim/trunk/src/org.vim.Components/VimBuffer/Model/VimBuffer.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Components/VimBuffer/Model/VimBuffer.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -1,4 +1,4 @@
+-namespace org.vim.Components.VimBuffer.Model {
++namespace Vim.Components.VimBuffer.Model {
+ 
+     public class VimBuffer : IVimBuffer {
+         private string text;
+
+Modified: mvim/trunk/src/Vim.Components/VimBuffer/VimBufferMain.cs
+===================================================================
+--- mvim/trunk/src/org.vim.Components/VimBuffer/VimBufferMain.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Components/VimBuffer/VimBufferMain.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -1,4 +1,4 @@
+-namespace org.vim.Components.VimBuffer {
++namespace Vim.Components.VimBuffer {
+     public class VimBufferMain {
+     }
+ }
+
+Modified: mvim/trunk/src/Vim.Components/VimControl/Model/IVimControl.cs
+===================================================================
+--- mvim/trunk/src/org.vim.Components/VimControl/Model/IVimControl.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Components/VimControl/Model/IVimControl.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -2,7 +2,7 @@
+ using org.vim.Components.VimBuffer.Model;
+ using org.vim.Components.VimEntry.Model;
+ 
+-namespace org.vim.Components.VimControl.Model {
++namespace Vim.Components.VimControl.Model {
+ 
+     //
+     //&lt;summary&gt;
+
+Modified: mvim/trunk/src/Vim.Components/VimControl/VimControlMain.cs
+===================================================================
+--- mvim/trunk/src/org.vim.Components/VimControl/VimControlMain.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Components/VimControl/VimControlMain.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -1,4 +1,4 @@
+-namespace org.vim.Components.VimControl {
++namespace Vim.Components.VimControl {
+     public class VimControlMain {
+     }
+ }
+
+Modified: mvim/trunk/src/Vim.Components/VimEntry/Controller/IVimEntryController.cs
+===================================================================
+--- mvim/trunk/src/org.vim.Components/VimEntry/Controller/IVimEntryController.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Components/VimEntry/Controller/IVimEntryController.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -1,5 +1,5 @@
+ 
+-namespace org.vim.Components.VimEntry.Controller {
++namespace Vim.Components.VimEntry.Controller {
+     public interface IVimEntryController {
+         void Execute (string text);
+     }
+
+Modified: mvim/trunk/src/Vim.Components/VimEntry/Controller/VimEntryController.cs
+===================================================================
+--- mvim/trunk/src/org.vim.Components/VimEntry/Controller/VimEntryController.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Components/VimEntry/Controller/VimEntryController.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -1,7 +1,7 @@
+-using org.vim.Components.VimEntry.Model;
+-using org.vim.Components.VimEntry.View;
++using Vim.Components.VimEntry.Model;
++using Vim.Components.VimEntry.View;
+ 
+-namespace org.vim.Components.VimEntry.Controller {
++namespace Vim.Components.VimEntry.Controller {
+     public class VimEntryController : IVimEntryController {
+         
+         private IVimEntryHandler vimEntryHandler;
+
+Modified: mvim/trunk/src/Vim.Components/VimEntry/Model/IVimEntryHandler.cs
+===================================================================
+--- mvim/trunk/src/org.vim.Components/VimEntry/Model/IVimEntryHandler.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Components/VimEntry/Model/IVimEntryHandler.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -1,4 +1,4 @@
+-namespace org.vim.Components.VimEntry.Model {
++namespace Vim.Components.VimEntry.Model {
+ //    public delegate void CommandActivatedHandler (IVimEntryHandler sender);
+     public interface IVimEntryHandler {
+ //        event CommandActivatedHandler CommandActivate; 
+
+Modified: mvim/trunk/src/Vim.Components/VimEntry/Model/VimEntryHandler.cs
+===================================================================
+--- mvim/trunk/src/org.vim.Components/VimEntry/Model/VimEntryHandler.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Components/VimEntry/Model/VimEntryHandler.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -2,7 +2,7 @@
+ using log4net;
+ using log4net.Config;
+ 
+-namespace org.vim.Components.VimEntry.Model {
++namespace Vim.Components.VimEntry.Model {
+     public class VimEntryHandler : IVimEntryHandler {
+         
+         private string command;
+
+Modified: mvim/trunk/src/Vim.Components/VimEntry/View/IVimEntryView.cs
+===================================================================
+--- mvim/trunk/src/org.vim.Components/VimEntry/View/IVimEntryView.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Components/VimEntry/View/IVimEntryView.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -1,4 +1,4 @@
+-namespace org.vim.Components.VimEntry.View {
++namespace Vim.Components.VimEntry.View {
+     public interface IVimEntryView {
+ 
+     }
+
+Modified: mvim/trunk/src/Vim.Components/VimEntry/View/VimEntryView.cs
+===================================================================
+--- mvim/trunk/src/org.vim.Components/VimEntry/View/VimEntryView.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Components/VimEntry/View/VimEntryView.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -1,8 +1,8 @@
+-using org.vim.Components.VimEntry.Model;
++using Vim.Components.VimEntry.Model;
+ using Gtk;
+ 
+ 
+-namespace org.vim.Components.VimEntry.View {
++namespace Vim.Components.VimEntry.View {
+     public class VimEntryView : Gtk.Entry, IVimEntryView {
+         IVimEntryHandler vimEntryHandler;
+         //IVimEntryController vimEntryController;
+
+Modified: mvim/trunk/src/Vim.Components/VimEntry/VimEntryMain.cs
+===================================================================
+--- mvim/trunk/src/org.vim.Components/VimEntry/VimEntryMain.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Components/VimEntry/VimEntryMain.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -1,4 +1,4 @@
+-namespace org.vim.Components.VimEntry {
++namespace Vim.Components.VimEntry {
+     public class VimEntryMain {
+     }
+ }
+
+Modified: mvim/trunk/src/Vim.Components/VimFactory.cs
+===================================================================
+--- mvim/trunk/src/org.vim.Components/VimFactory.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Components/VimFactory.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -1,7 +1,7 @@
+ using log4net;
+ using log4net.Config;
+ 
+-namespace org.vim.Components {
++namespace Vim.Components {
+     public class VimFactory {
+         private static VimFactory vimFactory;
+         
+
+Copied: mvim/trunk/src/Vim.Main/Launcher.cs (from rev 317, mvim/trunk/src/Launcher.cs)
+===================================================================
+--- mvim/trunk/src/Launcher.cs	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/src/Vim.Main/Launcher.cs	2005-02-14 10:30:46 UTC (rev 319)
+@@ -0,0 +1,33 @@
++using System;
++using Vim.Components.VimEntry.Model;
++namespace Vim.Main {
++    public class Launcher {
++/**
++        IView view;
++
++        public Launcher () {
++            view = new View ();
++        }
++     
++     	public Launcher (string fileUri) {
++            view = new View (fileUri);
++        }
++*/        
++        public static void Main (string[] args) {
++/*          Launcher launcher = null;
++            if (args.Length == 1) {
++                Application.Init ();
++                launcher = new Launcher (args[0]);
++            }
++            else {
++                Application.Init ();
++                launcher = new Launcher ();
++            }
++            Application.Run ();
++            Environment.Exit (0);
++*/
++//           IVimEntry vimEntry = new VimEntry ();
++//           vimEntry.Command = &quot;EjecutaEsto&quot;;
++        }
++    }
++}
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000052.html">[Mspace-checkins] r318 - in mvim/trunk/doc: . monodoc monodoc/org.vim.Components monodoc/org.vim.Components.BufferedVimControl monodoc/org.vim.Components.VimBuffer monodoc/org.vim.Components.VimBuffer.Model monodoc/org.vim.Components.VimControl monodoc/org.vim.Components.VimEntry monodoc/org.vim.Components.VimEntry.Controller monodoc/org.vim.Components.VimEntry.Model monodoc/org.vim.Components.VimEntry.View monodoc/org.vim.Main
+</A></li>
+	<LI>Next message: <A HREF="000054.html">[Mspace-checkins] r320 - in mvim/trunk/src: . Vim.Components
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#53">[ date ]</a>
+              <a href="thread.html#53">[ thread ]</a>
+              <a href="subject.html#53">[ subject ]</a>
+              <a href="author.html#53">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

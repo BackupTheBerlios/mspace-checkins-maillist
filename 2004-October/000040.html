@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r304 - in WebNotes/trunk: . src/WebNotes
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r304%20-%20in%20WebNotes/trunk%3A%20.%20src/WebNotes&In-Reply-To=%3C200410221058.i9MAwPXv012189%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000039.html">
+   <LINK REL="Next"  HREF="000041.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r304 - in WebNotes/trunk: . src/WebNotes</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r304%20-%20in%20WebNotes/trunk%3A%20.%20src/WebNotes&In-Reply-To=%3C200410221058.i9MAwPXv012189%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r304 - in WebNotes/trunk: . src/WebNotes">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Fri Oct 22 12:58:25 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000039.html">[Mspace-checkins] r303 - in WebNotes/trunk: . src/TrayIcon/libtrayicon src/WebNotes src/didiwiki src/didiwiki/src
+</A></li>
+        <LI>Next message: <A HREF="000041.html">[Mspace-checkins] r305 - in WebNotes/trunk: . images src/WebNotes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#40">[ date ]</a>
+              <a href="thread.html#40">[ thread ]</a>
+              <a href="subject.html#40">[ subject ]</a>
+              <a href="author.html#40">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2004-10-22 12:58:24 +0200 (Fri, 22 Oct 2004)
+New Revision: 304
+
+Modified:
+   WebNotes/trunk/ChangeLog
+   WebNotes/trunk/NEWS
+   WebNotes/trunk/configure.in
+   WebNotes/trunk/src/WebNotes/WebViewer.cs
+Log:
+2004-10-22  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+
+        * NEWS: updated to new version
+        * configure.in: version bumped
+        * src/WebNotes/WebViewer.cs: Added close menu item to the tray.
+                                Closing the window hides it instead.
+
+
+
+
+Modified: WebNotes/trunk/ChangeLog
+===================================================================
+--- WebNotes/trunk/ChangeLog	2004-10-22 09:12:38 UTC (rev 303)
++++ WebNotes/trunk/ChangeLog	2004-10-22 10:58:24 UTC (rev 304)
+@@ -1,5 +1,13 @@
+ 2004-10-22  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
++	* NEWS: updated to new version
++	* configure.in: version bumped
++	* src/WebNotes/WebViewer.cs: Added close menu item to the tray.
++				Closing the window hides it instead.
++					
++
++2004-10-22  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
+ 	* src/TrayIcon/libtrayicon/Makefile: Crap
+ 	* src/WebNotes/Makefile: Crap
+ 	* src/didiwiki/ChangeLog:
+
+Modified: WebNotes/trunk/NEWS
+===================================================================
+--- WebNotes/trunk/NEWS	2004-10-22 09:12:38 UTC (rev 303)
++++ WebNotes/trunk/NEWS	2004-10-22 10:58:24 UTC (rev 304)
+@@ -0,0 +1,5 @@
++1.0.2
++------
++* Updated to Didiwiki 0.5
++* Added close button to the tray icon menu.
++* Clicking the close button in the window hides it.
+
+Modified: WebNotes/trunk/configure.in
+===================================================================
+--- WebNotes/trunk/configure.in	2004-10-22 09:12:38 UTC (rev 303)
++++ WebNotes/trunk/configure.in	2004-10-22 10:58:24 UTC (rev 304)
+@@ -1,5 +1,5 @@
+ AC_PREREQ(2.59)
+-AC_INIT(WebNotes, 1.0, [<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>])
++AC_INIT(WebNotes, 1.0.2, [<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>])
+ AM_MAINTAINER_MODE
+ AM_CONFIG_HEADER(config.h)
+ 
+
+Modified: WebNotes/trunk/src/WebNotes/WebViewer.cs
+===================================================================
+--- WebNotes/trunk/src/WebNotes/WebViewer.cs	2004-10-22 09:12:38 UTC (rev 303)
++++ WebNotes/trunk/src/WebNotes/WebViewer.cs	2004-10-22 10:58:24 UTC (rev 304)
+@@ -96,6 +96,11 @@
+ 		    list.Add (fname);
+ 		}
+ 	    }
++	    menu.Append (new SeparatorMenuItem ());
++	    ImageMenuItem closeItem = new ImageMenuItem (&quot;_Quit&quot;);
++	    closeItem.Image = new Image (Gtk.Stock.Quit, Gtk.IconSize.Menu);
++	    closeItem.Activated += Quit;
++	    menu.Append (closeItem);
+ 	    optionMenu.Menu = menu;
+ 	    menu.ShowAll ();
+ 	    currentMenu = menu;
+@@ -127,14 +132,20 @@
+ 
+ 	protected override bool OnDeleteEvent (Gdk.Event evt)
+ 	{
+-	    bool retVal = base.OnDeleteEvent (evt);
++	    /*bool retVal = base.OnDeleteEvent (evt);
+ 	    WebNotes.Exit ();
+ 	    return retVal;
++		Hide ();
++		return base.OnDeleteEvent (evt);
++		*/
++		Hide ();
++		return true;
+ 	}
+ 
+ 	private void OptionChanged (object obj, EventArgs handler)
+ 	{
+-	    wc.LoadUrl (&quot;<A HREF="http://localhost:8000/">http://localhost:8000/</A>&quot; + list[optionMenu.History]);
++		if (optionMenu.History &lt; list.Count)
++	    		wc.LoadUrl (&quot;<A HREF="http://localhost:8000/">http://localhost:8000/</A>&quot; + list[optionMenu.History]);
+ 	}
+ 
+ 	private void HandleRefresh (object obj, EventArgs args)
+@@ -146,6 +157,10 @@
+ 	{
+ 	          Present ();
+ 	}
++	private void Quit (object sender, EventArgs args)
++	{
++	    WebNotes.Exit ();
++	}
+     }
+ }
+ 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000039.html">[Mspace-checkins] r303 - in WebNotes/trunk: . src/TrayIcon/libtrayicon src/WebNotes src/didiwiki src/didiwiki/src
+</A></li>
+	<LI>Next message: <A HREF="000041.html">[Mspace-checkins] r305 - in WebNotes/trunk: . images src/WebNotes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#40">[ date ]</a>
+              <a href="thread.html#40">[ thread ]</a>
+              <a href="subject.html#40">[ subject ]</a>
+              <a href="author.html#40">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

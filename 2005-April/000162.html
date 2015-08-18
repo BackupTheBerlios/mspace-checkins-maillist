@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r449 - koolboy/trunk/src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r449%20-%20koolboy/trunk/src&In-Reply-To=%3C200504272252.j3RMqr9g010157%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000161.html">
+   <LINK REL="Next"  HREF="000163.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r449 - koolboy/trunk/src</H1>
+    <B>Isaac Clerencia at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r449%20-%20koolboy/trunk/src&In-Reply-To=%3C200504272252.j3RMqr9g010157%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r449 - koolboy/trunk/src">isaaccp at sheep.berlios.de
+       </A><BR>
+    <I>Thu Apr 28 00:52:53 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000161.html">[Mspace-checkins] r448 - koolboy/trunk/src
+</A></li>
+        <LI>Next message: <A HREF="000163.html">[Mspace-checkins] r450 - koolboy/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#162">[ date ]</a>
+              <a href="thread.html#162">[ thread ]</a>
+              <a href="subject.html#162">[ subject ]</a>
+              <a href="author.html#162">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: isaaccp
+Date: 2005-04-28 00:52:43 +0200 (Thu, 28 Apr 2005)
+New Revision: 449
+
+Added:
+   koolboy/trunk/src/libkoolnotes.rb
+Modified:
+   koolboy/trunk/src/koolboy.rb
+Log:
+Commit some of the stuff, it doesn't work correctly yet
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-04-27 18:33:35 UTC (rev 448)
++++ koolboy/trunk/src/koolboy.rb	2005-04-27 22:52:43 UTC (rev 449)
+@@ -1,6 +1,7 @@
+ #!/usr/bin/ruby
+ 
+ require 'Korundum'
++require 'libkoolnotes.rb'
+ 
+ class SysTrayThing &lt; KDE::SystemTray
+ 	slots   'sAboutToQuit()',
+@@ -10,12 +11,16 @@
+ 		super(nil, name)
+ 		setPixmap( KDE::SystemTray::loadIcon(&quot;kgpg&quot;))
+ 
+-		@windows = []
++		# stuff related with closing app
+ 		@shuttingDown = false
+ 
+ 		connect(self, SIGNAL('quitSelected()'),
+ 			self, SLOT('sAboutToQuit()'))
+ 
++		# array to keep a list of windows
++		@windows = []
++
++		# create left menu
+ 		@leftMenu = KDE::PopupMenu.new(self)
+ 		@leftMenu.insertItem( i18n( &quot;&amp;New note&quot; ), self, SLOT('sNewNote()') )
+ 	end
+@@ -46,32 +51,27 @@
+ end
+ 
+ class NoteWindow &lt; KDE::MainWindow
+-
+ 	def initialize( name )
+ 		name or name = &quot;New note&quot;
+ 		super(nil, name)
+ 		setCaption(name)
+ 
++		# we need to increase refCount to be able
++		# to use kmainwindows in this manner
++		$kapp.ref
++
++		# load note from database
++		@note = KoolNoteWell.instance.getNote(name)
++
+ 		@text = KDE::TextEdit.new(self)
+-		loadText
++		@text.setText(@note.contents)
+ 		self.setCentralWidget(@text)
+ 	end
+ 
+-	def loadText
+-		file = KDE::StandardDirs::locateLocal(&quot;appdata&quot;,&quot;note&quot;)
+-		test ?r, file and
+-			File.open(file) { |f| @text.setText(f.gets(nil)) }
+-	end
+-
+ 	def queryClose
+-		if not @shuttingDown
+-			hide
+-			return false
+-		else
+-			file = KDE::StandardDirs::locateLocal(&quot;appdata&quot;,&quot;note&quot;)
+-			File.open(file,&quot;w&quot;) { |f| f.print(@text.text) }
+-			return true	
+-		end
++		@note.contents = @text.text
++		KoolNoteWell.instance.storeNote(@note)
++		return true
+ 	end
+ end
+ 
+@@ -83,5 +83,7 @@
+ thing = SysTrayThing.new( &quot;our fooboy&quot; )
+ thing.show
+ 
++KoolNoteWell.setFile(KDE::StandardDirs::locateLocal(&quot;appdata&quot;,&quot;koolnotes.db&quot;))
++
+ a.mainWidget = thing
+ a.exec 
+
+Added: koolboy/trunk/src/libkoolnotes.rb
+===================================================================
+--- koolboy/trunk/src/libkoolnotes.rb	2005-04-27 18:33:35 UTC (rev 448)
++++ koolboy/trunk/src/libkoolnotes.rb	2005-04-27 22:52:43 UTC (rev 449)
+@@ -0,0 +1,53 @@
++require 'sqlite3'
++require 'singleton'
++
++class KoolNote
++	attr_accessor :title
++	attr_accessor :contents
++	attr_reader :id
++
++	def initialize ( title, id=-1, contents='' )
++		@title = title
++		@id = id
++		@contents = contents
++	end
++end
++
++class KoolNoteWell
++	include Singleton
++
++	@@file = ''
++
++	def KoolNoteWell.setFile( file )
++		@@file = file
++	end
++
++	def initialize
++		@db = SQLite3::Database.new(@@file)
++		@db.results_as_hash = true
++		count = @db.get_first_value(&quot;SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='notes'&quot;)
++		count == &quot;1&quot; or 
++			@db.execute(&quot;CREATE TABLE notes ( id integer primary key autoincrement, title text, contents text)&quot;)
++	end
++
++	def getNote ( title )
++		note = nil
++		rows = @db.execute(&quot;SELECT * FROM notes WHERE title='#{title}'&quot;)
++		if rows.length == 1
++			note = KoolNote.new(title, rows[0]['id'], rows[0]['contents'])
++		else
++			note = KoolNote.new(title)
++		end
++		note
++	end
++
++	def storeNote ( note )
++		count = @db.get_first_value(&quot;SELECT COUNT(*) FROM notes WHERE id=#{note.id}&quot;)
++		if count == &quot;1&quot;
++			@db.execute(&quot;UPDATE notes SET title='#{note.title}', contents='#{note.contents}' WHERE id=#{note.id}&quot;)
++		else
++			@db.execute(&quot;INSERT INTO notes VALUES (NULL, '#{note.title}', '#{note.contents}')&quot;)
++		end
++
++	end
++end
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000161.html">[Mspace-checkins] r448 - koolboy/trunk/src
+</A></li>
+	<LI>Next message: <A HREF="000163.html">[Mspace-checkins] r450 - koolboy/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#162">[ date ]</a>
+              <a href="thread.html#162">[ thread ]</a>
+              <a href="subject.html#162">[ subject ]</a>
+              <a href="author.html#162">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

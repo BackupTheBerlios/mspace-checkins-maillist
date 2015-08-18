@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r497 - scripts
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r497%20-%20scripts&In-Reply-To=%3C200505161901.j4GJ1aIQ021613%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000209.html">
+   <LINK REL="Next"  HREF="000211.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r497 - scripts</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r497%20-%20scripts&In-Reply-To=%3C200505161901.j4GJ1aIQ021613%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r497 - scripts">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Mon May 16 21:01:36 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000209.html">[Mspace-checkins] r496 - scripts
+</A></li>
+        <LI>Next message: <A HREF="000211.html">[Mspace-checkins] r498 - scripts
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#210">[ date ]</a>
+              <a href="thread.html#210">[ thread ]</a>
+              <a href="subject.html#210">[ subject ]</a>
+              <a href="author.html#210">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-05-16 21:01:34 +0200 (Mon, 16 May 2005)
+New Revision: 497
+
+Modified:
+   scripts/encode-ppc.rb
+Log:
+if file is a directory encode all the movies inside
+
+
+Modified: scripts/encode-ppc.rb
+===================================================================
+--- scripts/encode-ppc.rb	2005-05-16 15:39:01 UTC (rev 496)
++++ scripts/encode-ppc.rb	2005-05-16 19:01:34 UTC (rev 497)
+@@ -4,18 +4,38 @@
+ 	puts &quot;Usage: encode-ppc.rb &lt;file&gt;&quot;
+ end
+ 
+-file = ARGV[0]
+-if !file
+-	usage
+-	exit
++
++def encodeFile(file)
++	basename = File.basename(file)
++	puts &quot;Encoding file: #{basename}&quot;
++	destfile = &quot;PocketPC_&quot; + basename
++	cmd = &quot;mencoder&quot;
++	## PocketDivxEncoder args for PocketPC ##
++	pocketpc_opts = &quot;-srate 22050 -oac mp3lame -lameopts mode=2:cbr:br=64 -vf scale=320:240,eq2=1.0:1.0:0.03:1.0 -sws 2 -ovc lavc -lavcopts vcodec=mpeg4:vhq:vbitrate=248 -ffourcc DX50&quot;
++	lame_args = &quot;#{file} -noskip -vf scale=320:240 -of mpeg -ovc lavc -lavcopts vcodec=mpeg1video:vbitrate=400000:vrc_minrate=100:vrc_maxrate=500:vrc_buf_size=300:vpass=1 -oac copy -o #{destfile}&quot;
++	`#{cmd} #{file} #{pocketpc_opts} -o #{destfile}`
+ end
+ 
+-destfile = &quot;PocketPC_&quot; + File.basename(file)
+-cmd = &quot;mencoder&quot;
+-## PocketDivxEncoder args for PocketPC ##
+-pocketpc_opts = &quot;-srate 22050 -oac mp3lame -lameopts mode=2:cbr:br=64 -vf scale=320:240,eq2=1.0:1.0:0.03:1.0 -sws 2 -ovc lavc -lavcopts vcodec=mpeg4:vhq:vbitrate=248 -ffourcc DX50&quot;
+-lame_args = &quot;#{file} -noskip -vf scale=320:240 -of mpeg -ovc lavc -lavcopts vcodec=mpeg1video:vbitrate=400000:vrc_minrate=100:vrc_maxrate=500:vrc_buf_size=300:vpass=1 -oac copy -o #{destfile}&quot;
++def encodeDir(dir)
++	puts &quot;Encoding al files in #{dir}&quot;
++	fcount = 0
++	Dir.foreach(ARGV[0]) { |file|
++		encodeFile(file) if file =~ /.*\.(rb|avi|mpeg|mpg|divx)$/
++		fcount.next
++	}
++	puts &quot;#{fcount} files encoded.&quot;
++end
+ 
+-puts &quot;Encoding #{file} to #{destfile}&quot;
+-`#{cmd} #{file} #{pocketpc_opts} -o #{destfile}`
++if $0 == __FILE__
++	file = ARGV[0]
++	if !file
++		usage
++		exit
++	end
++	if File.directory?(file)
++		encodeDir(file)
++	else
++		encodeFile(file)
++	end
++end
+ 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000209.html">[Mspace-checkins] r496 - scripts
+</A></li>
+	<LI>Next message: <A HREF="000211.html">[Mspace-checkins] r498 - scripts
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#210">[ date ]</a>
+              <a href="thread.html#210">[ thread ]</a>
+              <a href="subject.html#210">[ subject ]</a>
+              <a href="author.html#210">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

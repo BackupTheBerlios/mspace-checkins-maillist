@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r543 - in ComponentModel/trunk/src: ComponentModel/Container/Dao UnitTest/Components/TestComponent UnitTest/Components/TestComponent/Form
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r543%20-%20in%20ComponentModel/trunk/src%3A%20ComponentModel/Container/Dao%20UnitTest/Components/TestComponent%20UnitTest/Components/TestComponent/Form&In-Reply-To=%3C200510170753.j9H7rd7Q019020%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000255.html">
+   <LINK REL="Next"  HREF="000257.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r543 - in ComponentModel/trunk/src: ComponentModel/Container/Dao UnitTest/Components/TestComponent UnitTest/Components/TestComponent/Form</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r543%20-%20in%20ComponentModel/trunk/src%3A%20ComponentModel/Container/Dao%20UnitTest/Components/TestComponent%20UnitTest/Components/TestComponent/Form&In-Reply-To=%3C200510170753.j9H7rd7Q019020%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r543 - in ComponentModel/trunk/src: ComponentModel/Container/Dao UnitTest/Components/TestComponent UnitTest/Components/TestComponent/Form">nestor at berlios.de
+       </A><BR>
+    <I>Mon Oct 17 09:53:39 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000255.html">[Mspace-checkins] r542 - in ComponentModel/trunk/src/ComponentModel: . Container/Dao
+</A></li>
+        <LI>Next message: <A HREF="000257.html">[Mspace-checkins] r544 - ComponentModel/trunk
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#256">[ date ]</a>
+              <a href="thread.html#256">[ thread ]</a>
+              <a href="subject.html#256">[ subject ]</a>
+              <a href="author.html#256">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-10-17 09:53:36 +0200 (Mon, 17 Oct 2005)
+New Revision: 543
+
+Modified:
+   ComponentModel/trunk/src/ComponentModel/Container/Dao/DefaultContainerDao.cs
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/MainTestComponentForm.cs
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs
+Log:
+Tests Ok.
+
+
+
+Modified: ComponentModel/trunk/src/ComponentModel/Container/Dao/DefaultContainerDao.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Container/Dao/DefaultContainerDao.cs	2005-10-17 07:44:16 UTC (rev 542)
++++ ComponentModel/trunk/src/ComponentModel/Container/Dao/DefaultContainerDao.cs	2005-10-17 07:53:36 UTC (rev 543)
+@@ -85,7 +85,7 @@
+                         DefaultComponentModel defaultComponentModel = (DefaultComponentModel)constructorInfo.Invoke (null);
+                         //Seteamos el vo con reflection y mantener oculto el
+                         //resto.
+-                        FieldInfo voFieldInfo = types[i].GetField (&quot;vO&quot;, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetField); // | BindingFlags.DeclaredOnly);
++                        FieldInfo voFieldInfo = types[i].GetField (&quot;componentModelDTO&quot;, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetField); // | BindingFlags.DeclaredOnly);
+                         //if (voFieldInfo == null)
+                         //    Console.WriteLine (&quot;FieldInfo == null.&quot;);
+                         voFieldInfo.SetValue (defaultComponentModel, componentModelDTO);
+
+Modified: ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/MainTestComponentForm.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/MainTestComponentForm.cs	2005-10-17 07:44:16 UTC (rev 542)
++++ ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/MainTestComponentForm.cs	2005-10-17 07:53:36 UTC (rev 543)
+@@ -1,6 +1,6 @@
+ using System;
+ using ComponentModel.Interfaces;
+-using ComponentModel.VO;
++using ComponentModel.DTO;
+ using System.Windows.Forms;
+ 
+ namespace UnitTest.Components.TestComponent.Form {
+@@ -15,9 +15,9 @@
+         public void ClearForm () {
+         }
+ 
+-        public void ResponseReturnValue (ResponseMethodVO responseMethodVO) {
+-            if (responseMethodVO.ExecutionSuccess) {
+-                MessageBox.Show (&quot;Yeah !!, el valor de retorno es: &quot; + responseMethodVO.MethodResult); 
++        public void ResponseReturnValue (ResponseMethodDTO responseMethodDTO) {
++            if (responseMethodDTO.ExecutionSuccess) {
++                MessageBox.Show (&quot;Yeah !!, el valor de retorno es: &quot; + responseMethodDTO.MethodResult); 
+             }
+         }
+     }
+
+Modified: ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs	2005-10-17 07:44:16 UTC (rev 542)
++++ ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs	2005-10-17 07:53:36 UTC (rev 543)
+@@ -1,7 +1,7 @@
+ using System;
+ using ComponentModel.Container;
+ using ComponentModel.Interfaces;
+-using ComponentModel.VO;
++using ComponentModel.DTO;
+ using NUnit.Framework;
+ 
+ namespace UnitTest.Components.TestComponent {
+@@ -31,15 +31,15 @@
+         [Test]
+         public void ExecutionNonRedirect () {
+             int x = 4;
+-            ResponseMethodVO responseMethodVO;
++            ResponseMethodDTO responseMethodDTO;
+             int returnValue;
+             
+             IComponentModel componentModel = DefaultContainer.Instance.GetComponentByName (&quot;TestUnidad1&quot;);
+-            responseMethodVO = componentModel.Execute (&quot;ReturnValue&quot;, new object[]{x}, false);
+-            Assert.AreEqual (responseMethodVO.ExecutionSuccess, true);
+-            Assert.IsNotNull (responseMethodVO.MethodResult);
+-            if (responseMethodVO.ExecutionSuccess == true) {
+-                returnValue = (int) responseMethodVO.MethodResult;    
++            responseMethodDTO = componentModel.Execute (&quot;ReturnValue&quot;, new object[]{x}, false);
++            Assert.AreEqual (responseMethodDTO.ExecutionSuccess, true);
++            Assert.IsNotNull (responseMethodDTO.MethodResult);
++            if (responseMethodDTO.ExecutionSuccess == true) {
++                returnValue = (int) responseMethodDTO.MethodResult;    
+                 Assert.AreEqual (returnValue, x);
+                 //Al estar usando reflection, no creo que se devuelva la misma
+                 //posici&#243;n de memoria.
+@@ -50,15 +50,15 @@
+         [Test]
+         public void ExecutionNonRedirectOverload () {
+             char c = 'a';
+-            ResponseMethodVO responseMethodVO;
++            ResponseMethodDTO responseMethodDTO;
+             char returnValue;
+ 
+             IComponentModel componentModel = DefaultContainer.Instance.GetComponentByName (&quot;TestUnidad1&quot;);
+-            responseMethodVO = componentModel.Execute (&quot;ReturnValue&quot;, new object[]{c}, false);
+-            Assert.AreEqual (responseMethodVO.ExecutionSuccess, true);
+-            Assert.IsNotNull (responseMethodVO.MethodResult);
+-            if (responseMethodVO.ExecutionSuccess == true) {
+-                returnValue = (char) responseMethodVO.MethodResult;
++            responseMethodDTO = componentModel.Execute (&quot;ReturnValue&quot;, new object[]{c}, false);
++            Assert.AreEqual (responseMethodDTO.ExecutionSuccess, true);
++            Assert.IsNotNull (responseMethodDTO.MethodResult);
++            if (responseMethodDTO.ExecutionSuccess == true) {
++                returnValue = (char) responseMethodDTO.MethodResult;
+                 Assert.AreEqual (returnValue, c);
+             }
+         }
+@@ -66,13 +66,13 @@
+         [Test]
+         public void ExecuteRedirectNewView () {
+             int x = 4;
+-            ResponseMethodVO responseMethodVO;
++            ResponseMethodDTO responseMethodDTO;
+ 
+             IComponentModel componentModel = DefaultContainer.Instance.GetComponentByName (&quot;TestUnidad1&quot;);
+-            responseMethodVO = componentModel.Execute (&quot;ReturnValue&quot;, new object[]{x});
+-            Assert.AreEqual (responseMethodVO.ExecutionSuccess, true);
+-            Assert.IsNotNull (responseMethodVO.MethodResult);
+-            Assert.AreEqual (responseMethodVO.MethodResult, x);
++            responseMethodDTO = componentModel.Execute (&quot;ReturnValue&quot;, new object[]{x});
++            Assert.AreEqual (responseMethodDTO.ExecutionSuccess, true);
++            Assert.IsNotNull (responseMethodDTO.MethodResult);
++            Assert.AreEqual (responseMethodDTO.MethodResult, x);
+             Assert.IsTrue (componentModel.ViewHandlerCollection.Count != 0);
+         }
+ 
+@@ -93,12 +93,12 @@
+ 
+         [Test]
+         public void Exception () {
+-            ResponseMethodVO responseMethodVO;
++            ResponseMethodDTO responseMethodDTO;
+             
+             IComponentModel componentModel = DefaultContainer.Instance.GetComponentByName (&quot;TestUnidad1&quot;);
+-            responseMethodVO = componentModel.Execute (&quot;TestException&quot;, null, false);
+-            Assert.AreEqual (responseMethodVO.ExecutionSuccess, false);
+-            Assert.IsNull (responseMethodVO.MethodResult);
++            responseMethodDTO = componentModel.Execute (&quot;TestException&quot;, null, false);
++            Assert.AreEqual (responseMethodDTO.ExecutionSuccess, false);
++            Assert.IsNull (responseMethodDTO.MethodResult);
+         }
+     }
+ }
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000255.html">[Mspace-checkins] r542 - in ComponentModel/trunk/src/ComponentModel: . Container/Dao
+</A></li>
+	<LI>Next message: <A HREF="000257.html">[Mspace-checkins] r544 - ComponentModel/trunk
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#256">[ date ]</a>
+              <a href="thread.html#256">[ thread ]</a>
+              <a href="subject.html#256">[ subject ]</a>
+              <a href="author.html#256">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

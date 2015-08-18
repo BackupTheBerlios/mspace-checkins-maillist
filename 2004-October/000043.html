@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r307 - in Muine.Sdk: . doc doc/arch
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r307%20-%20in%20Muine.Sdk%3A%20.%20doc%20doc/arch&In-Reply-To=%3C200410241412.i9OEC6cU009963%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000042.html">
+   <LINK REL="Next"  HREF="000044.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r307 - in Muine.Sdk: . doc doc/arch</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r307%20-%20in%20Muine.Sdk%3A%20.%20doc%20doc/arch&In-Reply-To=%3C200410241412.i9OEC6cU009963%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r307 - in Muine.Sdk: . doc doc/arch">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Sun Oct 24 16:12:06 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000042.html">[Mspace-checkins] r306 - in Muine.Sdk: . DataKits/Sqlite examples src src/Configuration src/Data src/Services
+</A></li>
+        <LI>Next message: <A HREF="000044.html">[Mspace-checkins] r308 - in Muine.Sdk: . DataKits/Sqlite PlayerKits/Gstreamer doc doc/arch doc/en doc/en/Player.Configuration doc/en/Player.Data doc/en/Player.Player doc/en/Player.Playlist doc/en/Player.Services examples src src/Configuration src/Data src/Player src/Playlist src/Services
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#43">[ date ]</a>
+              <a href="thread.html#43">[ thread ]</a>
+              <a href="subject.html#43">[ subject ]</a>
+              <a href="author.html#43">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2004-10-24 16:12:04 +0200 (Sun, 24 Oct 2004)
+New Revision: 307
+
+Added:
+   Muine.Sdk/TODO
+   Muine.Sdk/doc/arch/
+   Muine.Sdk/doc/arch/DirectoryOverview.txt
+   Muine.Sdk/doc/arch/NamespaceOverview.txt
+Modified:
+   Muine.Sdk/ChangeLog
+   Muine.Sdk/README
+Log:
+2004-10-24  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+
+    * README:
+    * TODO:
+    * doc/arch/DirectoryOverview.txt:
+    * doc/arch/NamespaceOverview.txt:
+
+    Added some docs.
+
+
+
+Modified: Muine.Sdk/ChangeLog
+===================================================================
+--- Muine.Sdk/ChangeLog	2004-10-24 12:49:58 UTC (rev 306)
++++ Muine.Sdk/ChangeLog	2004-10-24 14:12:04 UTC (rev 307)
+@@ -1,5 +1,14 @@
+ 2004-10-24  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
++	* README:
++	* TODO:
++	* doc/arch/DirectoryOverview.txt:
++	* doc/arch/NamespaceOverview.txt:
++
++	Added some docs.
++
++2004-10-24  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
+ 	* DataKits/Sqlite/SqliteDataKit.cs: Fixes in tables creation and
+ 	connection string
+ 	* DataKits/Sqlite/SqliteMusicDb.cs: Renamed to SqliteDataKit
+
+Modified: Muine.Sdk/README
+===================================================================
+--- Muine.Sdk/README	2004-10-24 12:49:58 UTC (rev 306)
++++ Muine.Sdk/README	2004-10-24 14:12:04 UTC (rev 307)
+@@ -0,0 +1,19 @@
++Player.Sdk is a framework to easy the development of new Music players. I has a common
++set of features used by most of the players around, such as playlist management, music database,
++playing capabilities and so on.
++
++One of the Player.Sdk goals is to build music player GUIs on top of it. Another goal is portability,
++so OS specific code can be replaced easily (drag'n drop). You won't find platform specefic code inside
++the framework. All the Framework code is fully managed.
++
++Flexibility is another goal of the framework, so a plugin architecture to add new features has been
++developed. This will keep the core of the framework clean and small.
++
++Player.Sdk Core Features:
++* Drag'n drop player backend support.
++* Drag'n drop database backend support.
++* Playlist support.
++* Configuration support.
++* Plug-ins support.
++* Fully managed.
++
+
+Added: Muine.Sdk/TODO
+===================================================================
+--- Muine.Sdk/TODO	2004-10-24 12:49:58 UTC (rev 306)
++++ Muine.Sdk/TODO	2004-10-24 14:12:04 UTC (rev 307)
+@@ -0,0 +1,25 @@
++Plugin Architecture
++--------------------
++* Add support for a plugin arch. Plugins should be able to be
++loaded and unloaded from user dir or system wide.
++* Plugins have access to the sdk services.
++* Some example plugins:
++	- Exporting playlist as a webservice.
++	- DBus support
++	- Playlist export
++
++
++DataKits
++---------
++* SqliteDataKit is not finished yet.
++
++Add more DataKits
++--------------
++* iPod data kit
++
++Kits improvements
++------------------
++* Add support for changing the kits on the fly, once the Player.Sdk has been
++started. This will allow us to swap the db backends from sqlite to ipoddb if the
++user wants to manage the ipod database.
++
+
+Added: Muine.Sdk/doc/arch/DirectoryOverview.txt
+===================================================================
+--- Muine.Sdk/doc/arch/DirectoryOverview.txt	2004-10-24 12:49:58 UTC (rev 306)
++++ Muine.Sdk/doc/arch/DirectoryOverview.txt	2004-10-24 14:12:04 UTC (rev 307)
+@@ -0,0 +1,4 @@
++DataKits/ : the dir to hold the different DataKit implementations.
++PlayerKits/: the dir to hold the different PlayerKit implementations.
++src/ : The core of the framework
++
+
+Added: Muine.Sdk/doc/arch/NamespaceOverview.txt
+===================================================================
+--- Muine.Sdk/doc/arch/NamespaceOverview.txt	2004-10-24 12:49:58 UTC (rev 306)
++++ Muine.Sdk/doc/arch/NamespaceOverview.txt	2004-10-24 14:12:04 UTC (rev 307)
+@@ -0,0 +1,9 @@
++* Muine.Sdk.Data: abstract data types and Db services.
++
++* Muine.Sdk.Configuration: Basic configuration logic for the framework. Currently I am using Nini (<A HREF="http://nini.sf.net">http://nini.sf.net</A>) to keep the config in a .ini file. We could write a Nini backend to use gconf if we want. Although i think it is not necessary ATM.
++
++* Muine.Sdk.Player: player services.
++
++* Muine.Sdk.Playlist: playlist services.
++
++* Muine.Sdk.Services: basic logic to load the kits and so on. 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000042.html">[Mspace-checkins] r306 - in Muine.Sdk: . DataKits/Sqlite examples src src/Configuration src/Data src/Services
+</A></li>
+	<LI>Next message: <A HREF="000044.html">[Mspace-checkins] r308 - in Muine.Sdk: . DataKits/Sqlite PlayerKits/Gstreamer doc doc/arch doc/en doc/en/Player.Configuration doc/en/Player.Data doc/en/Player.Player doc/en/Player.Playlist doc/en/Player.Services examples src src/Configuration src/Data src/Player src/Playlist src/Services
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#43">[ date ]</a>
+              <a href="thread.html#43">[ thread ]</a>
+              <a href="subject.html#43">[ subject ]</a>
+              <a href="author.html#43">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

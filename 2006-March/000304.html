@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r592 - in HA: etc/HA usr/local/sbin/HA
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r592%20-%20in%20HA%3A%20etc/HA%20usr/local/sbin/HA&In-Reply-To=%3C200603150933.k2F9XKuq030048%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000303.html">
+   <LINK REL="Next"  HREF="000305.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r592 - in HA: etc/HA usr/local/sbin/HA</H1>
+    <B>luis at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r592%20-%20in%20HA%3A%20etc/HA%20usr/local/sbin/HA&In-Reply-To=%3C200603150933.k2F9XKuq030048%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r592 - in HA: etc/HA usr/local/sbin/HA">luis at berlios.de
+       </A><BR>
+    <I>Wed Mar 15 10:33:20 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000303.html">[Mspace-checkins] r591 - HA/usr/local/sbin/HA
+</A></li>
+        <LI>Next message: <A HREF="000305.html">[Mspace-checkins] r593 - in HA: etc/HA usr/local/sbin/HA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#304">[ date ]</a>
+              <a href="thread.html#304">[ thread ]</a>
+              <a href="subject.html#304">[ subject ]</a>
+              <a href="author.html#304">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: luis
+Date: 2006-03-15 10:33:18 +0100 (Wed, 15 Mar 2006)
+New Revision: 592
+
+Modified:
+   HA/etc/HA/ha.cf
+   HA/usr/local/sbin/HA/remote_ha.sh
+Log:
+Stonith feature added to remote_ha.sh. Better checking of remote node state.
+
+
+Modified: HA/etc/HA/ha.cf
+===================================================================
+--- HA/etc/HA/ha.cf	2006-03-14 21:39:59 UTC (rev 591)
++++ HA/etc/HA/ha.cf	2006-03-15 09:33:18 UTC (rev 592)
+@@ -26,3 +26,7 @@
+ FW_CHECK=${BIN_PATH}fw_check.sh
+ SERVICE_CHECK=${BIN_PATH}service_check.sh
+ 
++### Datos para realizar el stonith
++STONITH_USER=
++STONITH_PRIVATE_KEY=
++STONITH_COMMAND=
+
+Modified: HA/usr/local/sbin/HA/remote_ha.sh
+===================================================================
+--- HA/usr/local/sbin/HA/remote_ha.sh	2006-03-14 21:39:59 UTC (rev 591)
++++ HA/usr/local/sbin/HA/remote_ha.sh	2006-03-15 09:33:18 UTC (rev 592)
+@@ -39,7 +39,17 @@
+ 	${PING} -c ${REPEAT} -w ${TIMEOUT} -t ${TTL} ${1} &gt; /dev/null 2&gt;&amp;1
+ }
+ 
++failover ()
++{
++	${HA_INIT_SCRIPT} start
++	/etc/init.d/remote_ha stop
++}
+ 
++stonith ()
++{
++	ssh -i ${STONITH_PRIVATE_KEY} ${STONITH_USER}@${1} ${STONITH_COMMAND}
++}
++
+ while [ ${CONTINUE} = &quot;YES&quot; ]
+ do
+ 	echo &quot;**** COMPROBANDO COMUNICACION LOCAL ****&quot;
+@@ -62,30 +72,40 @@
+ 	
+ 	echo &quot;**** COMPROBANDO COMUNICACION REMOTA ****&quot;
+ 	REMOTE=CHECK
++	FAIL_NODES=0
+ 	for i in ${NODE_IPS}
+ 	do
+ 		IP_STATUS ${i}
+-		if [[ ${?} = 0 &amp;&amp; ${REMOTE} != &quot;FAIL&quot; ]]
++		if [[ ${?} != 0 ]]
+ 		then
+-			REMOTE=OK
++			IP_STATUS ${i}
++			if [[ ${?} != 0 ]]
++			then
++				let &quot;FAIL_NODES+=1&quot;
++			else
++				SURVIVOR_IP=${i}
++			fi
+ 		else
+-			REMOTE=FAIL
+-			break;
++			SURVIVOR_IP=${i}
+ 		fi
+ 	done
+-	if [ ${REMOTE} = &quot;OK&quot; ]
+-	then
+-		echo &quot;**** COMUNICACION REMOTA CORRECTA ****&quot;
+-		sleep 10
+-	else
+-		echo &quot;**** COMUNICACION REMOTA CRITICA ****&quot;
+-		CONTINUE=NO
+-		CRITICAL_STATUS=YES
+-	fi	
+-done
+-
+-if [[ ${CRITICAL_STATUS} = &quot;YES&quot; ]]
+-then
+-	${HA_INIT_SCRIPT} start
+-	/etc/init.d/remote_ha stop
+-fi
++	case ${FAIL_NODES} in
++		0 )
++			REMOTE=&quot;UP&quot;
++			sleep 10
++			;;
++		1 )	
++			REMOTE=&quot;KILL&quot;
++			stonith ${SURVIVOR_IP}
++			sleep 5
++			failover
++			;;
++		2 )	
++			REMOTE=&quot;DOWN&quot;
++			CONTINUE=NO
++			failover
++			;;
++		* )
++			;;
++	esac
++}
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000303.html">[Mspace-checkins] r591 - HA/usr/local/sbin/HA
+</A></li>
+	<LI>Next message: <A HREF="000305.html">[Mspace-checkins] r593 - in HA: etc/HA usr/local/sbin/HA
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#304">[ date ]</a>
+              <a href="thread.html#304">[ thread ]</a>
+              <a href="subject.html#304">[ subject ]</a>
+              <a href="author.html#304">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

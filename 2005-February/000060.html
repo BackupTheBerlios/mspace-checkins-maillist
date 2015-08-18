@@ -1,0 +1,229 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r326 - mvim/trunk/src/Vim.Components.VimBuffer/Model
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-February/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r326%20-%20mvim/trunk/src/Vim.Components.VimBuffer/Model&In-Reply-To=%3C200502142258.j1EMwPK1002515%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000059.html">
+   <LINK REL="Next"  HREF="000061.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r326 - mvim/trunk/src/Vim.Components.VimBuffer/Model</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r326%20-%20mvim/trunk/src/Vim.Components.VimBuffer/Model&In-Reply-To=%3C200502142258.j1EMwPK1002515%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r326 - mvim/trunk/src/Vim.Components.VimBuffer/Model">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Mon Feb 14 23:58:26 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000059.html">[Mspace-checkins] r325 - in mvim/trunk: doc src
+</A></li>
+        <LI>Next message: <A HREF="000061.html">[Mspace-checkins] r327 - in mvim/trunk/src/Vim.Components.VimBuffer/Model: . VimBufferStrategy
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#60">[ date ]</a>
+              <a href="thread.html#60">[ thread ]</a>
+              <a href="subject.html#60">[ subject ]</a>
+              <a href="author.html#60">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-02-14 23:58:24 +0100 (Mon, 14 Feb 2005)
+New Revision: 326
+
+Added:
+   mvim/trunk/src/Vim.Components.VimBuffer/Model/GapTextBufferStrategy.cs
+   mvim/trunk/src/Vim.Components.VimBuffer/Model/ITextBufferStrategy.cs
+Modified:
+   mvim/trunk/src/Vim.Components.VimBuffer/Model/IVimBuffer.cs
+Log:
+Added sample GapImplementation from SharpDevelop.  
+Check algorithmy.
+
+
+Added: mvim/trunk/src/Vim.Components.VimBuffer/Model/GapTextBufferStrategy.cs
+===================================================================
+--- mvim/trunk/src/Vim.Components.VimBuffer/Model/GapTextBufferStrategy.cs	2005-02-14 19:07:18 UTC (rev 325)
++++ mvim/trunk/src/Vim.Components.VimBuffer/Model/GapTextBufferStrategy.cs	2005-02-14 22:58:24 UTC (rev 326)
+@@ -0,0 +1,105 @@
++using System;
++using System.Text;
++
++namespace Vim.Components.VimBuffer.Model {
++    public class GapTextBufferStrategy : ITextBufferStrategy {
++        private char[] buffer = new char [0];
++
++        int gapBeginOffset = 0;
++        int gapEndOffset = 0;
++
++        int minGapLength = 32;
++        int maxGapLength = 256;
++
++        int GapLength {
++            get {return gapEndOffset - gapBeginOffset;}
++        }
++
++        public int Length {
++            get {return buffer.Length - GapLength;}
++        }
++
++        public void SetContent (string text) {
++            if (text == null)
++                text = String.Empty;
++            buffer = text.ToCharArray ();
++            gapBeginOffset = gapEndOffset = 0;
++        }
++
++        public char GetCharAt (int offset) {
++            if (offset &lt; gapBeginOffset)
++                return buffer [offset];
++            else
++                return buffer [offset + GapLength];
++        }
++        
++        public string GetText (int offset, int length) {
++            int end = offset + length;
++            if (end &lt; gapBeginOffset) {
++                return new string (buffer, offset, length);
++            }
++            if (gapBeginOffset &lt; offset) {
++                return new string (buffer, offset + GapLength, length);
++            }
++
++            StringBuilder buf = new StringBuilder ();
++            buf.Append (buffer, offset, gapBeginOffset - offset);
++            buf.Append (buffer, gapEndOffset, end - gapBeginOffset);
++            return buf.ToString ();
++        }
++
++        public void Insert (int offset, string text) {
++            this.Replace (offset, 0, text);
++        }
++
++        public void Remove (int offset, int length) {
++            this.Replace (offset, length, String.Empty);
++        }
++
++        public void Replace (int offset, int length, string text) {
++            if (text == null)
++                text = String.Empty;
++            PlaceGap (offset + length, Math.Max (0, text.Length - length));
++            text.CopyTo (0, buffer, offset, Math.Min (text.Length, length));
++            
++            if (text.Length &lt; length) 
++                gapBeginOffset -= length - text.Length;
++            else 
++                if (text.Length &gt; length) {
++                    int deltaLength = text.Length - length;
++                    gapBeginOffset += deltaLength;
++                    text.CopyTo (length, buffer, offset+length, text.Length - length);
++                }
++        }
++
++        void PlaceGap (int offset, int length) {
++            int oldLength = GapLength;
++            int newLength = maxGapLength + length;
++            int newGapEndOffset = offset + newLength;
++            char[] newBuffer = new char [buffer.Length + newLength - oldLength];
++            
++            if (oldLength == 0) {
++                Array.Copy (buffer, 0, newBuffer, 0, offset);
++                Array.Copy (buffer, offset, newBuffer, newGapEndOffset, newBuffer.Length - newGapEndOffset);
++            }
++            else
++                if (offset &lt; gapBeginOffset) {
++                    int delta = gapBeginOffset - offset;
++                    Array.Copy (buffer, 0, newBuffer, 0, offset);
++                    Array.Copy (buffer, offset, newBuffer, newGapEndOffset, delta);
++                    Array.Copy (buffer, gapEndOffset, newBuffer, newGapEndOffset + delta, buffer.Length - gapEndOffset);
++                    
++                }
++                else {
++                    int delta = offset - gapBeginOffset;
++                    Array.Copy (buffer, 0, newBuffer, 0 , gapBeginOffset);
++                    Array.Copy (buffer, gapEndOffset, newBuffer, gapBeginOffset, delta);
++                    Array.Copy (buffer, gapEndOffset + delta, newBuffer, newGapEndOffset, newBuffer.Length - newGapEndOffset);
++                }
++            buffer = newBuffer;
++            gapBeginOffset = offset;
++            gapEndOffset = newGapEndOffset;
++        }
++
++    }
++}
+
+Added: mvim/trunk/src/Vim.Components.VimBuffer/Model/ITextBufferStrategy.cs
+===================================================================
+--- mvim/trunk/src/Vim.Components.VimBuffer/Model/ITextBufferStrategy.cs	2005-02-14 19:07:18 UTC (rev 325)
++++ mvim/trunk/src/Vim.Components.VimBuffer/Model/ITextBufferStrategy.cs	2005-02-14 22:58:24 UTC (rev 326)
+@@ -0,0 +1,12 @@
++
++namespace Vim.Components.VimBuffer.Model {
++    public interface ITextBufferStrategy {
++        int Length {get;}
++        void Insert (int offset, string text);
++        void Remove (int offset, int length);
++        void Replace (int offset,int length, string text);
++        string GetText (int offset, int length);
++        char GetCharAt (int offset);
++        void SetContent (string text);
++    }
++}
+
+Modified: mvim/trunk/src/Vim.Components.VimBuffer/Model/IVimBuffer.cs
+===================================================================
+--- mvim/trunk/src/Vim.Components.VimBuffer/Model/IVimBuffer.cs	2005-02-14 19:07:18 UTC (rev 325)
++++ mvim/trunk/src/Vim.Components.VimBuffer/Model/IVimBuffer.cs	2005-02-14 22:58:24 UTC (rev 326)
+@@ -1,5 +1,18 @@
++//
++// Vim.Components.VimBuffer.Model.IVimBuffer.cs :  
++//
++// Author:
++//      N&#233;stor Salceda Alonso (<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">wizito at gentelibre.org</A>)
++// (C) 2005
++
+ namespace Vim.Components.VimBuffer.Model {
++    //
++    //&lt;summary&gt;
++    //  We try use same Buffer as SharpDevelop do.
++    //  Try use a Gap Buffer.
++    //&lt;/summary&gt;
++    //
+     public interface IVimBuffer {
+-        string Text {get; set;}
++         
+     }
+ }
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000059.html">[Mspace-checkins] r325 - in mvim/trunk: doc src
+</A></li>
+	<LI>Next message: <A HREF="000061.html">[Mspace-checkins] r327 - in mvim/trunk/src/Vim.Components.VimBuffer/Model: . VimBufferStrategy
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#60">[ date ]</a>
+              <a href="thread.html#60">[ thread ]</a>
+              <a href="subject.html#60">[ subject ]</a>
+              <a href="author.html#60">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

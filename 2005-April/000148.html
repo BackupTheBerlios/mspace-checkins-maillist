@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r435 - in Red.ProjectManager/trunk: . src/Red.ProjectManager
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r435%20-%20in%20Red.ProjectManager/trunk%3A%20.%20src/Red.ProjectManager&In-Reply-To=%3C200504142232.j3EMWOvv006656%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000147.html">
+   <LINK REL="Next"  HREF="000149.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r435 - in Red.ProjectManager/trunk: . src/Red.ProjectManager</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r435%20-%20in%20Red.ProjectManager/trunk%3A%20.%20src/Red.ProjectManager&In-Reply-To=%3C200504142232.j3EMWOvv006656%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r435 - in Red.ProjectManager/trunk: . src/Red.ProjectManager">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Fri Apr 15 00:32:24 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000147.html">[Mspace-checkins] r434 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container.Dao
+</A></li>
+        <LI>Next message: <A HREF="000149.html">[Mspace-checkins] r436 - in Red.ProjectManager/trunk: . src/Red.ProjectManager
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#148">[ date ]</a>
+              <a href="thread.html#148">[ thread ]</a>
+              <a href="subject.html#148">[ subject ]</a>
+              <a href="author.html#148">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-15 00:32:11 +0200 (Fri, 15 Apr 2005)
+New Revision: 435
+
+Added:
+   Red.ProjectManager/trunk/src/Red.ProjectManager/IProjectFile.boo
+   Red.ProjectManager/trunk/src/Red.ProjectManager/IProjectNavigator.boo
+Modified:
+   Red.ProjectManager/trunk/ChangeLog
+Log:
+
+	* src/Red.ProjectManager/IProjectFile.boo:
+	* src/Red.ProjectManager/IProjectNavigator.boo:
+	Added the interfaces to some components
+
+
+Modified: Red.ProjectManager/trunk/ChangeLog
+===================================================================
+--- Red.ProjectManager/trunk/ChangeLog	2005-04-14 21:31:23 UTC (rev 434)
++++ Red.ProjectManager/trunk/ChangeLog	2005-04-14 22:32:11 UTC (rev 435)
+@@ -1,3 +1,9 @@
++2005-04-15  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
++	* src/Red.ProjectManager/IProjectFile.boo:
++	* src/Red.ProjectManager/IProjectNavigator.boo:
++	Added the interfaces to some components
++
+ 2005-04-09  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
+ 	* .svnignore: added ignores
+
+Added: Red.ProjectManager/trunk/src/Red.ProjectManager/IProjectFile.boo
+===================================================================
+--- Red.ProjectManager/trunk/src/Red.ProjectManager/IProjectFile.boo	2005-04-14 21:31:23 UTC (rev 434)
++++ Red.ProjectManager/trunk/src/Red.ProjectManager/IProjectFile.boo	2005-04-14 22:32:11 UTC (rev 435)
+@@ -0,0 +1,11 @@
++namespace Red.ProjectManager
++
++import System
++
++interface IProjectFile:
++
++	Name as string:
++		get
++		
++	FullName as string:
++		get
+
+Added: Red.ProjectManager/trunk/src/Red.ProjectManager/IProjectNavigator.boo
+===================================================================
+--- Red.ProjectManager/trunk/src/Red.ProjectManager/IProjectNavigator.boo	2005-04-14 21:31:23 UTC (rev 434)
++++ Red.ProjectManager/trunk/src/Red.ProjectManager/IProjectNavigator.boo	2005-04-14 22:32:11 UTC (rev 435)
+@@ -0,0 +1,41 @@
++namespace Red.ProjectManager
++
++import System.Collections
++
++interface IProjectNavigator:
++
++	/************************
++			Properties
++	*************************/
++	CurrentPath as string:
++		get
++	
++	CurrentSubdirs as IList:
++		get
++						
++	CurrentFiles as IList:
++		get
++
++	HasParent as bool:
++		get
++	
++	HasNext as bool:
++		get
++
++	HasPrevious as bool:
++		get
++
++	Parent as string:
++		get
++	
++	/************************
++			Methods	
++	*************************/
++	def MoveUp ()
++
++	def Next ()
++
++	def Previous ()
++		
++	def MoveToSubdir ([required]dir as string)
++
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000147.html">[Mspace-checkins] r434 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container.Dao
+</A></li>
+	<LI>Next message: <A HREF="000149.html">[Mspace-checkins] r436 - in Red.ProjectManager/trunk: . src/Red.ProjectManager
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#148">[ date ]</a>
+              <a href="thread.html#148">[ thread ]</a>
+              <a href="subject.html#148">[ subject ]</a>
+              <a href="author.html#148">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

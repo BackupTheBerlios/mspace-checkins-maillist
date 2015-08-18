@@ -1,0 +1,313 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r550 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: . Bo Forms Forms/TableModel Interfaces Resources
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r550%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20.%20Bo%20Forms%20Forms/TableModel%20Interfaces%20Resources&In-Reply-To=%3C200510201134.j9KBYFnt010727%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000262.html">
+   <LINK REL="Next"  HREF="000264.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r550 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: . Bo Forms Forms/TableModel Interfaces Resources</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r550%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20.%20Bo%20Forms%20Forms/TableModel%20Interfaces%20Resources&In-Reply-To=%3C200510201134.j9KBYFnt010727%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r550 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: . Bo Forms Forms/TableModel Interfaces Resources">nestor at berlios.de
+       </A><BR>
+    <I>Thu Oct 20 13:34:15 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000262.html">[Mspace-checkins] r549 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Dto Forms Resources
+</A></li>
+        <LI>Next message: <A HREF="000264.html">[Mspace-checkins] r551 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Forms/TableModel Interfaces Resources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#263">[ date ]</a>
+              <a href="thread.html#263">[ thread ]</a>
+              <a href="subject.html#263">[ subject ]</a>
+              <a href="author.html#263">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-10-20 13:34:11 +0200 (Thu, 20 Oct 2005)
+New Revision: 550
+
+Added:
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/MethodTableModel.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/ViewTableModel.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Interfaces/
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Interfaces/ITableModel.cs
+Modified:
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak
+Log:
+Tablemodels para la vista.
+
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs	2005-10-19 21:56:27 UTC (rev 549)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs	2005-10-20 11:34:11 UTC (rev 550)
+@@ -2,7 +2,7 @@
+ using ComponentModel;
+ 
+ namespace ComponentBuilder.Bo {
+-    [Component (&quot;ComponentBuilder&quot;, &quot;ComponentBuilder.Exceptions.ComponenBuilderExceptionManager&quot;)]
++    [Component (&quot;ComponentBuilder&quot;, &quot;ComponentBuilder.Exceptions.ComponentBuilderExceptionManager&quot;)]
+     public sealed class ComponentBuilderComponentModel : DefaultComponentModel {
+        
+         [ComponentMethod (&quot;ComponentBuilder.Forms.MainComponentBuilderForm&quot;, &quot;ResponseShowForm&quot;)]
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs	2005-10-19 21:56:27 UTC (rev 549)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs	2005-10-20 11:34:11 UTC (rev 550)
+@@ -1,6 +1,8 @@
+ using System;
+ using ComponentModel.Interfaces;
+ using ComponentModel.DTO;
++using ComponentBuilder.DTO;
++using ComponentBuilder.Forms.TableModel;
+ using Gtk;
+ using Glade;
+ 
+@@ -29,6 +31,9 @@
+         }
+ 
+         public void LoadDataForm (IDataTransferObject dto) {
++            if (dto is ComponentSettingsDTO) {
++                ComponentSettingsDTO componentSettingsDTO = (ComponentSettingsDTO) dto;
++            }
+         }
+ 
+         public void ClearForm () {
+@@ -38,6 +43,9 @@
+             if (response.ExecutionSuccess) {
+                 response.MethodResult = gxml[&quot;vbox1&quot;];
+                 statusbar1.Push (0, String.Format (&quot;Welcome to Babuine Component Builder: {0}@{1}&quot;, Environment.UserName, Environment.MachineName));
++                //Vamos a instanciar tambi&#233;n los modelos de las vistas.
++                viewsTreeView.Model = new ViewTableModel ().ListStore;
++                methodsTreeView.Model = new MethodTableModel ().ListStore;
+             }
+         }
+         
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/MethodTableModel.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/MethodTableModel.cs	2005-10-19 21:56:27 UTC (rev 549)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/MethodTableModel.cs	2005-10-20 11:34:11 UTC (rev 550)
+@@ -0,0 +1,49 @@
++using System;
++using System.Collections;
++using ComponentModel.Interfaces;
++using ComponentBuilder.DTO;
++using ComponentBuilder.Interfaces;
++using Gtk;
++
++namespace ComponentBuilder.Forms.TableModel {
++    public sealed class MethodTableModel : ITableModel {
++        private ListStore listStore; 
++        private Type[] tipos;
++
++        public MethodTableModel () {
++            tipos = new Type[5];
++            for (int i = 0; i &lt; tipos.Length; i++) {
++                tipos[i] = typeof (string);
++            }
++            listStore = new ListStore (tipos);
++        }
++
++        public MethodTableModel (IList list) {
++            foreach (MethodDTO methodDTO in list) {
++                this.Add (methodDTO);
++            }
++        }
++
++        public void Add (IDataTransferObject dto) {
++            if (dto is MethodDTO) {
++                MethodDTO methodDTO = (MethodDTO) dto;
++                listStore.AppendValues (
++                        methodDTO.MethodName,
++                        methodDTO.ReturnType,
++                        methodDTO.ViewToResponse,
++                        methodDTO.ResponseMethod,
++                        methodDTO.ParametersCollection.ToString ()
++                        );
++            }
++        }
++
++        public void Clear () {
++            listStore.Clear ();
++        }
++        
++        public ListStore ListStore {
++            get {return listStore;}
++        }
++
++    }
++}
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/ViewTableModel.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/ViewTableModel.cs	2005-10-19 21:56:27 UTC (rev 549)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/ViewTableModel.cs	2005-10-20 11:34:11 UTC (rev 550)
+@@ -0,0 +1,44 @@
++using System;
++using System.Collections;
++using ComponentModel.Interfaces;
++using ComponentBuilder.DTO;
++using ComponentBuilder.Interfaces;
++using Gtk;
++
++namespace ComponentBuilder.Forms.TableModel {
++    public sealed class ViewTableModel : ITableModel {
++        private ListStore listStore; 
++        private Type[] tipos;
++
++        public ViewTableModel () {
++            tipos = new Type[1];
++            for (int i = 0; i &lt; tipos.Length; i++) {
++                tipos[i] = typeof (string);
++            }
++            listStore = new ListStore (tipos);
++        }
++
++        public ViewTableModel (IList list) {
++            foreach (string view in list) {
++                this.Add (view);
++            }
++        }
++
++        public void Add (string view) {
++            listStore.AppendValues (view);
++        }
++        
++        public void Add (IDataTransferObject dto) {
++            //Ojo aqui !
++        }
++
++        public void Clear () {
++            listStore.Clear ();
++        }
++        
++        public ListStore ListStore {
++            get {return listStore;}
++        }
++
++    }
++}
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/Interfaces/ITableModel.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Interfaces/ITableModel.cs	2005-10-19 21:56:27 UTC (rev 549)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Interfaces/ITableModel.cs	2005-10-20 11:34:11 UTC (rev 550)
+@@ -0,0 +1,12 @@
++using System;
++using ComponentModel.Interfaces;
++using System.Collections;
++using Gtk;
++
++namespace ComponentBuilder.Interfaces {
++    internal interface ITableModel {
++        void Clear ();
++        void Add (IDataTransferObject dto);
++        ListStore ListStore {get;}
++    }
++}
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade	2005-10-19 21:56:27 UTC (rev 549)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade	2005-10-20 11:34:11 UTC (rev 550)
+@@ -81,6 +81,7 @@
+ 
+       &lt;child&gt;
+ 	&lt;widget class=&quot;GtkTable&quot; id=&quot;table1&quot;&gt;
++	  &lt;property name=&quot;border_width&quot;&gt;20&lt;/property&gt;
+ 	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 	  &lt;property name=&quot;n_rows&quot;&gt;6&lt;/property&gt;
+ 	  &lt;property name=&quot;n_columns&quot;&gt;2&lt;/property&gt;
+@@ -89,7 +90,7 @@
+ 	  &lt;property name=&quot;column_spacing&quot;&gt;0&lt;/property&gt;
+ 
+ 	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;entry1&quot;&gt;
++	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;componentNameEntry&quot;&gt;
+ 	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
+@@ -110,7 +111,7 @@
+ 	  &lt;/child&gt;
+ 
+ 	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;entry2&quot;&gt;
++	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;exceptionManagerClassNameEntry&quot;&gt;
+ 	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak	2005-10-19 21:56:27 UTC (rev 549)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak	2005-10-20 11:34:11 UTC (rev 550)
+@@ -81,6 +81,7 @@
+ 
+       &lt;child&gt;
+ 	&lt;widget class=&quot;GtkTable&quot; id=&quot;table1&quot;&gt;
++	  &lt;property name=&quot;border_width&quot;&gt;20&lt;/property&gt;
+ 	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 	  &lt;property name=&quot;n_rows&quot;&gt;6&lt;/property&gt;
+ 	  &lt;property name=&quot;n_columns&quot;&gt;2&lt;/property&gt;
+@@ -89,7 +90,7 @@
+ 	  &lt;property name=&quot;column_spacing&quot;&gt;0&lt;/property&gt;
+ 
+ 	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;entry1&quot;&gt;
++	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;componentNameEntry&quot;&gt;
+ 	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
+@@ -110,7 +111,7 @@
+ 	  &lt;/child&gt;
+ 
+ 	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;entry2&quot;&gt;
++	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;exceptionManagerClassNameEntry&quot;&gt;
+ 	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000262.html">[Mspace-checkins] r549 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Dto Forms Resources
+</A></li>
+	<LI>Next message: <A HREF="000264.html">[Mspace-checkins] r551 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Forms/TableModel Interfaces Resources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#263">[ date ]</a>
+              <a href="thread.html#263">[ thread ]</a>
+              <a href="subject.html#263">[ subject ]</a>
+              <a href="author.html#263">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

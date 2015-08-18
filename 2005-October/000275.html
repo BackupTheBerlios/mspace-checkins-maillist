@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r562 - BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r562%20-%20BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel&In-Reply-To=%3C200510281702.j9SH2xw2020237%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000274.html">
+   <LINK REL="Next"  HREF="000276.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r562 - BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r562%20-%20BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel&In-Reply-To=%3C200510281702.j9SH2xw2020237%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r562 - BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel">nestor at berlios.de
+       </A><BR>
+    <I>Fri Oct 28 19:02:59 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000274.html">[Mspace-checkins] r561 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Forms Resources
+</A></li>
+        <LI>Next message: <A HREF="000276.html">[Mspace-checkins] r563 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Dto Resources Resources/Templates
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#275">[ date ]</a>
+              <a href="thread.html#275">[ thread ]</a>
+              <a href="subject.html#275">[ subject ]</a>
+              <a href="author.html#275">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-10-28 19:02:57 +0200 (Fri, 28 Oct 2005)
+New Revision: 562
+
+Modified:
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/MethodTableModel.cs
+Log:
+Muestra los par?\195?\161metros.
+
+
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/MethodTableModel.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/MethodTableModel.cs	2005-10-27 22:23:44 UTC (rev 561)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/MethodTableModel.cs	2005-10-28 17:02:57 UTC (rev 562)
+@@ -1,5 +1,6 @@
+ using System;
+ using System.Collections;
++using System.Text;
+ using ComponentModel.Interfaces;
+ using ComponentBuilder.DTO;
+ using ComponentBuilder.Interfaces;
+@@ -29,12 +30,24 @@
+         public void Add (IDataTransferObject dto) {
+             if (dto is MethodDTO) {
+                 MethodDTO methodDTO = (MethodDTO) dto;
++                StringBuilder stringBuilder = new StringBuilder ();
++                foreach (ParameterDTO parameterDTO in methodDTO.ParametersCollection) {
++                    stringBuilder = stringBuilder.Append (parameterDTO.TypeName);
++                    stringBuilder = stringBuilder.Append (&quot; &quot;);
++                    stringBuilder = stringBuilder.Append (parameterDTO.VarName);
++                    stringBuilder = stringBuilder.Append (&quot;, &quot;);
++                }
++                if (stringBuilder.Length != 0) {
++                    stringBuilder = stringBuilder.Remove (stringBuilder.Length -2, 2);
++                }
++                
+                 listStore.AppendValues (
+                         methodDTO.MethodName,
+                         methodDTO.ReturnType,
+                         methodDTO.ViewToResponse,
+                         methodDTO.ResponseMethod,
+-                        methodDTO.ParametersCollection.ToString ()
++                        stringBuilder.ToString ()
++                        //methodDTO.ParametersCollection.ToString ()
+                         );
+                 list.Add (methodDTO);
+             }
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000274.html">[Mspace-checkins] r561 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Forms Resources
+</A></li>
+	<LI>Next message: <A HREF="000276.html">[Mspace-checkins] r563 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Dto Resources Resources/Templates
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#275">[ date ]</a>
+              <a href="thread.html#275">[ thread ]</a>
+              <a href="subject.html#275">[ subject ]</a>
+              <a href="author.html#275">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

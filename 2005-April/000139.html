@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r426 - in SimpleP/trunk: . images resources src src/Contexts src/Contexts/StartPage
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r426%20-%20in%20SimpleP/trunk%3A%20.%20images%20resources%20src%20src/Contexts%20src/Contexts/StartPage&In-Reply-To=%3C200504091839.j39IdCOO009754%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000138.html">
+   <LINK REL="Next"  HREF="000140.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r426 - in SimpleP/trunk: . images resources src src/Contexts src/Contexts/StartPage</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r426%20-%20in%20SimpleP/trunk%3A%20.%20images%20resources%20src%20src/Contexts%20src/Contexts/StartPage&In-Reply-To=%3C200504091839.j39IdCOO009754%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r426 - in SimpleP/trunk: . images resources src src/Contexts src/Contexts/StartPage">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Sat Apr  9 20:39:12 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000138.html">[Mspace-checkins] r425 - SimpleP/trunk
+</A></li>
+        <LI>Next message: <A HREF="000140.html">[Mspace-checkins] r427 - in SimpleP/trunk: . resources src src/Contexts/StartPage ui-data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#139">[ date ]</a>
+              <a href="thread.html#139">[ thread ]</a>
+              <a href="subject.html#139">[ subject ]</a>
+              <a href="author.html#139">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-09 20:39:10 +0200 (Sat, 09 Apr 2005)
+New Revision: 426
+
+Added:
+   SimpleP/trunk/images/start-page.png
+   SimpleP/trunk/resources/config.ini
+   SimpleP/trunk/resources/welcome.html
+   SimpleP/trunk/src/Contexts/StartPage/
+   SimpleP/trunk/src/Contexts/StartPage/StartPageContext.boo
+   SimpleP/trunk/src/Contexts/StartPage/StartPageWidget.boo
+Removed:
+   SimpleP/trunk/config.ini
+Modified:
+   SimpleP/trunk/ChangeLog
+   SimpleP/trunk/Makefile
+   SimpleP/trunk/images/images.list
+   SimpleP/trunk/src/MainWindow.boo
+   SimpleP/trunk/src/Run.boo
+Log:
+
+	* Makefile: added gtkhtml-sharp reference
+	* config.ini: moved to resources/
+	* images/images.list: new images
+	
+	* src/Contexts/StartPage/StartPageContext.boo:
+	* src/Contexts/StartPage/StartPageWidget.boo:
+	* src/MainWindow.boo:
+	* src/Run.boo:
+	Added a new Start Page context. The main window now shows it as the
+	default context.
+
+
+
+Modified: SimpleP/trunk/ChangeLog
+===================================================================
+--- SimpleP/trunk/ChangeLog	2005-04-09 17:45:12 UTC (rev 425)
++++ SimpleP/trunk/ChangeLog	2005-04-09 18:39:10 UTC (rev 426)
+@@ -1,5 +1,18 @@
+ 2005-04-09  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
++	* Makefile: added gtkhtml-sharp reference
++	* config.ini: moved to resources/
++	* images/images.list: new images
++	
++	* src/Contexts/StartPage/StartPageContext.boo:
++	* src/Contexts/StartPage/StartPageWidget.boo:
++	* src/MainWindow.boo:
++	* src/Run.boo:
++	Added a new Start Page context. The main window now shows it as the
++	default context.
++
++2005-04-09  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
+ 	* config.ini: Changed default Height
+ 
+ 2005-04-09  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+
+Modified: SimpleP/trunk/Makefile
+===================================================================
+--- SimpleP/trunk/Makefile	2005-04-09 17:45:12 UTC (rev 425)
++++ SimpleP/trunk/Makefile	2005-04-09 18:39:10 UTC (rev 426)
+@@ -7,6 +7,7 @@
+ 
+ REFERENCES=`pkg-config --libs gtk-sharp-2.0`		 		\
+ 				`pkg-config --libs glade-sharp-2.0`		 		\
++				`pkg-config --libs gtkhtml-sharp-2.0`		 		\
+ 				-r:ext/Red.Gtk.dll						\
+ 				-r:ext/Nini.dll						\
+ 				-r:ext/Red.dll							\
+@@ -16,7 +17,7 @@
+ 	booc $(FILES) -out:build/SimpleP.exe -target:winexe -r:./ext/Red.ProjectManager.dll $(REFERENCES)
+ 
+ Resources.dll: resources/res.cs
+-	mcs -t:library -out:build/Resources.exe -resource:ui-data/simplep.glade $(IMAGES) -resource:config.ini resources/res.cs
++	mcs -t:library -out:build/Resources.exe -resource:ui-data/simplep.glade $(IMAGES) -resource:resources/config.ini -resource:resources/welcome.html resources/res.cs
+ 
+ update-refs:
+ 	cp ../../RedLib/trunk/build/Red.dll ext
+
+Deleted: SimpleP/trunk/config.ini
+===================================================================
+--- SimpleP/trunk/config.ini	2005-04-09 17:45:12 UTC (rev 425)
++++ SimpleP/trunk/config.ini	2005-04-09 18:39:10 UTC (rev 426)
+@@ -1,7 +0,0 @@
+-[Main]
+-XPos = 50
+-YPos = 50
+-Width = 250
+-Height = 400
+-LastProject =
+-ShowDotImportWarning = true
+
+Modified: SimpleP/trunk/images/images.list
+===================================================================
+--- SimpleP/trunk/images/images.list	2005-04-09 17:45:12 UTC (rev 425)
++++ SimpleP/trunk/images/images.list	2005-04-09 18:39:10 UTC (rev 426)
+@@ -9,5 +9,6 @@
+ IMAGES += /resource:images/SimpleP-icon-gears.png,SimpleP-icon-gears.png
+ IMAGES += /resource:images/simplep.png,simplep.png
+ IMAGES += /resource:images/Source-icon.png,Source-icon.png
++IMAGES += /resource:images/start-page.png,start-page.png
+ IMAGES += /resource:images/target.png,target.png
+ IMAGES += /resource:images/UI-icon.png,UI-icon.png
+
+Added: SimpleP/trunk/images/start-page.png
+===================================================================
+(Binary files differ)
+
+
+Property changes on: SimpleP/trunk/images/start-page.png
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Copied: SimpleP/trunk/resources/config.ini (from rev 425, SimpleP/trunk/config.ini)
+
+Added: SimpleP/trunk/resources/welcome.html
+===================================================================
+
+Added: SimpleP/trunk/src/Contexts/StartPage/StartPageContext.boo
+===================================================================
+--- SimpleP/trunk/src/Contexts/StartPage/StartPageContext.boo	2005-04-09 17:45:12 UTC (rev 425)
++++ SimpleP/trunk/src/Contexts/StartPage/StartPageContext.boo	2005-04-09 18:39:10 UTC (rev 426)
+@@ -0,0 +1,27 @@
++namespace SimpleP
++
++import Gtk
++
++class StartPageContext (IProjectContext):
++		
++	_icon = Gdk.Pixbuf (Globals.Resources, &quot;start-page.png&quot;)
++	public Icon as Gdk.Pixbuf:
++		get:
++			return _icon
++
++	public Name as string:
++		get:
++			return &quot;Start page&quot;
++
++	_widget = StartPageWidget ()
++	public View as Widget:
++		get:
++			return _widget
++
++	public Menu as Menu:
++		get:
++			return null
++
++	def Activate ():
++		pass
++		
+
+Added: SimpleP/trunk/src/Contexts/StartPage/StartPageWidget.boo
+===================================================================
+--- SimpleP/trunk/src/Contexts/StartPage/StartPageWidget.boo	2005-04-09 17:45:12 UTC (rev 425)
++++ SimpleP/trunk/src/Contexts/StartPage/StartPageWidget.boo	2005-04-09 18:39:10 UTC (rev 426)
+@@ -0,0 +1,11 @@
++namespace SimpleP
++
++import Gtk
++
++class StartPageWidget (VBox):
++	
++	html as HTML
++	
++	def constructor ():
++		html = HTML (&quot;&lt;b&gt;Hello&lt;/b&gt;&quot;)
++		Add (html)
+
+Modified: SimpleP/trunk/src/MainWindow.boo
+===================================================================
+--- SimpleP/trunk/src/MainWindow.boo	2005-04-09 17:45:12 UTC (rev 425)
++++ SimpleP/trunk/src/MainWindow.boo	2005-04-09 18:39:10 UTC (rev 426)
+@@ -28,6 +28,7 @@
+ 	[Glade.Widget] contextMenues as MenuItem
+ 	iContextMenues as Menu
+ 	projectView as TreeView 
++	_lastWidget as Widget 
+ 	
+ 	projectStore as ListStore
+ 	gxml as XML
+@@ -49,6 +50,11 @@
+ 	private def Init ():
+ 		DeleteEvent += WindowDeleted
+ 		Icon = Gdk.Pixbuf (Globals.Resources,&quot;SimpleP-icon-gears.png&quot;)
++		
++		startPage = Services.ContextManager.GetContext (&quot;Start page&quot;)
++		itemViewBox.Add (startPage.View)
++		startPage.Activate ()
++		_lastWidget = startPage.View
+ 
+ 		SetupProjectView ()
+ 		Services.Statusbar.MessagePushed += MessagePushed
+@@ -75,9 +81,6 @@
+ 		Services.Config.SaveConfig ()
+ 		Application.Quit ()
+ 
+-	protected override def OnDeleteEvent (evt as Gdk.Event) as bool:
+-		super.OnDeleteEvent (evt)
+-
+ 	private def SizeChanged (sender, args as SizeAllocatedArgs):
+ 		Services.Config[&quot;Width&quot;] = args.Allocation.Width.ToString ()
+ 		Services.Config[&quot;Height&quot;] = args.Allocation.Height.ToString ()
+@@ -131,7 +134,6 @@
+ 				DialogFactory.ShowErrorDialog (self, &quot;Error changing project&quot;,&quot;Project file cannot be loaded.&quot;)	
+ 
+ 		
+-	_lastWidget as Widget
+ 	private def CursorChanged (sender, args):
+ 		column as TreeViewColumn
+ 		path as TreePath
+
+Modified: SimpleP/trunk/src/Run.boo
+===================================================================
+--- SimpleP/trunk/src/Run.boo	2005-04-09 17:45:12 UTC (rev 425)
++++ SimpleP/trunk/src/Run.boo	2005-04-09 18:39:10 UTC (rev 426)
+@@ -22,6 +22,7 @@
+ 	Services.ContextManager.RegisterContext (GladeContext ())
+ 	Services.ContextManager.RegisterContext (TargetsContext ())
+ 	Services.ContextManager.RegisterContext (OthersContext ())
++	Services.ContextManager.RegisterContext (StartPageContext ())
+ 	MainWindow ().ShowAll ()
+ 	Application.Run ()
+ except ex as Exception:
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000138.html">[Mspace-checkins] r425 - SimpleP/trunk
+</A></li>
+	<LI>Next message: <A HREF="000140.html">[Mspace-checkins] r427 - in SimpleP/trunk: . resources src src/Contexts/StartPage ui-data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#139">[ date ]</a>
+              <a href="thread.html#139">[ thread ]</a>
+              <a href="subject.html#139">[ subject ]</a>
+              <a href="author.html#139">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,1452 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r546 - in BabuineComponentBuilder/trunk: . lib src src/ComponentBuilder src/ComponentBuilder/Bo src/ComponentBuilder/Dto src/ComponentBuilder/Exceptions src/ComponentBuilder/Forms src/ComponentBuilder/Resources src/MainComponent src/MainComponent/Bo src/MainComponent/Forms
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r546%20-%20in%20BabuineComponentBuilder/trunk%3A%20.%20lib%20src%20src/ComponentBuilder%20src/ComponentBuilder/Bo%20src/ComponentBuilder/Dto%20src/ComponentBuilder/Exceptions%20src/ComponentBuilder/Forms%20src/ComponentBuilder/Resources%20src/MainComponent%20src/MainComponent/Bo%20src/MainComponent/Forms&In-Reply-To=%3C200510182220.j9IMK0Wc025665%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000258.html">
+   <LINK REL="Next"  HREF="000260.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r546 - in BabuineComponentBuilder/trunk: . lib src src/ComponentBuilder src/ComponentBuilder/Bo src/ComponentBuilder/Dto src/ComponentBuilder/Exceptions src/ComponentBuilder/Forms src/ComponentBuilder/Resources src/MainComponent src/MainComponent/Bo src/MainComponent/Forms</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r546%20-%20in%20BabuineComponentBuilder/trunk%3A%20.%20lib%20src%20src/ComponentBuilder%20src/ComponentBuilder/Bo%20src/ComponentBuilder/Dto%20src/ComponentBuilder/Exceptions%20src/ComponentBuilder/Forms%20src/ComponentBuilder/Resources%20src/MainComponent%20src/MainComponent/Bo%20src/MainComponent/Forms&In-Reply-To=%3C200510182220.j9IMK0Wc025665%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r546 - in BabuineComponentBuilder/trunk: . lib src src/ComponentBuilder src/ComponentBuilder/Bo src/ComponentBuilder/Dto src/ComponentBuilder/Exceptions src/ComponentBuilder/Forms src/ComponentBuilder/Resources src/MainComponent src/MainComponent/Bo src/MainComponent/Forms">nestor at berlios.de
+       </A><BR>
+    <I>Wed Oct 19 00:20:00 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000258.html">[Mspace-checkins] r545 - in ComponentModel/trunk: . src/ComponentModel/Container src/ComponentModel/Container/Dao
+</A></li>
+        <LI>Next message: <A HREF="000260.html">[Mspace-checkins] r547 - in ComponentModel/trunk/src/ComponentModel: . Container
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#259">[ date ]</a>
+              <a href="thread.html#259">[ thread ]</a>
+              <a href="subject.html#259">[ subject ]</a>
+              <a href="author.html#259">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-10-19 00:20:00 +0200 (Wed, 19 Oct 2005)
+New Revision: 546
+
+Added:
+   BabuineComponentBuilder/trunk/lib/ComponentModel.dll
+   BabuineComponentBuilder/trunk/lib/NLog.dll
+   BabuineComponentBuilder/trunk/lib/NLog.dll.nlog
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/AssemblyInfo.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/ComponentSettingsDTO.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/MethodDTO.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/ParameterDTO.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Exceptions/
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Exceptions/ComponentBuilderExceptionManager.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.gladep
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.gladep.bak
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/
+   BabuineComponentBuilder/trunk/src/MainComponent/
+   BabuineComponentBuilder/trunk/src/MainComponent/AssemblyInfo.cs
+   BabuineComponentBuilder/trunk/src/MainComponent/Bo/
+   BabuineComponentBuilder/trunk/src/MainComponent/Bo/MainComponentComponentModel.cs
+   BabuineComponentBuilder/trunk/src/MainComponent/Forms/
+   BabuineComponentBuilder/trunk/src/MainComponent/Forms/MainComponentForm.cs
+   BabuineComponentBuilder/trunk/src/MainComponent/Launcher.cs
+Modified:
+   BabuineComponentBuilder/trunk/BabuineComponentBuilder.build
+Log:
+Initial commit.
+
+Please, warn which assembly names; because runtime do strange things.
+
+
+Modified: BabuineComponentBuilder/trunk/BabuineComponentBuilder.build
+===================================================================
+--- BabuineComponentBuilder/trunk/BabuineComponentBuilder.build	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/BabuineComponentBuilder.build	2005-10-18 22:20:00 UTC (rev 546)
+@@ -30,6 +30,8 @@
+     &lt;!-- Directory Tree--&gt; 
+     &lt;!-- Localizacion de dependencias --&gt;
+     &lt;property name=&quot;src&quot; value=&quot;src&quot;/&gt;
++    &lt;property name=&quot;src_component&quot; value=&quot;${src}/${component_name}&quot;/&gt;
++    &lt;property name=&quot;src_main&quot; value=&quot;${src}/MainComponent&quot;/&gt;
+     &lt;property name=&quot;lib&quot; value=&quot;lib&quot;/&gt;
+     &lt;!-- Other mspace components --&gt;
+     &lt;property name=&quot;components&quot; value=&quot;lib/components&quot;/&gt;
+@@ -58,13 +60,22 @@
+     &lt;target name=&quot;build&quot; depends=&quot;create-skeleton&quot;&gt;
+         &lt;csc target=&quot;library&quot; output=&quot;${bin}/${component_name}.dll&quot; debug=&quot;true&quot;
+         verbose=&quot;false&quot;&gt;
+-            &lt;sources basedir=&quot;${src}&quot;&gt;
++            &lt;sources basedir=&quot;${src_component}&quot;&gt;
+                 &lt;include name=&quot;**/*.cs&quot;/&gt;
+             &lt;/sources&gt;
+             &lt;references&gt;
+                 &lt;include name=&quot;**/${lib}/*.dll&quot;/&gt;
+                 &lt;include name=&quot;**/${lib}/components/*.dll&quot;/&gt;
+             &lt;/references&gt;
++
++            &lt;pkg-references&gt;
++                &lt;package name=&quot;gtk-sharp-2.0&quot;/&gt;
++                &lt;package name=&quot;glade-sharp-2.0&quot;/&gt;
++            &lt;/pkg-references&gt;
++            
++            &lt;resources&gt;
++                &lt;include name=&quot;**/*.glade&quot;/&gt;
++            &lt;/resources&gt;
+         &lt;/csc&gt;
+         &lt;tstamp/&gt;
+     &lt;/target&gt;
+@@ -72,9 +83,9 @@
+     &lt;!-- Ejecuta el componente (Lo compila como un exe y luego lo ejecuta) --&gt;
+     &lt;!-- En este caso solo deber&#225; ejecutar los test de unidad--&gt;
+     &lt;target name=&quot;run&quot; depends=&quot;build&quot;&gt;
+-        &lt;csc target=&quot;winexe&quot; output=&quot;${bin}/${component_name}.exe&quot; debug=&quot;true&quot;
++        &lt;csc target=&quot;winexe&quot; output=&quot;${bin}/${component_name}Launcher.exe&quot; debug=&quot;true&quot;
+         verbose=&quot;false&quot;&gt;
+-            &lt;sources basedir=&quot;${src}&quot;&gt;
++            &lt;sources basedir=&quot;${src_main}&quot;&gt;
+                 &lt;include name=&quot;**/*.cs&quot;/&gt;
+             &lt;/sources&gt;
+             &lt;references&gt;
+@@ -82,8 +93,11 @@
+                 &lt;include name=&quot;**/${lib}/components/*.dll&quot;/&gt;
+                 &lt;include name=&quot;**/${bin}/*.dll&quot;/&gt;    
+             &lt;/references&gt;
++            &lt;pkg-references&gt;
++                &lt;package name=&quot;gtk-sharp-2.0&quot;/&gt;
++            &lt;/pkg-references&gt;
+         &lt;/csc&gt;
+-        &lt;exec program=&quot;${bin}/{component_name}.exe&quot; useruntimeengine=&quot;true&quot;
++        &lt;exec program=&quot;${bin}/${component_name}Launcher.exe&quot; useruntimeengine=&quot;true&quot;
+         verbose = &quot;false&quot;&gt;
+             &lt;!-- Esto se queda ahi temporalmente, se deber&#225; hacer que se meta a
+             resources/ComponentModelTest.xml--&gt;
+
+Added: BabuineComponentBuilder/trunk/lib/ComponentModel.dll
+===================================================================
+--- BabuineComponentBuilder/trunk/lib/ComponentModel.dll	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/lib/ComponentModel.dll	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1 @@
++link /home/nestor/devel/mspace/ComponentModel/trunk/bin/ComponentModel.dll
+\ No newline at end of file
+
+
+Property changes on: BabuineComponentBuilder/trunk/lib/ComponentModel.dll
+___________________________________________________________________
+Name: svn:special
+   + *
+
+Added: BabuineComponentBuilder/trunk/lib/NLog.dll
+===================================================================
+--- BabuineComponentBuilder/trunk/lib/NLog.dll	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/lib/NLog.dll	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1 @@
++link /home/nestor/devel/mspace/ComponentModel/trunk/lib/NLog.dll
+\ No newline at end of file
+
+
+Property changes on: BabuineComponentBuilder/trunk/lib/NLog.dll
+___________________________________________________________________
+Name: svn:special
+   + *
+
+Added: BabuineComponentBuilder/trunk/lib/NLog.dll.nlog
+===================================================================
+--- BabuineComponentBuilder/trunk/lib/NLog.dll.nlog	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/lib/NLog.dll.nlog	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1,8 @@
++&lt;nlog&gt;
++	&lt;appenders&gt;
++            &lt;appender name=&quot;debug&quot;  type=&quot;Console&quot; /&gt;
++        &lt;/appenders&gt;
++	&lt;rules&gt;
++		&lt;logger name=&quot;*&quot; levels=&quot;Info, Warn, Debug&quot; appendTo=&quot;debug&quot;/&gt;
++	&lt;/rules&gt;
++&lt;/nlog&gt;
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/AssemblyInfo.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/AssemblyInfo.cs	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/AssemblyInfo.cs	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1,12 @@
++using System.Reflection;
++using System.Runtime.CompilerServices;
++
++[assembly: AssemblyTitle(&quot;MSpace ComponentBuilder&quot;)]
++[assembly: AssemblyDescription(&quot;A little Component Builder&quot;)]
++[assembly: AssemblyConfiguration(&quot;&quot;)]
++[assembly: AssemblyCompany(&quot;MSpace&quot;)]
++[assembly: AssemblyProduct(&quot;ComponentBuilder&quot;)]
++[assembly: AssemblyCopyright(&quot;2005 (C) N&#233;stor Salceda Alonso&quot;)]
++[assembly: AssemblyTrademark(&quot;&quot;)]
++[assembly: AssemblyCulture(&quot;&quot;)]
++[assembly: AssemblyVersion(&quot;0.1.*&quot;)]
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1,12 @@
++using System;
++using ComponentModel;
++
++namespace ComponentBuilder.Bo {
++    [Component (&quot;ComponentBuilder&quot;, &quot;ComponentBuilder.Exceptions.ComponenBuilderExceptionManager&quot;)]
++    public sealed class ComponentBuilderComponentModel : DefaultComponentModel {
++       
++        [ComponentMethod (&quot;ComponentBuilder.Forms.MainComponentBuilderForm&quot;, &quot;ResponseShowForm&quot;)]
++        public void ShowForm () {
++        }
++    }
++}
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/ComponentSettingsDTO.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/ComponentSettingsDTO.cs	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/ComponentSettingsDTO.cs	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1,40 @@
++using System;
++using System.Collections;
++using System.Collections.Specialized;
++using ComponentModel.Interfaces;
++
++namespace ComponentBuilder.DTO {
++    [Serializable]
++    public sealed class ComponentSettingsDTO : IDataTransferObject {
++        //Nombre del componente
++        private string componentName;
++        //Gestor de exceptions
++        private string classExceptionManager;
++        //Collection de vistas
++        private StringCollection viewCollections; 
++        //Collection de casos de uso
++        private IList methodCollection;
++
++        public IList MethodCollection {
++            get {return methodCollection;}
++            set {methodCollection = value;}
++        }
++
++        public StringCollection ViewCollections {
++            get {return viewCollections;}
++            set {viewCollections = value;}
++        }
++
++        public string ClassExceptionManager {
++            get {return classExceptionManager;}
++            set {classExceptionManager = value;}
++        }   
++        
++        public string ComponentName {
++            get {return componentName;}
++            set {componentName = value;}
++        }
++
++        
++    }
++}
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/MethodDTO.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/MethodDTO.cs	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/MethodDTO.cs	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1,40 @@
++using System;
++using System.Collections;
++using ComponentModel.Interfaces;
++
++namespace ComponentBuilder.DTO {
++    [Serializable]
++    public sealed class MethodDTO : IDataTransferObject {
++        private string returnType;
++        private string methodName;
++        private string viewToResponse;
++        private string responseMethod;
++        private IList parameterCollection;
++
++        public IList ParameterCollection {
++            get {return parameterCollection;}
++            set {parameterCollection = value;}
++        }
++        
++        public string ResponseMethod {
++            get {return responseMethod;}
++            set {responseMethod = value;}
++        }
++        
++        public string ViewToResponse {
++            get {return viewToResponse;}
++            set {viewToResponse = value;}
++        }
++        
++        public string MethodName {
++            get {return methodName;}
++            set {methodName = value;}
++        }
++        
++        public string ReturnType {
++            get {return returnType;}
++            set {returnType = value;}
++        }
++        
++    }
++}
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/ParameterDTO.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/ParameterDTO.cs	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/ParameterDTO.cs	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1,20 @@
++using System;
++using ComponentModel.Interfaces;
++
++namespace ComponentBuilder.DTO {
++    [Serializable]
++    public sealed class ParameterDTO : IDataTransferObject {
++        private string typeName;
++        private string varName;
++
++        public string VarName {
++            get {return varName;}
++            set {varName = value;}
++        }
++        
++        public string TypeName {
++            get {return typeName;}
++            set {typeName = value;}
++        }
++    }
++}
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/Exceptions/ComponentBuilderExceptionManager.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Exceptions/ComponentBuilderExceptionManager.cs	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Exceptions/ComponentBuilderExceptionManager.cs	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1,10 @@
++using System;
++using ComponentModel.Interfaces;
++
++namespace ComponentBuilder.Exceptions {
++    public sealed class ComponentBuilderExceptionManager : IExceptionManager {
++        public void ProcessException (Exception exception) {
++
++        }
++    }
++}
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1,38 @@
++using System;
++using ComponentModel.Interfaces;
++using ComponentModel.DTO;
++using Gtk;
++using Glade;
++
++namespace ComponentBuilder.Forms {
++    public sealed class MainComponentBuilderForm : IViewHandler {
++        Glade.XML gxml = null;
++        [Widget] Statusbar statusbar1;
++        
++        public MainComponentBuilderForm () {
++            gxml = new Glade.XML (null, &quot;MainComponentBuilderForm.glade&quot;, &quot;window1&quot;, null);
++            gxml.Autoconnect (this);
++        }
++        
++        public IDataTransferObject GetDataForm () {
++            return null;
++        }
++
++        public void LoadDataForm (IDataTransferObject dto) {
++        }
++
++        public void ClearForm () {
++        }
++
++        public void ResponseShowForm (ResponseMethodDTO response) {
++            if (response.ExecutionSuccess) {
++                response.MethodResult = gxml[&quot;vbox1&quot;];
++                statusbar1.Push (0, String.Format (&quot;Welcome to Babuine Component Builder: {0}@{1}&quot;, Environment.UserName, Environment.MachineName));
++            }
++        }
++        
++        private void OnWindow1DeleteEvent (object sender, DeleteEventArgs args) {
++            Application.Quit ();
++        }
++    }
++}
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1,453 @@
++&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt; &lt;!--*- mode: xml -*--&gt;
++&lt;!DOCTYPE glade-interface SYSTEM &quot;<A HREF="http://glade.gnome.org/glade-2.0.dtd">http://glade.gnome.org/glade-2.0.dtd</A>&quot;&gt;
++
++&lt;glade-interface&gt;
++
++&lt;widget class=&quot;GtkWindow&quot; id=&quot;window1&quot;&gt;
++  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;title&quot; translatable=&quot;yes&quot;&gt;Babuine Component Builder&lt;/property&gt;
++  &lt;property name=&quot;type&quot;&gt;GTK_WINDOW_TOPLEVEL&lt;/property&gt;
++  &lt;property name=&quot;window_position&quot;&gt;GTK_WIN_POS_CENTER&lt;/property&gt;
++  &lt;property name=&quot;modal&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;default_width&quot;&gt;800&lt;/property&gt;
++  &lt;property name=&quot;default_height&quot;&gt;600&lt;/property&gt;
++  &lt;property name=&quot;resizable&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;destroy_with_parent&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;decorated&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;skip_taskbar_hint&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;skip_pager_hint&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;type_hint&quot;&gt;GDK_WINDOW_TYPE_HINT_NORMAL&lt;/property&gt;
++  &lt;property name=&quot;gravity&quot;&gt;GDK_GRAVITY_NORTH_WEST&lt;/property&gt;
++  &lt;property name=&quot;focus_on_map&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;urgency_hint&quot;&gt;False&lt;/property&gt;
++  &lt;signal name=&quot;delete_event&quot; handler=&quot;OnWindow1DeleteEvent&quot; last_modification_time=&quot;Tue, 18 Oct 2005 13:05:42 GMT&quot;/&gt;
++
++  &lt;child&gt;
++    &lt;widget class=&quot;GtkVBox&quot; id=&quot;vbox1&quot;&gt;
++      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++      &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
++      &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
++
++      &lt;child&gt;
++	&lt;placeholder/&gt;
++      &lt;/child&gt;
++
++      &lt;child&gt;
++	&lt;widget class=&quot;GtkToolbar&quot; id=&quot;toolbar1&quot;&gt;
++	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;orientation&quot;&gt;GTK_ORIENTATION_HORIZONTAL&lt;/property&gt;
++	  &lt;property name=&quot;toolbar_style&quot;&gt;GTK_TOOLBAR_BOTH&lt;/property&gt;
++	  &lt;property name=&quot;tooltips&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;show_arrow&quot;&gt;True&lt;/property&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkToolButton&quot; id=&quot;toolbutton1&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;stock_id&quot;&gt;gtk-new&lt;/property&gt;
++	      &lt;property name=&quot;visible_horizontal&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;visible_vertical&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;is_important&quot;&gt;False&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;homogeneous&quot;&gt;True&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkToolButton&quot; id=&quot;toolbutton2&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;stock_id&quot;&gt;gtk-preferences&lt;/property&gt;
++	      &lt;property name=&quot;visible_horizontal&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;visible_vertical&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;is_important&quot;&gt;False&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;homogeneous&quot;&gt;True&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;placeholder/&gt;
++	  &lt;/child&gt;
++	&lt;/widget&gt;
++	&lt;packing&gt;
++	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
++	&lt;/packing&gt;
++      &lt;/child&gt;
++
++      &lt;child&gt;
++	&lt;widget class=&quot;GtkTable&quot; id=&quot;table1&quot;&gt;
++	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;n_rows&quot;&gt;6&lt;/property&gt;
++	  &lt;property name=&quot;n_columns&quot;&gt;2&lt;/property&gt;
++	  &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
++	  &lt;property name=&quot;row_spacing&quot;&gt;0&lt;/property&gt;
++	  &lt;property name=&quot;column_spacing&quot;&gt;0&lt;/property&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkLabel&quot; id=&quot;label1&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;&lt;b&gt;Component Name:&lt;/b&gt;&lt;/property&gt;
++	      &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;use_markup&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_LEFT&lt;/property&gt;
++	      &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;xalign&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
++	      &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
++	      &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
++	      &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;entry1&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;visibility&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;max_length&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;text&quot; translatable=&quot;yes&quot;&gt;&lt;/property&gt;
++	      &lt;property name=&quot;has_frame&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;invisible_char&quot;&gt;*&lt;/property&gt;
++	      &lt;property name=&quot;activates_default&quot;&gt;False&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkLabel&quot; id=&quot;label2&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;&lt;b&gt;Exception Manager Class Name&lt;/b&gt;&lt;/property&gt;
++	      &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;use_markup&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_LEFT&lt;/property&gt;
++	      &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;xalign&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
++	      &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
++	      &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
++	      &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;entry2&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;visibility&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;max_length&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;text&quot; translatable=&quot;yes&quot;&gt;&lt;/property&gt;
++	      &lt;property name=&quot;has_frame&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;invisible_char&quot;&gt;*&lt;/property&gt;
++	      &lt;property name=&quot;activates_default&quot;&gt;False&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkScrolledWindow&quot; id=&quot;scrolledwindow1&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;hscrollbar_policy&quot;&gt;GTK_POLICY_AUTOMATIC&lt;/property&gt;
++	      &lt;property name=&quot;vscrollbar_policy&quot;&gt;GTK_POLICY_AUTOMATIC&lt;/property&gt;
++	      &lt;property name=&quot;shadow_type&quot;&gt;GTK_SHADOW_ETCHED_OUT&lt;/property&gt;
++	      &lt;property name=&quot;window_placement&quot;&gt;GTK_CORNER_TOP_LEFT&lt;/property&gt;
++
++	      &lt;child&gt;
++		&lt;widget class=&quot;GtkTreeView&quot; id=&quot;treeview1&quot;&gt;
++		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;headers_visible&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;rules_hint&quot;&gt;False&lt;/property&gt;
++		  &lt;property name=&quot;reorderable&quot;&gt;False&lt;/property&gt;
++		  &lt;property name=&quot;enable_search&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;fixed_height_mode&quot;&gt;False&lt;/property&gt;
++		  &lt;property name=&quot;hover_selection&quot;&gt;False&lt;/property&gt;
++		  &lt;property name=&quot;hover_expand&quot;&gt;False&lt;/property&gt;
++		&lt;/widget&gt;
++	      &lt;/child&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;3&lt;/property&gt;
++	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkLabel&quot; id=&quot;label3&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;&lt;b&gt;View Classes&lt;/b&gt;&lt;/property&gt;
++	      &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;use_markup&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_LEFT&lt;/property&gt;
++	      &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;xalign&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
++	      &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
++	      &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
++	      &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;3&lt;/property&gt;
++	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkScrolledWindow&quot; id=&quot;scrolledwindow2&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;hscrollbar_policy&quot;&gt;GTK_POLICY_AUTOMATIC&lt;/property&gt;
++	      &lt;property name=&quot;vscrollbar_policy&quot;&gt;GTK_POLICY_AUTOMATIC&lt;/property&gt;
++	      &lt;property name=&quot;shadow_type&quot;&gt;GTK_SHADOW_ETCHED_OUT&lt;/property&gt;
++	      &lt;property name=&quot;window_placement&quot;&gt;GTK_CORNER_TOP_LEFT&lt;/property&gt;
++
++	      &lt;child&gt;
++		&lt;widget class=&quot;GtkViewport&quot; id=&quot;viewport1&quot;&gt;
++		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;shadow_type&quot;&gt;GTK_SHADOW_IN&lt;/property&gt;
++
++		  &lt;child&gt;
++		    &lt;widget class=&quot;GtkHButtonBox&quot; id=&quot;hbuttonbox1&quot;&gt;
++		      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++		      &lt;property name=&quot;layout_style&quot;&gt;GTK_BUTTONBOX_DEFAULT_STYLE&lt;/property&gt;
++		      &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
++
++		      &lt;child&gt;
++			&lt;widget class=&quot;GtkButton&quot; id=&quot;button1&quot;&gt;
++			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;label&quot;&gt;gtk-new&lt;/property&gt;
++			  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++			  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++			&lt;/widget&gt;
++		      &lt;/child&gt;
++
++		      &lt;child&gt;
++			&lt;widget class=&quot;GtkButton&quot; id=&quot;button2&quot;&gt;
++			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;label&quot;&gt;gtk-delete&lt;/property&gt;
++			  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++			  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++			&lt;/widget&gt;
++		      &lt;/child&gt;
++
++		      &lt;child&gt;
++			&lt;widget class=&quot;GtkButton&quot; id=&quot;button3&quot;&gt;
++			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;label&quot;&gt;gtk-clear&lt;/property&gt;
++			  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++			  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++			&lt;/widget&gt;
++		      &lt;/child&gt;
++		    &lt;/widget&gt;
++		  &lt;/child&gt;
++		&lt;/widget&gt;
++	      &lt;/child&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;3&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;4&lt;/property&gt;
++	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	      &lt;property name=&quot;y_options&quot;&gt;fill&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkLabel&quot; id=&quot;label4&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;&lt;b&gt;Methods: &lt;/b&gt;&lt;/property&gt;
++	      &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;use_markup&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_LEFT&lt;/property&gt;
++	      &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;xalign&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
++	      &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
++	      &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
++	      &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;4&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;5&lt;/property&gt;
++	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkHButtonBox&quot; id=&quot;hbuttonbox2&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;layout_style&quot;&gt;GTK_BUTTONBOX_DEFAULT_STYLE&lt;/property&gt;
++	      &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
++
++	      &lt;child&gt;
++		&lt;widget class=&quot;GtkButton&quot; id=&quot;button4&quot;&gt;
++		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;label&quot;&gt;gtk-new&lt;/property&gt;
++		  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++		&lt;/widget&gt;
++	      &lt;/child&gt;
++
++	      &lt;child&gt;
++		&lt;widget class=&quot;GtkButton&quot; id=&quot;button5&quot;&gt;
++		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;label&quot;&gt;gtk-delete&lt;/property&gt;
++		  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++		&lt;/widget&gt;
++	      &lt;/child&gt;
++
++	      &lt;child&gt;
++		&lt;widget class=&quot;GtkButton&quot; id=&quot;button6&quot;&gt;
++		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;label&quot;&gt;gtk-clear&lt;/property&gt;
++		  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++		&lt;/widget&gt;
++	      &lt;/child&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;5&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;6&lt;/property&gt;
++	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkScrolledWindow&quot; id=&quot;scrolledwindow3&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;hscrollbar_policy&quot;&gt;GTK_POLICY_AUTOMATIC&lt;/property&gt;
++	      &lt;property name=&quot;vscrollbar_policy&quot;&gt;GTK_POLICY_AUTOMATIC&lt;/property&gt;
++	      &lt;property name=&quot;shadow_type&quot;&gt;GTK_SHADOW_ETCHED_IN&lt;/property&gt;
++	      &lt;property name=&quot;window_placement&quot;&gt;GTK_CORNER_TOP_LEFT&lt;/property&gt;
++
++	      &lt;child&gt;
++		&lt;widget class=&quot;GtkTreeView&quot; id=&quot;treeview2&quot;&gt;
++		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;headers_visible&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;rules_hint&quot;&gt;False&lt;/property&gt;
++		  &lt;property name=&quot;reorderable&quot;&gt;False&lt;/property&gt;
++		  &lt;property name=&quot;enable_search&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;fixed_height_mode&quot;&gt;False&lt;/property&gt;
++		  &lt;property name=&quot;hover_selection&quot;&gt;False&lt;/property&gt;
++		  &lt;property name=&quot;hover_expand&quot;&gt;False&lt;/property&gt;
++		&lt;/widget&gt;
++	      &lt;/child&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;4&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;5&lt;/property&gt;
++	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	      &lt;property name=&quot;y_options&quot;&gt;fill&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++	&lt;/widget&gt;
++	&lt;packing&gt;
++	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	  &lt;property name=&quot;expand&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
++	&lt;/packing&gt;
++      &lt;/child&gt;
++
++      &lt;child&gt;
++	&lt;widget class=&quot;GtkStatusbar&quot; id=&quot;statusbar1&quot;&gt;
++	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;has_resize_grip&quot;&gt;True&lt;/property&gt;
++	&lt;/widget&gt;
++	&lt;packing&gt;
++	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
++	&lt;/packing&gt;
++      &lt;/child&gt;
++    &lt;/widget&gt;
++  &lt;/child&gt;
++&lt;/widget&gt;
++
++&lt;/glade-interface&gt;
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1,442 @@
++&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt; &lt;!--*- mode: xml -*--&gt;
++&lt;!DOCTYPE glade-interface SYSTEM &quot;<A HREF="http://glade.gnome.org/glade-2.0.dtd">http://glade.gnome.org/glade-2.0.dtd</A>&quot;&gt;
++
++&lt;glade-interface&gt;
++
++&lt;widget class=&quot;GtkWindow&quot; id=&quot;window1&quot;&gt;
++  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;title&quot; translatable=&quot;yes&quot;&gt;Babuine Component Builder&lt;/property&gt;
++  &lt;property name=&quot;type&quot;&gt;GTK_WINDOW_TOPLEVEL&lt;/property&gt;
++  &lt;property name=&quot;window_position&quot;&gt;GTK_WIN_POS_CENTER&lt;/property&gt;
++  &lt;property name=&quot;modal&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;default_width&quot;&gt;800&lt;/property&gt;
++  &lt;property name=&quot;default_height&quot;&gt;600&lt;/property&gt;
++  &lt;property name=&quot;resizable&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;destroy_with_parent&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;decorated&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;skip_taskbar_hint&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;skip_pager_hint&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;type_hint&quot;&gt;GDK_WINDOW_TYPE_HINT_NORMAL&lt;/property&gt;
++  &lt;property name=&quot;gravity&quot;&gt;GDK_GRAVITY_NORTH_WEST&lt;/property&gt;
++  &lt;property name=&quot;focus_on_map&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;urgency_hint&quot;&gt;False&lt;/property&gt;
++  &lt;signal name=&quot;delete_event&quot; handler=&quot;OnWindow1DeleteEvent&quot; last_modification_time=&quot;Tue, 18 Oct 2005 13:05:42 GMT&quot;/&gt;
++
++  &lt;child&gt;
++    &lt;widget class=&quot;GtkVBox&quot; id=&quot;vbox1&quot;&gt;
++      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++      &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
++      &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
++
++      &lt;child&gt;
++	&lt;placeholder/&gt;
++      &lt;/child&gt;
++
++      &lt;child&gt;
++	&lt;widget class=&quot;GtkToolbar&quot; id=&quot;toolbar1&quot;&gt;
++	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;orientation&quot;&gt;GTK_ORIENTATION_HORIZONTAL&lt;/property&gt;
++	  &lt;property name=&quot;toolbar_style&quot;&gt;GTK_TOOLBAR_BOTH&lt;/property&gt;
++	  &lt;property name=&quot;tooltips&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;show_arrow&quot;&gt;True&lt;/property&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkToolButton&quot; id=&quot;toolbutton1&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;stock_id&quot;&gt;gtk-new&lt;/property&gt;
++	      &lt;property name=&quot;visible_horizontal&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;visible_vertical&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;is_important&quot;&gt;False&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;homogeneous&quot;&gt;True&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkToolButton&quot; id=&quot;toolbutton2&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;stock_id&quot;&gt;gtk-preferences&lt;/property&gt;
++	      &lt;property name=&quot;visible_horizontal&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;visible_vertical&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;is_important&quot;&gt;False&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;homogeneous&quot;&gt;True&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;placeholder/&gt;
++	  &lt;/child&gt;
++	&lt;/widget&gt;
++	&lt;packing&gt;
++	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
++	&lt;/packing&gt;
++      &lt;/child&gt;
++
++      &lt;child&gt;
++	&lt;widget class=&quot;GtkTable&quot; id=&quot;table1&quot;&gt;
++	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;n_rows&quot;&gt;6&lt;/property&gt;
++	  &lt;property name=&quot;n_columns&quot;&gt;2&lt;/property&gt;
++	  &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
++	  &lt;property name=&quot;row_spacing&quot;&gt;0&lt;/property&gt;
++	  &lt;property name=&quot;column_spacing&quot;&gt;0&lt;/property&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkLabel&quot; id=&quot;label1&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;&lt;b&gt;Component Name:&lt;/b&gt;&lt;/property&gt;
++	      &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;use_markup&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_LEFT&lt;/property&gt;
++	      &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;xalign&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
++	      &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
++	      &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
++	      &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;entry1&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;visibility&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;max_length&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;text&quot; translatable=&quot;yes&quot;&gt;&lt;/property&gt;
++	      &lt;property name=&quot;has_frame&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;invisible_char&quot;&gt;*&lt;/property&gt;
++	      &lt;property name=&quot;activates_default&quot;&gt;False&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkLabel&quot; id=&quot;label2&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;&lt;b&gt;Exception Manager Class Name&lt;/b&gt;&lt;/property&gt;
++	      &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;use_markup&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_LEFT&lt;/property&gt;
++	      &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;xalign&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
++	      &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
++	      &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
++	      &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;entry2&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;visibility&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;max_length&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;text&quot; translatable=&quot;yes&quot;&gt;&lt;/property&gt;
++	      &lt;property name=&quot;has_frame&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;invisible_char&quot;&gt;*&lt;/property&gt;
++	      &lt;property name=&quot;activates_default&quot;&gt;False&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkScrolledWindow&quot; id=&quot;scrolledwindow1&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;hscrollbar_policy&quot;&gt;GTK_POLICY_AUTOMATIC&lt;/property&gt;
++	      &lt;property name=&quot;vscrollbar_policy&quot;&gt;GTK_POLICY_AUTOMATIC&lt;/property&gt;
++	      &lt;property name=&quot;shadow_type&quot;&gt;GTK_SHADOW_ETCHED_OUT&lt;/property&gt;
++	      &lt;property name=&quot;window_placement&quot;&gt;GTK_CORNER_TOP_LEFT&lt;/property&gt;
++
++	      &lt;child&gt;
++		&lt;widget class=&quot;GtkTreeView&quot; id=&quot;treeview1&quot;&gt;
++		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;headers_visible&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;rules_hint&quot;&gt;False&lt;/property&gt;
++		  &lt;property name=&quot;reorderable&quot;&gt;False&lt;/property&gt;
++		  &lt;property name=&quot;enable_search&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;fixed_height_mode&quot;&gt;False&lt;/property&gt;
++		  &lt;property name=&quot;hover_selection&quot;&gt;False&lt;/property&gt;
++		  &lt;property name=&quot;hover_expand&quot;&gt;False&lt;/property&gt;
++		&lt;/widget&gt;
++	      &lt;/child&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;3&lt;/property&gt;
++	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkLabel&quot; id=&quot;label3&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;&lt;b&gt;View Classes&lt;/b&gt;&lt;/property&gt;
++	      &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;use_markup&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_LEFT&lt;/property&gt;
++	      &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;xalign&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
++	      &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
++	      &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
++	      &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;3&lt;/property&gt;
++	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkScrolledWindow&quot; id=&quot;scrolledwindow2&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;hscrollbar_policy&quot;&gt;GTK_POLICY_AUTOMATIC&lt;/property&gt;
++	      &lt;property name=&quot;vscrollbar_policy&quot;&gt;GTK_POLICY_AUTOMATIC&lt;/property&gt;
++	      &lt;property name=&quot;shadow_type&quot;&gt;GTK_SHADOW_ETCHED_OUT&lt;/property&gt;
++	      &lt;property name=&quot;window_placement&quot;&gt;GTK_CORNER_TOP_LEFT&lt;/property&gt;
++
++	      &lt;child&gt;
++		&lt;widget class=&quot;GtkViewport&quot; id=&quot;viewport1&quot;&gt;
++		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;shadow_type&quot;&gt;GTK_SHADOW_IN&lt;/property&gt;
++
++		  &lt;child&gt;
++		    &lt;widget class=&quot;GtkHButtonBox&quot; id=&quot;hbuttonbox1&quot;&gt;
++		      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++		      &lt;property name=&quot;layout_style&quot;&gt;GTK_BUTTONBOX_DEFAULT_STYLE&lt;/property&gt;
++		      &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
++
++		      &lt;child&gt;
++			&lt;widget class=&quot;GtkButton&quot; id=&quot;button1&quot;&gt;
++			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;label&quot;&gt;gtk-new&lt;/property&gt;
++			  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++			  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++			&lt;/widget&gt;
++		      &lt;/child&gt;
++
++		      &lt;child&gt;
++			&lt;widget class=&quot;GtkButton&quot; id=&quot;button2&quot;&gt;
++			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;label&quot;&gt;gtk-delete&lt;/property&gt;
++			  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++			  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++			&lt;/widget&gt;
++		      &lt;/child&gt;
++
++		      &lt;child&gt;
++			&lt;widget class=&quot;GtkButton&quot; id=&quot;button3&quot;&gt;
++			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;label&quot;&gt;gtk-clear&lt;/property&gt;
++			  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++			  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++			  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++			&lt;/widget&gt;
++		      &lt;/child&gt;
++		    &lt;/widget&gt;
++		  &lt;/child&gt;
++		&lt;/widget&gt;
++	      &lt;/child&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;3&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;4&lt;/property&gt;
++	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	      &lt;property name=&quot;y_options&quot;&gt;fill&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkLabel&quot; id=&quot;label4&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;&lt;b&gt;Methods: &lt;/b&gt;&lt;/property&gt;
++	      &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;use_markup&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_LEFT&lt;/property&gt;
++	      &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;xalign&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
++	      &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
++	      &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
++	      &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;4&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;5&lt;/property&gt;
++	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkTreeView&quot; id=&quot;treeview2&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;headers_visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;rules_hint&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;reorderable&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;enable_search&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;fixed_height_mode&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;hover_selection&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;hover_expand&quot;&gt;False&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;4&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;5&lt;/property&gt;
++	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	      &lt;property name=&quot;y_options&quot;&gt;fill&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkHButtonBox&quot; id=&quot;hbuttonbox2&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;layout_style&quot;&gt;GTK_BUTTONBOX_DEFAULT_STYLE&lt;/property&gt;
++	      &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
++
++	      &lt;child&gt;
++		&lt;widget class=&quot;GtkButton&quot; id=&quot;button4&quot;&gt;
++		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;label&quot;&gt;gtk-new&lt;/property&gt;
++		  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++		&lt;/widget&gt;
++	      &lt;/child&gt;
++
++	      &lt;child&gt;
++		&lt;widget class=&quot;GtkButton&quot; id=&quot;button5&quot;&gt;
++		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;label&quot;&gt;gtk-delete&lt;/property&gt;
++		  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++		&lt;/widget&gt;
++	      &lt;/child&gt;
++
++	      &lt;child&gt;
++		&lt;widget class=&quot;GtkButton&quot; id=&quot;button6&quot;&gt;
++		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;label&quot;&gt;gtk-clear&lt;/property&gt;
++		  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++		  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++		&lt;/widget&gt;
++	      &lt;/child&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;left_attach&quot;&gt;1&lt;/property&gt;
++	      &lt;property name=&quot;right_attach&quot;&gt;2&lt;/property&gt;
++	      &lt;property name=&quot;top_attach&quot;&gt;5&lt;/property&gt;
++	      &lt;property name=&quot;bottom_attach&quot;&gt;6&lt;/property&gt;
++	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++	&lt;/widget&gt;
++	&lt;packing&gt;
++	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	  &lt;property name=&quot;expand&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
++	&lt;/packing&gt;
++      &lt;/child&gt;
++
++      &lt;child&gt;
++	&lt;widget class=&quot;GtkStatusbar&quot; id=&quot;statusbar1&quot;&gt;
++	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;has_resize_grip&quot;&gt;True&lt;/property&gt;
++	&lt;/widget&gt;
++	&lt;packing&gt;
++	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
++	&lt;/packing&gt;
++      &lt;/child&gt;
++    &lt;/widget&gt;
++  &lt;/child&gt;
++&lt;/widget&gt;
++
++&lt;/glade-interface&gt;
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.gladep
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.gladep	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.gladep	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1,8 @@
++&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt; &lt;!--*- mode: xml -*--&gt;
++&lt;!DOCTYPE glade-project SYSTEM &quot;<A HREF="http://glade.gnome.org/glade-project-2.0.dtd">http://glade.gnome.org/glade-project-2.0.dtd</A>&quot;&gt;
++
++&lt;glade-project&gt;
++  &lt;name&gt;MainComponentBuilderForm&lt;/name&gt;
++  &lt;program_name&gt;MainComponentBuilderForm&lt;/program_name&gt;
++  &lt;gnome_support&gt;FALSE&lt;/gnome_support&gt;
++&lt;/glade-project&gt;
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.gladep.bak
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.gladep.bak	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.gladep.bak	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1,8 @@
++&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt; &lt;!--*- mode: xml -*--&gt;
++&lt;!DOCTYPE glade-project SYSTEM &quot;<A HREF="http://glade.gnome.org/glade-project-2.0.dtd">http://glade.gnome.org/glade-project-2.0.dtd</A>&quot;&gt;
++
++&lt;glade-project&gt;
++  &lt;name&gt;MainComponentBuilderForm&lt;/name&gt;
++  &lt;program_name&gt;MainComponentBuilderForm&lt;/program_name&gt;
++  &lt;gnome_support&gt;FALSE&lt;/gnome_support&gt;
++&lt;/glade-project&gt;
+
+Added: BabuineComponentBuilder/trunk/src/MainComponent/AssemblyInfo.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/MainComponent/AssemblyInfo.cs	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/src/MainComponent/AssemblyInfo.cs	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1,12 @@
++using System.Reflection;
++using System.Runtime.CompilerServices;
++
++[assembly: AssemblyTitle(&quot;MSpace Main Component&quot;)]
++[assembly: AssemblyDescription(&quot;A little Component Builder&quot;)]
++[assembly: AssemblyConfiguration(&quot;&quot;)]
++[assembly: AssemblyCompany(&quot;MSpace&quot;)]
++[assembly: AssemblyProduct(&quot;Main Component&quot;)]
++[assembly: AssemblyCopyright(&quot;2005 (C) N&#233;stor Salceda Alonso&quot;)]
++[assembly: AssemblyTrademark(&quot;&quot;)]
++[assembly: AssemblyCulture(&quot;&quot;)]
++[assembly: AssemblyVersion(&quot;0.1.*&quot;)]
+
+Added: BabuineComponentBuilder/trunk/src/MainComponent/Bo/MainComponentComponentModel.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/MainComponent/Bo/MainComponentComponentModel.cs	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/src/MainComponent/Bo/MainComponentComponentModel.cs	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1,12 @@
++using System;
++using ComponentModel;
++using ComponentModel.Container;
++
++namespace MainComponent.Bo {
++    [Component (&quot;MainComponent&quot;, &quot;MainComponent.Exceptions.MainComponentExceptionManager&quot;)]
++    public sealed class MainComponentComponentModel : DefaultComponentModel {
++        [ComponentMethod (&quot;MainComponent.Forms.MainComponentForm&quot;, &quot;ResponseInitApp&quot;)]
++        public void InitApp () {
++        }
++    }
++}
+
+Added: BabuineComponentBuilder/trunk/src/MainComponent/Forms/MainComponentForm.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/MainComponent/Forms/MainComponentForm.cs	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/src/MainComponent/Forms/MainComponentForm.cs	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1,29 @@
++using System;
++using ComponentModel.Container;
++using ComponentModel.Interfaces;
++using ComponentModel.DTO;
++using Gtk;
++
++namespace MainComponent.Forms {
++    public sealed class MainComponentForm : IViewHandler {
++        
++        public MainComponentForm () {
++        }
++        
++        public IDataTransferObject GetDataForm () {
++            return null;
++        }
++
++        public void LoadDataForm (IDataTransferObject dto) {
++        }
++
++        public void ClearForm () {
++        }
++
++        public void ResponseInitApp (ResponseMethodDTO response) {
++            if (response.ExecutionSuccess) {
++                response = DefaultContainer.Instance.Execute (&quot;ComponentBuilder&quot;, &quot;ShowForm&quot;, null);
++            }
++        }
++    }
++}
+
+Added: BabuineComponentBuilder/trunk/src/MainComponent/Launcher.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/MainComponent/Launcher.cs	2005-10-18 21:02:48 UTC (rev 545)
++++ BabuineComponentBuilder/trunk/src/MainComponent/Launcher.cs	2005-10-18 22:20:00 UTC (rev 546)
+@@ -0,0 +1,19 @@
++using System;
++using ComponentModel.Interfaces;
++using ComponentModel.Container;
++using Gtk;
++
++namespace MainComponent {
++    public sealed class Launcher {
++        public static void Main () {
++            Gdk.Threads.Init ();
++            Gtk.Application.Init ();
++            IComponentModel componentModel = DefaultContainer.Instance.GetComponentByName (&quot;MainComponent&quot;);
++            Gdk.Threads.Enter ();
++            componentModel.Execute (&quot;InitApp&quot;, null);
++            //DefaultContainer.Instance.Execute (&quot;MainComponent&quot;, &quot;InitApp&quot;, null);
++            Gtk.Application.Run ();
++            Gdk.Threads.Leave ();
++        }
++    }
++}
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000258.html">[Mspace-checkins] r545 - in ComponentModel/trunk: . src/ComponentModel/Container src/ComponentModel/Container/Dao
+</A></li>
+	<LI>Next message: <A HREF="000260.html">[Mspace-checkins] r547 - in ComponentModel/trunk/src/ComponentModel: . Container
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#259">[ date ]</a>
+              <a href="thread.html#259">[ thread ]</a>
+              <a href="subject.html#259">[ subject ]</a>
+              <a href="author.html#259">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

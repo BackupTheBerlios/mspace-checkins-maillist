@@ -1,0 +1,247 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r423 - in RedLib/trunk: . src src/Red.Parsers
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r423%20-%20in%20RedLib/trunk%3A%20.%20src%20src/Red.Parsers&In-Reply-To=%3C200504091052.j39AqOKG016773%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000135.html">
+   <LINK REL="Next"  HREF="000137.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r423 - in RedLib/trunk: . src src/Red.Parsers</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r423%20-%20in%20RedLib/trunk%3A%20.%20src%20src/Red.Parsers&In-Reply-To=%3C200504091052.j39AqOKG016773%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r423 - in RedLib/trunk: . src src/Red.Parsers">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Sat Apr  9 12:52:24 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000135.html">[Mspace-checkins] r422 - in RedLib/trunk: . src
+</A></li>
+        <LI>Next message: <A HREF="000137.html">[Mspace-checkins] r424 - in SimpleP/trunk: . src ui-data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#136">[ date ]</a>
+              <a href="thread.html#136">[ thread ]</a>
+              <a href="subject.html#136">[ subject ]</a>
+              <a href="author.html#136">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-09 12:52:16 +0200 (Sat, 09 Apr 2005)
+New Revision: 423
+
+Added:
+   RedLib/trunk/default.build
+   RedLib/trunk/src/Red.Parsers/
+   RedLib/trunk/src/Red.Parsers/Makefile.boo
+Removed:
+   RedLib/trunk/Makefile
+Modified:
+   RedLib/trunk/ChangeLog
+Log:
+
+	* Makefile:
+	* default.build:
+	Replaced the Makefile with a nant build file
+	
+	* src/Red.Parsers/Makefile.boo:
+	Added a simple makefile parser
+
+
+Modified: RedLib/trunk/ChangeLog
+===================================================================
+--- RedLib/trunk/ChangeLog	2005-04-08 22:31:26 UTC (rev 422)
++++ RedLib/trunk/ChangeLog	2005-04-09 10:52:16 UTC (rev 423)
+@@ -1,5 +1,14 @@
+ 2005-04-09  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
++	* Makefile:
++	* default.build:
++	Replaced the Makefile with a nant build file
++	
++	* src/Red.Parsers/Makefile.boo:
++	Added a simple makefile parser
++
++2005-04-09  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
+ 	* src/AssemblyInfo.boo: Not needed
+ 
+ 2005-04-08  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+
+Deleted: RedLib/trunk/Makefile
+===================================================================
+--- RedLib/trunk/Makefile	2005-04-08 22:31:26 UTC (rev 422)
++++ RedLib/trunk/Makefile	2005-04-09 10:52:16 UTC (rev 423)
+@@ -1,12 +0,0 @@
+-FILES = src/Red.*/*.boo
+-all:
+-	booc $(FILES) -out:build/Red.dll -target:library -r:./ext/ICSharpCode.SharpZipLib.dll
+-	cp ext/* build/	
+-
+-docs:
+-	monodocer --assembly:build/Red.dll --path:doc/
+-
+-html-docs:
+-	monodocs2html --source:doc --dest:doc-html/
+-
+-all-docs: docs html-docs
+
+Added: RedLib/trunk/default.build
+===================================================================
+--- RedLib/trunk/default.build	2005-04-08 22:31:26 UTC (rev 422)
++++ RedLib/trunk/default.build	2005-04-09 10:52:16 UTC (rev 423)
+@@ -0,0 +1,82 @@
++&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
++
++&lt;!--
++    (c) N&#233;stor Salceda &amp; Sergio Rubio  (Monkey Space Developers)
++    File: 
++        nant.xml
++    Description:
++        base nant file template for automate basic task deployment.
++
++      INSERTAR LA WEB DE MONKEY SPACE Y TAL  
++--&gt;
++
++&lt;project basedir=&quot;.&quot; default=&quot;build&quot; name=&quot;RedLib&quot;&gt;
++&lt;!-- Properties --&gt;
++   
++    &lt;property name=&quot;nant.settings.currentframework&quot; value=&quot;mono-1.0&quot;/&gt;
++   
++    &lt;property name=&quot;version&quot; value=&quot;1.0&quot;/&gt;
++    &lt;property name=&quot;description&quot; value=&quot;Red Library&quot;/&gt;
++    &lt;property name=&quot;bindir&quot; value=&quot;build/&quot;/&gt;
++    &lt;property name=&quot;docdir&quot; value=&quot;doc/&quot;/&gt;
++
++&lt;!-- Targets --&gt;
++
++    &lt;!-- Elimina los ficheros existentes en bin y en doc --&gt;
++    &lt;target name=&quot;clean&quot;&gt;
++        &lt;delete failonerror=&quot;false&quot;&gt;
++			&lt;fileset&gt;
++				&lt;include name=&quot;build/*&quot;/&gt;
++			&lt;/fileset&gt;
++		&lt;/delete&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++    &lt;target name=&quot;build&quot;&gt;
++        &lt;booc target=&quot;library&quot; output=&quot;${bindir}/Red.dll&quot;&gt;
++			&lt;sources basedir=&quot;.&quot;&gt;
++				&lt;include name=&quot;src/**/*.boo&quot;/&gt;
++			&lt;/sources&gt;
++			&lt;references&gt;
++				&lt;include name=&quot;ext/ICSharpCode.SharpZipLib.dll&quot;/&gt;
++			&lt;/references&gt;
++        &lt;/booc&gt;
++		&lt;copy file=&quot;ext/ICSharpCode.SharpZipLib.dll&quot; todir=&quot;build&quot;/&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++    &lt;!-- Por defecto compilar&#225; el componente y escribir&#225; la documentaci&#243;n--&gt;
++    &lt;target name=&quot;all&quot; depends=&quot;build,doc&quot;&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++    &lt;!-- Documenta el componente y lo guarda en doc--&gt;
++    &lt;target name=&quot;doc&quot; depends=&quot;build&quot;&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++    &lt;!-- Ayuda sobre este fichero --&gt;
++    &lt;target name=&quot;usage&quot;&gt;
++        &lt;echo&gt;
++            ${description}
++
++            Available task:
++                
++                -all
++                    Compile, and creates binary files.
++
++                -doc
++                    Creates documentation.  &#191;Monodoc or ndoc?
++
++                -clean
++                    Delete component binaries.
++                
++                -build
++                    Build component.
++               
++                -usage
++                    Show this help.
++        &lt;/echo&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++&lt;/project&gt;
+
+Added: RedLib/trunk/src/Red.Parsers/Makefile.boo
+===================================================================
+--- RedLib/trunk/src/Red.Parsers/Makefile.boo	2005-04-08 22:31:26 UTC (rev 422)
++++ RedLib/trunk/src/Red.Parsers/Makefile.boo	2005-04-09 10:52:16 UTC (rev 423)
+@@ -0,0 +1,32 @@
++import System
++import System.IO
++import System.Text.RegularExpressions
++import System.Text
++import System.Collections
++
++class Makefile:
++	
++	static def Parse ([required]file as string) as Makefile:
++		mk = Makefile ()
++		reader = StreamReader (file)
++		rx = @/(?&lt;targets&gt;^\S*:)/
++		builder = StringBuilder ()
++		while line = reader.ReadLine ():
++			builder.Append (line)
++			match = rx.Match (line)
++			if match.Success:
++				mk._targets.Add (match.ToString ())
++		mk._content = builder.ToString ()
++		reader.Close ()
++		return mk
++
++	_targets = []
++	public Targets as ICollection:
++		get:
++			return _targets
++
++	[Getter (Content)]
++	_content as string
++
++mk = Makefile.Parse (&quot;Makefile&quot;)
++print mk.Targets
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000135.html">[Mspace-checkins] r422 - in RedLib/trunk: . src
+</A></li>
+	<LI>Next message: <A HREF="000137.html">[Mspace-checkins] r424 - in SimpleP/trunk: . src ui-data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#136">[ date ]</a>
+              <a href="thread.html#136">[ thread ]</a>
+              <a href="subject.html#136">[ subject ]</a>
+              <a href="author.html#136">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

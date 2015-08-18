@@ -1,0 +1,384 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r577 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Dto Forms Forms/TableModel
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-November/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r577%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20Dto%20Forms%20Forms/TableModel&In-Reply-To=%3C200511091641.jA9GfJuY012005%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000288.html">
+   <LINK REL="Next"  HREF="000290.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r577 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Dto Forms Forms/TableModel</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r577%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20Dto%20Forms%20Forms/TableModel&In-Reply-To=%3C200511091641.jA9GfJuY012005%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r577 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Dto Forms Forms/TableModel">nestor at berlios.de
+       </A><BR>
+    <I>Wed Nov  9 17:41:19 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000288.html">[Mspace-checkins] r576 - BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms
+</A></li>
+        <LI>Next message: <A HREF="000290.html">[Mspace-checkins] r578 - BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#289">[ date ]</a>
+              <a href="thread.html#289">[ thread ]</a>
+              <a href="subject.html#289">[ subject ]</a>
+              <a href="author.html#289">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-11-09 17:41:18 +0100 (Wed, 09 Nov 2005)
+New Revision: 577
+
+Modified:
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/ComponentDTO.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/FormView.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MethodView.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ParameterView.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/MethodTableModel.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/ParameterTableModel.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/ViewTableModel.cs
+Log:
+
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/ComponentDTO.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/ComponentDTO.cs	2005-11-09 12:55:26 UTC (rev 576)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Dto/ComponentDTO.cs	2005-11-09 16:41:18 UTC (rev 577)
+@@ -1,6 +1,5 @@
+ using System;
+ using System.Collections;
+-using System.Collections.Specialized;
+ using ComponentModel.Interfaces;
+ 
+ namespace ComponentBuilder.DTO {
+@@ -16,7 +15,9 @@
+         private IList methodCollection;
+ 
+         public ComponentDTO () {
+-            viewCollection = new StringCollection ();
++            componentName = String.Empty;
++            classExceptionManager = String.Empty;
++            viewCollection = new ArrayList ();
+             methodCollection = new ArrayList ();
+         }
+         
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs	2005-11-09 12:55:26 UTC (rev 576)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs	2005-11-09 16:41:18 UTC (rev 577)
+@@ -33,7 +33,7 @@
+             methodsTreeView.AppendColumn (&quot;Parameters&quot;, new CellRendererText (), &quot;text&quot;, 4);
+ 
+             //Vamos a instanciar tambi&#233;n los modelos de las vistas.
+-        
++
+             viewTableModel = new ViewTableModel ();
+             viewsTreeView.Model = viewTableModel.ListStore;
+             methodTableModel = new MethodTableModel ();
+@@ -43,7 +43,11 @@
+         /* GUI Events */
+         private void OnNewMethodClicked (object sender, EventArgs args) {
+             methodView = new MethodView ();
++            methodView.LoadDataForm ((ComponentDTO) GetDataForm ());
+             MethodDTO methodDTO = (MethodDTO) methodView.GetDataForm ();
++            if (methodDTO != null) {
++                methodTableModel.Add (methodDTO);
++            }
+             methodView = null;
+         }
+ 
+@@ -65,7 +69,7 @@
+                 viewTableModel = new ViewTableModel (componentDTO.ViewCollection);
+                 viewsTreeView.Model = viewTableModel.ListStore;
+                 methodTableModel = new MethodTableModel (componentDTO.MethodCollection);
+-                methodsTreeView.Model = viewTableModel.ListStore;
++                methodsTreeView.Model = methodTableModel.ListStore;
+             }
+         }
+ 
+@@ -79,7 +83,12 @@
+         }
+ 
+         public IDataTransferObject GetDataForm () {
+-            return null;
++            ComponentDTO componentDTO = new ComponentDTO ();
++            componentDTO.ComponentName = componentNameEntry.Text;
++            componentDTO.ClassExceptionManager = exceptionManagerEntry.Text;
++            componentDTO.ViewCollection = viewTableModel.ListModel;
++            componentDTO.MethodCollection = methodTableModel.ListModel;
++            return componentDTO;
+         }
+ 
+         public Widget GetWidget () {
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/FormView.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/FormView.cs	2005-11-09 12:55:26 UTC (rev 576)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/FormView.cs	2005-11-09 16:41:18 UTC (rev 577)
+@@ -18,6 +18,7 @@
+         /* Interface Implementation */
+ 
+         public void ClearForm () {
++            viewNameEntry.Text = String.Empty;
+         }
+ 
+         public IDataTransferObject GetDataForm () {
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MethodView.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MethodView.cs	2005-11-09 12:55:26 UTC (rev 576)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MethodView.cs	2005-11-09 16:41:18 UTC (rev 577)
+@@ -1,6 +1,7 @@
+ using System;
+ using ComponentModel.Interfaces;
+ using ComponentBuilder.Interfaces;
++using ComponentBuilder.Forms.TableModel;
+ using ComponentBuilder.DTO;
+ using Gtk;
+ using Glade;
+@@ -8,31 +9,79 @@
+ namespace ComponentBuilder.Forms {
+     internal class MethodView : IViewHandler, IGtkView {
+         Glade.XML newMethodForm;
++
++        [Widget] TreeView parametersTreeView;
++        [Widget] Entry nameEntry, returnTypeEntry, responseMethodEntry;
++        [Widget] ComboBox viewToResponseCombo;
+         
++        ParameterTableModel parameterTableModel;
++        ParameterView parameterView;
++
+         internal MethodView () {
+             newMethodForm = new Glade.XML (null, &quot;MainComponentBuilderForm.glade&quot;, &quot;newMethodDialog&quot;, null);
+             newMethodForm.Autoconnect (this);
++        
++            parametersTreeView.AppendColumn (&quot;Type&quot;, new CellRendererText (), &quot;text&quot;, 0);
++            parametersTreeView.AppendColumn (&quot;Variable Name&quot;, new CellRendererText (), &quot;text&quot;, 1);
++            parameterTableModel = new ParameterTableModel ();
++            parametersTreeView.Model = parameterTableModel.ListStore;
+         }
+ 
+         private void OnNewParameterClicked (object sender, EventArgs args) {
++            parameterView = new ParameterView ();
++            ParameterDTO parameterDTO = (ParameterDTO) parameterView.GetDataForm ();
++            if (parameterDTO != null) {
++                parameterTableModel.Add (parameterDTO);
++            }
++            parameterView = null;
+         }
+ 
+         /* Interface Implementation */
+ 
+         public void ClearForm () {
++            nameEntry.Text = String.Empty;
++            returnTypeEntry.Text = String.Empty;
++            responseMethodEntry.Text = String.Empty;
++            parameterTableModel = new ParameterTableModel ();
++            TreeStore treeStore = new TreeStore (typeof (string));
++            viewToResponseCombo.Model = treeStore;
+         }
+ 
+         public IDataTransferObject GetDataForm () {
+             Dialog newMethodDialog = (Dialog) GetWidget ();
+-            Console.WriteLine (newMethodDialog.Run ());
++            MethodDTO methodDTO = null;
++            switch (newMethodDialog.Run ()) {
++                case (int) ResponseType.Ok :
++                    methodDTO = new MethodDTO ();
++                    methodDTO.MethodName = nameEntry.Text;
++                    methodDTO.ReturnType = returnTypeEntry.Text;
++                    TreeIter iter;
++                    viewToResponseCombo.GetActiveIter (out iter);
++                    methodDTO.ViewToResponse = (string) viewToResponseCombo.Model.GetValue (iter, 0);
++                    methodDTO.ResponseMethod = responseMethodEntry.Text;
++                    methodDTO.ParametersCollection = parameterTableModel.ListModel;
++                    break;
++                case (int) ResponseType.Cancel:
++                    break;
++                default:
++                    break;
++            }
+             newMethodDialog.Destroy ();
+             newMethodDialog = null;
+-            return null;
++            return methodDTO;
+         }
+ 
+         public void LoadDataForm (IDataTransferObject dto) {
+             if (dto is MethodDTO) {
+             }
++            else if (dto is ComponentDTO) {
++                ComponentDTO componentDTO = (ComponentDTO) dto;
++                TreeStore treeStore = new TreeStore (typeof (string));
++                viewToResponseCombo.Model = treeStore;
++                foreach (ViewDTO viewDTO in componentDTO.ViewCollection) {
++                    treeStore.AppendValues (viewDTO.ViewName);
++                }
++            }
+         }
+ 
+         public Widget GetWidget () {
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ParameterView.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ParameterView.cs	2005-11-09 12:55:26 UTC (rev 576)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ParameterView.cs	2005-11-09 16:41:18 UTC (rev 577)
+@@ -1,27 +1,57 @@
+ using System;
+ using ComponentModel.Interfaces;
+ using ComponentBuilder.Interfaces;
++using ComponentBuilder.DTO;
+ using Gtk;
++using Glade;
+ 
+ namespace ComponentBuilder.Forms {
+     internal class ParameterView : IViewHandler, IGtkView {
++        Glade.XML newParameterForm;
++        
++        [Widget] Entry typeEntry, varNameEntry;
++        
+         internal ParameterView () {
++            newParameterForm = new Glade.XML (null, &quot;MainComponentBuilderForm.glade&quot;, &quot;newParameterDialog&quot;, null);
++            newParameterForm.Autoconnect (this);
+         }
+ 
+         /* Interface Implementation */
+ 
+         public void ClearForm () {
++            typeEntry.Text = String.Empty;
++            varNameEntry.Text = String.Empty;
+         }
+ 
+         public IDataTransferObject GetDataForm () {
+-            return null;
++            Dialog newParameterDialog = (Dialog) newParameterForm [&quot;newParameterDialog&quot;];
++            ParameterDTO parameterDTO = null;
++            switch (newParameterDialog.Run ()) {
++                case (int) ResponseType.Ok:
++                    parameterDTO = new ParameterDTO ();
++                    parameterDTO.TypeName = typeEntry.Text;
++                    parameterDTO.VarName = varNameEntry.Text;
++                    break;
++                case (int) ResponseType.Cancel:
++                    break;
++                default:
++                    break;
++            }
++            newParameterDialog.Destroy ();
++            newParameterDialog = null;
++            return parameterDTO;
+         }
+ 
+         public void LoadDataForm (IDataTransferObject dto) {
++            if (dto is ParameterDTO) {
++                ParameterDTO parameterDTO = (ParameterDTO) dto;
++                typeEntry.Text = parameterDTO.TypeName;
++                varNameEntry.Text = parameterDTO.VarName;
++            }
+         }
+ 
+         public Widget GetWidget () {
+-            return null;
++            return newParameterForm [&quot;newParameterDialog&quot;];
+         }
+     }
+ }
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/MethodTableModel.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/MethodTableModel.cs	2005-11-09 12:55:26 UTC (rev 576)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/MethodTableModel.cs	2005-11-09 16:41:18 UTC (rev 577)
+@@ -21,7 +21,7 @@
+             list = new ArrayList ();
+         }
+ 
+-        public MethodTableModel (IList list) {
++        public MethodTableModel (IList list) : this () {
+             foreach (MethodDTO methodDTO in list) {
+                 this.Add (methodDTO);
+             }
+@@ -47,7 +47,6 @@
+                         methodDTO.ViewToResponse,
+                         methodDTO.ResponseMethod,
+                         stringBuilder.ToString ()
+-                        //methodDTO.ParametersCollection.ToString ()
+                         );
+                 list.Add (methodDTO);
+             }
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/ParameterTableModel.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/ParameterTableModel.cs	2005-11-09 12:55:26 UTC (rev 576)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/ParameterTableModel.cs	2005-11-09 16:41:18 UTC (rev 577)
+@@ -20,7 +20,7 @@
+             list = new ArrayList ();
+         }
+ 
+-        public ParameterTableModel (IList list) {
++        public ParameterTableModel (IList list) : this () {
+             foreach (ParameterDTO parameterDTO in list) {
+                 this.Add (parameterDTO);
+             }
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/ViewTableModel.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/ViewTableModel.cs	2005-11-09 12:55:26 UTC (rev 576)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/ViewTableModel.cs	2005-11-09 16:41:18 UTC (rev 577)
+@@ -11,6 +11,7 @@
+         private ListStore listStore; 
+         private Type[] tipos;
+         private IList list;
++
+         public ViewTableModel () {
+             list = new ArrayList ();
+             tipos = new Type[1];
+@@ -20,9 +21,9 @@
+             listStore = new ListStore (tipos);
+         }
+ 
+-        public ViewTableModel (IList list) {
+-            foreach (ViewDTO view in list) {
+-                this.Add (view);
++        public ViewTableModel (IList list) : this () {
++            foreach (ViewDTO viewDTO in list) {
++                this.Add (viewDTO);
+             }
+         }
+ 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000288.html">[Mspace-checkins] r576 - BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms
+</A></li>
+	<LI>Next message: <A HREF="000290.html">[Mspace-checkins] r578 - BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#289">[ date ]</a>
+              <a href="thread.html#289">[ thread ]</a>
+              <a href="subject.html#289">[ subject ]</a>
+              <a href="author.html#289">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

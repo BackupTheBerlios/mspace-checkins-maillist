@@ -1,0 +1,3783 @@
+From isaaccp at sheep.berlios.de  Sun May  1 00:22:53 2005
+From: isaaccp at sheep.berlios.de (Isaac Clerencia at BerliOS)
+Date: Sun, 1 May 2005 00:22:53 +0200
+Subject: [Mspace-checkins] r459 - koolboy/trunk/src
+Message-ID: <200504302222.j3UMMrGb030676@sheep.berlios.de>
+
+Author: isaaccp
+Date: 2005-05-01 00:22:52 +0200 (Sun, 01 May 2005)
+New Revision: 459
+
+Modified:
+   koolboy/trunk/src/koolboy.rb
+   koolboy/trunk/src/libkoolnotes.rb
+Log:
+Implement lastNotes
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-04-30 20:24:21 UTC (rev 458)
++++ koolboy/trunk/src/koolboy.rb	2005-04-30 22:22:52 UTC (rev 459)
+@@ -21,10 +21,10 @@
+ 
+ 		@menuTitles = {}
+ 
+-		KoolNoteWell.instance.lastNotes.each { |note|
+-			id = @leftMenu.insertItem( note['title'], self, SLOT('sShowNote(int)') )
++		NoteManager.instance.lastNotes.each { |note|
++			id = @leftMenu.insertItem( note, self, SLOT('sShowNote(int)') )
+ 			# we need to map from menu id to note title
+-			@menuTitles[id] = note['title']
++			@menuTitles[id] = note
+ 		}
+ 	end
+ 
+@@ -74,7 +74,7 @@
+ 		$kapp.ref
+ 
+ 		# load note from database
+-		@note = KoolNoteWell.instance.getNote(name)
++		@note = NoteManager.instance.getNote(name)
+ 
+ 		@text = KDE::TextEdit.new(self)
+ 		@text.setText(@note.contents)
+@@ -90,7 +90,7 @@
+ 		else
+ 			@note.title = ''
+ 		end 
+-		KoolNoteWell.instance.storeNote(@note)
++		NoteManager.instance.storeNote(@note)
+ 		return true
+ 	end
+ end
+
+Modified: koolboy/trunk/src/libkoolnotes.rb
+===================================================================
+--- koolboy/trunk/src/libkoolnotes.rb	2005-04-30 20:24:21 UTC (rev 458)
++++ koolboy/trunk/src/libkoolnotes.rb	2005-04-30 22:22:52 UTC (rev 459)
+@@ -22,15 +22,17 @@
+ 	def getNote ( title )
+ 	end
+ 	
+-	def lastNotes ()
++	def lastNotes
++		#may be a little unreadable but it rocks :P
++		@notes.sort {|a,b| a[1].time <=> b[1].time }.collect { |x| x[0] }[0..5]
+ 	end
+ 	
+ 	private
+-	def loadNotes ()
++	def loadNotes
+ 		Dir.foreach(@dir) do |file|
+ 			#if file[-1,1] != "~" && !File.directory?(full)
+-			if file =~ /.*note$/
+-				note = XmlNote.new(file)
++			if file =~ /(.*)\.note$/
++				note = XmlNote.new($1)
+ 				@notes[note.title] = note
+ 			end
+ 		end
+@@ -45,17 +47,18 @@
+ 	require "rexml/document"
+ 	include REXML
+ 	
+-	attr_accessor :title
++	attr_accessor :title, :time
+ 	
+ 	def initialize(title)
+ 		@title = title
+ 		@read = false
++		@file = KDE::StandardDirs::locateLocal(
++			"appdata","notes/#{@title}.note")
++		@time = File.new(@file).mtime
+ 	end
+ 
+ 	def read
+-		file = KDE::StandardDirs::locateLocal(
+-			"appdata","notes/#{@title}.note")
+-		@xml = IO.readlines(file).join("\n")
++		@xml = IO.readlines(@file).join("\n")
+ 		begin
+ 			@doc = Document.new(@xml)
+ 			@text = @doc.root.elements["text"]
+
+
+
+From isaaccp at sheep.berlios.de  Sun May  1 01:14:48 2005
+From: isaaccp at sheep.berlios.de (Isaac Clerencia at BerliOS)
+Date: Sun, 1 May 2005 01:14:48 +0200
+Subject: [Mspace-checkins] r460 - koolboy/trunk/src
+Message-ID: <200504302314.j3UNEle6008900@sheep.berlios.de>
+
+Author: isaaccp
+Date: 2005-05-01 01:14:34 +0200 (Sun, 01 May 2005)
+New Revision: 460
+
+Modified:
+   koolboy/trunk/src/koolboy.rb
+   koolboy/trunk/src/libkoolnotes.rb
+Log:
+Now it's possible to display the notes available in your 
+.kde/share/apps/koolboy/notes directory.
+
+Note that there shouldn't be tags inside <text>...</text>
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-04-30 22:22:52 UTC (rev 459)
++++ koolboy/trunk/src/koolboy.rb	2005-04-30 23:14:34 UTC (rev 460)
+@@ -77,7 +77,7 @@
+ 		@note = NoteManager.instance.getNote(name)
+ 
+ 		@text = KDE::TextEdit.new(self)
+-		@text.setText(@note.contents)
++		@text.setText(@note.text)
+ 		self.setCentralWidget(@text)
+ 	end
+ 
+@@ -86,7 +86,7 @@
+ 		if text.length != 0
+ 		then
+ 			@note.title = text.split("\n").first
+-			@note.contents = @text.text
++			@note.text = @text.text
+ 		else
+ 			@note.title = ''
+ 		end 
+
+Modified: koolboy/trunk/src/libkoolnotes.rb
+===================================================================
+--- koolboy/trunk/src/libkoolnotes.rb	2005-04-30 22:22:52 UTC (rev 459)
++++ koolboy/trunk/src/libkoolnotes.rb	2005-04-30 23:14:34 UTC (rev 460)
+@@ -20,11 +20,13 @@
+ 	end
+ 	
+ 	def getNote ( title )
++		@notes[title]
+ 	end
+ 	
+ 	def lastNotes
+ 		#may be a little unreadable but it rocks :P
+-		@notes.sort {|a,b| a[1].time <=> b[1].time }.collect { |x| x[0] }[0..5]
++		#@notes.sort {|a,b| a[1].time <=> b[1].time }.collect { |x| x[0] }[0..5]
++		@notes.values.sort_by { |x| x.time }[0..5].map { |x| x.title }
+ 	end
+ 	
+ 	private
+@@ -61,11 +63,11 @@
+ 		@xml = IO.readlines(@file).join("\n")
+ 		begin
+ 			@doc = Document.new(@xml)
+-			@text = @doc.root.elements["text"]
+-			@size = Qt::Size.new(@doc.root.elements["height"],
+-					@doc.root.elements["width"])
+-			@loc = Qt::Point.new(@doc.root.elements["x"],
+-					@doc.root.elements["y"])
++			@text = @doc.root.elements["text"].text.to_s
++			@size = Qt::Size.new(@doc.root.elements["height"].text.to_i,
++					@doc.root.elements["width"].text.to_i)
++			@loc = Qt::Point.new(@doc.root.elements["x"].text.to_i,
++					@doc.root.elements["y"].text.to_i)
+ 			@read = true
+ 		rescue
+ 			p "IGNORING Note: " + @file
+
+
+
+From isaaccp at sheep.berlios.de  Sun May  1 01:28:32 2005
+From: isaaccp at sheep.berlios.de (Isaac Clerencia at BerliOS)
+Date: Sun, 1 May 2005 01:28:32 +0200
+Subject: [Mspace-checkins] r461 - koolboy/trunk/src
+Message-ID: <200504302328.j3UNSWZb019091@sheep.berlios.de>
+
+Author: isaaccp
+Date: 2005-05-01 01:28:19 +0200 (Sun, 01 May 2005)
+New Revision: 461
+
+Modified:
+   koolboy/trunk/src/koolboy.rb
+Log:
+Make NoteWindow respect the stored position and size
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-04-30 23:14:34 UTC (rev 460)
++++ koolboy/trunk/src/koolboy.rb	2005-04-30 23:28:19 UTC (rev 461)
+@@ -40,11 +40,6 @@
+ 
+ 	def sShowNote (id)
+ 		window = NoteWindow.new(@menuTitles[id])
+-		size = window.sizeHint
+-		winPos = Qt::Point.new( width - size.width/2, 
+-			height - size.height/2)
+-		winPos = mapToGlobal(winPos)
+-		window.move(winPos)
+ 		window.show
+ 	end
+ 
+@@ -76,6 +71,9 @@
+ 		# load note from database
+ 		@note = NoteManager.instance.getNote(name)
+ 
++		resize(@note.size)
++		move(@note.loc)
++
+ 		@text = KDE::TextEdit.new(self)
+ 		@text.setText(@note.text)
+ 		self.setCentralWidget(@text)
+
+
+
+From isaaccp at sheep.berlios.de  Sun May  1 01:31:50 2005
+From: isaaccp at sheep.berlios.de (Isaac Clerencia at BerliOS)
+Date: Sun, 1 May 2005 01:31:50 +0200
+Subject: [Mspace-checkins] r462 - koolboy/trunk/src
+Message-ID: <200504302331.j3UNVoG4022631@sheep.berlios.de>
+
+Author: isaaccp
+Date: 2005-05-01 01:31:29 +0200 (Sun, 01 May 2005)
+New Revision: 462
+
+Modified:
+   koolboy/trunk/src/libkoolnotes.rb
+Log:
+Make attributes defined with attr_after_read also writable
+
+
+Modified: koolboy/trunk/src/libkoolnotes.rb
+===================================================================
+--- koolboy/trunk/src/libkoolnotes.rb	2005-04-30 23:28:19 UTC (rev 461)
++++ koolboy/trunk/src/libkoolnotes.rb	2005-04-30 23:31:29 UTC (rev 462)
+@@ -88,9 +88,13 @@
+ 				@read or read
+ 				@#{a}
+ 			end
++
++			def #{a}= (val)
++				@#{a} = val
++			end
+ 			EOF
+ 		end
+ 	end
+ 
+-	attr_after_read :doc, :text, :size, :loc
++	attr_after_read :text, :size, :loc
+ end
+
+
+
+From isaaccp at sheep.berlios.de  Sun May  1 01:35:49 2005
+From: isaaccp at sheep.berlios.de (Isaac Clerencia at BerliOS)
+Date: Sun, 1 May 2005 01:35:49 +0200
+Subject: [Mspace-checkins] r463 - in koolboy/trunk: . examples
+Message-ID: <200504302335.j3UNZnU3026368@sheep.berlios.de>
+
+Author: isaaccp
+Date: 2005-05-01 01:35:26 +0200 (Sun, 01 May 2005)
+New Revision: 463
+
+Added:
+   koolboy/trunk/examples/
+   koolboy/trunk/examples/Coolsoft.note
+   koolboy/trunk/examples/Foobar.note
+Log:
+Add note examples, you can move them to $KDEHOME/share/apps/koolboy/notes/
+to test it (usually $KDEHOME=~/.kde/ )
+
+
+Added: koolboy/trunk/examples/Coolsoft.note
+===================================================================
+--- koolboy/trunk/examples/Coolsoft.note	2005-04-30 23:31:29 UTC (rev 462)
++++ koolboy/trunk/examples/Coolsoft.note	2005-04-30 23:35:26 UTC (rev 463)
+@@ -0,0 +1,9 @@
++?<?xml version="1.0" encoding="utf-8"?>
++<note>
++  <title>CoolSoft</title>
++  <text>CoolSoft nice stuff</text>
++  <width>450</width>
++  <height>360</height>
++  <x>287</x>
++  <y>204</y>
++</note>
+
+Added: koolboy/trunk/examples/Foobar.note
+===================================================================
+--- koolboy/trunk/examples/Foobar.note	2005-04-30 23:31:29 UTC (rev 462)
++++ koolboy/trunk/examples/Foobar.note	2005-04-30 23:35:26 UTC (rev 463)
+@@ -0,0 +1,9 @@
++?<?xml version="1.0" encoding="utf-8"?>
++<note>
++  <title>Foobar</title>
++  <text>Foobar kool stuff</text>
++  <width>100</width>
++  <height>200</height>
++  <x>100</x>
++  <y>40</y>
++</note>
+
+
+
+From isaaccp at sheep.berlios.de  Sun May  1 02:03:26 2005
+From: isaaccp at sheep.berlios.de (Isaac Clerencia at BerliOS)
+Date: Sun, 1 May 2005 02:03:26 +0200
+Subject: [Mspace-checkins] r464 - koolboy/trunk/src
+Message-ID: <200505010003.j4103QLD005626@sheep.berlios.de>
+
+Author: isaaccp
+Date: 2005-05-01 02:02:31 +0200 (Sun, 01 May 2005)
+New Revision: 464
+
+Modified:
+   koolboy/trunk/src/koolboy.rb
+   koolboy/trunk/src/libkoolnotes.rb
+Log:
+Ok, it almost works again :P
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-04-30 23:35:26 UTC (rev 463)
++++ koolboy/trunk/src/koolboy.rb	2005-05-01 00:02:31 UTC (rev 464)
+@@ -72,7 +72,7 @@
+ 		@note = NoteManager.instance.getNote(name)
+ 
+ 		resize(@note.size)
+-		move(@note.loc)
++		move(@note.pos)
+ 
+ 		@text = KDE::TextEdit.new(self)
+ 		@text.setText(@note.text)
+@@ -83,12 +83,11 @@
+ 		text = @text.text.strip
+ 		if text.length != 0
+ 		then
+-			@note.title = text.split("\n").first
+-			@note.text = @text.text
++			title = text.split("\n").first
++			NoteManager.instance.change(@note,title,text,size,pos)
+ 		else
+-			@note.title = ''
++			NoteManager.instance.delete(@note)
+ 		end 
+-		NoteManager.instance.storeNote(@note)
+ 		return true
+ 	end
+ end
+
+Modified: koolboy/trunk/src/libkoolnotes.rb
+===================================================================
+--- koolboy/trunk/src/libkoolnotes.rb	2005-04-30 23:35:26 UTC (rev 463)
++++ koolboy/trunk/src/libkoolnotes.rb	2005-05-01 00:02:31 UTC (rev 464)
+@@ -1,5 +1,6 @@
+ require 'sqlite3'
+ require 'singleton'
++require 'rexml/document'
+ 
+ class NoteManager
+ 	
+@@ -28,7 +29,18 @@
+ 		#@notes.sort {|a,b| a[1].time <=> b[1].time }.collect { |x| x[0] }[0..5]
+ 		@notes.values.sort_by { |x| x.time }[0..5].map { |x| x.title }
+ 	end
+-	
++
++	def change (note,title,text,size,pos)
++		@notes.delete(note.title)
++		note.change(title,text,size,pos)
++		@notes[title] = note 	
++	end
++
++	def delete (note)
++		@notes.delete(note.title)
++		note.delete
++	end
++
+ 	private
+ 	def loadNotes
+ 		Dir.foreach(@dir) do |file|
+@@ -46,8 +58,6 @@
+ #	Notes implementations
+ #######################################
+ class XmlNote
+-	require "rexml/document"
+-	include REXML
+ 	
+ 	attr_accessor :title, :time
+ 	
+@@ -62,11 +72,11 @@
+ 	def read
+ 		@xml = IO.readlines(@file).join("\n")
+ 		begin
+-			@doc = Document.new(@xml)
++			@doc = REXML::Document.new(@xml)
+ 			@text = @doc.root.elements["text"].text.to_s
+ 			@size = Qt::Size.new(@doc.root.elements["height"].text.to_i,
+ 					@doc.root.elements["width"].text.to_i)
+-			@loc = Qt::Point.new(@doc.root.elements["x"].text.to_i,
++			@pos = Qt::Point.new(@doc.root.elements["x"].text.to_i,
+ 					@doc.root.elements["y"].text.to_i)
+ 			@read = true
+ 		rescue
+@@ -75,7 +85,23 @@
+ 		end
+ 	end
+ 
+-	def to_s()
++	def change (title,text,size,pos)
++		File.delete(@file)	
++		@title = title
++		@text = text
++		@size = size
++		@pos = pos
++		@file = KDE::StandardDirs::locateLocal(
++			"appdata","notes/#{@title}.note")
++		@time = Time.new
++		#rewrite the file
++	end
++
++	def delete
++		File.delete(@file)	
++	end
++
++	def to_s
+ 		return @xml
+ 	end
+ 
+@@ -96,5 +122,5 @@
+ 		end
+ 	end
+ 
+-	attr_after_read :text, :size, :loc
++	attr_after_read :text, :size, :pos
+ end
+
+
+
+From rubiojr at sheep.berlios.de  Sun May  1 02:51:28 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Sun, 1 May 2005 02:51:28 +0200
+Subject: [Mspace-checkins] r465 - koolboy/trunk/src
+Message-ID: <200505010051.j410pSuU003408@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-01 02:51:16 +0200 (Sun, 01 May 2005)
+New Revision: 465
+
+Modified:
+   koolboy/trunk/src/libkoolnotes.rb
+Log:
+removed sqlite3 requirement
+
+
+
+Modified: koolboy/trunk/src/libkoolnotes.rb
+===================================================================
+--- koolboy/trunk/src/libkoolnotes.rb	2005-05-01 00:02:31 UTC (rev 464)
++++ koolboy/trunk/src/libkoolnotes.rb	2005-05-01 00:51:16 UTC (rev 465)
+@@ -1,4 +1,3 @@
+-require 'sqlite3'
+ require 'singleton'
+ require 'rexml/document'
+ 
+
+
+
+From isaaccp at sheep.berlios.de  Sun May  1 13:31:35 2005
+From: isaaccp at sheep.berlios.de (Isaac Clerencia at BerliOS)
+Date: Sun, 1 May 2005 13:31:35 +0200
+Subject: [Mspace-checkins] r466 - koolboy/trunk/src
+Message-ID: <200505011131.j41BVZ1n008327@sheep.berlios.de>
+
+Author: isaaccp
+Date: 2005-05-01 13:31:25 +0200 (Sun, 01 May 2005)
+New Revision: 466
+
+Modified:
+   koolboy/trunk/src/koolboy.rb
+   koolboy/trunk/src/libkoolnotes.rb
+Log:
+Koolboy is usable again! :P
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-05-01 00:51:16 UTC (rev 465)
++++ koolboy/trunk/src/koolboy.rb	2005-05-01 11:31:25 UTC (rev 466)
+@@ -4,13 +4,14 @@
+ require 'libkoolnotes.rb'
+ 
+ class SysTrayThing < KDE::SystemTray
+-	slots   'sAboutToQuit()',
+-		'sNewNote()',
+-		'sShowNote(int)'
++	slots   'sNewNote()',
++		'sShowNote(int)',
++		'sRemoveWindow(char*)'
+ 
+ 	def initialize(name )
+ 		super(nil, name)
+ 		setPixmap( KDE::SystemTray::loadIcon("kgpg"))
++		@windows = {}
+ 	end
+ 
+ 	def regenMenu
+@@ -30,19 +31,29 @@
+ 
+ 	def sNewNote
+ 		window = NoteWindow.new(nil)
+-		size = window.sizeHint
+-		winPos = Qt::Point.new( width - size.width/2, 
+-			height - size.height/2)
+-		winPos = mapToGlobal(winPos)
+-		window.move(winPos)
++		connect(window, SIGNAL('aboutToClose(char*)'),
++			self, SLOT('sRemoveWindow(char*)'))
+ 		window.show
++		@windows[window.title] = window
+ 	end
+ 
+ 	def sShowNote (id)
+-		window = NoteWindow.new(@menuTitles[id])
+-		window.show
++		title = @menuTitles[id]
++		if @windows.key?(title)
++			#just focus and raise
++		else
++			window = NoteWindow.new(title)
++			connect(window, SIGNAL('aboutToClose(char*)'),
++				self, SLOT('sRemoveWindow(char*)'))
++			window.show
++			@windows[window.title] = window
++		end
+ 	end
+ 
++	def sRemoveWindow (title)
++		@windows.delete(title)
++	end
++
+ 	def mousePressEvent( ev )
+ 		case ev.button
+ 		when Qt::LeftButton
+@@ -59,8 +70,15 @@
+ end
+ 
+ class NoteWindow < KDE::MainWindow
++	signals 'aboutToClose(char*)'
++
+ 	def initialize( name )
+-		name or name = "New note"
++		if not name
++			name = NoteManager.instance.unusedName
++			new = true
++		else
++			new = false
++		end
+ 		super(nil, name)
+ 		setCaption(name)
+ 
+@@ -68,19 +86,26 @@
+ 		# to use kmainwindows in this manner
+ 		$kapp.ref
+ 
+-		# load note from database
++		# get note
+ 		@note = NoteManager.instance.getNote(name)
+ 
+-		resize(@note.size)
+-		move(@note.pos)
++		if not new
++			resize(@note.size)
++			move(@note.pos)
++		end
+ 
+ 		@text = KDE::TextEdit.new(self)
+ 		@text.setText(@note.text)
+ 		self.setCentralWidget(@text)
+ 	end
+ 
++	def title
++		@note.title
++	end
++
+ 	def queryClose
+ 		text = @text.text.strip
++		emit aboutToClose(@note.title)
+ 		if text.length != 0
+ 		then
+ 			title = text.split("\n").first
+
+Modified: koolboy/trunk/src/libkoolnotes.rb
+===================================================================
+--- koolboy/trunk/src/libkoolnotes.rb	2005-05-01 00:51:16 UTC (rev 465)
++++ koolboy/trunk/src/libkoolnotes.rb	2005-05-01 11:31:25 UTC (rev 466)
+@@ -18,9 +18,18 @@
+ 			yield note
+ 		end
+ 	end
+-	
++
++	def unusedName
++		#make this return an unused name
++		"New note"
++	end
++
+ 	def getNote ( title )
+-		@notes[title]
++		if @notes.key?(title)
++			@notes[title]
++		else
++			XmlNote.new(title)
++		end
+ 	end
+ 	
+ 	def lastNotes
+@@ -62,10 +71,19 @@
+ 	
+ 	def initialize(title)
+ 		@title = title
+-		@read = false
+ 		@file = KDE::StandardDirs::locateLocal(
+ 			"appdata","notes/#{@title}.note")
+-		@time = File.new(@file).mtime
++		if File.exists?(@file)
++			@read = false
++			@time = File.mtime(@file)
++		else
++			@read = true
++			@title = title
++			@text = ''
++			@file = KDE::StandardDirs::locateLocal(
++				"appdata","notes/#{@title}.note")
++			@time = Time.new
++		end
+ 	end
+ 
+ 	def read
+@@ -84,8 +102,33 @@
+ 		end
+ 	end
+ 
++	def write
++		@doc = REXML::Document.new("<note/>");
++		title = REXML::Element.new("title")
++		title.text = @title
++		text = REXML::Element.new("text")
++		text.text = @text
++		width = REXML::Element.new("width")
++		width.text = @size.width
++		height = REXML::Element.new("height")
++		height.text = @size.height
++		x = REXML::Element.new("x")
++		x.text = @pos.x
++		y = REXML::Element.new("y")
++		y.text = @pos.y
++		@doc << REXML::XMLDecl.new
++		@doc.root << title
++		@doc.root << text
++		@doc.root << width
++		@doc.root << height
++		@doc.root << x
++		@doc.root << y
++		f = File.new(@file, "w")
++		@doc.write(f)
++	end
++
+ 	def change (title,text,size,pos)
+-		File.delete(@file)	
++		File.exists?(@file) and File.delete(@file)	
+ 		@title = title
+ 		@text = text
+ 		@size = size
+@@ -93,7 +136,7 @@
+ 		@file = KDE::StandardDirs::locateLocal(
+ 			"appdata","notes/#{@title}.note")
+ 		@time = Time.new
+-		#rewrite the file
++		write
+ 	end
+ 
+ 	def delete
+
+
+
+From isaaccp at sheep.berlios.de  Sun May  1 13:34:17 2005
+From: isaaccp at sheep.berlios.de (Isaac Clerencia at BerliOS)
+Date: Sun, 1 May 2005 13:34:17 +0200
+Subject: [Mspace-checkins] r467 - koolboy/trunk/src
+Message-ID: <200505011134.j41BYHCA012873@sheep.berlios.de>
+
+Author: isaaccp
+Date: 2005-05-01 13:34:14 +0200 (Sun, 01 May 2005)
+New Revision: 467
+
+Modified:
+   koolboy/trunk/src/koolboy.rb
+Log:
+Raise the note window if an already opened note is selected
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-05-01 11:31:25 UTC (rev 466)
++++ koolboy/trunk/src/koolboy.rb	2005-05-01 11:34:14 UTC (rev 467)
+@@ -40,7 +40,8 @@
+ 	def sShowNote (id)
+ 		title = @menuTitles[id]
+ 		if @windows.key?(title)
+-			#just focus and raise
++			@windows[title].setActiveWindow
++			@windows[title].raise
+ 		else
+ 			window = NoteWindow.new(title)
+ 			connect(window, SIGNAL('aboutToClose(char*)'),
+
+
+
+From isaaccp at sheep.berlios.de  Sun May  1 14:04:04 2005
+From: isaaccp at sheep.berlios.de (Isaac Clerencia at BerliOS)
+Date: Sun, 1 May 2005 14:04:04 +0200
+Subject: [Mspace-checkins] r468 - koolboy/trunk/examples
+Message-ID: <200505011204.j41C44Sn026439@sheep.berlios.de>
+
+Author: isaaccp
+Date: 2005-05-01 14:04:03 +0200 (Sun, 01 May 2005)
+New Revision: 468
+
+Modified:
+   koolboy/trunk/examples/Coolsoft.note
+   koolboy/trunk/examples/Foobar.note
+Log:
+Make the notes work correctly with the current "get title from first line" thing
+
+
+Modified: koolboy/trunk/examples/Coolsoft.note
+===================================================================
+--- koolboy/trunk/examples/Coolsoft.note	2005-05-01 11:34:14 UTC (rev 467)
++++ koolboy/trunk/examples/Coolsoft.note	2005-05-01 12:04:03 UTC (rev 468)
+@@ -1,7 +1,8 @@
+ ?<?xml version="1.0" encoding="utf-8"?>
+ <note>
+   <title>CoolSoft</title>
+-  <text>CoolSoft nice stuff</text>
++  <text>CoolSoft
++nice stuff</text>
+   <width>450</width>
+   <height>360</height>
+   <x>287</x>
+
+Modified: koolboy/trunk/examples/Foobar.note
+===================================================================
+--- koolboy/trunk/examples/Foobar.note	2005-05-01 11:34:14 UTC (rev 467)
++++ koolboy/trunk/examples/Foobar.note	2005-05-01 12:04:03 UTC (rev 468)
+@@ -1,7 +1,8 @@
+ ?<?xml version="1.0" encoding="utf-8"?>
+ <note>
+   <title>Foobar</title>
+-  <text>Foobar kool stuff</text>
++  <text>Foobar
++kool stuff</text>
+   <width>100</width>
+   <height>200</height>
+   <x>100</x>
+
+
+
+From nestor at sheep.berlios.de  Mon May  2 01:51:55 2005
+From: nestor at sheep.berlios.de (Néstor Salceda at BerliOS)
+Date: Mon, 2 May 2005 01:51:55 +0200
+Subject: [Mspace-checkins] r469 - in ComponentModel/trunk/src: . ComponentModel.Interfaces
+Message-ID: <200505012351.j41NptbU019856@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-05-02 01:51:39 +0200 (Mon, 02 May 2005)
+New Revision: 469
+
+Modified:
+   ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Added Redirection to an existing view.
+
+
+
+Modified: ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs	2005-05-01 12:04:03 UTC (rev 468)
++++ ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs	2005-05-01 23:51:39 UTC (rev 469)
+@@ -4,6 +4,8 @@
+     public interface IComponentModel {
+         ComponentModelVO VO {get;}
+ 
+-        ResponseMethodVO Execute (string methodName, params object[] parameters);
++        ResponseMethodVO Execute (string methodName, object[] parameters);//Redirige & bloquea a la vista por defecto.
++        ResponseMethodVO Execute (string methodName, bool redirect, bool block, object[] parameters);// Igual sobra !!
++        ResponseMethodVO Execute (string methodName, bool redirect, bool block, object[] parameters, IViewHandler view);
+     }
+ }
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-01 12:04:03 UTC (rev 468)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-01 23:51:39 UTC (rev 469)
+@@ -115,7 +115,31 @@
+             }
+             return null;
+         }
+-       
++        
++
++        private ResponseMethodVO ExecuteCompleteSequence (MethodInfo methodToInvoke, object[] parameters, IViewHandler viewHandler, MethodInfo methodResponse) {
++            try {
++                ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
++                logger.Debug ("Method " + methodToInvoke + " executing.");
++                object ret = methodToInvoke.Invoke (this, parameters);
++                responseMethodVO.MethodResult = ret;
++                logger.Debug ("Executing response method: " + methodResponse.ToString ());
++                responseMethodVO.SetExecutionSuccess (true);
++                logger.Debug ("Setting excecuttion success as true.");
++                methodResponse.Invoke (viewHandler, new object[] {responseMethodVO});
++                return responseMethodVO;
++            }
++            catch (TargetInvocationException exception) {
++                if (exception.InnerException is ComponentModelException) 
++                    throw exception.InnerException;
++                else {
++                    this.InstantiateExceptionManager ();
++                    defaultExceptionManager.ProcessException (exception);
++                }
++            }
++            return null;
++        }
++        
+         private Type GetViewType (string viewType) {
+             if ((viewType == null) || (viewType.Equals (String.Empty)))
+                 throw new ViewNotFoundException ("Please, set up attributes correctly.");
+@@ -137,7 +161,7 @@
+         }
+         
+         //Public Methods
+-        public ResponseMethodVO Execute (string methodName, params object[] parameters) {
++        public ResponseMethodVO Execute (string methodName, object[] parameters) {
+             Type type = this.GetType ();
+ 
+             //Recollecting data for execution.
+@@ -158,5 +182,22 @@
+             ResponseMethodVO responseMethodVO = this.ExecuteCompleteSequence (methodToExecute, parameters, viewType, responseMethod); 
+             return responseMethodVO;
+         }
++        
++        public ResponseMethodVO Execute (string methodName, bool redirect, bool block, object[] parameters) {
++            throw new Exception ("Not implemented yet.");
++        }
++
++        public ResponseMethodVO Execute (string methodName, bool redirect, bool block, object[] parameters, IViewHandler view) {
++            Type type = this.GetType ();
++            
++            MethodInfo methodToExecute = this.GetMethodToExecute (methodName, type);
++            Attribute[] attributes = (Attribute[]) methodToExecute.GetCustomAttributes (typeof (ComponentMethodAttribute), false);
++            ComponentMethodAttribute componentMethodAttribute = (ComponentMethodAttribute) attributes[0];
++            MethodInfo responseMethod = this.GetMethodResponse (view.GetType (), componentMethodAttribute);
++            
++            ResponseMethodVO responseMethodVO = this.ExecuteCompleteSequence (methodToExecute, parameters, view, responseMethod);
++            return responseMethodVO;
++        }
++
+     }
+ }
+
+
+
+From isaaccp at sheep.berlios.de  Mon May  2 16:43:01 2005
+From: isaaccp at sheep.berlios.de (Isaac Clerencia at BerliOS)
+Date: Mon, 2 May 2005 16:43:01 +0200
+Subject: [Mspace-checkins] r470 - koolboy/trunk/src
+Message-ID: <200505021443.j42Eh1Vh016250@sheep.berlios.de>
+
+Author: isaaccp
+Date: 2005-05-02 16:43:00 +0200 (Mon, 02 May 2005)
+New Revision: 470
+
+Modified:
+   koolboy/trunk/src/koolboy.rb
+   koolboy/trunk/src/libkoolnotes.rb
+Log:
+Add lastNotes DCOP method to koolboy:
+isaac at aaaabbbb:~$ dcop koolboy Koolboy lastNotes
+Foobar
+CoolSoft
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-05-01 23:51:39 UTC (rev 469)
++++ koolboy/trunk/src/koolboy.rb	2005-05-02 14:43:00 UTC (rev 470)
+@@ -3,10 +3,12 @@
+ require 'Korundum'
+ require 'libkoolnotes.rb'
+ 
+-class SysTrayThing < KDE::SystemTray
++class Koolboy < KDE::SystemTray
+ 	slots   'sNewNote()',
+ 		'sShowNote(int)',
+ 		'sRemoveWindow(char*)'
++	
++	k_dcop 'QStringList lastNotes()'
+ 
+ 	def initialize(name )
+ 		super(nil, name)
+@@ -68,6 +70,10 @@
+ 			contextMenu.popup(ev.globalPos)
+ 		end
+ 	end
++
++	def lastNotes
++		NoteManager.instance.lastNotes
++	end
+ end
+ 
+ class NoteWindow < KDE::MainWindow
+@@ -122,8 +128,8 @@
+ KDE::CmdLineArgs.init(ARGV, about)
+ a = KDE::UniqueApplication.new()
+ 
+-thing = SysTrayThing.new( "koolboy" )
+-thing.show
++koolboy = Koolboy.new( "koolboy" )
++koolboy.show
+ 
+-a.mainWidget = thing
++a.mainWidget = koolboy
+ a.exec 
+
+Modified: koolboy/trunk/src/libkoolnotes.rb
+===================================================================
+--- koolboy/trunk/src/libkoolnotes.rb	2005-05-01 23:51:39 UTC (rev 469)
++++ koolboy/trunk/src/libkoolnotes.rb	2005-05-02 14:43:00 UTC (rev 470)
+@@ -2,7 +2,7 @@
+ require 'rexml/document'
+ 
+ class NoteManager
+-	
++
+ 	include Singleton
+ 
+ 	attr_reader :dir
+
+
+
+From isaaccp at sheep.berlios.de  Mon May  2 16:43:34 2005
+From: isaaccp at sheep.berlios.de (Isaac Clerencia at BerliOS)
+Date: Mon, 2 May 2005 16:43:34 +0200
+Subject: [Mspace-checkins] r471 - koolboy/trunk/src
+Message-ID: <200505021443.j42EhY02016332@sheep.berlios.de>
+
+Author: isaaccp
+Date: 2005-05-02 16:43:33 +0200 (Mon, 02 May 2005)
+New Revision: 471
+
+Modified:
+   koolboy/trunk/src/koolboy.rb
+Log:
+Mark DCOP methods with a comment
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-05-02 14:43:00 UTC (rev 470)
++++ koolboy/trunk/src/koolboy.rb	2005-05-02 14:43:33 UTC (rev 471)
+@@ -71,6 +71,7 @@
+ 		end
+ 	end
+ 
++	#DCOP methods
+ 	def lastNotes
+ 		NoteManager.instance.lastNotes
+ 	end
+
+
+
+From rubiojr at sheep.berlios.de  Tue May  3 09:28:48 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Tue, 3 May 2005 09:28:48 +0200
+Subject: [Mspace-checkins] r472 - koolboy/trunk/src
+Message-ID: <200505030728.j437SmWl007733@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-03 09:28:47 +0200 (Tue, 03 May 2005)
+New Revision: 472
+
+Modified:
+   koolboy/trunk/src/koolboy.rb
+Log:
+* Added about menu item to right click menu
+* Added some about info and authors
+* added explicit main function (if $0 == __FILE__)
+
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-05-02 14:43:33 UTC (rev 471)
++++ koolboy/trunk/src/koolboy.rb	2005-05-03 07:28:47 UTC (rev 472)
+@@ -4,9 +4,8 @@
+ require 'libkoolnotes.rb'
+ 
+ class Koolboy < KDE::SystemTray
+-	slots   'sNewNote()',
+-		'sShowNote(int)',
+-		'sRemoveWindow(char*)'
++	slots   'sNewNote()', 'sShowNote(int)',
++			'sRemoveWindow(char*)', 'showAbout()'
+ 	
+ 	k_dcop 'QStringList lastNotes()'
+ 
+@@ -14,14 +13,20 @@
+ 		super(nil, name)
+ 		setPixmap( KDE::SystemTray::loadIcon("kgpg"))
+ 		@windows = {}
++		@icons = KDE::IconLoader.new()
++		#add about to rightclick menu
++		contextMenu().insertItem( Qt::IconSet.new(@icons.loadIcon("about", KDE::Icon::Toolbar)),
++		                          "About Koolboy", self, SLOT('showAbout()') )
+ 	end
+ 
+ 	def regenMenu
++		
++		
+ 		# create left menu
+ 		@leftMenu = KDE::PopupMenu.new(self)
+ 		@leftMenu.insertItem( i18n( "&New note" ), self, SLOT('sNewNote()') )
+ 		@leftMenu.insertSeparator
+-
++		
+ 		@menuTitles = {}
+ 
+ 		NoteManager.instance.lastNotes.each { |note|
+@@ -57,6 +62,9 @@
+ 		@windows.delete(title)
+ 	end
+ 
++	def showAbout
++		KDE::AboutApplication.new.show
++	end
+ 	def mousePressEvent( ev )
+ 		case ev.button
+ 		when Qt::LeftButton
+@@ -125,12 +133,19 @@
+ 	end
+ end
+ 
+-about = KDE::AboutData.new("koolboy", "Koolboy", "0.1")
+-KDE::CmdLineArgs.init(ARGV, about)
+-a = KDE::UniqueApplication.new()
++if $0 == __FILE__
++	description = "Note taking app"
++	version     = "0.1"
++	about = KDE::AboutData.new("koolboy", "Koolboy", version,
++						   description, KDE::AboutData::License_GPL,
++						   "")
++	about.addAuthor("Isaac Clerencia", "Core developer", "isaac at sindominio.net")
++	about.addAuthor("Sergio Rubio", "Core developer", "sergio.rubio at hispalinux.es")
+ 
+-koolboy = Koolboy.new( "koolboy" )
+-koolboy.show
+-
+-a.mainWidget = koolboy
+-a.exec 
++	KDE::CmdLineArgs.init(ARGV,about)
++	a = KDE::UniqueApplication.new()
++	koolboy = Koolboy.new( "koolboy" )
++	koolboy.show
++	a.mainWidget = koolboy
++	a.exec
++end
+
+
+
+From rubiojr at sheep.berlios.de  Tue May  3 09:30:09 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Tue, 3 May 2005 09:30:09 +0200
+Subject: [Mspace-checkins] r473 - koolboy/trunk/src
+Message-ID: <200505030730.j437U9HO007857@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-03 09:30:08 +0200 (Tue, 03 May 2005)
+New Revision: 473
+
+Added:
+   koolboy/trunk/src/noteview.rb
+Log:
+* Basic skel of noteview with some eyecandy ;)
+(It still lacks any logic)
+
+
+
+Added: koolboy/trunk/src/noteview.rb
+===================================================================
+--- koolboy/trunk/src/noteview.rb	2005-05-03 07:28:47 UTC (rev 472)
++++ koolboy/trunk/src/noteview.rb	2005-05-03 07:30:08 UTC (rev 473)
+@@ -0,0 +1,121 @@
++require "Korundum"
++include KDE
++require "libkoolnotes"
++
++#TODO
++#How can I use custom icons in actions?
++class NoteView < MainWindow
++	slots 'slotLink()',
++	'noteDeleted()', 'slotFind()', 'formatBold()', 'formatUnderline()',
++	'formatStrikeout()', 'formatItalic()'
++
++	# Receives an XmlNote and handles its content
++	def initialize(note)
++		msecs = Time.now.usec.to_s
++		puts "new note view at " + msecs
++		super(nil, "note-" + Time.now.usec.to_s)	
++		@note = note
++		@icons = KDE::IconLoader.new()
++		initWidgets()
++		defineActions()
++		initToolBar()
++		
++		self.caption = @note.title
++		@textEdit.text = @note.text if @note.text
++		resize(@note.size) if @note.size
++		move(@note.pos) if @note.size
++	end
++
++	def queryClose
++		puts "CLOSING"
++		puts "Title: " + self.name
++		return true
++	end
++	
++	#####################
++	#TEXT formatting	
++	def formatItalic
++		puts "FORMAT"
++	end
++
++	def formatUnderline
++	end
++
++	def formatStrikeout
++	end
++
++	def formatBold
++	end
++	###################
++
++	def slotFind
++	end
++
++	def slotLink
++	end
++
++	def noteDeleted
++	end
++	
++	def initWidgets
++		@vbox = Qt::VBox.new(self)
++		@vbox.show
++		@textEdit = TextEdit.new(@vbox)
++		@textEdit.show
++		self.centralWidget = @vbox
++	end
++	
++	def defineActions
++		#@aboutAction = StdAction.aboutApp(self, SLOT('slotAbout()'), actionCollection())
++		
++		@linkAction = Action.new(i18n("Link"), Shortcut.new(), self, SLOT('slotLink()'), actionCollection(), "link")
++		@linkAction.setIcon("connect_established")
++		
++		@deleteAction = Action.new(i18n("Delete"), Shortcut.new(), self, SLOT('slotDelete()'), actionCollection(), "delete")
++		@deleteAction.setIcon("trashcan_empty")
++		
++		@findAction = StdAction.find(self, SLOT('slotFind()'), actionCollection())
++
++		@formatAction = ActionMenu.new(i18n("Format"), "font")
++		
++		icon = Qt::IconSet.new(@icons.loadIcon("text_bold", KDE::Icon::Toolbar))
++		@formatAction.insert(Action.new( i18n("Bold"), icon, Shortcut.new(), self, SLOT('formatBold()'), actionCollection(), "formatBold"))
++
++		icon = Qt::IconSet.new(@icons.loadIcon("text_italic", KDE::Icon::Toolbar))
++		@formatAction.insert(Action.new( i18n("Italic"), icon, Shortcut.new(), self, SLOT('formatItalic()'), actionCollection(), "formatItalic"))
++
++		icon = Qt::IconSet.new(@icons.loadIcon("text_under", KDE::Icon::Toolbar))
++		@formatAction.insert(Action.new( i18n("Underline"), icon, Shortcut.new(), self, SLOT('formatUnderline()'), actionCollection(), "formatUnderline"))
++
++		icon = Qt::IconSet.new(@icons.loadIcon("text_strike", KDE::Icon::Toolbar))
++		@formatAction.insert(Action.new( i18n("Strikeout"), icon, Shortcut.new(), self, SLOT('formatStrikeout()'), actionCollection(), "formatStrikeout"))
++	end
++	
++	def initToolBar
++		@linkAction.plug(toolBar())
++		@findAction.plug(toolBar())
++		@formatAction.plug(toolBar())
++		@deleteAction.plug(toolBar())
++	end
++end
++
++if $0 == __FILE__
++	description = "Note taking app"
++	version     = "1.0"
++	about = AboutData.new("koolboy", "Koolboy", "0.1",
++						   description, AboutData::License_GPL,
++						   "")
++
++	about.addAuthor("Isaac Clerencia", "Core developer", "isaac at sindominio.net")
++	about.addAuthor("Sergio Rubio", "Core developer", "sergio.rubio at hispalinux.es")
++
++	KDE::CmdLineArgs.init(ARGV,about)
++	a = KDE::Application.new()
++	note = XmlNote.new("test")
++	note.text = "This is koolsoft!"
++	thing = NoteView.new(note)
++	thing.show
++
++	a.mainWidget = thing
++	a.exec
++end
+\ No newline at end of file
+
+
+
+From rubiojr at sheep.berlios.de  Tue May  3 09:59:43 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Tue, 3 May 2005 09:59:43 +0200
+Subject: [Mspace-checkins] r474 - koolboy/trunk/src
+Message-ID: <200505030759.j437xhrU010215@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-03 09:59:42 +0200 (Tue, 03 May 2005)
+New Revision: 474
+
+Removed:
+   koolboy/trunk/src/readtnotes.rb
+Log:
+* this is Crap
+
+
+Deleted: koolboy/trunk/src/readtnotes.rb
+===================================================================
+--- koolboy/trunk/src/readtnotes.rb	2005-05-03 07:30:08 UTC (rev 473)
++++ koolboy/trunk/src/readtnotes.rb	2005-05-03 07:59:42 UTC (rev 474)
+@@ -1,10 +0,0 @@
+-require "libkoolnotes.rb"
+-##reads tomboy notes
+-if $0 == __FILE__
+-	manager = NoteManager.new
+-	manager.each do |note|
+-		puts note.title
+-		puts note.file
+-		#puts note.text
+-	end
+-end	
+
+
+
+From isaaccp at sheep.berlios.de  Tue May  3 10:00:19 2005
+From: isaaccp at sheep.berlios.de (Isaac Clerencia at BerliOS)
+Date: Tue, 3 May 2005 10:00:19 +0200
+Subject: [Mspace-checkins] r475 - koolboy/trunk/src
+Message-ID: <200505030800.j4380JAb010304@sheep.berlios.de>
+
+Author: isaaccp
+Date: 2005-05-03 10:00:18 +0200 (Tue, 03 May 2005)
+New Revision: 475
+
+Modified:
+   koolboy/trunk/src/koolboy.rb
+Log:
+Set bug address to mspace-koolboy instead of bugs.kde.org :)
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-05-03 07:59:42 UTC (rev 474)
++++ koolboy/trunk/src/koolboy.rb	2005-05-03 08:00:18 UTC (rev 475)
+@@ -139,8 +139,9 @@
+ 	about = KDE::AboutData.new("koolboy", "Koolboy", version,
+ 						   description, KDE::AboutData::License_GPL,
+ 						   "")
+-	about.addAuthor("Isaac Clerencia", "Core developer", "isaac at sindominio.net")
++	about.addAuthor("Isaac Clerencia", "Core developer", "isaac at warp.es")
+ 	about.addAuthor("Sergio Rubio", "Core developer", "sergio.rubio at hispalinux.es")
++	about.setBugAddress("mspace-koolboy at lists.berlios.de")
+ 
+ 	KDE::CmdLineArgs.init(ARGV,about)
+ 	a = KDE::UniqueApplication.new()
+
+
+
+From rubiojr at sheep.berlios.de  Tue May  3 20:59:54 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Tue, 3 May 2005 20:59:54 +0200
+Subject: [Mspace-checkins] r476 - koolboy/trunk/src
+Message-ID: <200505031859.j43IxsX7010800@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-03 20:59:53 +0200 (Tue, 03 May 2005)
+New Revision: 476
+
+Modified:
+   koolboy/trunk/src/koolboy.rb
+Log:
+* Added missing entries to systray context menu
+* Added some eye candy
+
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-05-03 08:00:18 UTC (rev 475)
++++ koolboy/trunk/src/koolboy.rb	2005-05-03 18:59:53 UTC (rev 476)
+@@ -4,8 +4,8 @@
+ require 'libkoolnotes.rb'
+ 
+ class Koolboy < KDE::SystemTray
+-	slots   'sNewNote()', 'sShowNote(int)',
+-			'sRemoveWindow(char*)', 'showAbout()'
++	slots   'sNewNote()', 'sShowNote(int)', 'sRecentChanges()',
++			'sRemoveWindow(char*)', 'showAbout()', 'sSearchNotes()'
+ 	
+ 	k_dcop 'QStringList lastNotes()'
+ 
+@@ -16,24 +16,28 @@
+ 		@icons = KDE::IconLoader.new()
+ 		#add about to rightclick menu
+ 		contextMenu().insertItem( Qt::IconSet.new(@icons.loadIcon("about", KDE::Icon::Toolbar)),
+-		                          "About Koolboy", self, SLOT('showAbout()') )
++		                          i18n("About Koolboy"), self, SLOT('showAbout()') )
+ 	end
+ 
+ 	def regenMenu
+-		
+-		
+ 		# create left menu
+ 		@leftMenu = KDE::PopupMenu.new(self)
+-		@leftMenu.insertItem( i18n( "&New note" ), self, SLOT('sNewNote()') )
+-		@leftMenu.insertSeparator
+-		
++		@leftMenu.insertItem( Qt::IconSet.new(@icons.loadIcon("file_new", KDE::Icon::Toolbar)),
++		                      i18n( "&Create new note" ), self, SLOT('sNewNote()') )
+ 		@menuTitles = {}
+-
+ 		NoteManager.instance.lastNotes.each { |note|
+-			id = @leftMenu.insertItem( note, self, SLOT('sShowNote(int)') )
++			id = @leftMenu.insertItem( Qt::IconSet.new(@icons.loadIcon("knotes", KDE::Icon::Toolbar)),
++			                          note, self, SLOT('sShowNote(int)') )
+ 			# we need to map from menu id to note title
+ 			@menuTitles[id] = note
+ 		}
++
++		@leftMenu.insertSeparator
++		
++		@leftMenu.insertItem( Qt::IconSet.new(@icons.loadIcon("window_list", KDE::Icon::Toolbar)),
++		                     i18n( "&Recent changes" ), self, SLOT('sRecentChanges()') )
++		@leftMenu.insertItem( Qt::IconSet.new(@icons.loadIcon("find", KDE::Icon::Toolbar)),
++		                      i18n( "&Search notes..." ), self, SLOT('sSearchNotes()') )
+ 	end
+ 
+ 	def sNewNote
+
+
+
+From rubiojr at sheep.berlios.de  Tue May  3 21:33:37 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Tue, 3 May 2005 21:33:37 +0200
+Subject: [Mspace-checkins] r477 - koolboy/trunk/src
+Message-ID: <200505031933.j43JXbj5012771@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-03 21:33:36 +0200 (Tue, 03 May 2005)
+New Revision: 477
+
+Modified:
+   koolboy/trunk/src/libkoolnotes.rb
+Log:
+* unusedName returns a true unused name in the form YY-MM-DD(hh:mm:ss)
+* add newNote to NoteManager
+
+
+
+Modified: koolboy/trunk/src/libkoolnotes.rb
+===================================================================
+--- koolboy/trunk/src/libkoolnotes.rb	2005-05-03 18:59:53 UTC (rev 476)
++++ koolboy/trunk/src/libkoolnotes.rb	2005-05-03 19:33:36 UTC (rev 477)
+@@ -20,10 +20,17 @@
+ 	end
+ 
+ 	def unusedName
+-		#make this return an unused name
+-		"New note"
++		return "New note #{Time.now.year}-#{Time.now.month}-#{Time.now.day}" +
++		"(#{Time.now.hour}:#{Time.now.min}:#{Time.now.sec})"
+ 	end
+ 
++	def newNote
++		note = XmlNote(unusedName)
++		@notes[note.title] = note
++		return note
++	end
++		
++
+ 	def getNote ( title )
+ 		if @notes.key?(title)
+ 			@notes[title]
+@@ -166,3 +173,7 @@
+ 
+ 	attr_after_read :text, :size, :pos
+ end
++
++if $0 == __FILE__
++	puts NoteManager.instance.unusedName
++end
+
+
+
+From rubiojr at sheep.berlios.de  Tue May  3 21:41:13 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Tue, 3 May 2005 21:41:13 +0200
+Subject: [Mspace-checkins] r478 - koolboy/trunk/src
+Message-ID: <200505031941.j43JfDwS013169@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-03 21:41:12 +0200 (Tue, 03 May 2005)
+New Revision: 478
+
+Modified:
+   koolboy/trunk/src/noteview.rb
+Log:
+* remove uneeded queryClose
+* add access to the note
+
+
+
+Modified: koolboy/trunk/src/noteview.rb
+===================================================================
+--- koolboy/trunk/src/noteview.rb	2005-05-03 19:33:36 UTC (rev 477)
++++ koolboy/trunk/src/noteview.rb	2005-05-03 19:41:12 UTC (rev 478)
+@@ -8,6 +8,7 @@
+ 	slots 'slotLink()',
+ 	'noteDeleted()', 'slotFind()', 'formatBold()', 'formatUnderline()',
+ 	'formatStrikeout()', 'formatItalic()'
++	attr_reader :note
+ 
+ 	# Receives an XmlNote and handles its content
+ 	def initialize(note)
+@@ -25,12 +26,6 @@
+ 		resize(@note.size) if @note.size
+ 		move(@note.pos) if @note.size
+ 	end
+-
+-	def queryClose
+-		puts "CLOSING"
+-		puts "Title: " + self.name
+-		return true
+-	end
+ 	
+ 	#####################
+ 	#TEXT formatting	
+
+
+
+From nestor at sheep.berlios.de  Wed May  4 23:11:21 2005
+From: nestor at sheep.berlios.de (Néstor Salceda at BerliOS)
+Date: Wed, 4 May 2005 23:11:21 +0200
+Subject: [Mspace-checkins] r479 - in ComponentModel/trunk: ComponentTest ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container src/ComponentModel.Container.Dao src/ComponentModel.Interfaces
+Message-ID: <200505042111.j44LBLrD018451@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-05-04 23:11:18 +0200 (Wed, 04 May 2005)
+New Revision: 479
+
+Added:
+   ComponentModel/trunk/src/ComponentModel.Interfaces/IVO.cs
+Modified:
+   ComponentModel/trunk/ComponentTest/ComponentTest.build
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs
+   ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs
+   ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Fix a bug in processException.
+
+
+
+Modified: ComponentModel/trunk/ComponentTest/ComponentTest.build
+===================================================================
+--- ComponentModel/trunk/ComponentTest/ComponentTest.build	2005-05-03 19:41:12 UTC (rev 478)
++++ ComponentModel/trunk/ComponentTest/ComponentTest.build	2005-05-04 21:11:18 UTC (rev 479)
+@@ -65,6 +65,8 @@
+             <references>
+                 <include name="**/${lib}/*.dll"/>
+                 <include name="**/${lib}/components/*.dll"/>
++                <include name="System.Windows.Forms.dll"/>
++                <include name="System.Drawing.dll"/>
+             </references>
+             <pkg-references>
+                 <package name="gtk-sharp-2.0"/>
+@@ -84,6 +86,8 @@
+                 <include name="**/${lib}/*.dll"/>
+                 <include name="**/${lib}/components/*.dll"/>
+                 <include name="**/${bin}/*.dll"/>    
++                <include name="System.Windows.Forms.dll"/>
++                <include name="System.Drawing.dll"/>
+             </references>
+             <pkg-references>
+                 <package name="gtk-sharp-2.0"/>
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-05-03 19:41:12 UTC (rev 478)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-05-04 21:11:18 UTC (rev 479)
+@@ -9,12 +9,17 @@
+ 
+         [ComponentMethod ("ComponentModel.ComponentTest.Components.Saludator.Form.SaludatorForm", "ResponseInitApp")]
+         public void InitApp () {
++            Console.WriteLine ("//-----------------//");
++            Console.WriteLine ("LLamada en el BO para iniciar la applicattion.");
++            Console.WriteLine ("//----------------//");
+         }
+        
+         [ComponentMethod ("ComponentModel.ComponentTest.Components.Saludator.Form.SaludatorForm", "ResponseSaluda")]
+         public int Saluda () {
++            Console.WriteLine ("//-----------------//");
+             Console.WriteLine ("Que pasa co !!");
+-            //throw new Exception ("Yeahhhh");
++            throw new Exception ("Yeahhhh");
++            Console.WriteLine ("//-----------------//");
+             return 1;
+         }
+ 
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs	2005-05-03 19:41:12 UTC (rev 478)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs	2005-05-04 21:11:18 UTC (rev 479)
+@@ -1,48 +1,81 @@
+-using System;
+-using ComponentModel;
+-using ComponentModel.Container;
+-using ComponentModel.VO;
+-using ComponentModel.Interfaces;
+-using Gtk;
+-
+-namespace ComponentModel.ComponentTest.Components.Saludator.Form {
+-    public class SaludatorForm : IViewHandler {
+-        private Window window;
+-        private Button button;
+-        
+-        public SaludatorForm ()  {
+-        /**
+-            Application.Init ();
+-            window = new Window ("Saludator Form from Component Test");
+-            button = new Button ("Pulsame");
+-            button.Clicked += new EventHandler (OnButtonClicked);
+-            window.Add (button);
+-       */
+-        }
+-       
+-        public void ResponseInitApp (ResponseMethodVO response) {
+-         //   window.ShowAll ();
+-         //   Application.Run ();
+-         //   Application.RunIteration ();
+-            Console.WriteLine ("Response Initapp executed.");
+-        }
+-        
+-        public void ResponseSaluda (ResponseMethodVO response) {
+-            Console.WriteLine (response.ExecutionSuccess);
+-            if (response.ExecutionSuccess)  {
+-                Console.WriteLine ("Hola luis.");
+-                Console.WriteLine ("Response hola !!");
+-                Console.WriteLine ((int)response.MethodResult);
+-            }
+-        }
+-
+-        public void ResponseSaludaATodos (ResponseMethodVO response) {
+-            Console.WriteLine ("Aqu? ejecutar? el response del caso de uso.\nBellaco lo ser? tu calavera en almibar.");
+-        }
+-
+-        private void OnButtonClicked (object o, EventArgs args) {
+-            DefaultComponentModel dcm = (DefaultComponentModel) DefaultContainer.Instance.GetComponentByName ("Saludator"); 
+-            dcm.Execute ("Saluda", null);
+-        }
+-    }
+-}
++using System;
++using System.Drawing;
++using System.Windows.Forms;
++using ComponentModel.Interfaces;
++using ComponentModel.Container;
++using ComponentModel.VO;
++
++namespace ComponentModel.ComponentTest.Components.Saludator.Form
++{
++	public class SaludatorForm : System.Windows.Forms.Form, IViewHandler
++	{
++		private System.Windows.Forms.Button button1;
++		private bool changeButton;
++                
++                public SaludatorForm() : base ()
++		{
++		    changeButton = true;	
++                    InitializeComponent();
++			
++		}
++		
++		private void InitializeComponent() {
++			this.button1 = new System.Windows.Forms.Button();
++			this.SuspendLayout();
++			// 
++			// button1
++			// 
++			this.button1.Location = new System.Drawing.Point(56, 96);
++			this.button1.Name = "button1";
++			this.button1.Size = new System.Drawing.Size(88, 40);
++			this.button1.TabIndex = 0;
++			this.button1.Text = "button1";
++			this.button1.Click += new System.EventHandler(this.Button1Click);
++			// 
++			// MainForm
++			// 
++			this.AutoScaleBaseSize = new System.Drawing.Size(6, 15);
++			this.ClientSize = new System.Drawing.Size(292, 266);
++			this.Controls.Add(this.button1);
++			this.Name = "MainForm";
++			this.Text = "MainForm";
++			this.ResumeLayout(false);
++                }
++
++		void Button1Click(object sender, System.EventArgs ev) {
++                    DefaultComponentModel dcm = (DefaultComponentModel) DefaultContainer.Instance.GetComponentByName ("Saludator"); 
++                    //dcm.Execute ("Saluda", null);
++                    dcm.Execute ("Saluda", false, false, null, this);
++		}
++		
++                public void ResponseInitApp (ResponseMethodVO response) {
++                    Console.WriteLine ("Response Initapp executed.");
++                    button1.Text = "Co co";
++                    this.ShowDialog ();
++                }
++        
++            public void ResponseSaluda (ResponseMethodVO response) {
++                Console.WriteLine (response.ExecutionSuccess);
++                if (response.ExecutionSuccess)  {
++                    if (!changeButton) {
++                        button1.Text = "Cambio de pareja";
++                        changeButton = true;
++                    }
++                    else {
++                        button1.Text = "Cambio de nuevo";
++                        changeButton = false;
++                    }
++                    Console.WriteLine ("//------------------//");
++                    Console.WriteLine ("Hola luis.");
++                    Console.WriteLine ("Response hola !!");
++                    Console.WriteLine ((int)response.MethodResult);
++                    Console.WriteLine ("//------------------//");
++                }
++            } 
++
++        
++            public void ResponseSaludaATodos (ResponseMethodVO response) {
++                Console.WriteLine ("Aqu? ejecutar? el response del caso de uso.\nBellaco lo ser? tu calavera en almibar.");
++            }
++        }
++}
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-05-03 19:41:12 UTC (rev 478)
++++ ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-05-04 21:11:18 UTC (rev 479)
+@@ -75,6 +75,7 @@
+                 this.Add (defaultComponentModel); 
+             }
+             logger.Debug ("Exiting RegisterComponent.");
++            logger.Info ("Container has : " + componentList.Count + " Components Registered.");
+         }
+         
+         public static DefaultContainer Instance {
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs	2005-05-03 19:41:12 UTC (rev 478)
++++ ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs	2005-05-04 21:11:18 UTC (rev 479)
+@@ -6,12 +6,15 @@
+ using ComponentModel.Container;
+ using ComponentModel.VO;
+ using ComponentModel.Exceptions;
++using NLog;
+ 
+ namespace ComponentModel.Container.Dao {
+     public class DefaultContainerDao {
+         private static DefaultContainerDao instance = null;
++        private Logger logger;
+         
+         private DefaultContainerDao () {
++            logger = LogManager.GetLogger (this.GetType ().ToString ());
+         }
+         
+         public static DefaultContainerDao Instance {
+@@ -35,7 +38,7 @@
+         }
+         
+         public ICollection ProcessAssembly (Assembly assembly) {
+-            Console.WriteLine ("Assembly to Process: " + assembly.FullName);
++            logger.Debug ("Assembly to Process: " + assembly.FullName);
+             ArrayList list = new ArrayList ();
+             Type[] types = assembly.GetTypes ();
+             //TODO filter with memberfilter :)
+
+Added: ComponentModel/trunk/src/ComponentModel.Interfaces/IVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Interfaces/IVO.cs	2005-05-03 19:41:12 UTC (rev 478)
++++ ComponentModel/trunk/src/ComponentModel.Interfaces/IVO.cs	2005-05-04 21:11:18 UTC (rev 479)
+@@ -0,0 +1,6 @@
++using System;
++
++namespace ComponentModel.Interfaces {
++    public interface IVO {
++    }
++}
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-03 19:41:12 UTC (rev 478)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-04 21:11:18 UTC (rev 479)
+@@ -110,7 +110,8 @@
+                     throw exception.InnerException;
+                 else {
+                     this.InstantiateExceptionManager ();
+-                    defaultExceptionManager.ProcessException (exception);
++                    //Console.WriteLine (exception.InnerException.GetType ().ToString ());
++                    defaultExceptionManager.ProcessException (exception.InnerException);
+                 }
+             }
+             return null;
+@@ -127,6 +128,7 @@
+                 responseMethodVO.SetExecutionSuccess (true);
+                 logger.Debug ("Setting excecuttion success as true.");
+                 methodResponse.Invoke (viewHandler, new object[] {responseMethodVO});
++                logger.Debug ("Returning ResponseMethodVO");
+                 return responseMethodVO;
+             }
+             catch (TargetInvocationException exception) {
+@@ -134,7 +136,8 @@
+                     throw exception.InnerException;
+                 else {
+                     this.InstantiateExceptionManager ();
+-                    defaultExceptionManager.ProcessException (exception);
++                    //Console.WriteLine (exception.InnerException.GetType ().ToString ());
++                    defaultExceptionManager.ProcessException (exception.InnerException);
+                 }
+             }
+             return null;
+
+
+
+From rubiojr at sheep.berlios.de  Thu May  5 09:09:50 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Thu, 5 May 2005 09:09:50 +0200
+Subject: [Mspace-checkins] r480 - / servicemenus servicemenus/uploadToServer
+Message-ID: <200505050709.j4579oBp025821@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-05 09:09:49 +0200 (Thu, 05 May 2005)
+New Revision: 480
+
+Added:
+   servicemenus/
+   servicemenus/uploadToServer/
+   servicemenus/uploadToServer/INSTALL
+   servicemenus/uploadToServer/uploadToServer.sh
+   servicemenus/uploadToServer/upload_to_server.desktop
+Log:
+new dir with some servicemenus for the _amazing_ KDE ;)
+
+
+Added: servicemenus/uploadToServer/INSTALL
+===================================================================
+--- servicemenus/uploadToServer/INSTALL	2005-05-04 21:11:18 UTC (rev 479)
++++ servicemenus/uploadToServer/INSTALL	2005-05-05 07:09:49 UTC (rev 480)
+@@ -0,0 +1,4 @@
++* Copy the scripts to $HOME/.kde/bin
++* Copy the .desktop files to $HOME/.kde/share/apps/konqueror/servicemenus
++* Create any of the directories above if they don't exist
++
+
+Added: servicemenus/uploadToServer/uploadToServer.sh
+===================================================================
+--- servicemenus/uploadToServer/uploadToServer.sh	2005-05-04 21:11:18 UTC (rev 479)
++++ servicemenus/uploadToServer/uploadToServer.sh	2005-05-05 07:09:49 UTC (rev 480)
+@@ -0,0 +1,13 @@
++#!/bin/sh
++
++FILEPATH=$1
++FILENAME=$2
++
++## Copy the file to the server using kfmclient
++kfmclient copy $FILEPATH fish://rubiojr.no-ip.org/home/rubiojr/public_html/Download/
++
++## Set the URL in clipboard
++dcop klipper klipper setClipboardContents "http://rubiojr.no-ip.org/~rubiojr/Download/$FILENAME"
++
++## Notify when finished
++dcop knotify Notify notify "URL received" "<b>Web Uploader</b>" "Download URL <b><font color='red'>ready</font></b> in klipper" "" "" 16 0
+
+
+Property changes on: servicemenus/uploadToServer/uploadToServer.sh
+___________________________________________________________________
+Name: svn:executable
+   + *
+
+Added: servicemenus/uploadToServer/upload_to_server.desktop
+===================================================================
+--- servicemenus/uploadToServer/upload_to_server.desktop	2005-05-04 21:11:18 UTC (rev 479)
++++ servicemenus/uploadToServer/upload_to_server.desktop	2005-05-05 07:09:49 UTC (rev 480)
+@@ -0,0 +1,9 @@
++[Desktop Entry]
++Actions=upload_to_server
++ServiceTypes=all/allfiles
++Encoding=UTF8
++
++[Desktop Action upload_to_server]
++Name=Upload to server
++Icon=network
++Exec=$HOME/.kde/bin/uploadToServer.sh %U
+\ No newline at end of file
+
+
+
+From rubiojr at sheep.berlios.de  Thu May  5 09:23:03 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Thu, 5 May 2005 09:23:03 +0200
+Subject: [Mspace-checkins] r481 - servicemenus/uploadToServer
+Message-ID: <200505050723.j457N35Y026230@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-05 09:23:02 +0200 (Thu, 05 May 2005)
+New Revision: 481
+
+Added:
+   servicemenus/uploadToServer/README
+Modified:
+   servicemenus/uploadToServer/uploadToServer.sh
+   servicemenus/uploadToServer/upload_to_server.desktop
+Log:
+* Some cosmetic changes and fixes
+* Added a README
+
+
+
+Added: servicemenus/uploadToServer/README
+===================================================================
+--- servicemenus/uploadToServer/README	2005-05-05 07:09:49 UTC (rev 480)
++++ servicemenus/uploadToServer/README	2005-05-05 07:23:02 UTC (rev 481)
+@@ -0,0 +1,2 @@
++Uploads the selected file to a server using ssh (fish://)
++and puts the URL back in klipper
+
+Modified: servicemenus/uploadToServer/uploadToServer.sh
+===================================================================
+--- servicemenus/uploadToServer/uploadToServer.sh	2005-05-05 07:09:49 UTC (rev 480)
++++ servicemenus/uploadToServer/uploadToServer.sh	2005-05-05 07:23:02 UTC (rev 481)
+@@ -2,12 +2,14 @@
+ 
+ FILEPATH=$1
+ FILENAME=$2
++SERVER_URL="fish://rubiojr.no-ip.org/home/rubiojr/public_html/Download/"
++DOWNLOAD_URL="http://rubiojr.no-ip.org/~/rubiojr/Download/$FILENAME"
+ 
+ ## Copy the file to the server using kfmclient
+-kfmclient copy $FILEPATH fish://rubiojr.no-ip.org/home/rubiojr/public_html/Download/
++kfmclient copy $FILEPATH $SERVERURL
+ 
+ ## Set the URL in clipboard
+-dcop klipper klipper setClipboardContents "http://rubiojr.no-ip.org/~rubiojr/Download/$FILENAME"
++dcop klipper klipper setClipboardContents "$DOWNLOAD_URL"
+ 
+ ## Notify when finished
+-dcop knotify Notify notify "URL received" "<b>Web Uploader</b>" "Download URL <b><font color='red'>ready</font></b> in klipper" "" "" 16 0
++dcop knotify Notify notify "URL received" "<b>File Uploader</b>" "Download URL <b><font color='red'>ready</font></b> in klipper" "" "" 16 0
+
+Modified: servicemenus/uploadToServer/upload_to_server.desktop
+===================================================================
+--- servicemenus/uploadToServer/upload_to_server.desktop	2005-05-05 07:09:49 UTC (rev 480)
++++ servicemenus/uploadToServer/upload_to_server.desktop	2005-05-05 07:23:02 UTC (rev 481)
+@@ -6,4 +6,4 @@
+ [Desktop Action upload_to_server]
+ Name=Upload to server
+ Icon=network
+-Exec=$HOME/.kde/bin/uploadToServer.sh %U
+\ No newline at end of file
++Exec=$HOME/.kde/bin/uploadToServer.sh %u %n
+
+
+
+From rubiojr at sheep.berlios.de  Thu May  5 09:25:22 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Thu, 5 May 2005 09:25:22 +0200
+Subject: [Mspace-checkins] r482 - servicemenus/uploadToServer
+Message-ID: <200505050725.j457PMmc026383@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-05 09:25:17 +0200 (Thu, 05 May 2005)
+New Revision: 482
+
+Modified:
+   servicemenus/uploadToServer/uploadToServer.sh
+Log:
+grrrr. More fixes
+
+
+
+Modified: servicemenus/uploadToServer/uploadToServer.sh
+===================================================================
+--- servicemenus/uploadToServer/uploadToServer.sh	2005-05-05 07:23:02 UTC (rev 481)
++++ servicemenus/uploadToServer/uploadToServer.sh	2005-05-05 07:25:17 UTC (rev 482)
+@@ -3,10 +3,10 @@
+ FILEPATH=$1
+ FILENAME=$2
+ SERVER_URL="fish://rubiojr.no-ip.org/home/rubiojr/public_html/Download/"
+-DOWNLOAD_URL="http://rubiojr.no-ip.org/~/rubiojr/Download/$FILENAME"
++DOWNLOAD_URL="http://rubiojr.no-ip.org/~rubiojr/Download/$FILENAME"
+ 
+ ## Copy the file to the server using kfmclient
+-kfmclient copy $FILEPATH $SERVERURL
++kfmclient copy $FILEPATH $SERVER_URL
+ 
+ ## Set the URL in clipboard
+ dcop klipper klipper setClipboardContents "$DOWNLOAD_URL"
+
+
+
+From rubiojr at sheep.berlios.de  Thu May  5 09:43:13 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Thu, 5 May 2005 09:43:13 +0200
+Subject: [Mspace-checkins] r483 - servicemenus/uploadToServer
+Message-ID: <200505050743.j457hDxv027178@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-05 09:43:10 +0200 (Thu, 05 May 2005)
+New Revision: 483
+
+Modified:
+   servicemenus/uploadToServer/uploadToServer.sh
+Log:
+* Mark the region that should be customized
+
+
+
+Modified: servicemenus/uploadToServer/uploadToServer.sh
+===================================================================
+--- servicemenus/uploadToServer/uploadToServer.sh	2005-05-05 07:25:17 UTC (rev 482)
++++ servicemenus/uploadToServer/uploadToServer.sh	2005-05-05 07:43:10 UTC (rev 483)
+@@ -1,10 +1,16 @@
+ #!/bin/sh
+ 
+-FILEPATH=$1
+-FILENAME=$2
++##### EDIT THIS #######
+ SERVER_URL="fish://rubiojr.no-ip.org/home/rubiojr/public_html/Download/"
+ DOWNLOAD_URL="http://rubiojr.no-ip.org/~rubiojr/Download/$FILENAME"
++#######################
+ 
++##############################
++###### DO NOT EDIT ###########
++##############################
++FILEPATH=$1
++FILENAME=$2
++
+ ## Copy the file to the server using kfmclient
+ kfmclient copy $FILEPATH $SERVER_URL
+ 
+
+
+
+From rubiojr at sheep.berlios.de  Thu May  5 09:50:32 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Thu, 5 May 2005 09:50:32 +0200
+Subject: [Mspace-checkins] r484 - servicemenus/uploadToServer
+Message-ID: <200505050750.j457oW13027457@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-05 09:50:31 +0200 (Thu, 05 May 2005)
+New Revision: 484
+
+Modified:
+   servicemenus/uploadToServer/uploadToServer.sh
+Log:
+* Fixed variable definition
+
+
+
+Modified: servicemenus/uploadToServer/uploadToServer.sh
+===================================================================
+--- servicemenus/uploadToServer/uploadToServer.sh	2005-05-05 07:43:10 UTC (rev 483)
++++ servicemenus/uploadToServer/uploadToServer.sh	2005-05-05 07:50:31 UTC (rev 484)
+@@ -2,7 +2,7 @@
+ 
+ ##### EDIT THIS #######
+ SERVER_URL="fish://rubiojr.no-ip.org/home/rubiojr/public_html/Download/"
+-DOWNLOAD_URL="http://rubiojr.no-ip.org/~rubiojr/Download/$FILENAME"
++DOWNLOAD_URL="http://rubiojr.no-ip.org/~rubiojr/Download"
+ #######################
+ 
+ ##############################
+@@ -15,7 +15,7 @@
+ kfmclient copy $FILEPATH $SERVER_URL
+ 
+ ## Set the URL in clipboard
+-dcop klipper klipper setClipboardContents "$DOWNLOAD_URL"
++dcop klipper klipper setClipboardContents "$DOWNLOAD_URL/$FILENAME"
+ 
+ ## Notify when finished
+ dcop knotify Notify notify "URL received" "<b>File Uploader</b>" "Download URL <b><font color='red'>ready</font></b> in klipper" "" "" 16 0
+
+
+
+From nestor at sheep.berlios.de  Sun May  8 20:24:54 2005
+From: nestor at sheep.berlios.de (Néstor Salceda at BerliOS)
+Date: Sun, 8 May 2005 20:24:54 +0200
+Subject: [Mspace-checkins] r485 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions src/ComponentModel.Container src/ComponentModel.Container.Dao
+Message-ID: <200505081824.j48IOsj0021008@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-05-08 20:24:53 +0200 (Sun, 08 May 2005)
+New Revision: 485
+
+Modified:
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs
+   ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs
+   ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+Log:
+Argh !! No s?\195?\169 que cambios he hecho !!
+
+
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-05-05 07:50:31 UTC (rev 484)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-05-08 18:24:53 UTC (rev 485)
+@@ -18,7 +18,7 @@
+         public int Saluda () {
+             Console.WriteLine ("//-----------------//");
+             Console.WriteLine ("Que pasa co !!");
+-            throw new Exception ("Yeahhhh");
++            //throw new Exception ("Yeahhhh");
+             Console.WriteLine ("//-----------------//");
+             return 1;
+         }
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs	2005-05-05 07:50:31 UTC (rev 484)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs	2005-05-08 18:24:53 UTC (rev 485)
+@@ -9,10 +9,7 @@
+         }
+         public override void ProcessException (Exception exception) {
+             base.ProcessException (exception);
+-            if (exception is Exception) {
+-                Console.WriteLine ("Exception has been ocurred: " + exception.Message);
+-            }
+-            Console.WriteLine ("Ha ocurrido una exception.");
++            Console.WriteLine ("Ha ocurrido una exception." + exception.Message);
+         }
+     }
+ }
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-05-05 07:50:31 UTC (rev 484)
++++ ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-05-08 18:24:53 UTC (rev 485)
+@@ -104,6 +104,14 @@
+              */
+             if (componentList.Contains (component))
+                 return;
++            /*Chequeamos que no existan dos componentes con el mismo nombre.*/
++            for (int i = 0; i< componentList.Count; i++) {
++                if (((IComponentModel)componentList[i]).VO.ComponentName.Equals (component.VO.ComponentName)) {
++                    /*No lanzo una excepci?n porque no se debe parar la
++                     * ejecuci?n del programa por este error.*/
++                    return;
++                }
++            }
+             componentList.Add (component);
+             logger.Info ("Registering component: " + component + " as Name: " + component.VO.ComponentName);
+         }
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs	2005-05-05 07:50:31 UTC (rev 484)
++++ ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs	2005-05-08 18:24:53 UTC (rev 485)
+@@ -56,8 +56,8 @@
+                         //Seteamos el vo con reflection y mantener oculto el
+                         //resto.
+                         FieldInfo voFieldInfo = types[i].GetField ("vO", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetField); // | BindingFlags.DeclaredOnly);
+-                        if (voFieldInfo == null)
+-                            Console.WriteLine ("FieldInfo == null.");
++                        //if (voFieldInfo == null)
++                        //    Console.WriteLine ("FieldInfo == null.");
+                         voFieldInfo.SetValue (defaultComponentModel, componentModelVO);
+                         list.Add (defaultComponentModel);
+                     }
+
+
+
+From nestor at sheep.berlios.de  Thu May 12 00:06:33 2005
+From: nestor at sheep.berlios.de (Néstor Salceda at BerliOS)
+Date: Thu, 12 May 2005 00:06:33 +0200
+Subject: [Mspace-checkins] r486 - in ComponentModel: releases trunk/src trunk/src/ComponentModel.Interfaces trunk/src/ComponentModel.Threading
+Message-ID: <200505112206.j4BM6XIH017532@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-05-12 00:06:32 +0200 (Thu, 12 May 2005)
+New Revision: 486
+
+Added:
+   ComponentModel/releases/ComponentModel.dll
+   ComponentModel/trunk/src/ComponentModel.Threading/
+   ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs
+Modified:
+   ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs
+Log:
+./svn-commit.tmp
+
+Added: ComponentModel/releases/ComponentModel.dll
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/releases/ComponentModel.dll
+___________________________________________________________________
+Name: svn:executable
+   + *
+Name: svn:mime-type
+   + application/octet-stream
+
+Modified: ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs	2005-05-08 18:24:53 UTC (rev 485)
++++ ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs	2005-05-11 22:06:32 UTC (rev 486)
+@@ -1,5 +1,6 @@
+ using System;
+ using ComponentModel.VO;
++
+ namespace ComponentModel.Interfaces {
+     public interface IComponentModel {
+         ComponentModelVO VO {get;}
+
+Added: ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs	2005-05-08 18:24:53 UTC (rev 485)
++++ ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs	2005-05-11 22:06:32 UTC (rev 486)
+@@ -0,0 +1,21 @@
++using System;
++using System.Threading;
++
++namespace ComponentModel.Threading {
++    internal class ComponentActionDispatcher  {
++        /*Cojo los campos para la informaci?n de ponerlo en segundo plano*/
++        private Thread thread;
++        private ThreadStart threadStart;
++        /*Recolecto datos para la ejecucuci?n.*/
++        
++        internal ComponentActionDispatcher () {
++            
++            threadStart += new ThreadStart (Run);            
++            thread = new Thread (threadStart);
++            thread.Start ();
++        }
++
++        internal void Run () {
++        }
++    }
++}
+
+
+
+From nestor at sheep.berlios.de  Thu May 12 10:51:15 2005
+From: nestor at sheep.berlios.de (Néstor Salceda at BerliOS)
+Date: Thu, 12 May 2005 10:51:15 +0200
+Subject: [Mspace-checkins] r487 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Interfaces src/ComponentModel.Threading
+Message-ID: <200505120851.j4C8pFef032534@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-05-12 10:51:13 +0200 (Thu, 12 May 2005)
+New Revision: 487
+
+Modified:
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs
+   ComponentModel/trunk/ComponentTest/src/Launcher.cs
+   ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs
+   ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Added another bit of non-block operations.
+
+Refactor and finished Executor.
+
+Improve Exception management.
+
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-05-11 22:06:32 UTC (rev 486)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-05-12 08:51:13 UTC (rev 487)
+@@ -18,7 +18,7 @@
+         public int Saluda () {
+             Console.WriteLine ("//-----------------//");
+             Console.WriteLine ("Que pasa co !!");
+-            //throw new Exception ("Yeahhhh");
++            throw new Exception ("Yeahhhh");
+             Console.WriteLine ("//-----------------//");
+             return 1;
+         }
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs	2005-05-11 22:06:32 UTC (rev 486)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs	2005-05-12 08:51:13 UTC (rev 487)
+@@ -5,6 +5,7 @@
+ 
+     
+     public class SaludatorExceptionManager : DefaultExceptionManager {
++
+         public SaludatorExceptionManager () {
+         }
+         public override void ProcessException (Exception exception) {
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs	2005-05-11 22:06:32 UTC (rev 486)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs	2005-05-12 08:51:13 UTC (rev 487)
+@@ -45,7 +45,7 @@
+ 		void Button1Click(object sender, System.EventArgs ev) {
+                     DefaultComponentModel dcm = (DefaultComponentModel) DefaultContainer.Instance.GetComponentByName ("Saludator"); 
+                     //dcm.Execute ("Saluda", null);
+-                    dcm.Execute ("Saluda", false, false, null, this);
++                    dcm.Execute ("Saluda", null, this);
+ 		}
+ 		
+                 public void ResponseInitApp (ResponseMethodVO response) {
+
+Modified: ComponentModel/trunk/ComponentTest/src/Launcher.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Launcher.cs	2005-05-11 22:06:32 UTC (rev 486)
++++ ComponentModel/trunk/ComponentTest/src/Launcher.cs	2005-05-12 08:51:13 UTC (rev 487)
+@@ -13,7 +13,7 @@
+                 Console.WriteLine ("Dcm no es null");
+             else
+                 Console.WriteLine ("Dcm es null");
+-            dcm.Execute ("InitApp", null);
++            dcm.Execute ("InitApp", null, null);
+             dcm.Execute ("Saluda", null);
+         }
+     }
+
+Modified: ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs	2005-05-11 22:06:32 UTC (rev 486)
++++ ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs	2005-05-12 08:51:13 UTC (rev 487)
+@@ -6,7 +6,8 @@
+         ComponentModelVO VO {get;}
+ 
+         ResponseMethodVO Execute (string methodName, object[] parameters);//Redirige & bloquea a la vista por defecto.
+-        ResponseMethodVO Execute (string methodName, bool redirect, bool block, object[] parameters);// Igual sobra !!
+-        ResponseMethodVO Execute (string methodName, bool redirect, bool block, object[] parameters, IViewHandler view);
++        ResponseMethodVO Execute (string methodName, object[] parameters, IViewHandler viewHandler);//Redirige y elige vista.
++        ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect);//Redirige o no redirige, si redirige vista nueva.
++        ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block);
+     }
+ }
+
+Modified: ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs	2005-05-11 22:06:32 UTC (rev 486)
++++ ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs	2005-05-12 08:51:13 UTC (rev 487)
+@@ -1,21 +1,83 @@
+ using System;
+ using System.Threading;
++using ComponentModel.VO;
++using System.Reflection;
++using ComponentModel;
++using ComponentModel.Factory;
++using ComponentModel.Interfaces;
+ 
+ namespace ComponentModel.Threading {
+     internal class ComponentActionDispatcher  {
+         /*Cojo los campos para la informaci?n de ponerlo en segundo plano*/
+         private Thread thread;
+         private ThreadStart threadStart;
++
+         /*Recolecto datos para la ejecucuci?n.*/
++        IComponentModel componentModel;
++        MethodInfo methodToExecute;
++        object[] parameters;
++        Type viewType;
++        IViewHandler viewHandler;
++        MethodInfo methodToResponse;
++        ResponseMethodVO responseMethodVO;
+         
+-        internal ComponentActionDispatcher () {
+-            
+-            threadStart += new ThreadStart (Run);            
++        internal ComponentActionDispatcher () {}
++        
++        /*Ctor new View*/
++        internal ComponentActionDispatcher (IComponentModel componentModel, MethodInfo methodToExecute, object[] parameters, Type viewType, MethodInfo methodToResponse) {
++            this.componentModel = componentModel;
++            this.methodToExecute = methodToExecute;
++            this.parameters = parameters;
++            this.viewType = viewType;
++            this.methodToResponse = methodToResponse;
++
++            //Set up Thread;
++            threadStart = new ThreadStart (CallBackExecuteRedirectNewView);
+             thread = new Thread (threadStart);
+-            thread.Start ();
+         }
+ 
+-        internal void Run () {
++        internal ComponentActionDispatcher (IComponentModel componentModel, MethodInfo methodToExecute, object[] parameters, IViewHandler viewHandler, MethodInfo methodToResponse) {
++            this.componentModel = componentModel;
++            this.methodToExecute = methodToExecute;
++            this.parameters = parameters;
++            this.viewHandler = viewHandler;
++            this.methodToResponse = methodToResponse;
++
++            threadStart = new ThreadStart (CallBackExecuteRedirectView);
++            thread = new Thread (threadStart);
+         }
++
++        internal ComponentActionDispatcher (IComponentModel componentModel, MethodInfo methodToExecute, object[] parameters) {
++            this.componentModel = componentModel;
++            this.methodToExecute = methodToExecute;
++            this.parameters = parameters;
++
++            threadStart = new ThreadStart (CallBackExecuteNoRedirect);
++            thread = new Thread (threadStart);
++        }
++        
++        internal void CallBackExecuteRedirectNewView () {
++            responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++            object ret = methodToExecute.Invoke (componentModel, parameters);
++            responseMethodVO.MethodResult = ret;
++            responseMethodVO.SetExecutionSuccess (true);
++            object obj = viewType.GetConstructor (null).Invoke (null);
++            methodToResponse.Invoke (obj, new object[] {responseMethodVO});
++        }
++
++        internal void CallBackExecuteRedirectView () {
++            responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++            object ret = methodToExecute.Invoke (componentModel, parameters);
++            responseMethodVO.MethodResult = ret;
++            responseMethodVO.SetExecutionSuccess (true);
++            methodToResponse.Invoke (viewHandler, new object[] {responseMethodVO});
++        }
++
++        internal void CallBackExecuteNoRedirect () {
++            responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++            object ret = methodToExecute.Invoke (componentModel, parameters);
++            responseMethodVO.MethodResult = ret;
++            responseMethodVO.SetExecutionSuccess (true);
++        }
+     }
+ }
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-11 22:06:32 UTC (rev 486)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-12 08:51:13 UTC (rev 487)
+@@ -68,8 +68,12 @@
+             //PostCondition: methodInfo != null
+             return methodInfo;
+         }
++
++        private MethodInfo GetMethodToExecute (string methodName) {
++            return this.GetMethodToExecute (methodName, this.GetType ());
++        }
+         
+-        private MethodInfo GetMethodResponse (Type viewType, ComponentMethodAttribute componentMethodAttribute) {
++        private MethodInfo GetMethodToResponse (Type viewType, ComponentMethodAttribute componentMethodAttribute) {
+             if (componentMethodAttribute == null) {
+                 throw new ResponseNotFoundException ("Please set up correctly Response Attribute.");    
+             }
+@@ -81,126 +85,159 @@
+             return responseMethod;
+         } 
+         
+-        private void InstantiateExceptionManager () {
+-            if (defaultExceptionManager == null) {
+-                logger.Debug ("Trying to instantiate ExceptionManager.");
+-                Type typeManager = this.GetTypeExceptionManager (this.VO.ExceptionManagerClassName);
+-                this.defaultExceptionManager = (IExceptionManager)typeManager.GetConstructor (null).Invoke (null);
+-                logger.Debug ("Exception manager instatiated.");
++        private void MapException (Exception exception) {
++            if (exception.InnerException is ComponentModelException) 
++                throw exception.InnerException;
++            else {
++                if (this.defaultExceptionManager == null) {
++                    Type typeManager = this.GetTypeExceptionManager (this.VO.ExceptionManagerClassName);
++                    this.defaultExceptionManager = (IExceptionManager) typeManager.GetConstructor (null).Invoke (null);
++                }
++                this.defaultExceptionManager.ProcessException (exception.InnerException);
+             }
+-            logger.Debug ("Exception manager already instatiated.");
+         }
+         
+-        private ResponseMethodVO ExecuteCompleteSequence (MethodInfo methodToInvoke, object[] parameters, Type viewType, MethodInfo methodResponse) {
++        private Type GetViewType (string viewType) {
++            if ((viewType == null) || (viewType.Equals (String.Empty)))
++                throw new ViewNotFoundException ("Please, set up attributes correctly.");
+             try {
++                Type type = DefaultContainerDao.Instance.GetType (viewType);
++                if (type.GetInterface ("IViewHandler") != null)
++                    return type;
++            }
++            catch (TypeNotFoundException exception) {
++                throw new ViewNotFoundException ("View" + viewType + "not found.");
++            }
++            return null;
++        }
++        
++        private Type GetViewType (ComponentMethodAttribute componentMethodAttribute) {
++            if (componentMethodAttribute == null)
++                throw new ViewNotFoundException ("Please set up attributes correctly.");
++            return this.GetViewType (componentMethodAttribute.ViewName);
++        }
++    
++        private ComponentMethodAttribute GetComponentAttributes (MethodInfo methodInfo) {
++            //Pre: MethodInfo != null
++            if (methodInfo == null)
++                //TODO: ?Es buena la excepci?n?
++                throw new MethodNotFoundException ("Please set up attributes correctly.");
++            Attribute[] atts = (Attribute[]) methodInfo.GetCustomAttributes (typeof (ComponentMethodAttribute), true);
++            //Post: atts != null
++            if (atts[0] == null)
++                throw new MethodNotFoundException ("Can't find ComponentMethodAttribute.");
++            return ((ComponentMethodAttribute)atts[0]);
++        }
++
++
++        private ResponseMethodVO ExecuteRedirectNewView (MethodInfo methodToExecute, object[] parameters, Type viewType, MethodInfo methodToResponse) {
++            try {
+                 ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
+-                logger.Debug ("Method " + methodToInvoke + " executing.");
+-                object ret = methodToInvoke.Invoke (this, parameters);
++                object ret = methodToExecute.Invoke (this, parameters);
+                 responseMethodVO.MethodResult = ret;
+-                logger.Debug ("Redirecting to view: " + viewType.ToString () + " to response Method: " + methodResponse.ToString ());
+                 object obj = viewType.GetConstructor (null).Invoke (null);
+-                logger.Debug ("Executing response method: " + methodResponse.ToString ());
+                 responseMethodVO.SetExecutionSuccess (true);
+-                logger.Debug ("Setting excecuttion success as true.");
+-                methodResponse.Invoke (obj, new object[] {responseMethodVO});
++                methodToResponse.Invoke (obj, new object[] {responseMethodVO});
+                 return responseMethodVO;
+             }
+             catch (TargetInvocationException exception) {
+-                if (exception.InnerException is ComponentModelException) 
+-                    throw exception.InnerException;
+-                else {
+-                    this.InstantiateExceptionManager ();
+-                    //Console.WriteLine (exception.InnerException.GetType ().ToString ());
+-                    defaultExceptionManager.ProcessException (exception.InnerException);
+-                }
++                this.MapException (exception);
+             }
+             return null;
+         }
+-        
+ 
+-        private ResponseMethodVO ExecuteCompleteSequence (MethodInfo methodToInvoke, object[] parameters, IViewHandler viewHandler, MethodInfo methodResponse) {
++        private ResponseMethodVO ExecuteRedirectView (MethodInfo methodToExecute, object[] parameters, IViewHandler viewHandler, MethodInfo methodToResponse) {
+             try {
+                 ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
+-                logger.Debug ("Method " + methodToInvoke + " executing.");
+-                object ret = methodToInvoke.Invoke (this, parameters);
++                object ret = methodToExecute.Invoke (this, parameters);
+                 responseMethodVO.MethodResult = ret;
+-                logger.Debug ("Executing response method: " + methodResponse.ToString ());
+                 responseMethodVO.SetExecutionSuccess (true);
+-                logger.Debug ("Setting excecuttion success as true.");
+-                methodResponse.Invoke (viewHandler, new object[] {responseMethodVO});
+-                logger.Debug ("Returning ResponseMethodVO");
++                methodToResponse.Invoke (viewHandler, new object[] {responseMethodVO});
+                 return responseMethodVO;
+             }
+             catch (TargetInvocationException exception) {
+-                if (exception.InnerException is ComponentModelException) 
+-                    throw exception.InnerException;
+-                else {
+-                    this.InstantiateExceptionManager ();
+-                    //Console.WriteLine (exception.InnerException.GetType ().ToString ());
+-                    defaultExceptionManager.ProcessException (exception.InnerException);
+-                }
++                this.MapException (exception);
+             }
+             return null;
+         }
+         
+-        private Type GetViewType (string viewType) {
+-            if ((viewType == null) || (viewType.Equals (String.Empty)))
+-                throw new ViewNotFoundException ("Please, set up attributes correctly.");
++        private ResponseMethodVO ExecuteNoRedirect (MethodInfo methodToExecute, object[] parameters) {
+             try {
+-                Type type = DefaultContainerDao.Instance.GetType (viewType);
+-                if (type.GetInterface ("IViewHandler") != null)
+-                    return type;
++                ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
++                object ret = methodToExecute.Invoke (this, parameters);
++                responseMethodVO.MethodResult = ret;
++                responseMethodVO.SetExecutionSuccess (true);
++                return responseMethodVO;
+             }
+-            catch (TypeNotFoundException exception) {
+-                throw new ViewNotFoundException ("View" + viewType + "not found.");
++            catch (TargetInvocationException exception) {
++                this.MapException (exception);
+             }
+             return null;
+         }
+         
+-        private Type GetViewType (ComponentMethodAttribute componentMethodAttribute) {
+-            if (componentMethodAttribute == null)
+-                throw new ViewNotFoundException ("Please set up attributes correctly.");
+-            return this.GetViewType (componentMethodAttribute.ViewName);
++        /*Executor overloads*/
++        public ResponseMethodVO Execute (string methodName, object[] parameters) {
++            return this.Execute (methodName, parameters, true, null, true);
+         }
+         
+-        //Public Methods
+-        public ResponseMethodVO Execute (string methodName, object[] parameters) {
+-            Type type = this.GetType ();
+-
+-            //Recollecting data for execution.
+-            // Check if exists use case to execute
+-            MethodInfo methodToExecute = this.GetMethodToExecute (methodName, type);
+-            // Read attributes for this use case.
+-            Attribute[] attributes = (Attribute[]) methodToExecute.GetCustomAttributes (typeof (ComponentMethodAttribute), false);
+-            ComponentMethodAttribute componentMethodAttribute = (ComponentMethodAttribute) attributes[0];
+-            //Gets viewType from information of attributes.
+-            Type viewType = this.GetViewType (componentMethodAttribute);
+-            // Si existe alg?n miembro requerido para la ejecuci?n que no es
+-            // encontrado; no ejecutar? nada denada.
+-            //
+-            //Execute method
+-            // Get information from respone for view.
+-            MethodInfo responseMethod = this.GetMethodResponse (viewType, componentMethodAttribute);
+-            //Executing response to method
+-            ResponseMethodVO responseMethodVO = this.ExecuteCompleteSequence (methodToExecute, parameters, viewType, responseMethod); 
+-            return responseMethodVO;
++        public ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect) {
++            return this.Execute (methodName, parameters, redirect, null, true);
+         }
+         
+-        public ResponseMethodVO Execute (string methodName, bool redirect, bool block, object[] parameters) {
+-            throw new Exception ("Not implemented yet.");
++        public ResponseMethodVO Execute (string methodName, object[] parameters, IViewHandler viewHandler) {
++            return this.Execute (methodName, parameters, true, viewHandler, true);
++        }       
++        
++        /*Executor commander !*/
++        public ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block) {
++            /*Existen cosas que siempre deben de buscarse*/
++            MethodInfo methodToExecute = this.GetMethodToExecute (methodName); 
++            ComponentMethodAttribute componentMethodAttribute = this.GetComponentAttributes (methodToExecute);
++            /*Primero discernimos si es bloqueante o no lo es*/
++            if (block) {
++                //Operaciones que son bloqueantes
++                if (redirect) {
++                    MethodInfo methodToResponse ;
++                    Type viewType;
++                    if (viewHandler == null) {
++                        //FIX: A?n se podria mejorar esta invocaci?n.
++                        viewType = this.GetViewType (componentMethodAttribute);
++                        methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
++                        return ExecuteRedirectNewView (methodToExecute, parameters, viewType, methodToResponse);
++                    }
++                    else {
++                        //Redirigimos a la que nos pide
++                        viewType = viewHandler.GetType ();
++                        methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
++                        return ExecuteRedirectView (methodToExecute, parameters, viewHandler, methodToResponse);
++                    }
++                }
++                else {
++                    //No necesitamos informaci?n sobre la vista, ni el response.
++                    //No se va a ejecutar.
++                    return ExecuteNoRedirect (methodToExecute, parameters);
++                }
++            }
++            else {
++                //Operaciones bloqueantes, envolver en un hilo
++                throw new Exception ("NOT IMPLEMENTED YET !!");
++                if (redirect) {
++                    MethodInfo methodToResponse;
++                    Type viewType;
++                    if (viewHandler == null) {
++                        viewType = this.GetViewType (componentMethodAttribute);
++                        methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
++                    }
++                    else {
++                        viewType = viewHandler.GetType ();
++                        methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
++                    }
++                }
++                else {
++                }
++            }
++            return null;
+         }
+ 
+-        public ResponseMethodVO Execute (string methodName, bool redirect, bool block, object[] parameters, IViewHandler view) {
+-            Type type = this.GetType ();
+-            
+-            MethodInfo methodToExecute = this.GetMethodToExecute (methodName, type);
+-            Attribute[] attributes = (Attribute[]) methodToExecute.GetCustomAttributes (typeof (ComponentMethodAttribute), false);
+-            ComponentMethodAttribute componentMethodAttribute = (ComponentMethodAttribute) attributes[0];
+-            MethodInfo responseMethod = this.GetMethodResponse (view.GetType (), componentMethodAttribute);
+-            
+-            ResponseMethodVO responseMethodVO = this.ExecuteCompleteSequence (methodToExecute, parameters, view, responseMethod);
+-            return responseMethodVO;
+-        }
+-
+     }
+ }
+
+
+
+From nestor at sheep.berlios.de  Thu May 12 23:25:22 2005
+From: nestor at sheep.berlios.de (Néstor Salceda at BerliOS)
+Date: Thu, 12 May 2005 23:25:22 +0200
+Subject: [Mspace-checkins] r488 - in ComponentModel/trunk/src: . ComponentModel.Threading
+Message-ID: <200505122125.j4CLPMIc017632@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-05-12 23:25:21 +0200 (Thu, 12 May 2005)
+New Revision: 488
+
+Modified:
+   ComponentModel/trunk/src/AssemblyInfo.cs
+   ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Ended non-block execution.
+
+
+
+Modified: ComponentModel/trunk/src/AssemblyInfo.cs
+===================================================================
+--- ComponentModel/trunk/src/AssemblyInfo.cs	2005-05-12 08:51:13 UTC (rev 487)
++++ ComponentModel/trunk/src/AssemblyInfo.cs	2005-05-12 21:25:21 UTC (rev 488)
+@@ -9,4 +9,4 @@
+ [assembly: AssemblyCopyright("2005 (C) N?stor Salceda Alonso")]
+ [assembly: AssemblyTrademark("")]
+ [assembly: AssemblyCulture("")]
+-[assembly: AssemblyVersion("0.1.*")]
++[assembly: AssemblyVersion("0.2.*")]
+
+Modified: ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs	2005-05-12 08:51:13 UTC (rev 487)
++++ ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs	2005-05-12 21:25:21 UTC (rev 488)
+@@ -20,6 +20,14 @@
+         IViewHandler viewHandler;
+         MethodInfo methodToResponse;
+         ResponseMethodVO responseMethodVO;
++
++        internal ResponseMethodVO ResponseMethodVO {
++            get {
++                lock (responseMethodVO) {
++                    return responseMethodVO;
++                }
++            }
++        }
+         
+         internal ComponentActionDispatcher () {}
+         
+@@ -56,28 +64,40 @@
+             thread = new Thread (threadStart);
+         }
+         
+-        internal void CallBackExecuteRedirectNewView () {
+-            responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
+-            object ret = methodToExecute.Invoke (componentModel, parameters);
+-            responseMethodVO.MethodResult = ret;
+-            responseMethodVO.SetExecutionSuccess (true);
+-            object obj = viewType.GetConstructor (null).Invoke (null);
+-            methodToResponse.Invoke (obj, new object[] {responseMethodVO});
++        private void CallBackExecuteRedirectNewView () {
++            lock (responseMethodVO) {
++                responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++                object ret = methodToExecute.Invoke (componentModel, parameters);
++                responseMethodVO.MethodResult = ret;
++                responseMethodVO.SetExecutionSuccess (true);
++                object obj = viewType.GetConstructor (null).Invoke (null);
++                methodToResponse.Invoke (obj, new object[] {responseMethodVO});
++            }
+         }
+ 
+-        internal void CallBackExecuteRedirectView () {
+-            responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
+-            object ret = methodToExecute.Invoke (componentModel, parameters);
+-            responseMethodVO.MethodResult = ret;
+-            responseMethodVO.SetExecutionSuccess (true);
+-            methodToResponse.Invoke (viewHandler, new object[] {responseMethodVO});
++        private void CallBackExecuteRedirectView () {
++            lock (responseMethodVO) {
++                responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++                object ret = methodToExecute.Invoke (componentModel, parameters);
++                responseMethodVO.MethodResult = ret;
++                responseMethodVO.SetExecutionSuccess (true);
++                methodToResponse.Invoke (viewHandler, new object[] {responseMethodVO});
++            }
+         }
+ 
+-        internal void CallBackExecuteNoRedirect () {
+-            responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
+-            object ret = methodToExecute.Invoke (componentModel, parameters);
+-            responseMethodVO.MethodResult = ret;
+-            responseMethodVO.SetExecutionSuccess (true);
++        private void CallBackExecuteNoRedirect () {
++            lock (responseMethodVO) {
++                responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++                object ret = methodToExecute.Invoke (componentModel, parameters);
++                responseMethodVO.MethodResult = ret;
++                responseMethodVO.SetExecutionSuccess (true);
++            }
+         }
++
++        internal void Do () {
++            if (thread != null) {
++                thread.Start ();
++            }
++        }
+     }
+ }
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-12 08:51:13 UTC (rev 487)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-12 21:25:21 UTC (rev 488)
+@@ -6,6 +6,7 @@
+ using ComponentModel.Container.Dao;
+ using ComponentModel.Factory;
+ using ComponentModel.ExceptionManager;
++using ComponentModel.Threading;
+ using ComponentModel.Exceptions;
+ using NLog;
+ 
+@@ -219,24 +220,33 @@
+                 }
+             }
+             else {
++                ComponentActionDispatcher componentActionDispatcher;
+                 //Operaciones bloqueantes, envolver en un hilo
+-                throw new Exception ("NOT IMPLEMENTED YET !!");
+                 if (redirect) {
+                     MethodInfo methodToResponse;
+                     Type viewType;
+                     if (viewHandler == null) {
+                         viewType = this.GetViewType (componentMethodAttribute);
+                         methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
++                        componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters, viewType, methodToResponse);
++                        componentActionDispatcher.Do ();
++                        return componentActionDispatcher.ResponseMethodVO;
+                     }
+                     else {
+                         viewType = viewHandler.GetType ();
+                         methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
++                        componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters, viewHandler, methodToResponse);
++                        componentActionDispatcher.Do ();
++                        return componentActionDispatcher.ResponseMethodVO;
+                     }
+                 }
+                 else {
++                   componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters); 
++                   componentActionDispatcher.Do ();
++                   return componentActionDispatcher.ResponseMethodVO;
+                 }
+             }
+-            return null;
++            //return null;
+         }
+ 
+     }
+
+
+
+From nestor at sheep.berlios.de  Sat May 14 14:15:10 2005
+From: nestor at sheep.berlios.de (Néstor Salceda at BerliOS)
+Date: Sat, 14 May 2005 14:15:10 +0200
+Subject: [Mspace-checkins] r489 - ComponentModel/trunk/src
+Message-ID: <200505141215.j4ECFA5U012726@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-05-14 14:15:09 +0200 (Sat, 14 May 2005)
+New Revision: 489
+
+Modified:
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Fix a little bug redirecting ResponseMethodVO.
+
+
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-12 21:25:21 UTC (rev 488)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-14 12:15:09 UTC (rev 489)
+@@ -132,8 +132,8 @@
+ 
+ 
+         private ResponseMethodVO ExecuteRedirectNewView (MethodInfo methodToExecute, object[] parameters, Type viewType, MethodInfo methodToResponse) {
++            ResponseMethodVO responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO (); 
+             try {
+-                ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
+                 object ret = methodToExecute.Invoke (this, parameters);
+                 responseMethodVO.MethodResult = ret;
+                 object obj = viewType.GetConstructor (null).Invoke (null);
+@@ -144,36 +144,34 @@
+             catch (TargetInvocationException exception) {
+                 this.MapException (exception);
+             }
+-            return null;
++            return responseMethodVO;
+         }
+ 
+         private ResponseMethodVO ExecuteRedirectView (MethodInfo methodToExecute, object[] parameters, IViewHandler viewHandler, MethodInfo methodToResponse) {
++            ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
+             try {
+-                ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
+                 object ret = methodToExecute.Invoke (this, parameters);
+                 responseMethodVO.MethodResult = ret;
+                 responseMethodVO.SetExecutionSuccess (true);
+                 methodToResponse.Invoke (viewHandler, new object[] {responseMethodVO});
+-                return responseMethodVO;
+             }
+             catch (TargetInvocationException exception) {
+                 this.MapException (exception);
+             }
+-            return null;
++            return responseMethodVO;
+         }
+         
+         private ResponseMethodVO ExecuteNoRedirect (MethodInfo methodToExecute, object[] parameters) {
++            ResponseMethodVO responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
+             try {
+-                ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
+                 object ret = methodToExecute.Invoke (this, parameters);
+                 responseMethodVO.MethodResult = ret;
+                 responseMethodVO.SetExecutionSuccess (true);
+-                return responseMethodVO;
+             }
+             catch (TargetInvocationException exception) {
+                 this.MapException (exception);
+             }
+-            return null;
++            return responseMethodVO;
+         }
+         
+         /*Executor overloads*/
+@@ -226,24 +224,40 @@
+                     MethodInfo methodToResponse;
+                     Type viewType;
+                     if (viewHandler == null) {
++                        //Exception handling ??
+                         viewType = this.GetViewType (componentMethodAttribute);
+                         methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
+                         componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters, viewType, methodToResponse);
+-                        componentActionDispatcher.Do ();
++                        try {
++                            componentActionDispatcher.Do ();
++                        }
++                        catch (TargetInvocationException exception) {
++                            this.MapException (exception);
++                        }
+                         return componentActionDispatcher.ResponseMethodVO;
+                     }
+                     else {
+                         viewType = viewHandler.GetType ();
+                         methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
+                         componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters, viewHandler, methodToResponse);
+-                        componentActionDispatcher.Do ();
++                        try {
++                            componentActionDispatcher.Do ();
++                        }
++                        catch (TargetInvocationException exception) {
++                            this.MapException (exception);
++                        }
+                         return componentActionDispatcher.ResponseMethodVO;
+                     }
+                 }
+                 else {
+-                   componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters); 
+-                   componentActionDispatcher.Do ();
+-                   return componentActionDispatcher.ResponseMethodVO;
++                    componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters); 
++                    try {
++                        componentActionDispatcher.Do ();
++                    }
++                    catch (TargetInvocationException exception) {
++                        this.MapException (exception);
++                    }
++                    return componentActionDispatcher.ResponseMethodVO;
+                 }
+             }
+             //return null;
+
+
+
+From isaaccp at sheep.berlios.de  Mon May 16 00:03:50 2005
+From: isaaccp at sheep.berlios.de (Isaac Clerencia at BerliOS)
+Date: Mon, 16 May 2005 00:03:50 +0200
+Subject: [Mspace-checkins] r490 - koolboy/trunk/src
+Message-ID: <200505152203.j4FM3o38020671@sheep.berlios.de>
+
+Author: isaaccp
+Date: 2005-05-16 00:03:49 +0200 (Mon, 16 May 2005)
+New Revision: 490
+
+Modified:
+   koolboy/trunk/src/koolboy.rb
+   koolboy/trunk/src/libkoolnotes.rb
+   koolboy/trunk/src/noteview.rb
+Log:
+Foo!
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-05-14 12:15:09 UTC (rev 489)
++++ koolboy/trunk/src/koolboy.rb	2005-05-15 22:03:49 UTC (rev 490)
+@@ -2,10 +2,11 @@
+ 
+ require 'Korundum'
+ require 'libkoolnotes.rb'
++require 'noteview.rb'
+ 
+ class Koolboy < KDE::SystemTray
+-	slots   'sNewNote()', 'sShowNote(int)', 'sRecentChanges()',
+-			'sRemoveWindow(char*)', 'showAbout()', 'sSearchNotes()'
++	slots 'sNewNote()', 'sShowNote(int)', 'sRecentChanges()',
++		'sRemoveWindow(char*)', 'showAbout()', 'sSearchNotes()'
+ 	
+ 	k_dcop 'QStringList lastNotes()'
+ 
+@@ -41,7 +42,8 @@
+ 	end
+ 
+ 	def sNewNote
+-		window = NoteWindow.new(nil)
++		note = NoteManager.newNote
++		window = NoteView.new(note)
+ 		connect(window, SIGNAL('aboutToClose(char*)'),
+ 			self, SLOT('sRemoveWindow(char*)'))
+ 		window.show
+@@ -54,11 +56,14 @@
+ 			@windows[title].setActiveWindow
+ 			@windows[title].raise
+ 		else
+-			window = NoteWindow.new(title)
++			# get note
++			note = NoteManager.instance.getNote(title)
++
++			window = NoteView.new(note)
+ 			connect(window, SIGNAL('aboutToClose(char*)'),
+ 				self, SLOT('sRemoveWindow(char*)'))
+ 			window.show
+-			@windows[window.title] = window
++			@windows[note.title] = window
+ 		end
+ 	end
+ 
+@@ -89,54 +94,6 @@
+ 	end
+ end
+ 
+-class NoteWindow < KDE::MainWindow
+-	signals 'aboutToClose(char*)'
+-
+-	def initialize( name )
+-		if not name
+-			name = NoteManager.instance.unusedName
+-			new = true
+-		else
+-			new = false
+-		end
+-		super(nil, name)
+-		setCaption(name)
+-
+-		# we need to increase refCount to be able
+-		# to use kmainwindows in this manner
+-		$kapp.ref
+-
+-		# get note
+-		@note = NoteManager.instance.getNote(name)
+-
+-		if not new
+-			resize(@note.size)
+-			move(@note.pos)
+-		end
+-
+-		@text = KDE::TextEdit.new(self)
+-		@text.setText(@note.text)
+-		self.setCentralWidget(@text)
+-	end
+-
+-	def title
+-		@note.title
+-	end
+-
+-	def queryClose
+-		text = @text.text.strip
+-		emit aboutToClose(@note.title)
+-		if text.length != 0
+-		then
+-			title = text.split("\n").first
+-			NoteManager.instance.change(@note,title,text,size,pos)
+-		else
+-			NoteManager.instance.delete(@note)
+-		end 
+-		return true
+-	end
+-end
+-
+ if $0 == __FILE__
+ 	description = "Note taking app"
+ 	version     = "0.1"
+
+Modified: koolboy/trunk/src/libkoolnotes.rb
+===================================================================
+--- koolboy/trunk/src/libkoolnotes.rb	2005-05-14 12:15:09 UTC (rev 489)
++++ koolboy/trunk/src/libkoolnotes.rb	2005-05-15 22:03:49 UTC (rev 490)
+@@ -75,7 +75,7 @@
+ class XmlNote
+ 	
+ 	attr_accessor :title, :time
+-	
++
+ 	def initialize(title)
+ 		@title = title
+ 		@file = KDE::StandardDirs::locateLocal(
+@@ -94,8 +94,8 @@
+ 	end
+ 
+ 	def read
+-		@xml = IO.readlines(@file).join("\n")
+ 		begin
++			@xml = IO.readlines(@file).join("\n")
+ 			@doc = REXML::Document.new(@xml)
+ 			@text = @doc.root.elements["text"].text.to_s
+ 			@size = Qt::Size.new(@doc.root.elements["height"].text.to_i,
+@@ -132,14 +132,12 @@
+ 		@doc.root << y
+ 		f = File.new(@file, "w")
+ 		@doc.write(f)
++		f.close
+ 	end
+ 
+-	def change (title,text,size,pos)
++	def changeTitle(title)
+ 		File.exists?(@file) and File.delete(@file)	
+ 		@title = title
+-		@text = text
+-		@size = size
+-		@pos = pos
+ 		@file = KDE::StandardDirs::locateLocal(
+ 			"appdata","notes/#{@title}.note")
+ 		@time = Time.new
+@@ -151,6 +149,7 @@
+ 	end
+ 
+ 	def to_s
++		@read or read
+ 		return @xml
+ 	end
+ 
+@@ -166,6 +165,7 @@
+ 
+ 			def #{a}= (val)
+ 				@#{a} = val
++				write
+ 			end
+ 			EOF
+ 		end
+
+Modified: koolboy/trunk/src/noteview.rb
+===================================================================
+--- koolboy/trunk/src/noteview.rb	2005-05-14 12:15:09 UTC (rev 489)
++++ koolboy/trunk/src/noteview.rb	2005-05-15 22:03:49 UTC (rev 490)
+@@ -5,9 +5,13 @@
+ #TODO
+ #How can I use custom icons in actions?
+ class NoteView < MainWindow
++	signals 'aboutToClose(char*)'
++
+ 	slots 'slotLink()',
+-	'noteDeleted()', 'slotFind()', 'formatBold()', 'formatUnderline()',
+-	'formatStrikeout()', 'formatItalic()'
++	'sNoteDeleted()', 'slotFind()', 'sFormatBold()', 'sFormatUnderline()',
++	'sFormatStrikeout()', 'sFormatItalic()', 'sTitleChanged()',
++	'sTextChanged()'
++
+ 	attr_reader :note
+ 
+ 	# Receives an XmlNote and handles its content
+@@ -20,26 +24,31 @@
+ 		initWidgets()
+ 		defineActions()
+ 		initToolBar()
+-		
++
++		# we need to increase refCount to be able
++		# to use kmainwindows in this manner
++		$kapp.ref
++
+ 		self.caption = @note.title
++		@titleLineEdit.text = @note.title
+ 		@textEdit.text = @note.text if @note.text
+ 		resize(@note.size) if @note.size
+-		move(@note.pos) if @note.size
++		move(@note.pos) if @note.pos
+ 	end
+ 	
+ 	#####################
+ 	#TEXT formatting	
+-	def formatItalic
++	def sFormatItalic
+ 		puts "FORMAT"
+ 	end
+ 
+-	def formatUnderline
++	def sFormatUnderline
+ 	end
+ 
+-	def formatStrikeout
++	def sFormatStrikeout
+ 	end
+ 
+-	def formatBold
++	def sFormatBold
+ 	end
+ 	###################
+ 
+@@ -49,14 +58,23 @@
+ 	def slotLink
+ 	end
+ 
+-	def noteDeleted
++	def sNoteDeleted
+ 	end
+ 	
+ 	def initWidgets
+ 		@vbox = Qt::VBox.new(self)
+ 		@vbox.show
++		@titleLineEdit = LineEdit.new(@vbox);
++		regex = Qt::RegExp.new("([A-Z]([a-z]*)){2,}")
++		validator = Qt::RegExpValidator.new(regex,nil)
++		@titleLineEdit.setValidator(validator)
++		@titleLineEdit.show
++		connect(@titleLineEdit, SIGNAL('returnPressed()'),
++			self, SLOT('sTitleChanged()'))
+ 		@textEdit = TextEdit.new(@vbox)
+ 		@textEdit.show
++		connect(@textEdit, SIGNAL('textChanged()'),
++			self, SLOT('sTextChanged()'))
+ 		self.centralWidget = @vbox
+ 	end
+ 	
+@@ -74,35 +92,53 @@
+ 		@formatAction = ActionMenu.new(i18n("Format"), "font")
+ 		
+ 		icon = Qt::IconSet.new(@icons.loadIcon("text_bold", KDE::Icon::Toolbar))
+-		@formatAction.insert(Action.new( i18n("Bold"), icon, Shortcut.new(), self, SLOT('formatBold()'), actionCollection(), "formatBold"))
++		@formatAction.insert(Action.new( i18n("Bold"), icon, Shortcut.new(), self, SLOT('sFormatBold()'), actionCollection(), "formatBold"))
+ 
+ 		icon = Qt::IconSet.new(@icons.loadIcon("text_italic", KDE::Icon::Toolbar))
+-		@formatAction.insert(Action.new( i18n("Italic"), icon, Shortcut.new(), self, SLOT('formatItalic()'), actionCollection(), "formatItalic"))
++		@formatAction.insert(Action.new( i18n("Italic"), icon, Shortcut.new(), self, SLOT('sFormatItalic()'), actionCollection(), "formatItalic"))
+ 
+ 		icon = Qt::IconSet.new(@icons.loadIcon("text_under", KDE::Icon::Toolbar))
+-		@formatAction.insert(Action.new( i18n("Underline"), icon, Shortcut.new(), self, SLOT('formatUnderline()'), actionCollection(), "formatUnderline"))
++		@formatAction.insert(Action.new( i18n("Underline"), icon, Shortcut.new(), self, SLOT('sFormatUnderline()'), actionCollection(), "formatUnderline"))
+ 
+ 		icon = Qt::IconSet.new(@icons.loadIcon("text_strike", KDE::Icon::Toolbar))
+-		@formatAction.insert(Action.new( i18n("Strikeout"), icon, Shortcut.new(), self, SLOT('formatStrikeout()'), actionCollection(), "formatStrikeout"))
++		@formatAction.insert(Action.new( i18n("Strikeout"), icon, Shortcut.new(), self, SLOT('sFormatStrikeout()'), actionCollection(), "formatStrikeout"))
+ 	end
+-	
++
++	def sTitleChanged
++		if @titleLineEdit.hasAcceptableInput
++			@note.changeTitle(@titleLineEdit.text)
++		end
++	end
++
++	def sTextChanged
++		@note.text = @textEdit.text
++	end
++
+ 	def initToolBar
+ 		@linkAction.plug(toolBar())
+ 		@findAction.plug(toolBar())
+ 		@formatAction.plug(toolBar())
+ 		@deleteAction.plug(toolBar())
+ 	end
++
++	def queryClose
++		emit aboutToClose(@note.title)
++		@note.size = size
++		@note.pos = pos
++		@note.write
++		return true
++	end
+ end
+ 
+ if $0 == __FILE__
+ 	description = "Note taking app"
+ 	version     = "1.0"
+ 	about = AboutData.new("koolboy", "Koolboy", "0.1",
+-						   description, AboutData::License_GPL,
+-						   "")
++		   description, AboutData::License_GPL, "")
+ 
+ 	about.addAuthor("Isaac Clerencia", "Core developer", "isaac at sindominio.net")
+ 	about.addAuthor("Sergio Rubio", "Core developer", "sergio.rubio at hispalinux.es")
++	about.setBugAddress("mspace-koolboy at lists.berlios.de")
+ 
+ 	KDE::CmdLineArgs.init(ARGV,about)
+ 	a = KDE::Application.new()
+@@ -113,4 +149,4 @@
+ 
+ 	a.mainWidget = thing
+ 	a.exec
+-end
+\ No newline at end of file
++end
+
+
+
+From rubiojr at sheep.berlios.de  Mon May 16 13:39:45 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Mon, 16 May 2005 13:39:45 +0200
+Subject: [Mspace-checkins] r491 - scripts
+Message-ID: <200505161139.j4GBdj8a022182@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-16 13:39:41 +0200 (Mon, 16 May 2005)
+New Revision: 491
+
+Added:
+   scripts/encode-ppc.sh
+Log:
+Scales down a divx movie making it 60% smaller. Ideal to watch it on a PDA
+
+
+Added: scripts/encode-ppc.sh
+===================================================================
+--- scripts/encode-ppc.sh	2005-05-15 22:03:49 UTC (rev 490)
++++ scripts/encode-ppc.sh	2005-05-16 11:39:41 UTC (rev 491)
+@@ -0,0 +1 @@
++mencoder $1 -aid 129 -noskip -vf scale=320:240 -of mpeg -ovc lavc -lavcopts vcodec=mpeg1video:vbitrate=400000:vrc_minrate=100:vrc_maxrate=500:vrc_buf_size=300:vpass=1 -oac lavc -lavcopts acodec=mp2:abitrate=96 -o PPC_$1
+
+
+Property changes on: scripts/encode-ppc.sh
+___________________________________________________________________
+Name: svn:executable
+   + *
+
+
+
+From rubiojr at sheep.berlios.de  Mon May 16 14:55:51 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Mon, 16 May 2005 14:55:51 +0200
+Subject: [Mspace-checkins] r492 - scripts
+Message-ID: <200505161255.j4GCtpbK020068@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-16 14:55:50 +0200 (Mon, 16 May 2005)
+New Revision: 492
+
+Added:
+   scripts/encode-ppc.rb
+Removed:
+   scripts/encode-ppc.sh
+Log:
+Rubified
+
+
+
+Copied: scripts/encode-ppc.rb (from rev 491, scripts/encode-ppc.sh)
+===================================================================
+--- scripts/encode-ppc.sh	2005-05-16 11:39:41 UTC (rev 491)
++++ scripts/encode-ppc.rb	2005-05-16 12:55:50 UTC (rev 492)
+@@ -0,0 +1,17 @@
++#!/usr/bin/ruby
++require "shell"
++
++file = ARGV[0]
++if !file
++	puts "no args"
++	exit
++end
++destfile = "PocketMovie_" + File.basename(file)
++cmd = "mencoder"
++args = "#{file} -aid 129 -noskip -vf scale=320:240 -of mpeg -ovc lavc -lavcopts vcodec=mpeg1video:vbitrate=400000:vrc_minrate=100:vrc_maxrate=500:vrc_buf_size=300:vpass=1 -oac lavc -lavcopts acodec=mp2:abitrate=96 -o #{destfile}"
++
++Shell.def_system_command(cmd, args)
++
++puts "Encoding #{file} to #{destfile}"
++`#{cmd} #{args}`
++
+
+Deleted: scripts/encode-ppc.sh
+===================================================================
+--- scripts/encode-ppc.sh	2005-05-16 11:39:41 UTC (rev 491)
++++ scripts/encode-ppc.sh	2005-05-16 12:55:50 UTC (rev 492)
+@@ -1 +0,0 @@
+-mencoder $1 -aid 129 -noskip -vf scale=320:240 -of mpeg -ovc lavc -lavcopts vcodec=mpeg1video:vbitrate=400000:vrc_minrate=100:vrc_maxrate=500:vrc_buf_size=300:vpass=1 -oac lavc -lavcopts acodec=mp2:abitrate=96 -o PPC_$1
+
+
+
+From rubiojr at sheep.berlios.de  Mon May 16 15:07:33 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Mon, 16 May 2005 15:07:33 +0200
+Subject: [Mspace-checkins] r493 - scripts
+Message-ID: <200505161307.j4GD7X9i020649@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-16 15:07:31 +0200 (Mon, 16 May 2005)
+New Revision: 493
+
+Modified:
+   scripts/encode-ppc.rb
+Log:
+crap removed 
+
+
+Modified: scripts/encode-ppc.rb
+===================================================================
+--- scripts/encode-ppc.rb	2005-05-16 12:55:50 UTC (rev 492)
++++ scripts/encode-ppc.rb	2005-05-16 13:07:31 UTC (rev 493)
+@@ -1,5 +1,4 @@
+ #!/usr/bin/ruby
+-require "shell"
+ 
+ file = ARGV[0]
+ if !file
+@@ -10,8 +9,6 @@
+ cmd = "mencoder"
+ args = "#{file} -aid 129 -noskip -vf scale=320:240 -of mpeg -ovc lavc -lavcopts vcodec=mpeg1video:vbitrate=400000:vrc_minrate=100:vrc_maxrate=500:vrc_buf_size=300:vpass=1 -oac lavc -lavcopts acodec=mp2:abitrate=96 -o #{destfile}"
+ 
+-Shell.def_system_command(cmd, args)
+-
+ puts "Encoding #{file} to #{destfile}"
+ `#{cmd} #{args}`
+ 
+
+
+
+From rubiojr at sheep.berlios.de  Mon May 16 15:27:48 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Mon, 16 May 2005 15:27:48 +0200
+Subject: [Mspace-checkins] r494 - scripts
+Message-ID: <200505161327.j4GDRmEj021634@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-16 15:27:47 +0200 (Mon, 16 May 2005)
+New Revision: 494
+
+Modified:
+   scripts/encode-ppc.rb
+Log:
+changed some params
+
+
+
+Modified: scripts/encode-ppc.rb
+===================================================================
+--- scripts/encode-ppc.rb	2005-05-16 13:07:31 UTC (rev 493)
++++ scripts/encode-ppc.rb	2005-05-16 13:27:47 UTC (rev 494)
+@@ -1,13 +1,19 @@
+ #!/usr/bin/ruby
+ 
++def usage
++	puts "Usage: encode-ppc.rb <file>"
++end
++
+ file = ARGV[0]
+ if !file
+-	puts "no args"
++	usage
+ 	exit
+ end
++
+ destfile = "PocketMovie_" + File.basename(file)
+ cmd = "mencoder"
+-args = "#{file} -aid 129 -noskip -vf scale=320:240 -of mpeg -ovc lavc -lavcopts vcodec=mpeg1video:vbitrate=400000:vrc_minrate=100:vrc_maxrate=500:vrc_buf_size=300:vpass=1 -oac lavc -lavcopts acodec=mp2:abitrate=96 -o #{destfile}"
++#extraopts -aid 129
++args = "#{file} -noskip -vf scale=320:240 -of mpeg -ovc lavc -lavcopts vcodec=mpeg1video:vbitrate=400000:vrc_minrate=100:vrc_maxrate=500:vrc_buf_size=300:vpass=1 -oac copy -o #{destfile}"
+ 
+ puts "Encoding #{file} to #{destfile}"
+ `#{cmd} #{args}`
+
+
+
+From rubiojr at sheep.berlios.de  Mon May 16 16:54:45 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Mon, 16 May 2005 16:54:45 +0200
+Subject: [Mspace-checkins] r495 - scripts
+Message-ID: <200505161454.j4GEsjvu026094@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-16 16:54:44 +0200 (Mon, 16 May 2005)
+New Revision: 495
+
+Modified:
+   scripts/encode-ppc.rb
+Log:
+Use PocketDivxEncoder default flags. Much better results now.
+Final file is 70%-80% smaller than the original file.
+
+
+
+Modified: scripts/encode-ppc.rb
+===================================================================
+--- scripts/encode-ppc.rb	2005-05-16 13:27:47 UTC (rev 494)
++++ scripts/encode-ppc.rb	2005-05-16 14:54:44 UTC (rev 495)
+@@ -10,11 +10,12 @@
+ 	exit
+ end
+ 
+-destfile = "PocketMovie_" + File.basename(file)
++destfile = "PocketPC_" + File.basename(file)
+ cmd = "mencoder"
+-#extraopts -aid 129
+-args = "#{file} -noskip -vf scale=320:240 -of mpeg -ovc lavc -lavcopts vcodec=mpeg1video:vbitrate=400000:vrc_minrate=100:vrc_maxrate=500:vrc_buf_size=300:vpass=1 -oac copy -o #{destfile}"
++## PocketDivxEncoder args for PocketPC ##
++pocketpc_opts = "-srate 22050 -oac mp3lame -lameopts mode=2:cbr:br=24 -vf scale=320:240,eq2=1.0:1.0:0.03:1.0 -sws 2 -ovc lavc -lavcopts vcodec=mpeg4:vhq:vbitrate=248 -ffourcc DX50"
++lame_args = "#{file} -noskip -vf scale=320:240 -of mpeg -ovc lavc -lavcopts vcodec=mpeg1video:vbitrate=400000:vrc_minrate=100:vrc_maxrate=500:vrc_buf_size=300:vpass=1 -oac copy -o #{destfile}"
+ 
+ puts "Encoding #{file} to #{destfile}"
+-`#{cmd} #{args}`
++`#{cmd} #{file} #{pocketpc_opts} -o #{destfile}`
+ 
+
+
+
+From rubiojr at sheep.berlios.de  Mon May 16 17:39:02 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Mon, 16 May 2005 17:39:02 +0200
+Subject: [Mspace-checkins] r496 - scripts
+Message-ID: <200505161539.j4GFd2p8028962@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-16 17:39:01 +0200 (Mon, 16 May 2005)
+New Revision: 496
+
+Modified:
+   scripts/encode-ppc.rb
+Log:
+defaults to audio bitrate = 64
+
+
+Modified: scripts/encode-ppc.rb
+===================================================================
+--- scripts/encode-ppc.rb	2005-05-16 14:54:44 UTC (rev 495)
++++ scripts/encode-ppc.rb	2005-05-16 15:39:01 UTC (rev 496)
+@@ -13,7 +13,7 @@
+ destfile = "PocketPC_" + File.basename(file)
+ cmd = "mencoder"
+ ## PocketDivxEncoder args for PocketPC ##
+-pocketpc_opts = "-srate 22050 -oac mp3lame -lameopts mode=2:cbr:br=24 -vf scale=320:240,eq2=1.0:1.0:0.03:1.0 -sws 2 -ovc lavc -lavcopts vcodec=mpeg4:vhq:vbitrate=248 -ffourcc DX50"
++pocketpc_opts = "-srate 22050 -oac mp3lame -lameopts mode=2:cbr:br=64 -vf scale=320:240,eq2=1.0:1.0:0.03:1.0 -sws 2 -ovc lavc -lavcopts vcodec=mpeg4:vhq:vbitrate=248 -ffourcc DX50"
+ lame_args = "#{file} -noskip -vf scale=320:240 -of mpeg -ovc lavc -lavcopts vcodec=mpeg1video:vbitrate=400000:vrc_minrate=100:vrc_maxrate=500:vrc_buf_size=300:vpass=1 -oac copy -o #{destfile}"
+ 
+ puts "Encoding #{file} to #{destfile}"
+
+
+
+From rubiojr at sheep.berlios.de  Mon May 16 21:01:36 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Mon, 16 May 2005 21:01:36 +0200
+Subject: [Mspace-checkins] r497 - scripts
+Message-ID: <200505161901.j4GJ1aIQ021613@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-16 21:01:34 +0200 (Mon, 16 May 2005)
+New Revision: 497
+
+Modified:
+   scripts/encode-ppc.rb
+Log:
+if file is a directory encode all the movies inside
+
+
+Modified: scripts/encode-ppc.rb
+===================================================================
+--- scripts/encode-ppc.rb	2005-05-16 15:39:01 UTC (rev 496)
++++ scripts/encode-ppc.rb	2005-05-16 19:01:34 UTC (rev 497)
+@@ -4,18 +4,38 @@
+ 	puts "Usage: encode-ppc.rb <file>"
+ end
+ 
+-file = ARGV[0]
+-if !file
+-	usage
+-	exit
++
++def encodeFile(file)
++	basename = File.basename(file)
++	puts "Encoding file: #{basename}"
++	destfile = "PocketPC_" + basename
++	cmd = "mencoder"
++	## PocketDivxEncoder args for PocketPC ##
++	pocketpc_opts = "-srate 22050 -oac mp3lame -lameopts mode=2:cbr:br=64 -vf scale=320:240,eq2=1.0:1.0:0.03:1.0 -sws 2 -ovc lavc -lavcopts vcodec=mpeg4:vhq:vbitrate=248 -ffourcc DX50"
++	lame_args = "#{file} -noskip -vf scale=320:240 -of mpeg -ovc lavc -lavcopts vcodec=mpeg1video:vbitrate=400000:vrc_minrate=100:vrc_maxrate=500:vrc_buf_size=300:vpass=1 -oac copy -o #{destfile}"
++	`#{cmd} #{file} #{pocketpc_opts} -o #{destfile}`
+ end
+ 
+-destfile = "PocketPC_" + File.basename(file)
+-cmd = "mencoder"
+-## PocketDivxEncoder args for PocketPC ##
+-pocketpc_opts = "-srate 22050 -oac mp3lame -lameopts mode=2:cbr:br=64 -vf scale=320:240,eq2=1.0:1.0:0.03:1.0 -sws 2 -ovc lavc -lavcopts vcodec=mpeg4:vhq:vbitrate=248 -ffourcc DX50"
+-lame_args = "#{file} -noskip -vf scale=320:240 -of mpeg -ovc lavc -lavcopts vcodec=mpeg1video:vbitrate=400000:vrc_minrate=100:vrc_maxrate=500:vrc_buf_size=300:vpass=1 -oac copy -o #{destfile}"
++def encodeDir(dir)
++	puts "Encoding al files in #{dir}"
++	fcount = 0
++	Dir.foreach(ARGV[0]) { |file|
++		encodeFile(file) if file =~ /.*\.(rb|avi|mpeg|mpg|divx)$/
++		fcount.next
++	}
++	puts "#{fcount} files encoded."
++end
+ 
+-puts "Encoding #{file} to #{destfile}"
+-`#{cmd} #{file} #{pocketpc_opts} -o #{destfile}`
++if $0 == __FILE__
++	file = ARGV[0]
++	if !file
++		usage
++		exit
++	end
++	if File.directory?(file)
++		encodeDir(file)
++	else
++		encodeFile(file)
++	end
++end
+ 
+
+
+
+From rubiojr at sheep.berlios.de  Mon May 16 21:04:15 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Mon, 16 May 2005 21:04:15 +0200
+Subject: [Mspace-checkins] r498 - scripts
+Message-ID: <200505161904.j4GJ4F3X021777@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-16 21:04:08 +0200 (Mon, 16 May 2005)
+New Revision: 498
+
+Modified:
+   scripts/encode-ppc.rb
+Log:
+
+
+Modified: scripts/encode-ppc.rb
+===================================================================
+--- scripts/encode-ppc.rb	2005-05-16 19:01:34 UTC (rev 497)
++++ scripts/encode-ppc.rb	2005-05-16 19:04:08 UTC (rev 498)
+@@ -13,7 +13,7 @@
+ 	## PocketDivxEncoder args for PocketPC ##
+ 	pocketpc_opts = "-srate 22050 -oac mp3lame -lameopts mode=2:cbr:br=64 -vf scale=320:240,eq2=1.0:1.0:0.03:1.0 -sws 2 -ovc lavc -lavcopts vcodec=mpeg4:vhq:vbitrate=248 -ffourcc DX50"
+ 	lame_args = "#{file} -noskip -vf scale=320:240 -of mpeg -ovc lavc -lavcopts vcodec=mpeg1video:vbitrate=400000:vrc_minrate=100:vrc_maxrate=500:vrc_buf_size=300:vpass=1 -oac copy -o #{destfile}"
+-	`#{cmd} #{file} #{pocketpc_opts} -o #{destfile}`
++	`#{cmd} "#{file}" #{pocketpc_opts} -o #{destfile}`
+ end
+ 
+ def encodeDir(dir)
+
+
+
+From rubiojr at sheep.berlios.de  Mon May 16 21:46:59 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Mon, 16 May 2005 21:46:59 +0200
+Subject: [Mspace-checkins] r499 - scripts
+Message-ID: <200505161946.j4GJkx78024738@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-16 21:46:58 +0200 (Mon, 16 May 2005)
+New Revision: 499
+
+Modified:
+   scripts/encode-ppc.rb
+Log:
+fixed file path path
+
+
+Modified: scripts/encode-ppc.rb
+===================================================================
+--- scripts/encode-ppc.rb	2005-05-16 19:04:08 UTC (rev 498)
++++ scripts/encode-ppc.rb	2005-05-16 19:46:58 UTC (rev 499)
+@@ -20,7 +20,7 @@
+ 	puts "Encoding al files in #{dir}"
+ 	fcount = 0
+ 	Dir.foreach(ARGV[0]) { |file|
+-		encodeFile(file) if file =~ /.*\.(rb|avi|mpeg|mpg|divx)$/
++		encodeFile(dir + "/" + file) if file =~ /.*\.(rb|avi|mpeg|mpg|divx)$/
+ 		fcount.next
+ 	}
+ 	puts "#{fcount} files encoded."
+
+
+
+From rubiojr at sheep.berlios.de  Mon May 16 23:02:10 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Mon, 16 May 2005 23:02:10 +0200
+Subject: [Mspace-checkins] r500 - scripts
+Message-ID: <200505162102.j4GL2A3o031990@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-16 23:02:05 +0200 (Mon, 16 May 2005)
+New Revision: 500
+
+Added:
+   scripts/emurename.rb
+Log:
+New script to rename the files with spaces, brackets, etc.
+
+
+
+Added: scripts/emurename.rb
+===================================================================
+--- scripts/emurename.rb	2005-05-16 19:46:58 UTC (rev 499)
++++ scripts/emurename.rb	2005-05-16 21:02:05 UTC (rev 500)
+@@ -0,0 +1,34 @@
++#!/usr/bin/ruby
++require "fileutils"
++
++def usage
++	puts "Usage: #{__FILE__} <directory> | <file>"
++end
++
++def normalizeDir(dir)
++	Dir.foreach(dir) { |file|
++		return if File.directory?(dir)
++		normalizeFile(dir + "/" + file)
++	}
++end
++
++def normalizeFile(file)
++	ext = file[file.rindex(".") .. file.length]
++	basename = File.basename(file, ext)
++	dir = File.dirname(file)
++	return if basename == "." or basename == ".."
++	newName = dir + "/" + basename.scan(/\w+/).join("_") + ext
++	#The file does not need to be renamed
++	return if File.exist?(newName)
++	FileUtils.mv(file, newName)
++end
++
++if $0 == __FILE__
++	arg = ARGV[0]
++	usage if !arg
++	if File.directory?(arg)
++		normalizeDir(arg)
++	else
++		normalizeFile(arg)
++	end
++end
+
+
+Property changes on: scripts/emurename.rb
+___________________________________________________________________
+Name: svn:executable
+   + *
+
+
+
+From rubiojr at sheep.berlios.de  Mon May 16 23:19:13 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Mon, 16 May 2005 23:19:13 +0200
+Subject: [Mspace-checkins] r501 - scripts
+Message-ID: <200505162119.j4GLJDTR000592@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-16 23:19:12 +0200 (Mon, 16 May 2005)
+New Revision: 501
+
+Modified:
+   scripts/emurename.rb
+Log:
+exit after usage message
+
+
+Modified: scripts/emurename.rb
+===================================================================
+--- scripts/emurename.rb	2005-05-16 21:02:05 UTC (rev 500)
++++ scripts/emurename.rb	2005-05-16 21:19:12 UTC (rev 501)
+@@ -3,6 +3,7 @@
+ 
+ def usage
+ 	puts "Usage: #{__FILE__} <directory> | <file>"
++	exit
+ end
+ 
+ def normalizeDir(dir)
+
+
+
+From rubiojr at sheep.berlios.de  Mon May 16 23:27:54 2005
+From: rubiojr at sheep.berlios.de (Sergio Rubio at BerliOS)
+Date: Mon, 16 May 2005 23:27:54 +0200
+Subject: [Mspace-checkins] r502 - scripts
+Message-ID: <200505162127.j4GLRsUb001204@sheep.berlios.de>
+
+Author: rubiojr
+Date: 2005-05-16 23:27:53 +0200 (Mon, 16 May 2005)
+New Revision: 502
+
+Modified:
+   scripts/emurename.rb
+Log:
+added some verbosity
+fixed directory files iteration
+
+
+Modified: scripts/emurename.rb
+===================================================================
+--- scripts/emurename.rb	2005-05-16 21:19:12 UTC (rev 501)
++++ scripts/emurename.rb	2005-05-16 21:27:53 UTC (rev 502)
+@@ -8,12 +8,12 @@
+ 
+ def normalizeDir(dir)
+ 	Dir.foreach(dir) { |file|
+-		return if File.directory?(dir)
+-		normalizeFile(dir + "/" + file)
++		normalizeFile(dir + File::SEPARATOR + file) if !File.directory?(file)
+ 	}
+ end
+ 
+ def normalizeFile(file)
++	puts "Renaming #{file}"
+ 	ext = file[file.rindex(".") .. file.length]
+ 	basename = File.basename(file, ext)
+ 	dir = File.dirname(file)
+
+
+

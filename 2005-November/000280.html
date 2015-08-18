@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r567 - in BabuineComponentBuilder/trunk: . src/ComponentBuilder/Bo src/ComponentBuilder/Resources
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-November/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r567%20-%20in%20BabuineComponentBuilder/trunk%3A%20.%20src/ComponentBuilder/Bo%20src/ComponentBuilder/Resources&In-Reply-To=%3C200511011624.jA1GOXc2017645%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000281.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r567 - in BabuineComponentBuilder/trunk: . src/ComponentBuilder/Bo src/ComponentBuilder/Resources</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r567%20-%20in%20BabuineComponentBuilder/trunk%3A%20.%20src/ComponentBuilder/Bo%20src/ComponentBuilder/Resources&In-Reply-To=%3C200511011624.jA1GOXc2017645%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r567 - in BabuineComponentBuilder/trunk: . src/ComponentBuilder/Bo src/ComponentBuilder/Resources">nestor at berlios.de
+       </A><BR>
+    <I>Tue Nov  1 17:24:33 CET 2005</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000281.html">[Mspace-checkins] r568 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Dto Resources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#280">[ date ]</a>
+              <a href="thread.html#280">[ thread ]</a>
+              <a href="subject.html#280">[ subject ]</a>
+              <a href="author.html#280">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-11-01 17:24:32 +0100 (Tue, 01 Nov 2005)
+New Revision: 567
+
+Added:
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/mono-powered.png
+Modified:
+   BabuineComponentBuilder/trunk/BabuineComponentBuilder.build
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs
+Log:
+Ya escupe, pero creo que hay un error a la hora del dise?\195?\177o.
+
+Igual se a?\195?\177ade un campo nuevo para el modo de deploy del componente.
+
+
+
+Modified: BabuineComponentBuilder/trunk/BabuineComponentBuilder.build
+===================================================================
+--- BabuineComponentBuilder/trunk/BabuineComponentBuilder.build	2005-10-30 14:23:55 UTC (rev 566)
++++ BabuineComponentBuilder/trunk/BabuineComponentBuilder.build	2005-11-01 16:24:32 UTC (rev 567)
+@@ -76,6 +76,7 @@
+             &lt;resources&gt;
+                 &lt;include name=&quot;**/*.glade&quot;/&gt;
+                 &lt;include name=&quot;**/*.template&quot;/&gt;
++                &lt;include name=&quot;**/*.png&quot;/&gt;
+             &lt;/resources&gt;
+         &lt;/csc&gt;
+         &lt;tstamp/&gt;
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs	2005-10-30 14:23:55 UTC (rev 566)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs	2005-11-01 16:24:32 UTC (rev 567)
+@@ -219,6 +219,64 @@
+             return componentTable;
+         }
+         
++        private DirectoryInfo CreateSkeleton (ComponentSettingsDTO componentSettingsDTO) {
++            DirectoryInfo directoryInfo = new DirectoryInfo (preferencesDTO.OutputPath); 
++            DirectoryInfo componentDirectoryInfo = directoryInfo.CreateSubdirectory (componentSettingsDTO.ComponentName);
++            //Ahora crearemos uno para cada cosa, Bo, Forms, Dto, Exceptions ...
++            componentDirectoryInfo.CreateSubdirectory (&quot;Bo&quot;);
++            componentDirectoryInfo.CreateSubdirectory (&quot;Forms&quot;);
++            componentDirectoryInfo.CreateSubdirectory (&quot;Dto&quot;);
++            componentDirectoryInfo.CreateSubdirectory (&quot;Exceptions&quot;);
++            componentDirectoryInfo.CreateSubdirectory (&quot;Resources&quot;);
++        
++            return componentDirectoryInfo;
++        }
++
++        private void WriteFiles (Hashtable componentTable, DirectoryInfo componentDirectory, ComponentSettingsDTO componentSettingsDTO) {
++            StringCollection stringCollection = new StringCollection ();
++            IEnumerator enumerator = componentTable.Keys.GetEnumerator ();
++            while (enumerator.MoveNext ()) {
++                stringCollection.Add ((string) enumerator.Current);
++            }
++           
++            enumerator = (stringCollection as IEnumerable).GetEnumerator ();
++            while (enumerator.MoveNext ()) {
++                string fileName = (string) enumerator.Current;
++                string content = (string) componentTable[fileName];
++                if (fileName.EndsWith (&quot;ComponentModel.cs&quot;)) {
++                    WriteFileAt (fileName, componentDirectory.GetDirectories (&quot;Bo&quot;)[0], content);
++                }
++                if (fileName.StartsWith (componentSettingsDTO.ClassExceptionManager)) {
++                    WriteFileAt (fileName, componentDirectory.GetDirectories (&quot;Exceptions&quot;)[0], content);
++                }
++                IEnumerator auxEnumerator = (componentSettingsDTO.ViewsCollection as IEnumerable).GetEnumerator ();
++                while (auxEnumerator.MoveNext ()) {
++                    if (fileName.StartsWith ((string)auxEnumerator.Current)) {
++                        WriteFileAt (fileName, componentDirectory.GetDirectories (&quot;Forms&quot;)[0], content);
++                    }
++                }
++            } 
++
++            if (preferencesDTO.GenerateBuildfile) {
++                enumerator.Reset ();
++                while (enumerator.MoveNext ()) {
++                    string fileName = (string) enumerator.Current;
++                    if (fileName.StartsWith (componentSettingsDTO.ComponentName) &amp;&amp; fileName.EndsWith (&quot;.build&quot;)) {
++                        string content = (string) componentTable [fileName];
++                        WriteFileAt (fileName, componentDirectory, content);
++                    }
++                }
++            }
++        }
++
++        private void WriteFileAt (string fileName, DirectoryInfo directoryTo, string content) {
++            FileStream fileStream = new FileStream (Path.Combine (directoryTo.ToString (),fileName), FileMode.Create);
++            StreamWriter streamWriter = new StreamWriter (fileStream);
++            streamWriter.Write (content);
++            streamWriter.Close ();
++            fileStream.Close ();
++        }
++        
+         [ComponentMethod (&quot;ComponentBuilder.Forms.MainComponentBuilderForm&quot;, &quot;ResponseGenerateComponent&quot;)]
+         public void GenerateComponent (ComponentSettingsDTO componentSettingsDTO) {
+             Hashtable templateTable = GetTemplates ();
+@@ -231,11 +289,9 @@
+             
+             //Ahora solo resta guardarlo en archivos.  Con la ruta por
+             //defecto que se haya configurado.
++            DirectoryInfo componentDirectory = CreateSkeleton (componentSettingsDTO); 
++            WriteFiles (componentTable, componentDirectory, componentSettingsDTO); 
+             
+-
+-            //Se contemplar&#225; tambi&#233;n el escribir un fichero nant con la
+-            //informaci&#243;n necesaria.
+-            
+             IDictionaryEnumerator enumerator = componentTable.GetEnumerator ();
+             while (enumerator.MoveNext ()) {
+                 Console.WriteLine (enumerator.Key + &quot;\n&quot; + enumerator.Value);
+
+Added: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/mono-powered.png
+===================================================================
+(Binary files differ)
+
+
+Property changes on: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/mono-powered.png
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000281.html">[Mspace-checkins] r568 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Dto Resources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#280">[ date ]</a>
+              <a href="thread.html#280">[ thread ]</a>
+              <a href="subject.html#280">[ subject ]</a>
+              <a href="author.html#280">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

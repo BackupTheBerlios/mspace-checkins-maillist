@@ -1,0 +1,377 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r533 - in Cronus: . Views libmonotimer pruebas
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r533%20-%20in%20Cronus%3A%20.%20Views%20libmonotimer%20pruebas&In-Reply-To=%3C200510021737.j92Hbf7S022269%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000245.html">
+   <LINK REL="Next"  HREF="000247.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r533 - in Cronus: . Views libmonotimer pruebas</H1>
+    <B>Luis Bosque at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r533%20-%20in%20Cronus%3A%20.%20Views%20libmonotimer%20pruebas&In-Reply-To=%3C200510021737.j92Hbf7S022269%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r533 - in Cronus: . Views libmonotimer pruebas">luis at berlios.de
+       </A><BR>
+    <I>Sun Oct  2 19:37:41 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000245.html">[Mspace-checkins] r532 - in ComponentModel/trunk/src/ComponentModel: . Collections
+</A></li>
+        <LI>Next message: <A HREF="000247.html">[Mspace-checkins] r534 - / BabuineComponentBuilder
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#246">[ date ]</a>
+              <a href="thread.html#246">[ thread ]</a>
+              <a href="subject.html#246">[ subject ]</a>
+              <a href="author.html#246">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: luis
+Date: 2005-10-02 19:37:39 +0200 (Sun, 02 Oct 2005)
+New Revision: 533
+
+Added:
+   Cronus/libmonotimer/Source.cs
+   Cronus/pruebas/Serializer.cs
+   Cronus/pruebas/testXML.cs
+Modified:
+   Cronus/Makefile
+   Cronus/Views/MainView.cs
+   Cronus/libmonotimer/Communication.cs
+   Cronus/libmonotimer/Project.cs
+Log:
+Ficheros nuevos y nuevas tonterias variadas usadas de pruebas.
+
+
+Modified: Cronus/Makefile
+===================================================================
+--- Cronus/Makefile	2005-10-02 02:07:23 UTC (rev 532)
++++ Cronus/Makefile	2005-10-02 17:37:39 UTC (rev 533)
+@@ -2,18 +2,17 @@
+ # Do not modify this file
+ 
+ SOURCES = \
+-./Main.cs \
+ ./libmonotimer/Project.cs \
+ ./libmonotimer/Communication.cs \
+ ./Control/Controller.cs \
+ ./Views/MainView.cs \
++./pruebas/Serializer.cs \
+ 
+ PKG_REFERENCES = \
+ gnome-sharp \
+ gtk-sharp \
+ glade-sharp \
+ gnome-vfs-sharp-2.0 \
+-gda-sharp-2.0
+ 
+ 
+ PKG_REFERENCES_BUILD = $(addprefix -pkg:, $(PKG_REFERENCES))
+@@ -25,7 +24,7 @@
+ all: monotimer.exe
+ 
+ monotimer.exe: $(SOURCES)
+-	mcs $(MCS_OPTIONS) -r:Mono.Posix -r:CookComputing.XmlRpc.dll -target:exe -out:&quot;monotimer.exe&quot; $(PKG_REFERENCES_BUILD) $(SOURCES)
++	mcs $(MCS_OPTIONS) -r:Mono.Posix -r:dll/CookComputing.XmlRpc.dll -target:exe -out:&quot;monotimer.exe&quot; $(PKG_REFERENCES_BUILD) $(SOURCES)
+ 
+ clean:
+ 	rm -f monotimer.exe
+
+Modified: Cronus/Views/MainView.cs
+===================================================================
+--- Cronus/Views/MainView.cs	2005-10-02 02:07:23 UTC (rev 532)
++++ Cronus/Views/MainView.cs	2005-10-02 17:37:39 UTC (rev 533)
+@@ -51,9 +51,9 @@
+ 	public void OKButtonCb (object o, EventArgs args) {
+ 		print(&quot;ok&quot;);
+ 		label1.Text = &quot;OK&quot;;
+-		app.incCounter();
+-		System.Threading.Thread counter = new System.Threading.Thread ( new ThreadStart (app.StartTimer) );
+-		counter.Start ();
++		//app.incCounter();
++		//System.Threading.Thread counter = new System.Threading.Thread ( new ThreadStart (app.StartTimer) );
++		//counter.Start ();
+ 		
+ 		//app.StartTimer ();
+ 	}
+
+Modified: Cronus/libmonotimer/Communication.cs
+===================================================================
+--- Cronus/libmonotimer/Communication.cs	2005-10-02 02:07:23 UTC (rev 532)
++++ Cronus/libmonotimer/Communication.cs	2005-10-02 17:37:39 UTC (rev 533)
+@@ -2,23 +2,22 @@
+ using CookComputing.XmlRpc;
+ using System.Security.Cryptography;
+ using System.Text;
++using Control;
+ 
+ namespace libmonotimer {
+ 	
+ 	[XmlRpcUrl(&quot;<A HREF="http://fragg.homeip.net/phpcollab/xmlrpc_server.php">http://fragg.homeip.net/phpcollab/xmlrpc_server.php</A>&quot;)]
+ 	interface IStateName
+ 	{
+-	
+ 		[XmlRpcMethod(&quot;phpcollab.timeControl&quot;)]
+ 		CollabProject[] timeControl (string usuario, string pass); 
+ 	}
+ 	
+ 	public class Communication {
+ 		
+-	
+ 		public static CollabProject[] login (string name, string password) {		
+ 			IStateName proxy = (IStateName)XmlRpcProxyGen.Create(typeof(IStateName));	
+-			CollabProject[] valor = proxy.timeControl (login, name);
++			CollabProject[] valor = proxy.timeControl (name, password);
+ 			foreach ( CollabProject i in valor ) {
+ 				Console.WriteLine (i.id);
+ 				Console.WriteLine (i.nombre);
+
+Modified: Cronus/libmonotimer/Project.cs
+===================================================================
+--- Cronus/libmonotimer/Project.cs	2005-10-02 02:07:23 UTC (rev 532)
++++ Cronus/libmonotimer/Project.cs	2005-10-02 17:37:39 UTC (rev 533)
+@@ -19,10 +19,11 @@
+  * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+  * Boston, MA 02111-1307, USA.
+  */
+-
++using System;
+ using System.Threading;
+ 
+-namespace libmonotimer{
++namespace libmonotimer
++{
+ 
+ 	public class Crono {
+ 		public int counter = 0;
+@@ -34,34 +35,56 @@
+ 		private static Project instance;
+ 		private string name;
+ 		private int id;
++		[NonSerialized()]
+ 		private Timer timer;
+-		private counter;
++		private int counter;
++		private static int contador = 0;
+ 		
+-		public static Project Instance {
+-			get {
+-				if ( instance == null ) {
+-					instance = new Project ();
+-				}
+-				return instance;
+-			}
+-		}
+-		
+ 		private Project(){
++			contador ++;
++			counter = 0;
++			id = contador;
+ 			Crono crono = new Crono ();
+ 			TimerCallback timerDelegate = new TimerCallback (Tick);
+ 			timer = new Timer (timerDelegate, crono, 0, 1000);
+-   
++   			/*
+ 			crono.timer = timer;
+ 
+ 			while (crono.timer != null)
+ 				Thread.Sleep(0);
+ 			Console.WriteLine(&quot;Final del contador&quot;);
++			*/
+ 		}
+ 		
++		public static Project Instance {
++			get {
++				if ( instance == null ) {
++					instance = new Project ();
++				}
++				return instance;
++			}
++		}
++		
++		public string Name {
++			get {
++				return name;
++			}
++			set {
++				name = value;
++			}
++		}
++		public int Id {
++			get {
++				return id;
++			}
++		}
++		
++		
+ 		private static void Tick (Object state) {
+ 			Crono crono = (Crono) state;
+ 			crono.counter++;
+ 			Console.WriteLine(crono.counter);
+ 		}
+ 
++	}
+ }
+
+Added: Cronus/libmonotimer/Source.cs
+===================================================================
+--- Cronus/libmonotimer/Source.cs	2005-10-02 02:07:23 UTC (rev 532)
++++ Cronus/libmonotimer/Source.cs	2005-10-02 17:37:39 UTC (rev 533)
+@@ -0,0 +1,52 @@
++using System;
++
++namespace libmonotimer
++{
++	public interface ISource {
++		void GetName ();
++	}
++
++
++	public class SourceXML : ISource {
++		public void GetName () {
++			Console.WriteLine (&quot;Soy un Source de tipo XML&quot;);
++		}	
++	}
++
++	public class SourceRemote : ISource {
++		public void GetName () {
++			Console.WriteLine (&quot;Soy un Source de tipo XML&quot;);
++		}	
++	}
++
++
++	public class Factory {
++		public ISource GetObject (int type){
++			ISource source = null;
++			switch (type) {
++				case 0:
++					source = new SourceXML ();
++					break;
++				case 1:
++					source = new SourceRemote ();
++					break;
++				default:
++					source = null;
++					break;
++			}
++			return source;
++		}
++	}
++
++	public class Launcher {
++		public static void Main () {
++			Factory factory = new Factory ();
++			ISource source = factory.GetObject (1);
++			source.GetName ();
++		}
++	}
++	
++}
++
++
++
+
+Added: Cronus/pruebas/Serializer.cs
+===================================================================
+--- Cronus/pruebas/Serializer.cs	2005-10-02 02:07:23 UTC (rev 532)
++++ Cronus/pruebas/Serializer.cs	2005-10-02 17:37:39 UTC (rev 533)
+@@ -0,0 +1,31 @@
++// Simple XML serialization
++using System;
++using System.IO;
++using System.Xml.Serialization;
++using libmonotimer;
++using Control;
++
++
++public class MyObject {
++	public int X;
++	public int Y;
++
++	public MyObject() {
++	}
++
++	public MyObject(int x, int y) {
++		this.X = x;
++		this.Y = y;
++	}    
++
++	public static void Main(string[] args)
++	{
++		Project p1 = Project.Instance;
++		p1.Name = &quot;Proyecto 1&quot;;
++		Console.WriteLine (&quot;OK&quot;);
++		using (FileStream fs = new FileStream(&quot;test.xml&quot;, FileMode.Create)) {        
++			XmlSerializer serializer = new XmlSerializer(p1.GetType()); 
++			serializer.Serialize(Console.Out, p1);     
++		}
++     }
++}
+
+Added: Cronus/pruebas/testXML.cs
+===================================================================
+--- Cronus/pruebas/testXML.cs	2005-10-02 02:07:23 UTC (rev 532)
++++ Cronus/pruebas/testXML.cs	2005-10-02 17:37:39 UTC (rev 533)
+@@ -0,0 +1,28 @@
++// Simple XML serialization
++using System;
++using System.IO;
++using System.Xml.Serialization;
++
++public class MyObject {
++    public int X;
++    public int Y;
++
++    public MyObject() {
++    }
++
++    public MyObject(int x, int y) {
++        this.X = x;
++        this.Y = y;
++    }    
++
++     public static void Main(string[] args)
++     {
++          MyObject[] array = new MyObject[2];
++	  array[0] = new MyObject (5, 8);
++	  array[1] = new MyObject (12, 3);
++          using (FileStream fs = new FileStream(&quot;test.xml&quot;, FileMode.Create)) {        
++               XmlSerializer serializer = new XmlSerializer(array.GetType()); 
++               serializer.Serialize(Console.Out, array);     
++          }
++     }
++}
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000245.html">[Mspace-checkins] r532 - in ComponentModel/trunk/src/ComponentModel: . Collections
+</A></li>
+	<LI>Next message: <A HREF="000247.html">[Mspace-checkins] r534 - / BabuineComponentBuilder
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#246">[ date ]</a>
+              <a href="thread.html#246">[ thread ]</a>
+              <a href="subject.html#246">[ subject ]</a>
+              <a href="author.html#246">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

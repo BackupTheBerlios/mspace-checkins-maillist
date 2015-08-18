@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r378 - in SimpleP/trunk: . src src/Contexts/SourceContext src/PopupMenuService
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r378%20-%20in%20SimpleP/trunk%3A%20.%20src%20src/Contexts/SourceContext%20src/PopupMenuService&In-Reply-To=%3C200504051014.j35AED8V030649%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000090.html">
+   <LINK REL="Next"  HREF="000092.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r378 - in SimpleP/trunk: . src src/Contexts/SourceContext src/PopupMenuService</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r378%20-%20in%20SimpleP/trunk%3A%20.%20src%20src/Contexts/SourceContext%20src/PopupMenuService&In-Reply-To=%3C200504051014.j35AED8V030649%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r378 - in SimpleP/trunk: . src src/Contexts/SourceContext src/PopupMenuService">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Tue Apr  5 12:14:13 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000090.html">[Mspace-checkins] r377 - scripts
+</A></li>
+        <LI>Next message: <A HREF="000092.html">[Mspace-checkins] r379 - in Red.ProjectManager/trunk: . build ext src/Red.ProjectManager
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#91">[ date ]</a>
+              <a href="thread.html#91">[ thread ]</a>
+              <a href="subject.html#91">[ subject ]</a>
+              <a href="author.html#91">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-05 12:14:08 +0200 (Tue, 05 Apr 2005)
+New Revision: 378
+
+Modified:
+   SimpleP/trunk/ChangeLog
+   SimpleP/trunk/src/AboutWindow.boo
+   SimpleP/trunk/src/Contexts/SourceContext/ProjectBrowser.boo
+   SimpleP/trunk/src/Globals.boo
+   SimpleP/trunk/src/NewProjectWindow.boo
+   SimpleP/trunk/src/PopupMenuService/FileOperationsMenu.boo
+   SimpleP/trunk/src/Run.boo
+Log:
+	* src/AboutWindow.boo:
+    * src/Contexts/SourceContext/ProjectBrowser.boo:
+    * src/Globals.boo:
+    * src/NewProjectWindow.boo:
+    * src/PopupMenuService/FileOperationsMenu.boo:
+
+    Fixed glade file loading from Resources
+
+    * src/Run.boo: Changed the log manager
+
+
+
+Modified: SimpleP/trunk/ChangeLog
+===================================================================
+--- SimpleP/trunk/ChangeLog	2005-04-04 22:22:04 UTC (rev 377)
++++ SimpleP/trunk/ChangeLog	2005-04-05 10:14:08 UTC (rev 378)
+@@ -1,5 +1,18 @@
+ 2005-04-05  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
++	* src/AboutWindow.boo:
++	* src/Contexts/SourceContext/ProjectBrowser.boo:
++	* src/Globals.boo:
++	* src/NewProjectWindow.boo:
++	* src/PopupMenuService/FileOperationsMenu.boo:
++	
++	Fixed glade file loading from Resources
++	
++	* src/Run.boo: Changed the log manager
++
++
++2005-04-05  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
+ 	* Makefile: updated to build de resources in a satellite
+ 	* default.build: NEW nant build file, UNTESTED
+ 	* images/images.list:
+
+Modified: SimpleP/trunk/src/AboutWindow.boo
+===================================================================
+--- SimpleP/trunk/src/AboutWindow.boo	2005-04-04 22:22:04 UTC (rev 377)
++++ SimpleP/trunk/src/AboutWindow.boo	2005-04-05 10:14:08 UTC (rev 378)
+@@ -20,7 +20,7 @@
+ 	
+ 	def constructor ():
+ 		super (&quot;&quot;)
+-		gxml = XML (&quot;simplep.glade&quot;, &quot;aboutWindow&quot;, null)
++		gxml = XML (Globals.Resources, &quot;simplep.glade&quot;, &quot;aboutWindow&quot;, null)
+ 		gxml.Autoconnect (self)
+ 		self.Raw = gxml[&quot;aboutWindow&quot;].Raw
+ 		aboutImage.FromPixbuf = Gdk.Pixbuf (Globals.Resources, &quot;SimpleP-full-logo.png&quot;)
+
+Modified: SimpleP/trunk/src/Contexts/SourceContext/ProjectBrowser.boo
+===================================================================
+--- SimpleP/trunk/src/Contexts/SourceContext/ProjectBrowser.boo	2005-04-04 22:22:04 UTC (rev 377)
++++ SimpleP/trunk/src/Contexts/SourceContext/ProjectBrowser.boo	2005-04-05 10:14:08 UTC (rev 378)
+@@ -25,7 +25,7 @@
+ 	gxml as XML
+ 
+ 	def constructor (project as Project):
+-		gxml = XML (&quot;simplep.glade&quot;, &quot;navigatorWidget&quot;, null)
++		gxml = XML (Globals.Resources, &quot;simplep.glade&quot;, &quot;navigatorWidget&quot;, null)
+ 		gxml.Autoconnect (self)
+ 		store = ProjectStore ( (typeof (string), typeof (Gdk.Pixbuf), typeof (string), typeof (bool)) )
+ 		Model = store
+
+Modified: SimpleP/trunk/src/Globals.boo
+===================================================================
+--- SimpleP/trunk/src/Globals.boo	2005-04-04 22:22:04 UTC (rev 377)
++++ SimpleP/trunk/src/Globals.boo	2005-04-05 10:14:08 UTC (rev 378)
+@@ -9,11 +9,12 @@
+ */
+ 
+ namespace SimpleP
++
+ import System.Reflection
+ 
+ class Globals:
+ 
+-	public static SourceExtensions = [&quot;.boo&quot;, &quot;.cs&quot;, &quot;.java&quot;, &quot;.c&quot;, &quot;.cpp&quot;, &quot;.py&quot;, &quot;.pl&quot;, &quot;.vb&quot;, &quot;.php&quot;, &quot;.rb&quot;]
+-	public static DataExtensions = [&quot;.xml&quot;]
+-	public static UIExtensions = [&quot;.glade&quot;]
++	public final static SourceExtensions = [&quot;.boo&quot;, &quot;.cs&quot;, &quot;.java&quot;, &quot;.c&quot;, &quot;.cpp&quot;, &quot;.py&quot;, &quot;.pl&quot;, &quot;.vb&quot;, &quot;.php&quot;, &quot;.rb&quot;]
++	public final static DataExtensions = [&quot;.xml&quot;]
++	public final static UIExtensions = [&quot;.glade&quot;]
+ 	public final static Resources = Assembly.Load (&quot;Resources&quot;)
+
+Modified: SimpleP/trunk/src/NewProjectWindow.boo
+===================================================================
+--- SimpleP/trunk/src/NewProjectWindow.boo	2005-04-04 22:22:04 UTC (rev 377)
++++ SimpleP/trunk/src/NewProjectWindow.boo	2005-04-05 10:14:08 UTC (rev 378)
+@@ -26,7 +26,7 @@
+ 	
+ 	def constructor ():
+ 		super (&quot;&quot;)
+-		gxml = XML (&quot;simplep.glade&quot;, &quot;newProjectWindow&quot;, null)
++		gxml = XML (Globals.Resources, &quot;simplep.glade&quot;, &quot;newProjectWindow&quot;, null)
+ 		gxml.Autoconnect (self)
+ 		home = Environment.GetEnvironmentVariable (&quot;HOME&quot;)
+ 		projectsDir = System.IO.Path.Combine (home, &quot;Projects&quot;)
+
+Modified: SimpleP/trunk/src/PopupMenuService/FileOperationsMenu.boo
+===================================================================
+--- SimpleP/trunk/src/PopupMenuService/FileOperationsMenu.boo	2005-04-04 22:22:04 UTC (rev 377)
++++ SimpleP/trunk/src/PopupMenuService/FileOperationsMenu.boo	2005-04-05 10:14:08 UTC (rev 378)
+@@ -8,7 +8,7 @@
+ 	gxml as XML
+ 
+ 	def constructor ():
+-		gxml = XML (&quot;simplep.glade&quot;, &quot;fileOperationsMenu&quot;, null)
++		gxml = XML (Globals.Resources, &quot;simplep.glade&quot;, &quot;fileOperationsMenu&quot;, null)
+ 		gxml.Autoconnect (self)
+ 		Raw = gxml[&quot;fileOperationsMenu&quot;].Raw
+ 
+
+Modified: SimpleP/trunk/src/Run.boo
+===================================================================
+--- SimpleP/trunk/src/Run.boo	2005-04-04 22:22:04 UTC (rev 377)
++++ SimpleP/trunk/src/Run.boo	2005-04-05 10:14:08 UTC (rev 378)
+@@ -15,7 +15,7 @@
+ import System
+ import Red.Gtk
+ 
+-log = LogManager.GetLogger (&quot;MainWindow&quot;)
++log = LogManager.GetLogger (&quot;Run&quot;)
+ try:
+ 	Application.Init ()
+ 	Services.ContextManager.RegisterContext (SourceContext ())
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000090.html">[Mspace-checkins] r377 - scripts
+</A></li>
+	<LI>Next message: <A HREF="000092.html">[Mspace-checkins] r379 - in Red.ProjectManager/trunk: . build ext src/Red.ProjectManager
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#91">[ date ]</a>
+              <a href="thread.html#91">[ thread ]</a>
+              <a href="subject.html#91">[ subject ]</a>
+              <a href="author.html#91">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

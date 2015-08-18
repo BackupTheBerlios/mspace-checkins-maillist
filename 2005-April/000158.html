@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r445 - in ComponentModel/trunk/ComponentTest: lib src src/Components/Saludator/Bo src/Components/Saludator/Exceptions
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r445%20-%20in%20ComponentModel/trunk/ComponentTest%3A%20lib%20src%20src/Components/Saludator/Bo%20src/Components/Saludator/Exceptions&In-Reply-To=%3C200504231722.j3NHMJJT030286%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000157.html">
+   <LINK REL="Next"  HREF="000159.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r445 - in ComponentModel/trunk/ComponentTest: lib src src/Components/Saludator/Bo src/Components/Saludator/Exceptions</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r445%20-%20in%20ComponentModel/trunk/ComponentTest%3A%20lib%20src%20src/Components/Saludator/Bo%20src/Components/Saludator/Exceptions&In-Reply-To=%3C200504231722.j3NHMJJT030286%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r445 - in ComponentModel/trunk/ComponentTest: lib src src/Components/Saludator/Bo src/Components/Saludator/Exceptions">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Sat Apr 23 19:22:19 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000157.html">[Mspace-checkins] r444 - in ComponentModel/trunk/src: ComponentModel.Container ComponentModel.Container.Dao
+</A></li>
+        <LI>Next message: <A HREF="000159.html">[Mspace-checkins] r446 - / koolboy koolboy/trunk
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#158">[ date ]</a>
+              <a href="thread.html#158">[ thread ]</a>
+              <a href="subject.html#158">[ subject ]</a>
+              <a href="author.html#158">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-04-23 19:22:17 +0200 (Sat, 23 Apr 2005)
+New Revision: 445
+
+Modified:
+   ComponentModel/trunk/ComponentTest/lib/NLog.dll.nlog
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs
+   ComponentModel/trunk/ComponentTest/src/Launcher.cs
+Log:
+Testing Component.
+
+
+
+Modified: ComponentModel/trunk/ComponentTest/lib/NLog.dll.nlog
+===================================================================
+--- ComponentModel/trunk/ComponentTest/lib/NLog.dll.nlog	2005-04-23 17:17:48 UTC (rev 444)
++++ ComponentModel/trunk/ComponentTest/lib/NLog.dll.nlog	2005-04-23 17:22:17 UTC (rev 445)
+@@ -1,8 +1,12 @@
+ &lt;nlog&gt;
+ 	&lt;appenders&gt;
+-            &lt;appender name=&quot;debug&quot;  type=&quot;Console&quot; /&gt;
++            &lt;appender name=&quot;debug&quot;  type=&quot;Console&quot; layout=&quot;
++${longdate} |
++${level} | 
++${callsite} --&gt; ${message}&quot;
++            /&gt;
+         &lt;/appenders&gt;
+ 	&lt;rules&gt;
+-		&lt;logger name=&quot;*&quot; levels=&quot;Info,Warn,Debug&quot; appendTo=&quot;debug&quot;/&gt;
++		&lt;logger name=&quot;*&quot; levels=&quot;Debug,Warn,Info&quot; appendTo=&quot;debug&quot;/&gt;
+ 	&lt;/rules&gt;
+ &lt;/nlog&gt;
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-04-23 17:17:48 UTC (rev 444)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-04-23 17:22:17 UTC (rev 445)
+@@ -14,7 +14,7 @@
+         [ComponentMethod (&quot;ComponentModel.ComponentTest.Components.Saludator.Form.SaludatorForm&quot;, &quot;ResponseSaluda&quot;)]
+         public int Saluda () {
+             Console.WriteLine (&quot;Que pasa co !!&quot;);
+-            throw new Exception (&quot;Yeahhhh&quot;);
++            //throw new Exception (&quot;Yeahhhh&quot;);
+             return 1;
+         }
+ 
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs	2005-04-23 17:17:48 UTC (rev 444)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs	2005-04-23 17:22:17 UTC (rev 445)
+@@ -9,6 +9,9 @@
+         }
+         public override void ProcessException (Exception exception) {
+             base.ProcessException (exception);
++            if (exception is Exception) {
++                Console.WriteLine (&quot;Exception has been ocurred: &quot; + exception.Message);
++            }
+             Console.WriteLine (&quot;Ha ocurrido una exception.&quot;);
+         }
+     }
+
+Modified: ComponentModel/trunk/ComponentTest/src/Launcher.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Launcher.cs	2005-04-23 17:17:48 UTC (rev 444)
++++ ComponentModel/trunk/ComponentTest/src/Launcher.cs	2005-04-23 17:22:17 UTC (rev 445)
+@@ -7,7 +7,6 @@
+     public class Launcher {
+         public static void Main () {
+             DefaultContainer defaultContainer = DefaultContainer.Instance; 
+-        //    Console.WriteLine (Assembly.GetExecutingAssembly ().FullName);
+             DefaultComponentModel dcm = (DefaultComponentModel)defaultContainer.GetComponentByName (&quot;Saludator&quot;);
+             Debug.Assert (dcm != null);
+             if (dcm != null)
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000157.html">[Mspace-checkins] r444 - in ComponentModel/trunk/src: ComponentModel.Container ComponentModel.Container.Dao
+</A></li>
+	<LI>Next message: <A HREF="000159.html">[Mspace-checkins] r446 - / koolboy koolboy/trunk
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#158">[ date ]</a>
+              <a href="thread.html#158">[ thread ]</a>
+              <a href="subject.html#158">[ subject ]</a>
+              <a href="author.html#158">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r580 - BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-November/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r580%20-%20BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms&In-Reply-To=%3C200511140953.jAE9raFl025966%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000291.html">
+   <LINK REL="Next"  HREF="000293.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r580 - BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r580%20-%20BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms&In-Reply-To=%3C200511140953.jAE9raFl025966%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r580 - BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms">nestor at berlios.de
+       </A><BR>
+    <I>Mon Nov 14 10:53:36 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000291.html">[Mspace-checkins] r579 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Dto Forms
+</A></li>
+        <LI>Next message: <A HREF="000293.html">[Mspace-checkins] r581 - in ComponentModel/trunk/src: ComponentModel/Container ComponentModel/Interfaces UnitTest/Components/TestComponent UnitTest/Components/TestComponent/Bo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#292">[ date ]</a>
+              <a href="thread.html#292">[ thread ]</a>
+              <a href="subject.html#292">[ subject ]</a>
+              <a href="author.html#292">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-11-14 10:53:33 +0100 (Mon, 14 Nov 2005)
+New Revision: 580
+
+Modified:
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/FormView.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ProjectView.cs
+Log:
+Borrado y tal de vistas y methods.
+
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs	2005-11-13 13:20:26 UTC (rev 579)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs	2005-11-14 09:53:33 UTC (rev 580)
+@@ -8,6 +8,8 @@
+ 
+ namespace ComponentBuilder.Forms {
+     internal class ComponentView : IViewHandler, IGtkView {
++        private static ComponentView instance;
++        
+         Glade.XML componentView;
+         [Widget] TreeView viewsTreeView, methodsTreeView;
+         [Widget] Entry componentNameEntry, exceptionManagerEntry;
+@@ -18,7 +20,7 @@
+         FormView formView;
+         MethodView methodView;
+         
+-        internal ComponentView () {
++        private ComponentView () {
+             componentView = new Glade.XML (null, &quot;MainComponentBuilderForm.glade&quot;, &quot;table5&quot;, null);
+             componentView.Autoconnect (this);
+ 
+@@ -40,6 +42,15 @@
+             methodsTreeView.Model = methodTableModel.ListStore;
+         }
+        
++        internal static ComponentView Instance {
++            get {
++                if (instance == null) {
++                    instance = new ComponentView ();
++                }
++                return instance;
++            }
++        }
++        
+         /* GUI Events */
+         private void OnNewMethodClicked (object sender, EventArgs args) {
+             methodView = new MethodView ();
+@@ -51,14 +62,56 @@
+             methodView = null;
+         }
+ 
++        private void OnDeleteMethodClicked (object sender, EventArgs args) {
++            TreeIter iter;
++            if (methodsTreeView.Selection.GetSelected (out iter)) {
++                string methodName = methodTableModel.ListStore.GetValue (iter, 0).ToString ();
++                MethodDTO auxMethodDTO = null;
++                foreach (MethodDTO methodDTO in methodTableModel.ListModel) {
++                    if (methodDTO.MethodName.Equals (methodName)) {
++                        auxMethodDTO = methodDTO;
++                        break;
++                    }
++                }
++                if (auxMethodDTO != null) {
++                    methodTableModel.ListModel.Remove (auxMethodDTO);
++                    methodTableModel = new MethodTableModel (methodTableModel.ListModel);
++                    methodsTreeView.Model = methodTableModel.ListStore;
++                }
++            }
++        }
++
+         private void OnNewViewClicked (object sender, EventArgs args) {
+             formView = new FormView ();
+             ViewDTO viewDTO = (ViewDTO) formView.GetDataForm ();
+-            if (viewDTO != null) {
++            if (viewDTO != null) 
+                 viewTableModel.Add (viewDTO);
+-            }
+             formView = null;
+         }
++
++        private void OnDeleteViewClicked (object sender, EventArgs args) {
++            TreeIter iter; 
++            if (viewsTreeView.Selection.GetSelected (out iter)) {
++                string viewName = viewTableModel.ListStore.GetValue (iter, 0).ToString ();
++                ViewDTO auxViewDTO = null;
++                foreach (ViewDTO viewDTO in viewTableModel.ListModel) {
++                    if (viewDTO.ViewName.Equals (viewName)) {
++                        auxViewDTO = viewDTO;
++                        break;
++                    }
++                }
++                //Siempre ser&#225; != null
++                if (auxViewDTO != null) {
++                    viewTableModel.ListModel.Remove (auxViewDTO);
++                    viewTableModel = new ViewTableModel (viewTableModel.ListModel);
++                    viewsTreeView.Model = viewTableModel.ListStore;
++                }
++            }
++        }
++
++        private void OnClearViewsClicked (object sender, EventArgs args) {
++            viewTableModel.Clear ();
++        }
+         
+         /* Interface Implementation */
+         public void LoadDataForm (IDataTransferObject dto) {
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/FormView.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/FormView.cs	2005-11-13 13:20:26 UTC (rev 579)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/FormView.cs	2005-11-14 09:53:33 UTC (rev 580)
+@@ -43,11 +43,19 @@
+ 
+         public void LoadDataForm (IDataTransferObject dto) {
+             if (dto is ViewDTO) {
++                ViewDTO viewDTO = (ViewDTO) dto;
++                viewNameEntry.Text = viewDTO.ViewName;
+             }
+         }
+ 
+         public Widget GetWidget () {
+             return newViewForm [&quot;newViewDialog&quot;];
+         }
++
++        private void OnViewNameEntryActivate (object sender, EventArgs args) {
++            Dialog dialog = (Dialog) GetWidget ();
++            dialog.Respond (ResponseType.Ok);
++            dialog = null;
++        }
+     }
+ }
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs	2005-11-13 13:20:26 UTC (rev 579)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs	2005-11-14 09:53:33 UTC (rev 580)
+@@ -20,9 +20,9 @@
+             mainComponentBuilderForm.Autoconnect (this);
+ 
+             //Terminamos de construir el gui.
+-            projectView = new ProjectView ();
++            projectView = ProjectView.Instance;
+             hpaned1.Pack1 (projectView.GetWidget (), true, true);
+-            componentView = new ComponentView ();
++            componentView = ComponentView.Instance;
+             hpaned1.Pack2 (componentView.GetWidget (), true, true);
+             hpaned1.ShowAll ();
+         }
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ProjectView.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ProjectView.cs	2005-11-13 13:20:26 UTC (rev 579)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ProjectView.cs	2005-11-14 09:53:33 UTC (rev 580)
+@@ -8,13 +8,14 @@
+ 
+ namespace ComponentBuilder.Forms {
+     internal class ProjectView : IViewHandler, IGtkView {
+-             
++        private static ProjectView instance;     
++        
+         /*Contenenedor*/
+         ScrolledWindow componentScrolledWindow;
+         NodeView componentNodeView;
+         NodeStore componentNodeStore;
+         
+-        internal ProjectView () {
++        private ProjectView () {
+             componentNodeStore = new NodeStore (typeof (GenericNode));
+             componentNodeView = new NodeView (componentNodeStore);
+             componentNodeView.AppendColumn (&quot;Project Tree&quot;, new CellRendererText (),&quot;text&quot;, 0);
+@@ -24,8 +25,16 @@
+             //Event Handling
+             componentNodeView.NodeSelection.Mode = SelectionMode.Single;
+             componentNodeView.NodeSelection.Changed += new EventHandler (OnSelectionChanged);
+-            
+         }
++
++        internal static ProjectView Instance {
++            get {
++                if (instance == null) {
++                    instance = new ProjectView ();
++                }
++                return instance;
++            }
++        }
+         
+         /* Interface Implementation */
+         public void LoadDataForm (IDataTransferObject dto) {
+@@ -67,7 +76,8 @@
+                     ComponentNode componentNode = (ComponentNode) nodeSelection.SelectedNode;
+                     ComponentDTO componentDTO = (ComponentDTO) componentNode.DataTransferObject;
+                     //Ahora truco de gestion de vista.
+-                    IComponentModel componentModel = DefaultContainer.Instance.GetComponentByName (&quot;ComponentBuilder&quot;);
++                    //IComponentModel componentModel = DefaultContainer.Instance.GetComponentByName (&quot;ComponentBuilder&quot;);
++                    IComponentModel componentModel = DefaultContainer.Instance[&quot;ComponentBuilder&quot;];
+                     //Responder&#225; a la vista y ejecutar&#225; el loadDataForm de
+                     //MainComponentForm
+                     componentModel.ViewHandlerCollection[0].LoadDataForm (componentDTO);
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000291.html">[Mspace-checkins] r579 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Dto Forms
+</A></li>
+	<LI>Next message: <A HREF="000293.html">[Mspace-checkins] r581 - in ComponentModel/trunk/src: ComponentModel/Container ComponentModel/Interfaces UnitTest/Components/TestComponent UnitTest/Components/TestComponent/Bo
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#292">[ date ]</a>
+              <a href="thread.html#292">[ thread ]</a>
+              <a href="subject.html#292">[ subject ]</a>
+              <a href="author.html#292">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

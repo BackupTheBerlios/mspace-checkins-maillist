@@ -1,0 +1,1844 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r303 - in WebNotes/trunk: . src/TrayIcon/libtrayicon src/WebNotes src/didiwiki src/didiwiki/src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r303%20-%20in%20WebNotes/trunk%3A%20.%20src/TrayIcon/libtrayicon%20src/WebNotes%20src/didiwiki%20src/didiwiki/src&In-Reply-To=%3C200410220912.i9M9CjS4032239%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000038.html">
+   <LINK REL="Next"  HREF="000040.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r303 - in WebNotes/trunk: . src/TrayIcon/libtrayicon src/WebNotes src/didiwiki src/didiwiki/src</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r303%20-%20in%20WebNotes/trunk%3A%20.%20src/TrayIcon/libtrayicon%20src/WebNotes%20src/didiwiki%20src/didiwiki/src&In-Reply-To=%3C200410220912.i9M9CjS4032239%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r303 - in WebNotes/trunk: . src/TrayIcon/libtrayicon src/WebNotes src/didiwiki src/didiwiki/src">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Fri Oct 22 11:12:45 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000038.html">[Mspace-checkins] r302 - WebNotes
+</A></li>
+        <LI>Next message: <A HREF="000040.html">[Mspace-checkins] r304 - in WebNotes/trunk: . src/WebNotes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#39">[ date ]</a>
+              <a href="thread.html#39">[ thread ]</a>
+              <a href="subject.html#39">[ subject ]</a>
+              <a href="author.html#39">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2004-10-22 11:12:38 +0200 (Fri, 22 Oct 2004)
+New Revision: 303
+
+Removed:
+   WebNotes/trunk/src/TrayIcon/libtrayicon/Makefile
+   WebNotes/trunk/src/WebNotes/Makefile
+Modified:
+   WebNotes/trunk/ChangeLog
+   WebNotes/trunk/src/didiwiki/ChangeLog
+   WebNotes/trunk/src/didiwiki/README
+   WebNotes/trunk/src/didiwiki/TODO
+   WebNotes/trunk/src/didiwiki/config.h.in
+   WebNotes/trunk/src/didiwiki/configure.ac
+   WebNotes/trunk/src/didiwiki/src/Makefile.am
+   WebNotes/trunk/src/didiwiki/src/didi.h
+   WebNotes/trunk/src/didiwiki/src/http.c
+   WebNotes/trunk/src/didiwiki/src/wiki.c
+   WebNotes/trunk/src/didiwiki/src/wiki.h
+Log:
+2004-10-22  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+
+        * src/TrayIcon/libtrayicon/Makefile: Crap
+        * src/WebNotes/Makefile: Crap
+        * src/didiwiki/ChangeLog:
+        * src/didiwiki/README:
+        * src/didiwiki/TODO:
+        * src/didiwiki/config.h.in:
+        * src/didiwiki/configure.ac:
+        * src/didiwiki/src/Makefile.am:
+        * src/didiwiki/src/didi.h:
+        * src/didiwiki/src/http.c: (http_server):
+        * src/didiwiki/src/wiki.c: (check_for_link),
+        (wiki_print_data_as_html), (wiki_redirect),
+        (wiki_show_create_page), (wiki_get_pages),
+        (wiki_show_changes_page), (wiki_show_search_results_page),
+        (wiki_show_template), (wiki_show_footer), (wiki_handle_rest_call),
+        (wiki_handle_http_request), (wiki_init):
+        * src/didiwiki/src/wiki.h: DidiWiki updated to 0.5
+
+
+
+Modified: WebNotes/trunk/ChangeLog
+===================================================================
+--- WebNotes/trunk/ChangeLog	2004-10-22 08:46:13 UTC (rev 302)
++++ WebNotes/trunk/ChangeLog	2004-10-22 09:12:38 UTC (rev 303)
+@@ -0,0 +1,20 @@
++2004-10-22  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
++	* src/TrayIcon/libtrayicon/Makefile: Crap
++	* src/WebNotes/Makefile: Crap
++	* src/didiwiki/ChangeLog:
++	* src/didiwiki/README:
++	* src/didiwiki/TODO:
++	* src/didiwiki/config.h.in:
++	* src/didiwiki/configure.ac:
++	* src/didiwiki/src/Makefile.am:
++	* src/didiwiki/src/didi.h:
++	* src/didiwiki/src/http.c: (http_server):
++	* src/didiwiki/src/wiki.c: (check_for_link),
++	(wiki_print_data_as_html), (wiki_redirect),
++	(wiki_show_create_page), (wiki_get_pages),
++	(wiki_show_changes_page), (wiki_show_search_results_page),
++	(wiki_show_template), (wiki_show_footer), (wiki_handle_rest_call),
++	(wiki_handle_http_request), (wiki_init):
++	* src/didiwiki/src/wiki.h: DidiWiki updated to 0.5
++
+
+Deleted: WebNotes/trunk/src/TrayIcon/libtrayicon/Makefile
+===================================================================
+--- WebNotes/trunk/src/TrayIcon/libtrayicon/Makefile	2004-10-22 08:46:13 UTC (rev 302)
++++ WebNotes/trunk/src/TrayIcon/libtrayicon/Makefile	2004-10-22 09:12:38 UTC (rev 303)
+@@ -1,473 +0,0 @@
+-# Makefile.in generated by automake 1.7.9 from Makefile.am.
+-# src/TrayIcon/libtrayicon/Makefile.  Generated from Makefile.in by configure.
+-
+-# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003
+-# Free Software Foundation, Inc.
+-# This Makefile.in is free software; the Free Software Foundation
+-# gives unlimited permission to copy and/or distribute it,
+-# with or without modifications, as long as this notice is preserved.
+-
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+-# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+-# PARTICULAR PURPOSE.
+-
+-
+-
+-srcdir = .
+-top_srcdir = ../../..
+-
+-pkgdatadir = $(datadir)/webnotes
+-pkglibdir = $(libdir)/webnotes
+-pkgincludedir = $(includedir)/webnotes
+-top_builddir = ../../..
+-
+-am__cd = CDPATH=&quot;$${ZSH_VERSION+.}$(PATH_SEPARATOR)&quot; &amp;&amp; cd
+-INSTALL = /usr/bin/install -c
+-install_sh_DATA = $(install_sh) -c -m 644
+-install_sh_PROGRAM = $(install_sh) -c
+-install_sh_SCRIPT = $(install_sh) -c
+-INSTALL_HEADER = $(INSTALL_DATA)
+-transform = $(program_transform_name)
+-NORMAL_INSTALL = :
+-PRE_INSTALL = :
+-POST_INSTALL = :
+-NORMAL_UNINSTALL = :
+-PRE_UNINSTALL = :
+-POST_UNINSTALL = :
+-host_triplet = powerpc-unknown-linux-gnu
+-ACLOCAL = ${SHELL} /home/rubiojr/svn/mspace/WebNotes/Trunk/missing --run aclocal-1.7
+-ALLOCA = 
+-AMDEP_FALSE = #
+-AMDEP_TRUE = 
+-AMTAR = ${SHELL} /home/rubiojr/svn/mspace/WebNotes/Trunk/missing --run tar
+-AR = ar
+-ATK_CFLAGS = -I/usr/include/atk-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
+-ATK_LIBS = -Wl,--export-dynamic -latk-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
+-AUTOCONF = ${SHELL} /home/rubiojr/svn/mspace/WebNotes/Trunk/missing --run autoconf
+-AUTOHEADER = ${SHELL} /home/rubiojr/svn/mspace/WebNotes/Trunk/missing --run autoheader
+-AUTOMAKE = ${SHELL} /home/rubiojr/svn/mspace/WebNotes/Trunk/missing --run automake-1.7
+-AWK = mawk
+-CC = gcc
+-CCDEPMODE = depmode=gcc3
+-CFLAGS = -g -O2
+-CPP = gcc -E
+-CPPFLAGS = 
+-CXX = g++
+-CXXCPP = g++ -E
+-CXXDEPMODE = depmode=gcc3
+-CXXFLAGS = -g -O2
+-CYGPATH_W = echo
+-DEFS = -DHAVE_CONFIG_H
+-DEPDIR = .deps
+-ECHO = echo
+-ECHO_C = 
+-ECHO_N = -n
+-ECHO_T = 
+-EGREP = grep -E
+-EXEEXT = 
+-F77 = 
+-FFLAGS = 
+-GDK20_CFLAGS = -DXTHREADS -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/X11R6/include -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
+-GDK20_LIBS = -Wl,--export-dynamic -lgdk-x11-2.0 -lgdk_pixbuf-2.0 -lm -lpangoxft-1.0 -lpangox-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
+-GECKOSHARP_CFLAGS =  
+-GECKOSHARP_LIBS = -r:/opt/mono-1.0//lib/mono/gecko-sharp/gecko-sharp.dll  
+-GTKSHARP_CFLAGS =  
+-GTKSHARP_LIBS = -r:/opt/mono-1.0//lib/mono/gtk-sharp/glib-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/pango-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/atk-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/gdk-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/gtk-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/gnome-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/art-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/glade-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/gconf-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/gconf-sharp-peditors.dll  
+-INSTALL_DATA = ${INSTALL} -m 644
+-INSTALL_PROGRAM = ${INSTALL}
+-INSTALL_SCRIPT = ${INSTALL}
+-INSTALL_STRIP_PROGRAM = ${SHELL} $(install_sh) -c -s
+-LDFLAGS = 
+-LIBOBJS = 
+-LIBS = 
+-LIBTOOL = $(SHELL) $(top_builddir)/libtool
+-LN_S = ln -s
+-LTLIBOBJS = 
+-MAINT = 
+-MAINTAINER_MODE_FALSE = #
+-MAINTAINER_MODE_TRUE = 
+-MAKEINFO = ${SHELL} /home/rubiojr/svn/mspace/WebNotes/Trunk/missing --run makeinfo
+-MCS = /opt/mono/bin/mcs
+-MCS_FLAGS = -g
+-MONO = /opt/mono/bin/mono
+-MONO_CFLAGS = -D_REENTRANT -pthread -I/opt/mono-1.0//include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
+-MONO_FLAGS = --debug
+-MONO_LIBS = -Wl,--export-dynamic -pthread -L/opt/mono-1.0//lib -lmono -lpthread -lm -lgmodule-2.0 -ldl -lgthread-2.0 -lglib-2.0  
+-OBJEXT = o
+-PACKAGE = webnotes
+-PACKAGE_BUGREPORT = <A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>
+-PACKAGE_NAME = WebNotes
+-PACKAGE_STRING = WebNotes 1.0
+-PACKAGE_TARNAME = webnotes
+-PACKAGE_VERSION = 1.0
+-PATH_SEPARATOR = :
+-PKG_CONFIG = /usr/bin/pkg-config
+-RANLIB = ranlib
+-SET_MAKE = 
+-SHELL = /bin/sh
+-STRIP = strip
+-VERSION = 1.0
+-ac_ct_AR = ar
+-ac_ct_CC = gcc
+-ac_ct_CXX = g++
+-ac_ct_F77 = 
+-ac_ct_RANLIB = ranlib
+-ac_ct_STRIP = strip
+-am__fastdepCC_FALSE = #
+-am__fastdepCC_TRUE = 
+-am__fastdepCXX_FALSE = #
+-am__fastdepCXX_TRUE = 
+-am__include = include
+-am__leading_dot = .
+-am__quote = 
+-bindir = ${exec_prefix}/bin
+-build = powerpc-unknown-linux-gnu
+-build_alias = 
+-build_cpu = powerpc
+-build_os = linux-gnu
+-build_vendor = unknown
+-datadir = ${prefix}/share
+-exec_prefix = ${prefix}
+-host = powerpc-unknown-linux-gnu
+-host_alias = 
+-host_cpu = powerpc
+-host_os = linux-gnu
+-host_vendor = unknown
+-includedir = ${prefix}/include
+-infodir = ${prefix}/info
+-install_sh = /home/rubiojr/svn/mspace/WebNotes/Trunk/install-sh
+-libdir = ${exec_prefix}/lib
+-libexecdir = ${exec_prefix}/libexec
+-localstatedir = ${prefix}/var
+-mandir = ${prefix}/man
+-oldincludedir = /usr/include
+-prefix = /opt/mono-extra/
+-program_transform_name = s,x,x,
+-sbindir = ${exec_prefix}/sbin
+-sharedstatedir = ${prefix}/com
+-sysconfdir = ${prefix}/etc
+-target_alias = 
+-TRAY_ICON_CFLAGS = $(GDK20_CFLAGS) $(ATK_CFLAGS)
+-TRAY_ICON_LIBS = $(GDK20_LIBS) $(ATK_LIBS)
+-
+-EXTRA_DIST = $(srcdir)/eggtrayicon.h
+-
+-INCLUDES = \
+-  $(TRAY_ICON_CFLAGS) \
+-  -I$(top_srcdir)/libegg/util \
+-  -DEGG_COMPILATION \
+-  -DGTK_DISABLE_DEPRECATED \
+-  -DGDK_DISABLE_DEPRECATED \
+-  -DG_DISABLE_DEPRECATED
+-
+-
+-trayiconlibdir = $(libdir)/WebNotes
+-trayiconlib_LTLIBRARIES = libtrayicon.la
+-
+-libtrayicon_la_SOURCES = \
+-  eggtrayicon.c		
+-
+-subdir = src/TrayIcon/libtrayicon
+-ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
+-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+-CONFIG_HEADER = $(top_builddir)/config.h
+-CONFIG_CLEAN_FILES =
+-LTLIBRARIES = $(trayiconlib_LTLIBRARIES)
+-
+-libtrayicon_la_LDFLAGS =
+-libtrayicon_la_LIBADD =
+-am_libtrayicon_la_OBJECTS = eggtrayicon.lo
+-libtrayicon_la_OBJECTS = $(am_libtrayicon_la_OBJECTS)
+-
+-DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
+-depcomp = $(SHELL) $(top_srcdir)/depcomp
+-am__depfiles_maybe = depfiles
+-DEP_FILES = ./$(DEPDIR)/eggtrayicon.Plo
+-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+-CCLD = $(CC)
+-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+-DIST_SOURCES = $(libtrayicon_la_SOURCES)
+-DIST_COMMON = $(srcdir)/Makefile.in Makefile.am
+-SOURCES = $(libtrayicon_la_SOURCES)
+-
+-all: all-am
+-
+-.SUFFIXES:
+-.SUFFIXES: .c .lo .o .obj
+-$(srcdir)/Makefile.in:  Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+-	cd $(top_srcdir) &amp;&amp; \
+-	  $(AUTOMAKE) --gnu  src/TrayIcon/libtrayicon/Makefile
+-Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
+-	cd $(top_builddir) &amp;&amp; $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
+-trayiconlibLTLIBRARIES_INSTALL = $(INSTALL)
+-install-trayiconlibLTLIBRARIES: $(trayiconlib_LTLIBRARIES)
+-	@$(NORMAL_INSTALL)
+-	$(mkinstalldirs) $(DESTDIR)$(trayiconlibdir)
+-	@list='$(trayiconlib_LTLIBRARIES)'; for p in $$list; do \
+-	  if test -f $$p; then \
+-	    f=&quot;`echo $$p | sed -e 's|^.*/||'`&quot;; \
+-	    echo &quot; $(LIBTOOL) --mode=install $(trayiconlibLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(trayiconlibdir)/$$f&quot;; \
+-	    $(LIBTOOL) --mode=install $(trayiconlibLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(trayiconlibdir)/$$f; \
+-	  else :; fi; \
+-	done
+-
+-uninstall-trayiconlibLTLIBRARIES:
+-	@$(NORMAL_UNINSTALL)
+-	@list='$(trayiconlib_LTLIBRARIES)'; for p in $$list; do \
+-	    p=&quot;`echo $$p | sed -e 's|^.*/||'`&quot;; \
+-	  echo &quot; $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(trayiconlibdir)/$$p&quot;; \
+-	  $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(trayiconlibdir)/$$p; \
+-	done
+-
+-clean-trayiconlibLTLIBRARIES:
+-	-test -z &quot;$(trayiconlib_LTLIBRARIES)&quot; || rm -f $(trayiconlib_LTLIBRARIES)
+-	@list='$(trayiconlib_LTLIBRARIES)'; for p in $$list; do \
+-	  dir=&quot;`echo $$p | sed -e 's|/[^/]*$$||'`&quot;; \
+-	  test &quot;$$dir&quot; = &quot;$$p&quot; &amp;&amp; dir=.; \
+-	  echo &quot;rm -f \&quot;$${dir}/so_locations\&quot;&quot;; \
+-	  rm -f &quot;$${dir}/so_locations&quot;; \
+-	done
+-libtrayicon.la: $(libtrayicon_la_OBJECTS) $(libtrayicon_la_DEPENDENCIES) 
+-	$(LINK) -rpath $(trayiconlibdir) $(libtrayicon_la_LDFLAGS) $(libtrayicon_la_OBJECTS) $(libtrayicon_la_LIBADD) $(LIBS)
+-
+-mostlyclean-compile:
+-	-rm -f *.$(OBJEXT) core *.core
+-
+-distclean-compile:
+-	-rm -f *.tab.c
+-
+-include ./$(DEPDIR)/eggtrayicon.Plo
+-
+-.c.o:
+-	if $(COMPILE) -MT $@ -MD -MP -MF &quot;$(DEPDIR)/$*.Tpo&quot; \
+-	  -c -o $@ `test -f '$&lt;' || echo '$(srcdir)/'`$&lt;; \
+-	then mv -f &quot;$(DEPDIR)/$*.Tpo&quot; &quot;$(DEPDIR)/$*.Po&quot;; \
+-	else rm -f &quot;$(DEPDIR)/$*.Tpo&quot;; exit 1; \
+-	fi
+-#	source='$&lt;' object='$@' libtool=no \
+-#	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' \
+-#	$(CCDEPMODE) $(depcomp) \
+-#	$(COMPILE) -c `test -f '$&lt;' || echo '$(srcdir)/'`$&lt;
+-
+-.c.obj:
+-	if $(COMPILE) -MT $@ -MD -MP -MF &quot;$(DEPDIR)/$*.Tpo&quot; \
+-	  -c -o $@ `if test -f '$&lt;'; then $(CYGPATH_W) '$&lt;'; else $(CYGPATH_W) '$(srcdir)/$&lt;'; fi`; \
+-	then mv -f &quot;$(DEPDIR)/$*.Tpo&quot; &quot;$(DEPDIR)/$*.Po&quot;; \
+-	else rm -f &quot;$(DEPDIR)/$*.Tpo&quot;; exit 1; \
+-	fi
+-#	source='$&lt;' object='$@' libtool=no \
+-#	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' \
+-#	$(CCDEPMODE) $(depcomp) \
+-#	$(COMPILE) -c `if test -f '$&lt;'; then $(CYGPATH_W) '$&lt;'; else $(CYGPATH_W) '$(srcdir)/$&lt;'; fi`
+-
+-.c.lo:
+-	if $(LTCOMPILE) -MT $@ -MD -MP -MF &quot;$(DEPDIR)/$*.Tpo&quot; \
+-	  -c -o $@ `test -f '$&lt;' || echo '$(srcdir)/'`$&lt;; \
+-	then mv -f &quot;$(DEPDIR)/$*.Tpo&quot; &quot;$(DEPDIR)/$*.Plo&quot;; \
+-	else rm -f &quot;$(DEPDIR)/$*.Tpo&quot;; exit 1; \
+-	fi
+-#	source='$&lt;' object='$@' libtool=yes \
+-#	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' \
+-#	$(CCDEPMODE) $(depcomp) \
+-#	$(LTCOMPILE) -c -o $@ `test -f '$&lt;' || echo '$(srcdir)/'`$&lt;
+-
+-mostlyclean-libtool:
+-	-rm -f *.lo
+-
+-clean-libtool:
+-	-rm -rf .libs _libs
+-
+-distclean-libtool:
+-	-rm -f libtool
+-uninstall-info-am:
+-
+-ETAGS = etags
+-ETAGSFLAGS =
+-
+-CTAGS = ctags
+-CTAGSFLAGS =
+-
+-tags: TAGS
+-
+-ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
+-	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
+-	unique=`for i in $$list; do \
+-	    if test -f &quot;$$i&quot;; then echo $$i; else echo $(srcdir)/$$i; fi; \
+-	  done | \
+-	  $(AWK) '    { files[$$0] = 1; } \
+-	       END { for (i in files) print i; }'`; \
+-	mkid -fID $$unique
+-
+-TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+-		$(TAGS_FILES) $(LISP)
+-	tags=; \
+-	here=`pwd`; \
+-	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
+-	unique=`for i in $$list; do \
+-	    if test -f &quot;$$i&quot;; then echo $$i; else echo $(srcdir)/$$i; fi; \
+-	  done | \
+-	  $(AWK) '    { files[$$0] = 1; } \
+-	       END { for (i in files) print i; }'`; \
+-	test -z &quot;$(ETAGS_ARGS)$$tags$$unique&quot; \
+-	  || $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
+-	     $$tags $$unique
+-
+-ctags: CTAGS
+-CTAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+-		$(TAGS_FILES) $(LISP)
+-	tags=; \
+-	here=`pwd`; \
+-	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
+-	unique=`for i in $$list; do \
+-	    if test -f &quot;$$i&quot;; then echo $$i; else echo $(srcdir)/$$i; fi; \
+-	  done | \
+-	  $(AWK) '    { files[$$0] = 1; } \
+-	       END { for (i in files) print i; }'`; \
+-	test -z &quot;$(CTAGS_ARGS)$$tags$$unique&quot; \
+-	  || $(CTAGS) $(CTAGSFLAGS) $(AM_CTAGSFLAGS) $(CTAGS_ARGS) \
+-	     $$tags $$unique
+-
+-GTAGS:
+-	here=`$(am__cd) $(top_builddir) &amp;&amp; pwd` \
+-	  &amp;&amp; cd $(top_srcdir) \
+-	  &amp;&amp; gtags -i $(GTAGS_ARGS) $$here
+-
+-distclean-tags:
+-	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
+-DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+-
+-top_distdir = ../../..
+-distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
+-
+-distdir: $(DISTFILES)
+-	$(mkinstalldirs) $(distdir)/$(srcdir)
+-	@srcdirstrip=`echo &quot;$(srcdir)&quot; | sed 's|.|.|g'`; \
+-	topsrcdirstrip=`echo &quot;$(top_srcdir)&quot; | sed 's|.|.|g'`; \
+-	list='$(DISTFILES)'; for file in $$list; do \
+-	  case $$file in \
+-	    $(srcdir)/*) file=`echo &quot;$$file&quot; | sed &quot;s|^$$srcdirstrip/||&quot;`;; \
+-	    $(top_srcdir)/*) file=`echo &quot;$$file&quot; | sed &quot;s|^$$topsrcdirstrip/|$(top_builddir)/|&quot;`;; \
+-	  esac; \
+-	  if test -f $$file || test -d $$file; then d=.; else d=$(srcdir); fi; \
+-	  dir=`echo &quot;$$file&quot; | sed -e 's,/[^/]*$$,,'`; \
+-	  if test &quot;$$dir&quot; != &quot;$$file&quot; &amp;&amp; test &quot;$$dir&quot; != &quot;.&quot;; then \
+-	    dir=&quot;/$$dir&quot;; \
+-	    $(mkinstalldirs) &quot;$(distdir)$$dir&quot;; \
+-	  else \
+-	    dir=''; \
+-	  fi; \
+-	  if test -d $$d/$$file; then \
+-	    if test -d $(srcdir)/$$file &amp;&amp; test $$d != $(srcdir); then \
+-	      cp -pR $(srcdir)/$$file $(distdir)$$dir || exit 1; \
+-	    fi; \
+-	    cp -pR $$d/$$file $(distdir)$$dir || exit 1; \
+-	  else \
+-	    test -f $(distdir)/$$file \
+-	    || cp -p $$d/$$file $(distdir)/$$file \
+-	    || exit 1; \
+-	  fi; \
+-	done
+-check-am: all-am
+-check: check-am
+-all-am: Makefile $(LTLIBRARIES)
+-
+-installdirs:
+-	$(mkinstalldirs) $(DESTDIR)$(trayiconlibdir)
+-install: install-am
+-install-exec: install-exec-am
+-install-data: install-data-am
+-uninstall: uninstall-am
+-
+-install-am: all-am
+-	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+-
+-installcheck: installcheck-am
+-install-strip:
+-	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM=&quot;$(INSTALL_STRIP_PROGRAM)&quot; \
+-	  install_sh_PROGRAM=&quot;$(INSTALL_STRIP_PROGRAM)&quot; INSTALL_STRIP_FLAG=-s \
+-	  `test -z '$(STRIP)' || \
+-	    echo &quot;INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'&quot;` install
+-mostlyclean-generic:
+-
+-clean-generic:
+-
+-distclean-generic:
+-	-rm -f $(CONFIG_CLEAN_FILES)
+-
+-maintainer-clean-generic:
+-	@echo &quot;This command is intended for maintainers to use&quot;
+-	@echo &quot;it deletes files that may require special tools to rebuild.&quot;
+-clean: clean-am
+-
+-clean-am: clean-generic clean-libtool clean-trayiconlibLTLIBRARIES \
+-	mostlyclean-am
+-
+-distclean: distclean-am
+-	-rm -rf ./$(DEPDIR)
+-	-rm -f Makefile
+-distclean-am: clean-am distclean-compile distclean-generic \
+-	distclean-libtool distclean-tags
+-
+-dvi: dvi-am
+-
+-dvi-am:
+-
+-info: info-am
+-
+-info-am:
+-
+-install-data-am: install-trayiconlibLTLIBRARIES
+-
+-install-exec-am:
+-
+-install-info: install-info-am
+-
+-install-man:
+-
+-installcheck-am:
+-
+-maintainer-clean: maintainer-clean-am
+-	-rm -rf ./$(DEPDIR)
+-	-rm -f Makefile
+-maintainer-clean-am: distclean-am maintainer-clean-generic \
+-	maintainer-clean-local
+-
+-mostlyclean: mostlyclean-am
+-
+-mostlyclean-am: mostlyclean-compile mostlyclean-generic \
+-	mostlyclean-libtool
+-
+-pdf: pdf-am
+-
+-pdf-am:
+-
+-ps: ps-am
+-
+-ps-am:
+-
+-uninstall-am: uninstall-info-am uninstall-trayiconlibLTLIBRARIES
+-
+-.PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
+-	clean-libtool clean-trayiconlibLTLIBRARIES ctags distclean \
+-	distclean-compile distclean-generic distclean-libtool \
+-	distclean-tags distdir dvi dvi-am info info-am install \
+-	install-am install-data install-data-am install-exec \
+-	install-exec-am install-info install-info-am install-man \
+-	install-strip install-trayiconlibLTLIBRARIES installcheck \
+-	installcheck-am installdirs maintainer-clean \
+-	maintainer-clean-generic maintainer-clean-local mostlyclean \
+-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool pdf \
+-	pdf-am ps ps-am tags uninstall uninstall-am uninstall-info-am \
+-	uninstall-trayiconlibLTLIBRARIES
+-
+-
+-maintainer-clean-local:
+-	rm -f Makefile.in
+-# Tell versions [3.59,3.63) of GNU make to not export all variables.
+-# Otherwise a system limit (for SysV at least) may be exceeded.
+-.NOEXPORT:
+
+Deleted: WebNotes/trunk/src/WebNotes/Makefile
+===================================================================
+--- WebNotes/trunk/src/WebNotes/Makefile	2004-10-22 08:46:13 UTC (rev 302)
++++ WebNotes/trunk/src/WebNotes/Makefile	2004-10-22 09:12:38 UTC (rev 303)
+@@ -1,369 +0,0 @@
+-# Makefile.in generated by automake 1.7.9 from Makefile.am.
+-# src/WebNotes/Makefile.  Generated from Makefile.in by configure.
+-
+-# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003
+-# Free Software Foundation, Inc.
+-# This Makefile.in is free software; the Free Software Foundation
+-# gives unlimited permission to copy and/or distribute it,
+-# with or without modifications, as long as this notice is preserved.
+-
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+-# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+-# PARTICULAR PURPOSE.
+-
+-
+-
+-srcdir = .
+-top_srcdir = ../..
+-
+-pkgdatadir = $(datadir)/webnotes
+-pkglibdir = $(libdir)/webnotes
+-pkgincludedir = $(includedir)/webnotes
+-top_builddir = ../..
+-
+-am__cd = CDPATH=&quot;$${ZSH_VERSION+.}$(PATH_SEPARATOR)&quot; &amp;&amp; cd
+-INSTALL = /usr/bin/install -c
+-install_sh_DATA = $(install_sh) -c -m 644
+-install_sh_PROGRAM = $(install_sh) -c
+-install_sh_SCRIPT = $(install_sh) -c
+-INSTALL_HEADER = $(INSTALL_DATA)
+-transform = $(program_transform_name)
+-NORMAL_INSTALL = :
+-PRE_INSTALL = :
+-POST_INSTALL = :
+-NORMAL_UNINSTALL = :
+-PRE_UNINSTALL = :
+-POST_UNINSTALL = :
+-host_triplet = powerpc-unknown-linux-gnu
+-ACLOCAL = ${SHELL} /home/rubiojr/svn/mspace/WebNotes/Trunk/missing --run aclocal-1.7
+-ALLOCA = 
+-AMDEP_FALSE = #
+-AMDEP_TRUE = 
+-AMTAR = ${SHELL} /home/rubiojr/svn/mspace/WebNotes/Trunk/missing --run tar
+-AR = ar
+-ATK_CFLAGS = -I/usr/include/atk-1.0 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
+-ATK_LIBS = -Wl,--export-dynamic -latk-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
+-AUTOCONF = ${SHELL} /home/rubiojr/svn/mspace/WebNotes/Trunk/missing --run autoconf
+-AUTOHEADER = ${SHELL} /home/rubiojr/svn/mspace/WebNotes/Trunk/missing --run autoheader
+-AUTOMAKE = ${SHELL} /home/rubiojr/svn/mspace/WebNotes/Trunk/missing --run automake-1.7
+-AWK = mawk
+-CC = gcc
+-CCDEPMODE = depmode=gcc3
+-CFLAGS = -g -O2
+-CPP = gcc -E
+-CPPFLAGS = 
+-CXX = g++
+-CXXCPP = g++ -E
+-CXXDEPMODE = depmode=gcc3
+-CXXFLAGS = -g -O2
+-CYGPATH_W = echo
+-DEFS = -DHAVE_CONFIG_H
+-DEPDIR = .deps
+-ECHO = echo
+-ECHO_C = 
+-ECHO_N = -n
+-ECHO_T = 
+-EGREP = grep -E
+-EXEEXT = 
+-F77 = 
+-FFLAGS = 
+-GDK20_CFLAGS = -DXTHREADS -I/usr/include/gtk-2.0 -I/usr/lib/gtk-2.0/include -I/usr/X11R6/include -I/usr/include/pango-1.0 -I/usr/include/freetype2 -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
+-GDK20_LIBS = -Wl,--export-dynamic -lgdk-x11-2.0 -lgdk_pixbuf-2.0 -lm -lpangoxft-1.0 -lpangox-1.0 -lpango-1.0 -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0  
+-GECKOSHARP_CFLAGS =  
+-GECKOSHARP_LIBS = -r:/opt/mono-1.0//lib/mono/gecko-sharp/gecko-sharp.dll  
+-GTKSHARP_CFLAGS =  
+-GTKSHARP_LIBS = -r:/opt/mono-1.0//lib/mono/gtk-sharp/glib-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/pango-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/atk-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/gdk-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/gtk-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/gnome-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/art-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/glade-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/gconf-sharp.dll -r:/opt/mono-1.0//lib/mono/gtk-sharp/gconf-sharp-peditors.dll  
+-INSTALL_DATA = ${INSTALL} -m 644
+-INSTALL_PROGRAM = ${INSTALL}
+-INSTALL_SCRIPT = ${INSTALL}
+-INSTALL_STRIP_PROGRAM = ${SHELL} $(install_sh) -c -s
+-LDFLAGS = 
+-LIBOBJS = 
+-LIBS = 
+-LIBTOOL = $(SHELL) $(top_builddir)/libtool
+-LN_S = ln -s
+-LTLIBOBJS = 
+-MAINT = 
+-MAINTAINER_MODE_FALSE = #
+-MAINTAINER_MODE_TRUE = 
+-MAKEINFO = ${SHELL} /home/rubiojr/svn/mspace/WebNotes/Trunk/missing --run makeinfo
+-MCS = /opt/mono/bin/mcs
+-MCS_FLAGS = -g
+-MONO = /opt/mono/bin/mono
+-MONO_CFLAGS = -D_REENTRANT -pthread -I/opt/mono-1.0//include -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include  
+-MONO_FLAGS = --debug
+-MONO_LIBS = -Wl,--export-dynamic -pthread -L/opt/mono-1.0//lib -lmono -lpthread -lm -lgmodule-2.0 -ldl -lgthread-2.0 -lglib-2.0  
+-OBJEXT = o
+-PACKAGE = webnotes
+-PACKAGE_BUGREPORT = <A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>
+-PACKAGE_NAME = WebNotes
+-PACKAGE_STRING = WebNotes 1.0
+-PACKAGE_TARNAME = webnotes
+-PACKAGE_VERSION = 1.0
+-PATH_SEPARATOR = :
+-PKG_CONFIG = /usr/bin/pkg-config
+-RANLIB = ranlib
+-SET_MAKE = 
+-SHELL = /bin/sh
+-STRIP = strip
+-VERSION = 1.0
+-ac_ct_AR = ar
+-ac_ct_CC = gcc
+-ac_ct_CXX = g++
+-ac_ct_F77 = 
+-ac_ct_RANLIB = ranlib
+-ac_ct_STRIP = strip
+-am__fastdepCC_FALSE = #
+-am__fastdepCC_TRUE = 
+-am__fastdepCXX_FALSE = #
+-am__fastdepCXX_TRUE = 
+-am__include = include
+-am__leading_dot = .
+-am__quote = 
+-bindir = ${exec_prefix}/bin
+-build = powerpc-unknown-linux-gnu
+-build_alias = 
+-build_cpu = powerpc
+-build_os = linux-gnu
+-build_vendor = unknown
+-datadir = ${prefix}/share
+-exec_prefix = ${prefix}
+-host = powerpc-unknown-linux-gnu
+-host_alias = 
+-host_cpu = powerpc
+-host_os = linux-gnu
+-host_vendor = unknown
+-includedir = ${prefix}/include
+-infodir = ${prefix}/info
+-install_sh = /home/rubiojr/svn/mspace/WebNotes/Trunk/install-sh
+-libdir = ${exec_prefix}/lib
+-libexecdir = ${exec_prefix}/libexec
+-localstatedir = ${prefix}/var
+-mandir = ${prefix}/man
+-oldincludedir = /usr/include
+-prefix = /opt/mono-extra/
+-program_transform_name = s,x,x,
+-sbindir = ${exec_prefix}/sbin
+-sharedstatedir = ${prefix}/com
+-sysconfdir = ${prefix}/etc
+-target_alias = 
+-CSSOURCES = ./WebViewer.cs ./WebNotes.cs
+-IMAGERS = /resource:../../images/webnotes-16.png,webnotes-16.png /resource:../../images/webnotes-32.png,webnotes-32.png
+-GLADERS = /resource:../../glade/MainWindow.glade,MainWindow.glade
+-
+-#MISCRS = /resource:../MuineSdk.ini,MuineSdk.ini
+-REFERENCES = -pkg:gtk-sharp -pkg:gecko-sharp /r:../TrayIcon/TrayIcon.dll -pkg:glade-sharp
+-
+-bin_SCRIPTS = webnotes
+-
+-sdklibdir = $(prefix)/lib/WebNotes
+-sdklib_DATA = WebNotes.exe
+-
+-EXTRA_DIST = sources.list webnotes.in $(CSSOURCES) WikiHome
+-CLEANFILES = WebNotes.exe webnotes
+-subdir = src/WebNotes
+-ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
+-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+-CONFIG_HEADER = $(top_builddir)/config.h
+-CONFIG_CLEAN_FILES = webnotes
+-SCRIPTS = $(bin_SCRIPTS)
+-
+-DIST_SOURCES =
+-DATA = $(sdklib_DATA)
+-
+-DIST_COMMON = $(srcdir)/../../glade/gladers.list \
+-	$(srcdir)/../../images/imagers.list $(srcdir)/Makefile.in \
+-	$(srcdir)/sources.list Makefile.am webnotes.in
+-all: all-am
+-
+-.SUFFIXES:
+-$(srcdir)/Makefile.in:  Makefile.am $(srcdir)/sources.list $(srcdir)/../../images/imagers.list $(srcdir)/../../glade/gladers.list $(top_srcdir)/configure.in $(ACLOCAL_M4)
+-	cd $(top_srcdir) &amp;&amp; \
+-	  $(AUTOMAKE) --gnu  src/WebNotes/Makefile
+-Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
+-	cd $(top_builddir) &amp;&amp; $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
+-webnotes: $(top_builddir)/config.status webnotes.in
+-	cd $(top_builddir) &amp;&amp; $(SHELL) ./config.status $(subdir)/$@
+-binSCRIPT_INSTALL = $(INSTALL_SCRIPT)
+-install-binSCRIPTS: $(bin_SCRIPTS)
+-	@$(NORMAL_INSTALL)
+-	$(mkinstalldirs) $(DESTDIR)$(bindir)
+-	@list='$(bin_SCRIPTS)'; for p in $$list; do \
+-	  if test -f &quot;$$p&quot;; then d=; else d=&quot;$(srcdir)/&quot;; fi; \
+-	  if test -f $$d$$p; then \
+-	    f=`echo &quot;$$p&quot; | sed 's|^.*/||;$(transform)'`; \
+-	    echo &quot; $(binSCRIPT_INSTALL) $$d$$p $(DESTDIR)$(bindir)/$$f&quot;; \
+-	    $(binSCRIPT_INSTALL) $$d$$p $(DESTDIR)$(bindir)/$$f; \
+-	  else :; fi; \
+-	done
+-
+-uninstall-binSCRIPTS:
+-	@$(NORMAL_UNINSTALL)
+-	@list='$(bin_SCRIPTS)'; for p in $$list; do \
+-	  f=`echo &quot;$$p&quot; | sed 's|^.*/||;$(transform)'`; \
+-	  echo &quot; rm -f $(DESTDIR)$(bindir)/$$f&quot;; \
+-	  rm -f $(DESTDIR)$(bindir)/$$f; \
+-	done
+-
+-mostlyclean-libtool:
+-	-rm -f *.lo
+-
+-clean-libtool:
+-	-rm -rf .libs _libs
+-
+-distclean-libtool:
+-	-rm -f libtool
+-uninstall-info-am:
+-sdklibDATA_INSTALL = $(INSTALL_DATA)
+-install-sdklibDATA: $(sdklib_DATA)
+-	@$(NORMAL_INSTALL)
+-	$(mkinstalldirs) $(DESTDIR)$(sdklibdir)
+-	@list='$(sdklib_DATA)'; for p in $$list; do \
+-	  if test -f &quot;$$p&quot;; then d=; else d=&quot;$(srcdir)/&quot;; fi; \
+-	  f=&quot;`echo $$p | sed -e 's|^.*/||'`&quot;; \
+-	  echo &quot; $(sdklibDATA_INSTALL) $$d$$p $(DESTDIR)$(sdklibdir)/$$f&quot;; \
+-	  $(sdklibDATA_INSTALL) $$d$$p $(DESTDIR)$(sdklibdir)/$$f; \
+-	done
+-
+-uninstall-sdklibDATA:
+-	@$(NORMAL_UNINSTALL)
+-	@list='$(sdklib_DATA)'; for p in $$list; do \
+-	  f=&quot;`echo $$p | sed -e 's|^.*/||'`&quot;; \
+-	  echo &quot; rm -f $(DESTDIR)$(sdklibdir)/$$f&quot;; \
+-	  rm -f $(DESTDIR)$(sdklibdir)/$$f; \
+-	done
+-tags: TAGS
+-TAGS:
+-
+-ctags: CTAGS
+-CTAGS:
+-
+-DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+-
+-top_distdir = ../..
+-distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
+-
+-distdir: $(DISTFILES)
+-	$(mkinstalldirs) $(distdir)/./../../glade $(distdir)/./../../images
+-	@srcdirstrip=`echo &quot;$(srcdir)&quot; | sed 's|.|.|g'`; \
+-	topsrcdirstrip=`echo &quot;$(top_srcdir)&quot; | sed 's|.|.|g'`; \
+-	list='$(DISTFILES)'; for file in $$list; do \
+-	  case $$file in \
+-	    $(srcdir)/*) file=`echo &quot;$$file&quot; | sed &quot;s|^$$srcdirstrip/||&quot;`;; \
+-	    $(top_srcdir)/*) file=`echo &quot;$$file&quot; | sed &quot;s|^$$topsrcdirstrip/|$(top_builddir)/|&quot;`;; \
+-	  esac; \
+-	  if test -f $$file || test -d $$file; then d=.; else d=$(srcdir); fi; \
+-	  dir=`echo &quot;$$file&quot; | sed -e 's,/[^/]*$$,,'`; \
+-	  if test &quot;$$dir&quot; != &quot;$$file&quot; &amp;&amp; test &quot;$$dir&quot; != &quot;.&quot;; then \
+-	    dir=&quot;/$$dir&quot;; \
+-	    $(mkinstalldirs) &quot;$(distdir)$$dir&quot;; \
+-	  else \
+-	    dir=''; \
+-	  fi; \
+-	  if test -d $$d/$$file; then \
+-	    if test -d $(srcdir)/$$file &amp;&amp; test $$d != $(srcdir); then \
+-	      cp -pR $(srcdir)/$$file $(distdir)$$dir || exit 1; \
+-	    fi; \
+-	    cp -pR $$d/$$file $(distdir)$$dir || exit 1; \
+-	  else \
+-	    test -f $(distdir)/$$file \
+-	    || cp -p $$d/$$file $(distdir)/$$file \
+-	    || exit 1; \
+-	  fi; \
+-	done
+-check-am: all-am
+-check: check-am
+-all-am: Makefile $(SCRIPTS) $(DATA)
+-
+-installdirs:
+-	$(mkinstalldirs) $(DESTDIR)$(bindir) $(DESTDIR)$(sdklibdir)
+-install: install-am
+-install-exec: install-exec-am
+-install-data: install-data-am
+-uninstall: uninstall-am
+-
+-install-am: all-am
+-	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+-
+-installcheck: installcheck-am
+-install-strip:
+-	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM=&quot;$(INSTALL_STRIP_PROGRAM)&quot; \
+-	  install_sh_PROGRAM=&quot;$(INSTALL_STRIP_PROGRAM)&quot; INSTALL_STRIP_FLAG=-s \
+-	  `test -z '$(STRIP)' || \
+-	    echo &quot;INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'&quot;` install
+-mostlyclean-generic:
+-
+-clean-generic:
+-	-test -z &quot;$(CLEANFILES)&quot; || rm -f $(CLEANFILES)
+-
+-distclean-generic:
+-	-rm -f $(CONFIG_CLEAN_FILES)
+-
+-maintainer-clean-generic:
+-	@echo &quot;This command is intended for maintainers to use&quot;
+-	@echo &quot;it deletes files that may require special tools to rebuild.&quot;
+-clean: clean-am
+-
+-clean-am: clean-generic clean-libtool mostlyclean-am
+-
+-distclean: distclean-am
+-	-rm -f Makefile
+-distclean-am: clean-am distclean-generic distclean-libtool
+-
+-dvi: dvi-am
+-
+-dvi-am:
+-
+-info: info-am
+-
+-info-am:
+-
+-install-data-am: install-sdklibDATA
+-
+-install-exec-am: install-binSCRIPTS
+-
+-install-info: install-info-am
+-
+-install-man:
+-
+-installcheck-am:
+-
+-maintainer-clean: maintainer-clean-am
+-	-rm -f Makefile
+-maintainer-clean-am: distclean-am maintainer-clean-generic
+-
+-mostlyclean: mostlyclean-am
+-
+-mostlyclean-am: mostlyclean-generic mostlyclean-libtool
+-
+-pdf: pdf-am
+-
+-pdf-am:
+-
+-ps: ps-am
+-
+-ps-am:
+-
+-uninstall-am: uninstall-binSCRIPTS uninstall-info-am \
+-	uninstall-sdklibDATA
+-
+-.PHONY: all all-am check check-am clean clean-generic clean-libtool \
+-	distclean distclean-generic distclean-libtool distdir dvi \
+-	dvi-am info info-am install install-am install-binSCRIPTS \
+-	install-data install-data-am install-exec install-exec-am \
+-	install-info install-info-am install-man install-sdklibDATA \
+-	install-strip installcheck installcheck-am installdirs \
+-	maintainer-clean maintainer-clean-generic mostlyclean \
+-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+-	uninstall uninstall-am uninstall-binSCRIPTS uninstall-info-am \
+-	uninstall-sdklibDATA
+-
+-
+-WebNotes.exe: $(CSSOURCES) 
+-	mcs /out:$@ $(CSSOURCES) /target:exe $(REFERENCES) $(IMAGERS) $(GLADERS) /resource:WikiHome,WikiHome
+-
+-all: WebNotes.exe 
+-# Tell versions [3.59,3.63) of GNU make to not export all variables.
+-# Otherwise a system limit (for SysV at least) may be exceeded.
+-.NOEXPORT:
+
+Modified: WebNotes/trunk/src/didiwiki/ChangeLog
+===================================================================
+--- WebNotes/trunk/src/didiwiki/ChangeLog	2004-10-22 08:46:13 UTC (rev 302)
++++ WebNotes/trunk/src/didiwiki/ChangeLog	2004-10-22 09:12:38 UTC (rev 303)
+@@ -1,3 +1,39 @@
++2004-09-30 0.5 released. 
++
++2004-09-30  mallum,,,  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">mallum at handhelds.org</A>&gt;
++
++	* configure.ac:
++	Bump up version,
++	* src/wiki.c: (wiki_print_data_as_html), (wiki_get_pages),
++	(wiki_handle_http_request):
++	Fix italic brokeness. Add check for extra /'s in req path. 
++	* website/index.htm
++	Update for 0.5 release. 
++
++2004-09-28  mallum,,,  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">mallum at handhelds.org</A>&gt;
++
++	* README:
++	Added notes on HTTP API. Made forking/memory thing a bit clearer.
++	* TODO:
++	Updated.
++	* configure.ac:
++	* src/Makefile.am:
++	Add missing -Wall
++	* src/didi.h:
++	* src/http.c: (http_server):
++	* src/wiki.c: (check_for_link), (wiki_print_data_as_html),
++	(wiki_show_create_page), (changes_compar),
++	(wiki_show_changes_page), (wiki_show_search_results_page),
++	(wiki_show_template), (wiki_show_header), (wiki_show_footer),
++	(wiki_handle_rest_call), (wiki_handle_http_request), (wiki_init):
++	* src/wiki.h:
++	Added simple http api. 
++	Rewrote searchs / changes stuff so more generic
++	Applied patches from Tiago Cogumbreiro for more printf safety etc.
++	Fixed -Wall warnings.	
++	* website/index.htm:
++	Updated with hopeful amamzon wish list link. 
++
+ 2004-09-13 0.4 released. 
+ 
+ 2004-09-13  mallum  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">mallum at handhelds.org</A>&gt;
+
+Modified: WebNotes/trunk/src/didiwiki/README
+===================================================================
+--- WebNotes/trunk/src/didiwiki/README	2004-10-22 08:46:13 UTC (rev 302)
++++ WebNotes/trunk/src/didiwiki/README	2004-10-22 09:12:38 UTC (rev 303)
+@@ -1,4 +1,4 @@
+-DidiWiki 0.4
++DidiWiki 0.5
+ ==============
+ 
+ DidiWiki is a small and simple WikiWikiWeb implementation written in
+@@ -17,10 +17,47 @@
+ ~/.didiwiki/DidiHelp before running so you get the latest version of
+ the help file.
+ 
++
++Remote API
++==========
++
++As from 0.5 DidiWiki has a very simple 'REST' like http api. Hopefully
++this will make it possible to write alternate front ends to didiwiki.
++
++The api looks like this with parameter passable via GET or POST;
++
++<A HREF="http://didiwiki/api/page/get?page=XXX">http://didiwiki/api/page/get?page=XXX</A>
++
++ Get the raw wiki text for specified page. Returns http 500 code if
++ page does not exist.
++
++<A HREF="http://didiwiki/api/page/set?page=XXX&amp;text=XXX">http://didiwiki/api/page/set?page=XXX&amp;text=XXX</A>
++
++ Set the wikitext of a page. Page is created if it doesn't exist. 
++
++<A HREF="http://didiwiki/api/page/exists?page=XXX">http://didiwiki/api/page/exists?page=XXX</A>
++
++ Returns 'success' if page exists, 500 error if not. 
++
++<A HREF="http://didiwiki/api/page/delete?page=XXX">http://didiwiki/api/page/delete?page=XXX</A>
++
++ Deletes a page. 
++
++<A HREF="http://didiwiki/api/pages">http://didiwiki/api/pages</A>
++
++ Returns a seperated list ( one entry per line containing page
++ title,TAB,modified date) of wiki pages with the most recently modified
++ first.
++
++<A HREF="http://didiwiki/api/search?expr=XXX">http://didiwiki/api/search?expr=XXX</A>
++
++ Like the above but lists only pages which contain 'expr'
++
++
+ Notes &amp; Excuses
+ ===============
+ 
+-- If you want to contribute, check the TODO !
++- If you want to contribute, please check the TODO !
+ 
+ - Pages are stored in ~/.didiwiki ( you can override this by setting 
+   'DIDIWIKIHOME' env var to a valid path. ). You can add a styles.css 
+@@ -29,10 +66,12 @@
+ - The webserver part is heavily based on cvstrac's internal server,
+   following the same kind of process;
+ 
+-  - Its a pretty simple lightweight forking server. 
++  - Its a pretty simple lightweight forking server. A child process is
++    forked to handle each http request.
+ 
+-  - These forked children are assumed to not be around for very long,
+-    thus no real attempt is made to free up memory. 
++  - These forked children are assumed to not be around for very long (
++    less than a second ), thus no real attempt is made to free up
++    memory in these child processes.
+ 
+   - Its probably not very secure at all. !!PLEASE DONT RUN AS ROOT!!
+ 
+
+Modified: WebNotes/trunk/src/didiwiki/TODO
+===================================================================
+--- WebNotes/trunk/src/didiwiki/TODO	2004-10-22 08:46:13 UTC (rev 302)
++++ WebNotes/trunk/src/didiwiki/TODO	2004-10-22 09:12:38 UTC (rev 303)
+@@ -13,7 +13,9 @@
+ 
+ Apply Halski's '-' patch.
+ 
++WTF am I not doing this in didiwiki ?
+ 
++
+ Stuff that would be nice to have
+ =====
+ 
+@@ -27,11 +29,26 @@
+ - RSS feed of changes / searches ?
+ 
+ - Simple REST uri like API for external getting/setting raw wiki pages
+-  - didiwiki:8000/api/get/PageName
+-  - didiwiki:8000/api/set/PageName?data
++
++  - didiwiki:8000/api/page/ get|set|exists|delete
++
++    &lt;?xml version=&quot;1.0&quot;?&gt;
++    &lt;page&gt;
++    blah blah b    
++
++    &lt;/page&gt;
++
++    * could allow param to just return data as text, is xml really needed *
++    * - xml could be a pain for shell scripts                             *
++
++  - didiwiki:8000/api/pages lists all pages
++    - could do the same as changes ?
++
+   - didiwiki:8000/api/search
++
+   - didiwiki:8000/api/changes
+ 
++
+ - Rewrite Parser.
+   - can be much faster but its not that slow atm. 
+   - make generic, output text, docbook ( bloat - uneeded )
+@@ -61,5 +78,13 @@
+ - #include 'wikipage' style directive ?
+ 
+ - GTD tool, how would this work ?
++  - lists
++    - allow lists in pages to be referenced ?
++      - /pagename?list=#    referenced by number
++      - /pagename?list=name 
++        - How do we name a list though ?
++	  - *[listname] ?
++      - also deliver lists as RSS
++      - is this much use though ?
+ 
+-   
+\ No newline at end of file
++- Templating, let user overide header and footer templates.    
+\ No newline at end of file
+
+Modified: WebNotes/trunk/src/didiwiki/config.h.in
+===================================================================
+--- WebNotes/trunk/src/didiwiki/config.h.in	2004-10-22 08:46:13 UTC (rev 302)
++++ WebNotes/trunk/src/didiwiki/config.h.in	2004-10-22 09:12:38 UTC (rev 303)
+@@ -34,10 +34,6 @@
+ /* Define to 1 if you have the &lt;inttypes.h&gt; header file. */
+ #undef HAVE_INTTYPES_H
+ 
+-/* Define to 1 if your system has a GNU libc compatible `malloc' function, and
+-   to 0 otherwise. */
+-#undef HAVE_MALLOC
+-
+ /* Define to 1 if you have the &lt;memory.h&gt; header file. */
+ #undef HAVE_MEMORY_H
+ 
+@@ -56,10 +52,6 @@
+ /* Define to 1 if you have the `putenv' function. */
+ #undef HAVE_PUTENV
+ 
+-/* Define to 1 if your system has a GNU libc compatible `realloc' function,
+-   and to 0 otherwise. */
+-#undef HAVE_REALLOC
+-
+ /* Define to 1 if you have the `select' function. */
+ #undef HAVE_SELECT
+ 
+@@ -186,14 +178,8 @@
+ /* Define to empty if `const' does not conform to ANSI C. */
+ #undef const
+ 
+-/* Define to rpl_malloc if the replacement function should be used. */
+-#undef malloc
+-
+ /* Define to `int' if &lt;sys/types.h&gt; does not define. */
+ #undef pid_t
+ 
+-/* Define to rpl_realloc if the replacement function should be used. */
+-#undef realloc
+-
+ /* Define as `fork' if `vfork' does not work. */
+ #undef vfork
+
+Modified: WebNotes/trunk/src/didiwiki/configure.ac
+===================================================================
+--- WebNotes/trunk/src/didiwiki/configure.ac	2004-10-22 08:46:13 UTC (rev 302)
++++ WebNotes/trunk/src/didiwiki/configure.ac	2004-10-22 09:12:38 UTC (rev 303)
+@@ -1,5 +1,5 @@
+ AC_PREREQ(2.59)
+-AC_INIT(didiwiki, 0.4, [<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">mallum at handhelds.org</A>])
++AC_INIT(didiwiki, 0.5, [<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">mallum at handhelds.org</A>])
+ AC_CONFIG_SRCDIR([src/util.c])
+ AC_CONFIG_HEADER([config.h])
+ 
+@@ -24,13 +24,17 @@
+ # Checks for library functions.
+ AC_FUNC_ALLOCA
+ AC_FUNC_FORK
+-AC_FUNC_MALLOC
+-AC_FUNC_REALLOC
+ AC_FUNC_SELECT_ARGTYPES
+ AC_FUNC_STAT
+ AC_FUNC_STRFTIME
+ AC_CHECK_FUNCS([asprintf inet_ntoa memset mkdir putenv select socket strdup strncasecmp])
+ 
++if test &quot;x$GCC&quot; = &quot;xyes&quot;; then
++        GCC_FLAGS=&quot;-g -Wall -fno-strict-aliasing&quot;
++fi
++
++AC_SUBST(GCC_FLAGS)
++
+ AC_OUTPUT([
+ Makefile
+ src/Makefile
+
+Modified: WebNotes/trunk/src/didiwiki/src/Makefile.am
+===================================================================
+--- WebNotes/trunk/src/didiwiki/src/Makefile.am	2004-10-22 08:46:13 UTC (rev 302)
++++ WebNotes/trunk/src/didiwiki/src/Makefile.am	2004-10-22 09:12:38 UTC (rev 303)
+@@ -2,8 +2,11 @@
+ PKGDATADIR = $(datadir)/matchbox
+ DATADIR    = $(datadir)
+ 
++AM_CFLAGS = $(GCC_FLAGS)
++
+ INCLUDES = -DDATADIR=\&quot;$(DATADIR)\&quot; -DPKGDATADIR=\&quot;$(PKGDATADIR)\&quot; -DPREFIX=\&quot;$(PREFIXDIR)\&quot;
+ 
++bindir = $(prefix)/lib/WebNotes
+ bin_PROGRAMS = didiwiki
+ 
+ didiwiki_SOURCES = didi.c  didi.h  http.c  http.h  \
+
+Modified: WebNotes/trunk/src/didiwiki/src/didi.h
+===================================================================
+--- WebNotes/trunk/src/didiwiki/src/didi.h	2004-10-22 08:46:13 UTC (rev 302)
++++ WebNotes/trunk/src/didiwiki/src/didi.h	2004-10-22 09:12:38 UTC (rev 303)
+@@ -19,6 +19,42 @@
+ 
+ #define _GNU_SOURCE
+ 
++#include &quot;config.h&quot;
++
++#if defined(__MINGW32__)
++
++/* This is broken */
++
++#undef DATADIR
++
++#include &lt;windows.h&gt;
++#include &lt;stdio.h&gt;
++#include &lt;stdlib.h&gt;
++#include &lt;io.h&gt;
++#include &lt;sys/stat.h&gt;
++#include &lt;sys/timeb.h&gt;
++#include &lt;sys/types.h&gt;
++#include &lt;dirent.h&gt;
++
++#ifndef WNOHANG
++#define WNOHANG 1
++#endif
++
++#ifndef F_OK
++#    define F_OK 00
++#endif
++#ifndef X_OK
++#    define X_OK 01
++#endif
++#ifndef W_OK
++#    define W_OK 02
++#endif
++#ifndef R_OK
++#    define R_OK 04
++#endif
++
++#else
++
+ #include &lt;unistd.h&gt;
+ #include &lt;stdio.h&gt;
+ #include &lt;stdlib.h&gt;
+@@ -40,10 +76,12 @@
+ #include &lt;sys/stat.h&gt;
+ #include &lt;dirent.h&gt;
+ 
++#endif
++
+ #define TRUE  1
+ #define FALSE 0
+ 
+-#include &quot;config.h&quot;
++
+ #include &quot;util.h&quot;
+ #include &quot;http.h&quot;
+ #include &quot;wiki.h&quot;
+
+Modified: WebNotes/trunk/src/didiwiki/src/http.c
+===================================================================
+--- WebNotes/trunk/src/didiwiki/src/http.c	2004-10-22 08:46:13 UTC (rev 302)
++++ WebNotes/trunk/src/didiwiki/src/http.c	2004-10-22 09:12:38 UTC (rev 303)
+@@ -545,6 +545,7 @@
+       
+       /* Bury dead children */
+       while( waitpid(0, 0, WNOHANG)&gt;0 ) nchildren--;
++
+       
+     }
+ 
+
+Modified: WebNotes/trunk/src/didiwiki/src/wiki.c
+===================================================================
+--- WebNotes/trunk/src/didiwiki/src/wiki.c	2004-10-22 08:46:13 UTC (rev 302)
++++ WebNotes/trunk/src/didiwiki/src/wiki.c	2004-10-22 09:12:38 UTC (rev 303)
+@@ -55,7 +55,6 @@
+   char *url   =  NULL;
+   char *title =  NULL;
+   char *result = NULL;
+-  char  tmp;
+   int   found = 0;
+ 
+   if (*p == '[') 		/* [ link [title] ] */
+@@ -131,7 +130,7 @@
+ 	}
+       else
+ 	{
+-	  char *extra_attr = NULL;
++	  char *extra_attr = &quot;&quot;;
+ 
+ 	  if (!strncasecmp(url, &quot;<A HREF="http://">http://</A>&quot;, 7))
+ 	    extra_attr = &quot; title='WWW link' &quot;;
+@@ -210,7 +209,7 @@
+ wiki_print_data_as_html(HttpResponse *res, char *raw_page_data)
+ {
+   char *p = raw_page_data;	    /* accumalates non marked up text */
+-  char *q = NULL, *url = NULL, *link = NULL; /* temporary scratch stuff */
++  char *q = NULL, *link = NULL; /* temporary scratch stuff */
+   char *line = NULL;
+   int   line_len;
+   int   i, j, skip_chars;
+@@ -222,7 +221,6 @@
+   int strikethrough_on = 0;
+   int open_para    = 0;
+   int pre_on       = 0;
+-  int list_depth   = 0;
+   int table_on     = 0;
+ 
+ #define ULIST 0
+@@ -466,14 +464,14 @@
+ 	    {
+ 	      if (line_start != line 
+ 		  &amp;&amp; !is_wiki_format_char_or_space(*(line-1)) 
+-		  &amp;&amp; !underline_on)
++		  &amp;&amp; !italic_on)
+ 		{ line++; continue; }
+ 
+-	      if (isspace(*(line+1)) &amp;&amp; !underline_on)
++	      if (isspace(*(line+1)) &amp;&amp; !italic_on)
+ 		{ line++; continue; }
+ 
+ 	      /* crude path detection */
+-	      if (line_start != line &amp;&amp; isspace(*(line-1)) &amp;&amp; !underline_on)
++	      if (line_start != line &amp;&amp; isspace(*(line-1)) &amp;&amp; !italic_on)
+ 		{ 
+ 		  char *tmp   = line+1;
+ 		  int slashes = 0;
+@@ -495,15 +493,15 @@
+ 		{
+ 		  /* italic */
+ 		  *line = '\0';
+-		  http_response_printf(res, &quot;%s%s\n&quot;, p, underline_on ? &quot;&lt;/i&gt;&quot; : &quot;&lt;i&gt;&quot;); 
+-		  underline_on ^= 1; /* reset flag */
++		  http_response_printf(res, &quot;%s%s\n&quot;, p, italic_on ? &quot;&lt;/i&gt;&quot; : &quot;&lt;i&gt;&quot;); 
++		  italic_on ^= 1; /* reset flag */
+ 		  p = line+1; 
+ 		}
+ 	    }
+ 	  else if (*line == '|' &amp;&amp; table_on) /* table column */
+ 	    {
+ 	      *line = '\0';
+-	      http_response_printf(res, p);
++	      http_response_printf(res, &quot;%s&quot;, p);
+ 	      http_response_printf(res, &quot;&lt;/td&gt;&lt;td&gt;\n&quot;);
+ 	      p = line+1;
+ 	    }
+@@ -560,9 +558,10 @@
+ int 
+ wiki_redirect(HttpResponse *res, char *location)
+ {
+-  char *header = alloca(strlen(location) + 14);
++  int   header_len = strlen(location) + 14; 
++  char *header = alloca(sizeof(char)*header_len);
+ 
+-  sprintf(header, &quot;Location: %s\r\n&quot;, location);
++  snprintf(header, header_len, &quot;Location: %s\r\n&quot;, location);
+ 
+   http_response_append_header(res, header);
+   http_response_printf(res, &quot;&lt;html&gt;\n&lt;p&gt;Redirect to %s&lt;/p&gt;\n&lt;/html&gt;\n&quot;, 
+@@ -613,7 +612,7 @@
+ wiki_show_create_page(HttpResponse *res)
+ {
+   wiki_show_header(res, &quot;Create New Page&quot;, FALSE);
+-  http_response_printf(res, CREATEFORM);
++  http_response_printf(res, &quot;%s&quot;, CREATEFORM);
+   wiki_show_footer(res);
+ 
+   http_response_send(res);
+@@ -635,55 +634,94 @@
+       return -1;
+ }
+ 
+-void
+-wiki_show_changes_page(HttpResponse *res)
++
++
++WikiPageList**
++wiki_get_pages(int  *n_pages, char *expr)
+ {
++  WikiPageList  **pages;
+   struct dirent **namelist;
+-  int             n;
++  int             n, i = 0;
++  struct stat     st;
+ 
+-  wiki_show_header(res, &quot;Changes&quot;, FALSE);
+-
+   n = scandir(&quot;.&quot;, &amp;namelist, 0, (void *)changes_compar);
++  
++  pages = malloc(sizeof(WikiPageList*)*n);
+ 
+-  /*
+-  if (n &lt; 0) TODO error
+-  */
+-
+   while(n--) 
+     {
+-      struct stat  st;
+-      struct tm   *pTm;
+-      char   datebuf[64];
+-
+       if ((namelist[n]-&gt;d_name)[0] == '.' 
+ 	  || !strcmp(namelist[n]-&gt;d_name, &quot;styles.css&quot;))
+ 	goto cleanup;
+ 
++      if (expr != NULL) 
++	{ 			/* Super Simple Search */
++	  char *data = NULL;
++	  if ((data = file_read(namelist[n]-&gt;d_name)) != NULL)
++	    if (strstr(data, expr) == NULL)
++	      if (strcmp(namelist[n]-&gt;d_name, expr) != 0) 
++		goto cleanup; 
++	}
++
++
+       stat(namelist[n]-&gt;d_name, &amp;st);
+ 
+-      pTm = localtime(&amp;st.st_mtime);
+-      strftime(datebuf, sizeof(datebuf), &quot;%Y-%m-%d %H:%M&quot;, pTm);
+-      http_response_printf(res, &quot;&lt;a href='%s'&gt;%s&lt;/a&gt; %s&lt;br /&gt;\n&quot;, 
+-			   namelist[n]-&gt;d_name, 
+-			   namelist[n]-&gt;d_name, 
+-			   datebuf);
++      /* ignore anything but regular readable files */
++      if (S_ISREG(st.st_mode) &amp;&amp; access(namelist[n]-&gt;d_name, R_OK) == 0)
++	{
++	  pages[i]        = malloc(sizeof(WikiPageList));
++	  pages[i]-&gt;name  = strdup (namelist[n]-&gt;d_name);
++	  pages[i]-&gt;mtime = st.st_mtime;
++
++	  i++;
++	}
++
+     cleanup:
+       free(namelist[n]);
+     }
+-  
++
++  *n_pages = i;
++
+   free(namelist);
+ 
++  if (i==0) return NULL;
++
++  return pages;
++}
++
++void
++wiki_show_changes_page(HttpResponse *res)
++{
++  WikiPageList **pages = NULL;
++  int            n_pages, i;
++
++  wiki_show_header(res, &quot;Changes&quot;, FALSE);
++
++  pages = wiki_get_pages(&amp;n_pages, NULL);
++
++  for (i=0; i&lt;n_pages; i++)
++    {
++      struct tm   *pTm;
++      char   datebuf[64];
++
++      pTm = localtime(&amp;pages[i]-&gt;mtime);
++      strftime(datebuf, sizeof(datebuf), &quot;%Y-%m-%d %H:%M&quot;, pTm);
++      http_response_printf(res, &quot;&lt;a href='%s'&gt;%s&lt;/a&gt; %s&lt;br /&gt;\n&quot;, 
++			   pages[i]-&gt;name, 
++			   pages[i]-&gt;name, 
++			   datebuf);
++    }
++
+   wiki_show_footer(res);
+   http_response_send(res);
+   exit(0);
+-
+ }
+ 
+ void
+ wiki_show_search_results_page(HttpResponse *res, char *expr)
+ {
+-  struct dirent **namelist;
+-  int             n, i, finds = 0;
++  WikiPageList **pages = NULL;
++  int            n_pages, i;
+ 
+   if (expr == NULL || strlen(expr) == 0)
+     {
+@@ -694,61 +732,51 @@
+       exit(0);
+     }
+ 
+-  i = n = scandir(&quot;.&quot;, &amp;namelist, 0, 0);
++  pages = wiki_get_pages(&amp;n_pages, expr);
+ 
+-  while(i--) 
++  if (pages)
+     {
+-      if ((namelist[i]-&gt;d_name)[0] == '.' 
+-	  || !strcmp(namelist[i]-&gt;d_name, &quot;styles.css&quot;))
+-	continue;
++      for (i=0; i&lt;n_pages; i++)
++	if (!strcmp(pages[i]-&gt;name, expr)) /* redirect on page name match */
++	  wiki_redirect(res, pages[i]-&gt;name);
+ 
+-      if (!strcmp(namelist[i]-&gt;d_name, expr))
+-	wiki_redirect(res, namelist[i]-&gt;d_name); /* exits */
+-    }
++      wiki_show_header(res, &quot;Search&quot;, FALSE);
+ 
+-  i = n;
+-
+-  wiki_show_header(res, &quot;Search&quot;, FALSE);
+-
+-
+-  while(i--) 
+-    {
+-      char *data = NULL;
+-
+-      if ((namelist[i]-&gt;d_name)[0] == '.' 
+-	  || !strcmp(namelist[i]-&gt;d_name, &quot;styles.css&quot;))
+-	goto cleanup;
+-
+-      /* Super simple search functionality TODO Improve */
+-
+-      if ((data = file_read(namelist[i]-&gt;d_name)) != NULL)
++      for (i=0; i&lt;n_pages; i++)
+ 	{
+-	  if (strstr(data, expr))
+-	    {
+-	      http_response_printf(res, &quot;&lt;a href='%s'&gt;%s&lt;/a&gt;&lt;br /&gt;\n&quot;, 
+-				   namelist[i]-&gt;d_name, 
+-				   namelist[i]-&gt;d_name);
+-	      finds++;
+-	    }
++	  http_response_printf(res, &quot;&lt;a href='%s'&gt;%s&lt;/a&gt;&lt;br /&gt;\n&quot;, 
++			       pages[i]-&gt;name, 
++			       pages[i]-&gt;name);
+ 	}
+-      
+-      if (data) free(data);
+-
+-    cleanup:
+-      free(namelist[i]);
+     }
++  else 
++    {
++      wiki_show_header(res, &quot;Search&quot;, FALSE);
++      http_response_printf(res, &quot;No matches&quot;);
++    }
+ 
+-  if (!finds)
+-    http_response_printf(res, &quot;No matches&quot;);
+-
+-  free(namelist);
+-
+   wiki_show_footer(res);
+   http_response_send(res);
+ 
+   exit(0);
+ }
+ 
++void 
++wiki_show_template(HttpResponse *res, char *template_data)
++{
++  /* 4 templates - header.html, footer.html, 
++                   header-noedit.html, footer-noedit.html
++
++     Vars;
++
++     $title      - page title. 
++     $include()  - ?
++     $pages 
++
++  */
++
++}
++
+ void
+ wiki_show_header(HttpResponse *res, char *page_title, int want_edit)
+ {
+@@ -772,7 +800,7 @@
+ void
+ wiki_show_footer(HttpResponse *res)
+ {
+-  http_response_printf(res, PAGEFOOTER);
++  http_response_printf(res, &quot;%s&quot;, PAGEFOOTER);
+ 
+   http_response_printf(res, 
+ 		       &quot;&lt;/body&gt;\n&quot;
+@@ -781,6 +809,106 @@
+ }
+ 
+ void
++wiki_handle_rest_call(HttpRequest  *req, 
++		      HttpResponse *res,
++		      char         *func)
++{
++
++  if (func != NULL &amp;&amp; *func != '\0')
++    {
++      if (!strcmp(func, &quot;page/get&quot;))
++	{
++	  char *page = http_request_param_get(req, &quot;page&quot;);
++
++	  if (page == NULL)
++	    page = http_request_get_query_string(req);
++
++	  if (page &amp;&amp; (access(page, R_OK) == 0)) 
++	    {
++	      http_response_printf(res, &quot;%s&quot;, file_read(page));
++	      http_response_send(res);
++	      return;
++	    }  
++	}
++      else if (!strcmp(func, &quot;page/set&quot;))
++	{
++	  char *wikitext = NULL, *page = NULL;
++	  if( ( (wikitext = http_request_param_get(req, &quot;text&quot;)) != NULL)
++	      &amp;&amp; ( (page = http_request_param_get(req, &quot;page&quot;)) != NULL))
++	    {
++	      file_write(page, wikitext);	      
++	      http_response_printf(res, &quot;success&quot;);
++	      http_response_send(res);
++	      return;
++	    }
++	}
++      else if (!strcmp(func, &quot;page/delete&quot;))
++	{
++	  char *page = http_request_param_get(req, &quot;page&quot;);
++
++	  if (page == NULL)
++	    page = http_request_get_query_string(req);
++
++	  if (page &amp;&amp; (unlink(page) &gt; 0))
++	    {
++	      http_response_printf(res, &quot;success&quot;);
++	      http_response_send(res);
++	      return;  
++	    }
++	}
++      else if (!strcmp(func, &quot;page/exists&quot;))
++	{
++	  char *page = http_request_param_get(req, &quot;page&quot;);
++
++	  if (page == NULL)
++	    page = http_request_get_query_string(req);
++
++	  if (page &amp;&amp; (access(page, R_OK) == 0)) 
++	    {
++	      http_response_printf(res, &quot;success&quot;);
++	      http_response_send(res);
++	      return;  
++	    }
++	}
++      else if (!strcmp(func, &quot;pages&quot;) || !strcmp(func, &quot;search&quot;))
++	{
++	  WikiPageList **pages = NULL;
++	  int            n_pages, i;
++	  char          *expr = http_request_param_get(req, &quot;expr&quot;);
++
++	  if (expr == NULL)
++	    expr = http_request_get_query_string(req);
++	  
++	  pages = wiki_get_pages(&amp;n_pages, expr);
++
++	  if (pages)
++	    {
++	      for (i=0; i&lt;n_pages; i++)
++		{
++		  struct tm   *pTm;
++		  char   datebuf[64];
++		  
++		  pTm = localtime(&amp;pages[i]-&gt;mtime);
++		  strftime(datebuf, sizeof(datebuf), &quot;%Y-%m-%d %H:%M&quot;, pTm);
++		  http_response_printf(res, &quot;%s\t%s\n&quot;, pages[i]-&gt;name, datebuf);
++		}
++
++	      http_response_send(res);
++	      return;  
++	    }
++	}
++    }
++
++  http_response_set_status(res, 500, &quot;Error&quot;);
++  http_response_printf(res, &quot;&lt;html&gt;&lt;body&gt;Failed&lt;/body&gt;&lt;/html&gt;\n&quot;);
++  http_response_send(res);
++
++  return;  
++}
++
++
++
++void
+ wiki_handle_http_request(HttpRequest *req)
+ {
+   HttpResponse *res      = http_response_new(req);
+@@ -802,7 +930,7 @@
+     {
+       /*  Return CSS page */
+       http_response_set_content_type(res, &quot;text/css&quot;);
+-      http_response_printf(res, CssData);
++      http_response_printf(res, &quot;%s&quot;, CssData);
+       http_response_send(res);
+       exit(0);
+     }
+@@ -819,6 +947,29 @@
+ 
+   page = page + 1; 		/* skip slash */
+ 
++  if (!strncmp(page, &quot;api/&quot;, 4))
++    {
++      char *p;
++
++      page += 4; 
++      for (p=page; *p != '\0'; p++)
++	if (*p=='?') { *p ='\0'; break; }
++      
++      wiki_handle_rest_call(req, res, page); 
++      exit(0);
++    }
++
++  /* A little safety. issue a malformed request for any paths,
++   * There shouldn't need to be any..
++   */
++  if (strchr(page, '/'))
++    {
++      http_response_set_status(res, 404, &quot;Not Found&quot;);
++      http_response_printf(res, &quot;&lt;html&gt;&lt;body&gt;404 Not Found&lt;/body&gt;&lt;/html&gt;\n&quot;);
++      http_response_send(res);
++      exit(0);
++    }
++
+   if (!strcmp(page, &quot;Changes&quot;))
+     {
+       /* TODO list recent changes */
+@@ -830,7 +981,6 @@
+     }
+   else if (!strcmp(page, &quot;Create&quot;))
+     {
+-      char *new_page;
+       if ( (wikitext = http_request_param_get(req, &quot;title&quot;)) != NULL)
+ 	{
+ 	  /* create page and redirect */
+@@ -907,7 +1057,7 @@
+     {
+       if (mkdir(datadir, 0755) == -1)
+ 	{
+-	  fprintf(stderr, &quot;Unable to create '%s', giving up.\n&quot;);
++	  fprintf(stderr, &quot;Unable to create '%s', giving up.\n&quot;, datadir);
+ 	  exit(1);
+ 	}
+     }
+@@ -927,6 +1077,6 @@
+   if (access(&quot;styles.css&quot;, R_OK) == 0) 
+     CssData = file_read(&quot;styles.css&quot;);
+   
+-
++  return 1;
+ }
+ 
+
+Modified: WebNotes/trunk/src/didiwiki/src/wiki.h
+===================================================================
+--- WebNotes/trunk/src/didiwiki/src/wiki.h	2004-10-22 08:46:13 UTC (rev 302)
++++ WebNotes/trunk/src/didiwiki/src/wiki.h	2004-10-22 09:12:38 UTC (rev 303)
+@@ -1,7 +1,18 @@
+ #ifndef _HAVE_WIKI_HEADER
+ #define _HAVE_WIKI_HEADER
+ 
++typedef struct WikiPageList WikiPageList;
++
++struct WikiPageList 
++{
++  char   *name;
++  time_t  mtime;
++};
++
+ void
++wiki_handle_http_request(HttpRequest *req);
++
++void
+ wiki_show_header(HttpResponse *res, char *page_title, int want_edit);
+ 
+ void
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000038.html">[Mspace-checkins] r302 - WebNotes
+</A></li>
+	<LI>Next message: <A HREF="000040.html">[Mspace-checkins] r304 - in WebNotes/trunk: . src/WebNotes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#39">[ date ]</a>
+              <a href="thread.html#39">[ thread ]</a>
+              <a href="subject.html#39">[ subject ]</a>
+              <a href="author.html#39">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

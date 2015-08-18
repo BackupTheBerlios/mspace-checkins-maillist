@@ -1,0 +1,786 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r332 - in mvim/trunk/src: . Vim.Components.BufferedVimControl Vim.Components.VimBuffer Vim.Components.VimBuffer/Model/VimBufferStrategy Vim.Components.VimControl Vim.Components.VimEntry
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-February/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r332%20-%20in%20mvim/trunk/src%3A%20.%20Vim.Components.BufferedVimControl%20Vim.Components.VimBuffer%20Vim.Components.VimBuffer/Model/VimBufferStrategy%20Vim.Components.VimControl%20Vim.Components.VimEntry&In-Reply-To=%3C200502152239.j1FMdElq009017%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000065.html">
+   <LINK REL="Next"  HREF="000067.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r332 - in mvim/trunk/src: . Vim.Components.BufferedVimControl Vim.Components.VimBuffer Vim.Components.VimBuffer/Model/VimBufferStrategy Vim.Components.VimControl Vim.Components.VimEntry</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r332%20-%20in%20mvim/trunk/src%3A%20.%20Vim.Components.BufferedVimControl%20Vim.Components.VimBuffer%20Vim.Components.VimBuffer/Model/VimBufferStrategy%20Vim.Components.VimControl%20Vim.Components.VimEntry&In-Reply-To=%3C200502152239.j1FMdElq009017%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r332 - in mvim/trunk/src: . Vim.Components.BufferedVimControl Vim.Components.VimBuffer Vim.Components.VimBuffer/Model/VimBufferStrategy Vim.Components.VimControl Vim.Components.VimEntry">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Tue Feb 15 23:39:14 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000065.html">[Mspace-checkins] r331 - mvim/trunk
+</A></li>
+        <LI>Next message: <A HREF="000067.html">[Mspace-checkins] r333 - in mvim/trunk/src/Vim.Components.VimBuffer: . Model
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#66">[ date ]</a>
+              <a href="thread.html#66">[ thread ]</a>
+              <a href="subject.html#66">[ subject ]</a>
+              <a href="author.html#66">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-02-15 23:39:12 +0100 (Tue, 15 Feb 2005)
+New Revision: 332
+
+Added:
+   mvim/trunk/src/Vim.Components.VimBuffer/GapVimBufferStrategy.cs
+   mvim/trunk/src/Vim.Components.VimBuffer/IVimBufferStrategy.cs
+   mvim/trunk/src/Vim.Components.VimBuffer/StringVimBufferStrategy.cs
+Removed:
+   mvim/trunk/src/Vim.Components.BufferedVimControl/Controller/
+   mvim/trunk/src/Vim.Components.BufferedVimControl/Model/
+   mvim/trunk/src/Vim.Components.BufferedVimControl/View/
+   mvim/trunk/src/Vim.Components.VimBuffer/Controller/
+   mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/GapVimBufferStrategy.cs
+   mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/IVimBufferStrategy.cs
+   mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/StringVimBufferStrategy.cs
+   mvim/trunk/src/Vim.Components.VimBuffer/View/
+   mvim/trunk/src/Vim.Components.VimControl/Controller/
+   mvim/trunk/src/Vim.Components.VimControl/Model/
+   mvim/trunk/src/Vim.Components.VimControl/View/
+   mvim/trunk/src/Vim.Components.VimEntry/Controller/
+   mvim/trunk/src/Vim.Components.VimEntry/Model/
+   mvim/trunk/src/Vim.Components.VimEntry/View/
+Modified:
+   mvim/trunk/src/Makefile.am
+Log:
+Reordered Svn-Tree
+
+Removed namespaces *.(Model |View | Controller)
+
+
+Modified: mvim/trunk/src/Makefile.am
+===================================================================
+--- mvim/trunk/src/Makefile.am	2005-02-15 22:21:39 UTC (rev 331)
++++ mvim/trunk/src/Makefile.am	2005-02-15 22:39:12 UTC (rev 332)
+@@ -15,22 +15,9 @@
+ RESOURCES_REFERENCES_BUILD=$(foreach res, $(RESOURCES_REFERENCES),$(addprefix -resource:,$(res)),$(notdir $(res)))
+ 
+ SOURCES_REFERENCES=\
+-Vim.Components.BufferedVimControl/Model/*.cs\
+-Vim.Components.BufferedVimControl/Controller/*.cs\
+-Vim.Components.BufferedVimControl/View/*.cs\
+ Vim.Components.BufferedVimControl/*.cs\
+-Vim.Components.VimControl/Model/*.cs\
+-Vim.Components.VimControl/Controller/*.cs\
+-Vim.Components.VimControl/View/*.cs\
+ Vim.Components.VimControl/*.cs\
+-Vim.Components.VimBuffer/Model/*.cs\
+-Vim.Components.VimBuffer/Model/VimBufferStrategy/*.cs\
+-Vim.Components.VimBuffer/Controller/*.cs\
+-Vim.Components.VimBuffer/View/*.cs\
+ Vim.Components.VimBuffer/*.cs\
+-Vim.Components.VimEntry/Model/*.cs\
+-Vim.Components.VimEntry/Controller/*.cs\
+-Vim.Components.VimEntry/View/*.cs\
+ Vim.Components.VimEntry/*.cs\
+ Vim.Components/*.cs\
+ Vim.Components.Gtk/*.cs\
+
+Copied: mvim/trunk/src/Vim.Components.VimBuffer/GapVimBufferStrategy.cs (from rev 329, mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/GapVimBufferStrategy.cs)
+===================================================================
+--- mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/GapVimBufferStrategy.cs	2005-02-15 22:15:07 UTC (rev 329)
++++ mvim/trunk/src/Vim.Components.VimBuffer/GapVimBufferStrategy.cs	2005-02-15 22:39:12 UTC (rev 332)
+@@ -0,0 +1,213 @@
++//
++// Vim.Components.VimBuffer.Model.VimBufferStrategy.IVimBufferStrategy.cs :
++//      An implementation of a IVimBufferStrategy with a gap buffer.
++//
++// Author:
++//      N&#233;stor Salceda Alonso (<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">wizito at gentelibre.org</A>)
++// (C) 2005
++
++using System;
++using System.Text;
++
++namespace Vim.Components.VimBuffer {
++    public class GapTextBufferStrategy : IVimBufferStrategy {
++        private char[] buffer = new char [0];
++
++        int gapBeginOffset = 0;
++        int gapEndOffset = 0;
++
++        const int minGapLength = 32;
++        const int maxGapLength = 256;
++
++        /**
++         * Returns Gap's length.
++         */
++        int GapLength {
++            get {return gapEndOffset - gapBeginOffset;}
++        }
++        
++        /**
++         * Returns buffer's length.  
++         * Note: The length is total length minus gap's length, because gap must
++         * be hidden.  Count all char in buffer.
++         */
++        public int Length {
++            get {return buffer.Length - GapLength;}
++        }
++        
++        /**
++         * Sets buffer's content, and reset gap position. Later gap will be
++         * placed.
++         */
++        public void SetContent (string text) {
++            if (text == null)
++                text = String.Empty;
++            buffer = text.ToCharArray ();
++            gapBeginOffset = gapEndOffset = 0;
++        }
++
++        public char this [int offset] {
++            get {
++                // Si el offset est&#225; mas a la izquierda del comienzo del gap,
++                // entonces que devuelva el caracter que marca el offset.
++                if (offset &lt; gapBeginOffset)
++                    return buffer [offset];
++                else
++                // Si est&#225; mas a la derecha o en el mismo sitio, hay que saltar
++                // los caracteres in&#250;tiles del gap.
++                    return buffer [offset + GapLength];
++            }
++        }
++        
++        public string GetText (int offset, int length) {
++            int end = offset + length;
++            // Si el final est&#225; mas a la izquierda que el comienzo del gap, el
++            // gap no interfiere, se devuelve esa cadena.
++            if (end &lt; gapBeginOffset) {
++                return new string (buffer, offset, length);
++            }
++            // Si el compienzo del gac est&#225; mas a la izquierda del offset
++            // marcado, entonces se deben saltar los caracteres inservibles del
++            // gap.
++            if (gapBeginOffset &lt; offset) {
++                return new string (buffer, offset + GapLength, length);
++            }
++
++            // Si no ocurre ninguna de las anteriores, sea que el final est&#233; mas
++            // a la derecha del gap o bien que el principio del gap est&#233; en la
++            // misma posici&#243;n o m&#225;s a la derecha del offset, entonces.
++            StringBuilder buf = new StringBuilder ();
++            // Concatenamos el buffer, el comienzo del offset, y como longitud
++            // pasamos la direcci&#243;n de comienzo del gac menos el desplazamiento.
++            buf.Append (buffer, offset, gapBeginOffset - offset);
++            // Concatenamos otra vez el buffer, empezando desde el final de gap
++            // hasta el final del buffer, menos la direcci&#243;n inicial del gap,
++            // para no salirnos del buffer.
++            buf.Append (buffer, gapEndOffset, end - gapBeginOffset);
++            /**
++             * Se basa nuevamente en saltar los caracteres inservibles del gap.
++             */
++            return buf.ToString ();
++        }
++
++        public void Insert (int offset, string text) {
++            // Conociendo un aut&#243;mata de pila, entendemos este Insertar y el
++            // Remover. 
++            this.Replace (offset, 0, text);
++        }
++
++        public void Remove (int offset, int length) {
++            this.Replace (offset, length, String.Empty);
++        }
++
++        public void Replace (int offset, int length, string text) {
++            if (text == null)
++                text = String.Empty;
++            // Ubicamos el gap, en la posici&#243;n offset + longitud y su longitud
++            // ser&#225; el m&#225;ximo de 0 y la longitud el texto - la longitud que le
++            // pasamos.
++            PlaceGap (offset + length, Math.Max (0, text.Length - length));
++            // Copiamos tantos caracteres como el Math.Min de la expresi&#243;n,
++            // desde la posici&#243;n 0 de text hasta la posic&#243;n offset de buffer. 
++            text.CopyTo (0, buffer, offset, Math.Min (text.Length, length));
++            
++            // Si la longitud del buffer es menor que la que le hemos pasado,
++            // entonces:
++            if (text.Length &lt; length) 
++                // Decrementamos el compienzo del offset en tantas unidades como
++                // la longitud que le pasamos menos la longitud del buffer.
++                gapBeginOffset -= length - text.Length;
++            else 
++                // Si no si la longitud del buffer es mayor que la longitud que
++                // le pasamos, entonces:
++                if (text.Length &gt; length) {
++                    // Calculamos el incremento de longitudes.
++                    int deltaLength = text.Length - length;
++                    // Movemos el comienzo del gap tantas unidades como el
++                    // incremento delta.
++                    gapBeginOffset += deltaLength;
++                    // Copiamos desde text[length] a buffer[offset+length],
++                    // tantas unidades como la longitud del buffer, menos la
++                    // longitud que le pasamos.
++                    text.CopyTo (length, buffer, offset+length, text.Length - length);
++                }
++        }
++        
++        /**
++         * Colocaci&#243;n del gap en el buffer.
++         */ 
++        void PlaceGap (int offset, int length) {
++            // Guardamos el valor viejo de la longitud del gap.
++            int oldLength = GapLength;
++            // Creamos una nueva longitud.
++            int newLength = maxGapLength + length;
++            // Calculamos un nuevo final del gap
++            int newGapEndOffset = offset + newLength;
++            // Construimos el buffer, sabiendo que la longitud ser&#225; la longitud
++            // del buffer, mas la del gap menos la longitud veja del gap
++            char[] newBuffer = new char [buffer.Length + newLength - oldLength];
++            
++            // Si la longitud vieja del gap es cero, entonces
++            if (oldLength == 0) {
++                // Copiamos el buffer viejo al nuevo, teniendo en cuenta que
++                // empezamos de cero, y que el numero de elementos ser&#225; offset.
++                Array.Copy (buffer, 0, newBuffer, 0, offset);
++                // Volvemos a copiar, saltandonos el gap; esto es, copiamos el
++                // buffer viejo a newBuffer, empezando desde offset, hasta el
++                // nuevo buffer, empezando por el nuevo final del offset y el
++                // numero de elementos ser&#225; la longitud del nuevo buffer menos
++                // la nueva direcci&#243;n final del offset del gap.
++                Array.Copy (buffer, offset, newBuffer, newGapEndOffset, newBuffer.Length - newGapEndOffset);
++            }
++            else
++            //Si no si la longitud vieja del gap no es cero, entonces:
++                // Si el offset est&#225; mas a la izquierda que el comienzo de la
++                // direcci&#243;n del gap, entonces:  
++                if (offset &lt; gapBeginOffset) {
++                    // Calculamos el incremento de offsets.
++                    int delta = gapBeginOffset - offset;
++                    // Copiamos el buffer viejo al buffer nuevo, teniendo en
++                    // cuenta que empezamos ambos buffers desde cero y que el
++                    // numero de elementos ser&#225; offset (los que no han llegado
++                    // al gap)
++                    Array.Copy (buffer, 0, newBuffer, 0, offset);
++                    // Copiamos nuevamente el buffer viejo al buffer nuevo,
++                    // empezando el viejo desde offset, hasta el nuevo final del
++                    // gap, con los elementos delta.
++                    Array.Copy (buffer, offset, newBuffer, newGapEndOffset, delta);
++                    // Finalmente copiamos el buffer viejo al nuevo, teniendo en
++                    // cuenta que empezamos por la posicion del final del gap, y
++                    // en el otro lado con la nueva posicion del gap (final
++                    // ??&#161;&#161;&#161;) + el numero de elementos, y tantos elementos como
++                    // longitud del buffer - longitud del gap.
++                    Array.Copy (buffer, gapEndOffset, newBuffer, newGapEndOffset + delta, buffer.Length - gapEndOffset);
++                    
++                }
++                // Si no, el offset est&#225; mas a la derecha o en la misma posici&#243;n
++                // que el offset de comienzo del gap.
++                else {
++                    // Calculamos el numero de elementos delta.
++                    int delta = offset - gapBeginOffset;
++                    // Copiamos el buffer viejo en el buffer nuevo, desde la
++                    // posici&#243;n inicial y el numero de elementos de
++                    // gapBeginOffset.
++                    Array.Copy (buffer, 0, newBuffer, 0 , gapBeginOffset);
++                    // Copiamos las posiciones del gap, esto es copiamos el
++                    // buffer viejo en el buffer nuevo, empezando por el final
++                    // del gap, y desde el comienzo del gap; respectivamente con
++                    // tantos elementos como delta.
++                    Array.Copy (buffer, gapEndOffset, newBuffer, gapBeginOffset, delta);
++                    // Copiamos el resto del buffer, del viejo al nuevo;
++                    // empezando por el fin de gap + delta y el nuevo final del
++                    // gap, y tantos elementos como la nueva longitud del buffer
++                    // menos el desplazamiento final del gap.
++                    Array.Copy (buffer, gapEndOffset + delta, newBuffer, newGapEndOffset, newBuffer.Length - newGapEndOffset);
++                }
++            // Actualizamos los valores.
++            buffer = newBuffer;
++            gapBeginOffset = offset;
++            gapEndOffset = newGapEndOffset;
++        }
++
++    }
++}
+
+Copied: mvim/trunk/src/Vim.Components.VimBuffer/IVimBufferStrategy.cs (from rev 329, mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/IVimBufferStrategy.cs)
+===================================================================
+--- mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/IVimBufferStrategy.cs	2005-02-15 22:15:07 UTC (rev 329)
++++ mvim/trunk/src/Vim.Components.VimBuffer/IVimBufferStrategy.cs	2005-02-15 22:39:12 UTC (rev 332)
+@@ -0,0 +1,48 @@
++//
++// Vim.Components.VimBuffer.Model.VimBufferStrategy.IVimBufferStrategy.cs :  
++//
++// Author:
++//      N&#233;stor Salceda Alonso (<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">wizito at gentelibre.org</A>)
++// (C) 2005
++
++namespace Vim.Components.VimBuffer {
++    /**
++     *  Basic strategy interface to operate with buffer implementations.
++     */
++    public interface IVimBufferStrategy {
++        /**
++         * Returns length of the buffer.
++         */
++        int Length {get;}
++
++        /**
++         * Returns char specified at offset.
++         */
++        char this [int offset] {get;}
++       
++        /**
++         * Insert text in offset position.
++         */
++        void Insert (int offset, string text);
++
++        /**
++         * Remove length characters, to offset position.
++         */
++        void Remove (int offset, int length);
++
++        /**
++         * Replace position offset and length to text.
++         */
++        void Replace (int offset,int length, string text);
++
++        /**
++         * Get buffer or a buffer subset from offset &amp; length.
++         */
++        string GetText (int offset, int length);
++
++        /**
++         * Sets buffer content.
++         */
++        void SetContent (string text);
++    }
++}
+
+Deleted: mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/GapVimBufferStrategy.cs
+===================================================================
+--- mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/GapVimBufferStrategy.cs	2005-02-15 22:21:39 UTC (rev 331)
++++ mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/GapVimBufferStrategy.cs	2005-02-15 22:39:12 UTC (rev 332)
+@@ -1,213 +0,0 @@
+-//
+-// Vim.Components.VimBuffer.Model.VimBufferStrategy.IVimBufferStrategy.cs :
+-//      An implementation of a IVimBufferStrategy with a gap buffer.
+-//
+-// Author:
+-//      N&#233;stor Salceda Alonso (<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">wizito at gentelibre.org</A>)
+-// (C) 2005
+-
+-using System;
+-using System.Text;
+-
+-namespace Vim.Components.VimBuffer.Model.VimBufferStrategy {
+-    public class GapTextBufferStrategy : IVimBufferStrategy {
+-        private char[] buffer = new char [0];
+-
+-        int gapBeginOffset = 0;
+-        int gapEndOffset = 0;
+-
+-        const int minGapLength = 32;
+-        const int maxGapLength = 256;
+-
+-        /**
+-         * Returns Gap's length.
+-         */
+-        int GapLength {
+-            get {return gapEndOffset - gapBeginOffset;}
+-        }
+-        
+-        /**
+-         * Returns buffer's length.  
+-         * Note: The length is total length minus gap's length, because gap must
+-         * be hidden.  Count all char in buffer.
+-         */
+-        public int Length {
+-            get {return buffer.Length - GapLength;}
+-        }
+-        
+-        /**
+-         * Sets buffer's content, and reset gap position. Later gap will be
+-         * placed.
+-         */
+-        public void SetContent (string text) {
+-            if (text == null)
+-                text = String.Empty;
+-            buffer = text.ToCharArray ();
+-            gapBeginOffset = gapEndOffset = 0;
+-        }
+-
+-        public char this [int offset] {
+-            get {
+-                // Si el offset est&#225; mas a la izquierda del comienzo del gap,
+-                // entonces que devuelva el caracter que marca el offset.
+-                if (offset &lt; gapBeginOffset)
+-                    return buffer [offset];
+-                else
+-                // Si est&#225; mas a la derecha o en el mismo sitio, hay que saltar
+-                // los caracteres in&#250;tiles del gap.
+-                    return buffer [offset + GapLength];
+-            }
+-        }
+-        
+-        public string GetText (int offset, int length) {
+-            int end = offset + length;
+-            // Si el final est&#225; mas a la izquierda que el comienzo del gap, el
+-            // gap no interfiere, se devuelve esa cadena.
+-            if (end &lt; gapBeginOffset) {
+-                return new string (buffer, offset, length);
+-            }
+-            // Si el compienzo del gac est&#225; mas a la izquierda del offset
+-            // marcado, entonces se deben saltar los caracteres inservibles del
+-            // gap.
+-            if (gapBeginOffset &lt; offset) {
+-                return new string (buffer, offset + GapLength, length);
+-            }
+-
+-            // Si no ocurre ninguna de las anteriores, sea que el final est&#233; mas
+-            // a la derecha del gap o bien que el principio del gap est&#233; en la
+-            // misma posici&#243;n o m&#225;s a la derecha del offset, entonces.
+-            StringBuilder buf = new StringBuilder ();
+-            // Concatenamos el buffer, el comienzo del offset, y como longitud
+-            // pasamos la direcci&#243;n de comienzo del gac menos el desplazamiento.
+-            buf.Append (buffer, offset, gapBeginOffset - offset);
+-            // Concatenamos otra vez el buffer, empezando desde el final de gap
+-            // hasta el final del buffer, menos la direcci&#243;n inicial del gap,
+-            // para no salirnos del buffer.
+-            buf.Append (buffer, gapEndOffset, end - gapBeginOffset);
+-            /**
+-             * Se basa nuevamente en saltar los caracteres inservibles del gap.
+-             */
+-            return buf.ToString ();
+-        }
+-
+-        public void Insert (int offset, string text) {
+-            // Conociendo un aut&#243;mata de pila, entendemos este Insertar y el
+-            // Remover. 
+-            this.Replace (offset, 0, text);
+-        }
+-
+-        public void Remove (int offset, int length) {
+-            this.Replace (offset, length, String.Empty);
+-        }
+-
+-        public void Replace (int offset, int length, string text) {
+-            if (text == null)
+-                text = String.Empty;
+-            // Ubicamos el gap, en la posici&#243;n offset + longitud y su longitud
+-            // ser&#225; el m&#225;ximo de 0 y la longitud el texto - la longitud que le
+-            // pasamos.
+-            PlaceGap (offset + length, Math.Max (0, text.Length - length));
+-            // Copiamos tantos caracteres como el Math.Min de la expresi&#243;n,
+-            // desde la posici&#243;n 0 de text hasta la posic&#243;n offset de buffer. 
+-            text.CopyTo (0, buffer, offset, Math.Min (text.Length, length));
+-            
+-            // Si la longitud del buffer es menor que la que le hemos pasado,
+-            // entonces:
+-            if (text.Length &lt; length) 
+-                // Decrementamos el compienzo del offset en tantas unidades como
+-                // la longitud que le pasamos menos la longitud del buffer.
+-                gapBeginOffset -= length - text.Length;
+-            else 
+-                // Si no si la longitud del buffer es mayor que la longitud que
+-                // le pasamos, entonces:
+-                if (text.Length &gt; length) {
+-                    // Calculamos el incremento de longitudes.
+-                    int deltaLength = text.Length - length;
+-                    // Movemos el comienzo del gap tantas unidades como el
+-                    // incremento delta.
+-                    gapBeginOffset += deltaLength;
+-                    // Copiamos desde text[length] a buffer[offset+length],
+-                    // tantas unidades como la longitud del buffer, menos la
+-                    // longitud que le pasamos.
+-                    text.CopyTo (length, buffer, offset+length, text.Length - length);
+-                }
+-        }
+-        
+-        /**
+-         * Colocaci&#243;n del gap en el buffer.
+-         */ 
+-        void PlaceGap (int offset, int length) {
+-            // Guardamos el valor viejo de la longitud del gap.
+-            int oldLength = GapLength;
+-            // Creamos una nueva longitud.
+-            int newLength = maxGapLength + length;
+-            // Calculamos un nuevo final del gap
+-            int newGapEndOffset = offset + newLength;
+-            // Construimos el buffer, sabiendo que la longitud ser&#225; la longitud
+-            // del buffer, mas la del gap menos la longitud veja del gap
+-            char[] newBuffer = new char [buffer.Length + newLength - oldLength];
+-            
+-            // Si la longitud vieja del gap es cero, entonces
+-            if (oldLength == 0) {
+-                // Copiamos el buffer viejo al nuevo, teniendo en cuenta que
+-                // empezamos de cero, y que el numero de elementos ser&#225; offset.
+-                Array.Copy (buffer, 0, newBuffer, 0, offset);
+-                // Volvemos a copiar, saltandonos el gap; esto es, copiamos el
+-                // buffer viejo a newBuffer, empezando desde offset, hasta el
+-                // nuevo buffer, empezando por el nuevo final del offset y el
+-                // numero de elementos ser&#225; la longitud del nuevo buffer menos
+-                // la nueva direcci&#243;n final del offset del gap.
+-                Array.Copy (buffer, offset, newBuffer, newGapEndOffset, newBuffer.Length - newGapEndOffset);
+-            }
+-            else
+-            //Si no si la longitud vieja del gap no es cero, entonces:
+-                // Si el offset est&#225; mas a la izquierda que el comienzo de la
+-                // direcci&#243;n del gap, entonces:  
+-                if (offset &lt; gapBeginOffset) {
+-                    // Calculamos el incremento de offsets.
+-                    int delta = gapBeginOffset - offset;
+-                    // Copiamos el buffer viejo al buffer nuevo, teniendo en
+-                    // cuenta que empezamos ambos buffers desde cero y que el
+-                    // numero de elementos ser&#225; offset (los que no han llegado
+-                    // al gap)
+-                    Array.Copy (buffer, 0, newBuffer, 0, offset);
+-                    // Copiamos nuevamente el buffer viejo al buffer nuevo,
+-                    // empezando el viejo desde offset, hasta el nuevo final del
+-                    // gap, con los elementos delta.
+-                    Array.Copy (buffer, offset, newBuffer, newGapEndOffset, delta);
+-                    // Finalmente copiamos el buffer viejo al nuevo, teniendo en
+-                    // cuenta que empezamos por la posicion del final del gap, y
+-                    // en el otro lado con la nueva posicion del gap (final
+-                    // ??&#161;&#161;&#161;) + el numero de elementos, y tantos elementos como
+-                    // longitud del buffer - longitud del gap.
+-                    Array.Copy (buffer, gapEndOffset, newBuffer, newGapEndOffset + delta, buffer.Length - gapEndOffset);
+-                    
+-                }
+-                // Si no, el offset est&#225; mas a la derecha o en la misma posici&#243;n
+-                // que el offset de comienzo del gap.
+-                else {
+-                    // Calculamos el numero de elementos delta.
+-                    int delta = offset - gapBeginOffset;
+-                    // Copiamos el buffer viejo en el buffer nuevo, desde la
+-                    // posici&#243;n inicial y el numero de elementos de
+-                    // gapBeginOffset.
+-                    Array.Copy (buffer, 0, newBuffer, 0 , gapBeginOffset);
+-                    // Copiamos las posiciones del gap, esto es copiamos el
+-                    // buffer viejo en el buffer nuevo, empezando por el final
+-                    // del gap, y desde el comienzo del gap; respectivamente con
+-                    // tantos elementos como delta.
+-                    Array.Copy (buffer, gapEndOffset, newBuffer, gapBeginOffset, delta);
+-                    // Copiamos el resto del buffer, del viejo al nuevo;
+-                    // empezando por el fin de gap + delta y el nuevo final del
+-                    // gap, y tantos elementos como la nueva longitud del buffer
+-                    // menos el desplazamiento final del gap.
+-                    Array.Copy (buffer, gapEndOffset + delta, newBuffer, newGapEndOffset, newBuffer.Length - newGapEndOffset);
+-                }
+-            // Actualizamos los valores.
+-            buffer = newBuffer;
+-            gapBeginOffset = offset;
+-            gapEndOffset = newGapEndOffset;
+-        }
+-
+-    }
+-}
+
+Deleted: mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/IVimBufferStrategy.cs
+===================================================================
+--- mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/IVimBufferStrategy.cs	2005-02-15 22:21:39 UTC (rev 331)
++++ mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/IVimBufferStrategy.cs	2005-02-15 22:39:12 UTC (rev 332)
+@@ -1,48 +0,0 @@
+-//
+-// Vim.Components.VimBuffer.Model.VimBufferStrategy.IVimBufferStrategy.cs :  
+-//
+-// Author:
+-//      N&#233;stor Salceda Alonso (<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">wizito at gentelibre.org</A>)
+-// (C) 2005
+-
+-namespace Vim.Components.VimBuffer.Model.VimBufferStrategy {
+-    /**
+-     *  Basic strategy interface to operate with buffer implementations.
+-     */
+-    public interface IVimBufferStrategy {
+-        /**
+-         * Returns length of the buffer.
+-         */
+-        int Length {get;}
+-
+-        /**
+-         * Returns char specified at offset.
+-         */
+-        char this [int offset] {get;}
+-       
+-        /**
+-         * Insert text in offset position.
+-         */
+-        void Insert (int offset, string text);
+-
+-        /**
+-         * Remove length characters, to offset position.
+-         */
+-        void Remove (int offset, int length);
+-
+-        /**
+-         * Replace position offset and length to text.
+-         */
+-        void Replace (int offset,int length, string text);
+-
+-        /**
+-         * Get buffer or a buffer subset from offset &amp; length.
+-         */
+-        string GetText (int offset, int length);
+-
+-        /**
+-         * Sets buffer content.
+-         */
+-        void SetContent (string text);
+-    }
+-}
+
+Deleted: mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/StringVimBufferStrategy.cs
+===================================================================
+--- mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/StringVimBufferStrategy.cs	2005-02-15 22:21:39 UTC (rev 331)
++++ mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/StringVimBufferStrategy.cs	2005-02-15 22:39:12 UTC (rev 332)
+@@ -1,54 +0,0 @@
+-//
+-// Vim.Components.VimBuffer.Model.VimBufferStrategy.StringVimBufferStrategy.cs :
+-//      A implementation of IVimBufferStrategy with a string.
+-//
+-// Author:
+-//      N&#233;stor Salceda Alonso (<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">wizito at gentelibre.org</A>)
+-// (C) 2005
+-// 
+-using System;
+-
+-namespace Vim.Components.VimBuffer.Model.VimBufferStrategy {
+-    public class StringVimBufferStrategy : IVimBufferStrategy {
+-        private string text;
+-   
+-        public StringVimBufferStrategy () {
+-        }
+-        
+-        public int Length {
+-            get {return text.Length;}
+-        }
+-
+-        public char this [int offset] {
+-            get {
+-                if (offset == text.Length)
+-                    return '\0'; 
+-                return text[offset];
+-            }
+-        }
+-
+-        public void Insert (int offset, string text) {
+-            if (text != null) 
+-                this.text = this.text.Insert (offset, text);
+-        }
+-
+-        public void Remove (int offset, int length) {
+-            text = text.Remove (offset, length);
+-        }
+-
+-        public void Replace (int offset, int length, string text) {
+-            Remove (offset, length);
+-            Insert (offset, text);
+-        }
+-
+-        public string GetText (int offset, int length) {
+-            if (length == 0)
+-                return String.Empty;
+-            return text.Substring (offset, Math.Min (length, text.Length - offset));
+-        }
+-
+-        public void SetContent (string text) {
+-            this.text = text;
+-        }
+-    }
+-}
+
+Copied: mvim/trunk/src/Vim.Components.VimBuffer/StringVimBufferStrategy.cs (from rev 329, mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/StringVimBufferStrategy.cs)
+===================================================================
+--- mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBufferStrategy/StringVimBufferStrategy.cs	2005-02-15 22:15:07 UTC (rev 329)
++++ mvim/trunk/src/Vim.Components.VimBuffer/StringVimBufferStrategy.cs	2005-02-15 22:39:12 UTC (rev 332)
+@@ -0,0 +1,54 @@
++//
++// Vim.Components.VimBuffer.Model.VimBufferStrategy.StringVimBufferStrategy.cs :
++//      A implementation of IVimBufferStrategy with a string.
++//
++// Author:
++//      N&#233;stor Salceda Alonso (<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">wizito at gentelibre.org</A>)
++// (C) 2005
++// 
++using System;
++
++namespace Vim.Components.VimBuffer {
++    public class StringVimBufferStrategy : IVimBufferStrategy {
++        private string text;
++   
++        public StringVimBufferStrategy () {
++        }
++        
++        public int Length {
++            get {return text.Length;}
++        }
++
++        public char this [int offset] {
++            get {
++                if (offset == text.Length)
++                    return '\0'; 
++                return text[offset];
++            }
++        }
++
++        public void Insert (int offset, string text) {
++            if (text != null) 
++                this.text = this.text.Insert (offset, text);
++        }
++
++        public void Remove (int offset, int length) {
++            text = text.Remove (offset, length);
++        }
++
++        public void Replace (int offset, int length, string text) {
++            Remove (offset, length);
++            Insert (offset, text);
++        }
++
++        public string GetText (int offset, int length) {
++            if (length == 0)
++                return String.Empty;
++            return text.Substring (offset, Math.Min (length, text.Length - offset));
++        }
++
++        public void SetContent (string text) {
++            this.text = text;
++        }
++    }
++}
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000065.html">[Mspace-checkins] r331 - mvim/trunk
+</A></li>
+	<LI>Next message: <A HREF="000067.html">[Mspace-checkins] r333 - in mvim/trunk/src/Vim.Components.VimBuffer: . Model
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#66">[ date ]</a>
+              <a href="thread.html#66">[ thread ]</a>
+              <a href="subject.html#66">[ subject ]</a>
+              <a href="author.html#66">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

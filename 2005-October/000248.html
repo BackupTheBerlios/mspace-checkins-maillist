@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r535 - in BabuineComponentBuilder/trunk: . lib
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r535%20-%20in%20BabuineComponentBuilder/trunk%3A%20.%20lib&In-Reply-To=%3C200510061341.j96Dfk3I024477%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000247.html">
+   <LINK REL="Next"  HREF="000249.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r535 - in BabuineComponentBuilder/trunk: . lib</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r535%20-%20in%20BabuineComponentBuilder/trunk%3A%20.%20lib&In-Reply-To=%3C200510061341.j96Dfk3I024477%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r535 - in BabuineComponentBuilder/trunk: . lib">nestor at berlios.de
+       </A><BR>
+    <I>Thu Oct  6 15:41:46 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000247.html">[Mspace-checkins] r534 - / BabuineComponentBuilder
+</A></li>
+        <LI>Next message: <A HREF="000249.html">[Mspace-checkins] r536 - in ComponentModel/trunk: . src/ComponentModel/Container src/ComponentModel/Container/Dao
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#248">[ date ]</a>
+              <a href="thread.html#248">[ thread ]</a>
+              <a href="subject.html#248">[ subject ]</a>
+              <a href="author.html#248">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-10-06 15:41:46 +0200 (Thu, 06 Oct 2005)
+New Revision: 535
+
+Added:
+   BabuineComponentBuilder/trunk/BabuineComponentBuilder.build
+   BabuineComponentBuilder/trunk/lib/
+   BabuineComponentBuilder/trunk/lib/components/
+   BabuineComponentBuilder/trunk/resources/
+   BabuineComponentBuilder/trunk/src/
+Log:
+
+
+Added: BabuineComponentBuilder/trunk/BabuineComponentBuilder.build
+===================================================================
+--- BabuineComponentBuilder/trunk/BabuineComponentBuilder.build	2005-10-06 13:27:35 UTC (rev 534)
++++ BabuineComponentBuilder/trunk/BabuineComponentBuilder.build	2005-10-06 13:41:46 UTC (rev 535)
+@@ -0,0 +1,147 @@
++&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
++
++&lt;!--
++    (c) N&#233;stor Salceda &amp; Sergio Rubio  (Monkey Space Developers)
++    File: 
++        nant.xml
++    Description:
++        base nant file template for automate basic task deployment.
++
++      INSERTAR LA WEB DE MONKEY SPACE Y TAL  
++--&gt;
++
++&lt;project basedir=&quot;.&quot; default=&quot;build&quot; name=&quot;Monkey Space -- Component Model&quot;&gt;
++&lt;!-- Properties --&gt;
++    &lt;!--
++        PENSAR LAS PROPIEDADES Y PONERLAS
++        DEBER&#193;N SER AS&#205; COMO VARIABLES QUE SOLO HAYA QUE CAMBIAR
++        PARA ADAPTAR EL COMPONENTE.  EL RESTO DE CONFIGURACI&#211;N Y COMPILACI&#211;N
++        SER&#193; IGUAL.
++    --&gt;
++   
++    &lt;property name=&quot;nant.settings.currentframework&quot; value=&quot;mono-1.0&quot;/&gt;
++   
++    &lt;!--Configuracion (Igual ser&#237;a recomendable que coincidieran con el
++    manifiesto del ensamblado)--&gt;
++    &lt;property name=&quot;version&quot; value=&quot;0.1&quot;/&gt;
++    &lt;property name=&quot;description&quot; value=&quot;A Little Bulder for Babuine Components&quot;/&gt;
++    &lt;property name=&quot;component_name&quot; value=&quot;ComponentBuilder&quot;/&gt; 
++    
++    &lt;!-- Directory Tree--&gt; 
++    &lt;!-- Localizacion de dependencias --&gt;
++    &lt;property name=&quot;src&quot; value=&quot;src&quot;/&gt;
++    &lt;property name=&quot;lib&quot; value=&quot;lib&quot;/&gt;
++    &lt;!-- Other mspace components --&gt;
++    &lt;property name=&quot;components&quot; value=&quot;lib/components&quot;/&gt;
++    &lt;property name=&quot;doc&quot; value=&quot;doc&quot;/&gt;
++    &lt;property name=&quot;resources&quot; value=&quot;resources&quot;/&gt;
++        &lt;!--Aqui se guardar&#225;n los ejecutables generados--&gt;
++    &lt;property name=&quot;bin&quot; value=&quot;bin&quot;/&gt;
++
++&lt;!-- Targets --&gt;
++
++    &lt;!-- Elimina los ficheros existentes en bin y en doc --&gt;
++    &lt;target name=&quot;clean&quot;&gt;
++        &lt;delete dir=&quot;${bin}&quot; if=&quot;${directory::exists(bin)}&quot; failonerror=&quot;false&quot;/&gt; 
++        &lt;delete dir=&quot;${doc}&quot; if=&quot;${directory::exists(doc)}&quot; failonerror=&quot;false&quot;/&gt; 
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++    &lt;!-- Crea una nueva jerarquia con bin y doc para la compilaci&#243;n --&gt;
++    &lt;target name=&quot;create-skeleton&quot; depends=&quot;clean&quot;&gt;
++        &lt;mkdir dir=&quot;${bin}&quot;/&gt;
++        &lt;mkdir dir=&quot;${doc}&quot;/&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++    
++    &lt;!-- Compila el componente y lo guarda en bin --&gt;
++    &lt;target name=&quot;build&quot; depends=&quot;create-skeleton&quot;&gt;
++        &lt;csc target=&quot;library&quot; output=&quot;${bin}/${component_name}.dll&quot; debug=&quot;true&quot;
++        verbose=&quot;false&quot;&gt;
++            &lt;sources basedir=&quot;${src}&quot;&gt;
++                &lt;include name=&quot;**/*.cs&quot;/&gt;
++            &lt;/sources&gt;
++            &lt;references&gt;
++                &lt;include name=&quot;**/${lib}/*.dll&quot;/&gt;
++                &lt;include name=&quot;**/${lib}/components/*.dll&quot;/&gt;
++            &lt;/references&gt;
++        &lt;/csc&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++    &lt;!-- Ejecuta el componente (Lo compila como un exe y luego lo ejecuta) --&gt;
++    &lt;!-- En este caso solo deber&#225; ejecutar los test de unidad--&gt;
++    &lt;target name=&quot;run&quot; depends=&quot;build&quot;&gt;
++        &lt;csc target=&quot;winexe&quot; output=&quot;${bin}/${component_name}.exe&quot; debug=&quot;true&quot;
++        verbose=&quot;false&quot;&gt;
++            &lt;sources basedir=&quot;${src}&quot;&gt;
++                &lt;include name=&quot;**/*.cs&quot;/&gt;
++            &lt;/sources&gt;
++            &lt;references&gt;
++                &lt;include name=&quot;**/${lib}/*.dll&quot;/&gt;
++                &lt;include name=&quot;**/${lib}/components/*.dll&quot;/&gt;
++                &lt;include name=&quot;**/${bin}/*.dll&quot;/&gt;    
++            &lt;/references&gt;
++        &lt;/csc&gt;
++        &lt;exec program=&quot;${bin}/{component_name}.exe&quot; useruntimeengine=&quot;true&quot;
++        verbose = &quot;false&quot;&gt;
++            &lt;!-- Esto se queda ahi temporalmente, se deber&#225; hacer que se meta a
++            resources/ComponentModelTest.xml--&gt;
++            &lt;environment&gt;
++                &lt;variable name=&quot;MONO_PATH&quot;&gt;
++                    &lt;path&gt;
++                        &lt;pathelement file=&quot;${lib}&quot;/&gt;
++                        &lt;pathelement file=&quot;${components}&quot;/&gt;
++                        &lt;pathelement file=&quot;${bin}&quot;/&gt;
++                    &lt;/path&gt;
++                &lt;/variable&gt;
++            &lt;/environment&gt;
++        &lt;/exec&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++    &lt;!-- Por defecto compilar&#225; el componente y escribir&#225; la documentaci&#243;n--&gt;
++    &lt;target name=&quot;all&quot; depends=&quot;build,doc&quot;&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++    &lt;!-- Documenta el componente y lo guarda en doc--&gt;
++    &lt;target name=&quot;doc&quot; depends=&quot;build&quot;&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++
++    &lt;!-- Ayuda sobre este fichero --&gt;
++    &lt;target name=&quot;usage&quot;&gt;
++        &lt;echo&gt;
++            Monkey Space NAnt buildfile for component 
++            ${component_name} version ${version}.
++
++            Component's Description:
++                ${description}
++
++            Available task:
++                
++                -all
++                    Compile, and creates binary files.
++
++                -doc
++                    Creates documentation.  &#191;Monodoc or ndoc?
++
++                -clean
++                    Delete component binaries.
++                
++                -run
++                    Runs the application.
++               
++                -build
++                    Build component.
++               
++                -all
++                    Builds component and document it.
++                
++                -usage
++                    Show this help.
++        &lt;/echo&gt;
++        &lt;tstamp/&gt;
++    &lt;/target&gt;
++&lt;/project&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000247.html">[Mspace-checkins] r534 - / BabuineComponentBuilder
+</A></li>
+	<LI>Next message: <A HREF="000249.html">[Mspace-checkins] r536 - in ComponentModel/trunk: . src/ComponentModel/Container src/ComponentModel/Container/Dao
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#248">[ date ]</a>
+              <a href="thread.html#248">[ thread ]</a>
+              <a href="subject.html#248">[ subject ]</a>
+              <a href="author.html#248">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r539 - in Cronus: Control libmonotimer
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r539%20-%20in%20Cronus%3A%20Control%20libmonotimer&In-Reply-To=%3C200510132258.j9DMwg1d004544%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000251.html">
+   <LINK REL="Next"  HREF="000253.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r539 - in Cronus: Control libmonotimer</H1>
+    <B>Luis Bosque at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r539%20-%20in%20Cronus%3A%20Control%20libmonotimer&In-Reply-To=%3C200510132258.j9DMwg1d004544%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r539 - in Cronus: Control libmonotimer">luis at berlios.de
+       </A><BR>
+    <I>Fri Oct 14 00:58:42 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000251.html">[Mspace-checkins] r538 - in Cronus: . libmonotimer
+</A></li>
+        <LI>Next message: <A HREF="000253.html">[Mspace-checkins] r540 - in ComponentModel/trunk/src/ComponentModel: . Collections Container/Dao
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#252">[ date ]</a>
+              <a href="thread.html#252">[ thread ]</a>
+              <a href="subject.html#252">[ subject ]</a>
+              <a href="author.html#252">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: luis
+Date: 2005-10-14 00:58:41 +0200 (Fri, 14 Oct 2005)
+New Revision: 539
+
+Modified:
+   Cronus/Control/Controller.cs
+   Cronus/libmonotimer/ISource.cs
+   Cronus/libmonotimer/SourcesFactory.cs
+   Cronus/libmonotimer/XMLSource.cs
+Log:
+
+
+Modified: Cronus/Control/Controller.cs
+===================================================================
+--- Cronus/Control/Controller.cs	2005-10-12 11:54:59 UTC (rev 538)
++++ Cronus/Control/Controller.cs	2005-10-13 22:58:41 UTC (rev 539)
+@@ -26,24 +26,14 @@
+ 
+ namespace Control{
+ 
+-	
+-	public struct CollabProject {
+-		public int id;
+-		public string nombre;
+-	}
+-	
+ 	public sealed class Controller{
+ 	
+ 		private Project CurrentProject;
+-		
+-		CollabProject[] Array_Projects;
++		private SProject[] projects;	
+ 		public event EventHandler timer;
+ 		
+-		public Controller(string login, string password) {
+-			
+-			Array_Projects = Communication.login (login, password);
+-			if (Array_Projects.Length == 0)
+-				Console.WriteLine (&quot;Autenticacion fallida&quot;);
++		public Controller(string[] args) {
++			projects = Factory.GetObject (args);
+ 		}	
+ 	}
+ 	
+
+Modified: Cronus/libmonotimer/ISource.cs
+===================================================================
+--- Cronus/libmonotimer/ISource.cs	2005-10-12 11:54:59 UTC (rev 538)
++++ Cronus/libmonotimer/ISource.cs	2005-10-13 22:58:41 UTC (rev 539)
+@@ -8,7 +8,7 @@
+ 	public interface ISource {
+ 		SProject[] getProjects ();
+ 		Project loadProject ();
+-		bool saveProject ();
++		void saveProject (SProject[] projects);
+ 	}
+ }
+ 
+
+Modified: Cronus/libmonotimer/SourcesFactory.cs
+===================================================================
+--- Cronus/libmonotimer/SourcesFactory.cs	2005-10-12 11:54:59 UTC (rev 538)
++++ Cronus/libmonotimer/SourcesFactory.cs	2005-10-13 22:58:41 UTC (rev 539)
+@@ -8,14 +8,21 @@
+ 
+ 	public class Factory {
+ 		
+-		public ISource GetObject (string url, string login, string password) {
+-			ISource source = new RPCSource ();
++		ISource source;
++		
++		public static ISource GetObject (string[] args) {
++			switch (args.Length) {
++				case 1:
++					source = new XMLSource ();
++					break;
++				case 3:
++					source = new RPCSource ();
++					break;
++				default:
++					source = null;
++			}
+ 			return source;
+ 		}
+ 
+-		public ISource GetObjetc (string path) {
+-			ISource source = new XMLSource ();
+-			return source;
+-		}
+ 	}
+ }
+
+Modified: Cronus/libmonotimer/XMLSource.cs
+===================================================================
+--- Cronus/libmonotimer/XMLSource.cs	2005-10-12 11:54:59 UTC (rev 538)
++++ Cronus/libmonotimer/XMLSource.cs	2005-10-13 22:58:41 UTC (rev 539)
+@@ -1,3 +1,6 @@
++using System.XML;
++using System.IO;
++
+ namespace libmonotimer
+ {
+ 	public class XMLSource : ISource {
+@@ -2,4 +5,15 @@
+ 
++		string filename;
++
++		public XMLSource (string filename) {
++			this.filename = filename;
++			loadProject ();
++		}
++
+ 		SProject[] getProjects () {
+-		
++			SProject[] projects;
++			XmlSerializer serializer = new XmlSerializer (projects.getType ());
++			FileStream stream = new FileStream (FileMode.Open, FileAccess.Read);
++			projects = (SProject[]) serializer.Deserialize (stream);
++			return projects;
+ 		}
+@@ -10,8 +24,10 @@
+ 		
+ 		}
+ 		
+-		bool saveProject () {
+-		
++		void saveProject (SProject[] projects) {
++			XmlSerializer serializer = new XmlSerializer (projets.getType ());
++			FileStream stream = new FileStream (this.filename, FileMode.Create);
++			serializer.Serialize (stream, projects);
+ 		}
+ 		
+ 	}
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000251.html">[Mspace-checkins] r538 - in Cronus: . libmonotimer
+</A></li>
+	<LI>Next message: <A HREF="000253.html">[Mspace-checkins] r540 - in ComponentModel/trunk/src/ComponentModel: . Collections Container/Dao
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#252">[ date ]</a>
+              <a href="thread.html#252">[ thread ]</a>
+              <a href="subject.html#252">[ subject ]</a>
+              <a href="author.html#252">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

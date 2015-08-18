@@ -1,0 +1,800 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r318 - in mvim/trunk/doc: . monodoc monodoc/org.vim.Components monodoc/org.vim.Components.BufferedVimControl monodoc/org.vim.Components.VimBuffer monodoc/org.vim.Components.VimBuffer.Model monodoc/org.vim.Components.VimControl monodoc/org.vim.Components.VimEntry monodoc/org.vim.Components.VimEntry.Controller monodoc/org.vim.Components.VimEntry.Model monodoc/org.vim.Components.VimEntry.View monodoc/org.vim.Main
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-February/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r318%20-%20in%20mvim/trunk/doc%3A%20.%20monodoc%20monodoc/org.vim.Components%20monodoc/org.vim.Components.BufferedVimControl%20monodoc/org.vim.Components.VimBuffer%20monodoc/org.vim.Components.VimBuffer.Model%20monodoc/org.vim.Components.VimControl%20monodoc/org.vim.Components.VimEntry%20monodoc/org.vim.Components.VimEntry.Controller%20monodoc/org.vim.Components.VimEntry.Model%20monodoc/org.vim.Components.VimEntry.View%20monodoc/org.vim.Main&In-Reply-To=%3C200502140900.j1E90ZZ4003987%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000051.html">
+   <LINK REL="Next"  HREF="000053.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r318 - in mvim/trunk/doc: . monodoc monodoc/org.vim.Components monodoc/org.vim.Components.BufferedVimControl monodoc/org.vim.Components.VimBuffer monodoc/org.vim.Components.VimBuffer.Model monodoc/org.vim.Components.VimControl monodoc/org.vim.Components.VimEntry monodoc/org.vim.Components.VimEntry.Controller monodoc/org.vim.Components.VimEntry.Model monodoc/org.vim.Components.VimEntry.View monodoc/org.vim.Main</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r318%20-%20in%20mvim/trunk/doc%3A%20.%20monodoc%20monodoc/org.vim.Components%20monodoc/org.vim.Components.BufferedVimControl%20monodoc/org.vim.Components.VimBuffer%20monodoc/org.vim.Components.VimBuffer.Model%20monodoc/org.vim.Components.VimControl%20monodoc/org.vim.Components.VimEntry%20monodoc/org.vim.Components.VimEntry.Controller%20monodoc/org.vim.Components.VimEntry.Model%20monodoc/org.vim.Components.VimEntry.View%20monodoc/org.vim.Main&In-Reply-To=%3C200502140900.j1E90ZZ4003987%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r318 - in mvim/trunk/doc: . monodoc monodoc/org.vim.Components monodoc/org.vim.Components.BufferedVimControl monodoc/org.vim.Components.VimBuffer monodoc/org.vim.Components.VimBuffer.Model monodoc/org.vim.Components.VimControl monodoc/org.vim.Components.VimEntry monodoc/org.vim.Components.VimEntry.Controller monodoc/org.vim.Components.VimEntry.Model monodoc/org.vim.Components.VimEntry.View monodoc/org.vim.Main">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Mon Feb 14 10:00:35 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000051.html">[Mspace-checkins] r317 - / mvim mvim/trunk mvim/trunk/doc mvim/trunk/doc/design mvim/trunk/src mvim/trunk/src/lib mvim/trunk/src/org.vim.Components mvim/trunk/src/org.vim.Components/BufferedVimControl mvim/trunk/src/org.vim.Components/BufferedVimControl/Model mvim/trunk/src/org.vim.Components/VimBuffer mvim/trunk/src/org.vim.Components/VimBuffer/Model mvim/trunk/src/org.vim.Components/VimControl mvim/trunk/src/org.vim.Components/VimControl/Model mvim/trunk/src/org.vim.Components/VimEntry mvim/trunk/src/org.vim.Components/VimEntry/Controller mvim/trunk/src/org.vim.Components/VimEntry/Model mvim/trunk/src/org.vim.Components/VimEntry/View mvim/trunk/src/resources
+</A></li>
+        <LI>Next message: <A HREF="000053.html">[Mspace-checkins] r319 - in mvim/trunk: doc/monodoc src src/Vim.Components src/Vim.Components/BufferedVimControl src/Vim.Components/BufferedVimControl/Model src/Vim.Components/VimBuffer src/Vim.Components/VimBuffer/Model src/Vim.Components/VimControl src/Vim.Components/VimControl/Model src/Vim.Components/VimEntry src/Vim.Components/VimEntry/Controller src/Vim.Components/VimEntry/Model src/Vim.Components/VimEntry/View src/Vim.Main
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#52">[ date ]</a>
+              <a href="thread.html#52">[ thread ]</a>
+              <a href="subject.html#52">[ subject ]</a>
+              <a href="author.html#52">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-02-14 10:00:34 +0100 (Mon, 14 Feb 2005)
+New Revision: 318
+
+Added:
+   mvim/trunk/doc/monodoc/
+   mvim/trunk/doc/monodoc/index.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.BufferedVimControl.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.BufferedVimControl/
+   mvim/trunk/doc/monodoc/org.vim.Components.BufferedVimControl/BufferedVimMain.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.Model.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.Model/
+   mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.Model/IVimBuffer.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.Model/VimBuffer.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer/
+   mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer/VimBufferMain.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimControl.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimControl/
+   mvim/trunk/doc/monodoc/org.vim.Components.VimControl/VimControlMain.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Controller.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Controller/
+   mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Controller/IVimEntryController.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Controller/VimEntryController.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Model.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Model/
+   mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Model/IVimEntryHandler.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Model/VimEntryHandler.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.View.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.View/
+   mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.View/IVimEntryView.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.View/VimEntryView.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.VimEntry/
+   mvim/trunk/doc/monodoc/org.vim.Components.VimEntry/VimEntryMain.xml
+   mvim/trunk/doc/monodoc/org.vim.Components.xml
+   mvim/trunk/doc/monodoc/org.vim.Components/
+   mvim/trunk/doc/monodoc/org.vim.Components/VimFactory.xml
+   mvim/trunk/doc/monodoc/org.vim.Main.xml
+   mvim/trunk/doc/monodoc/org.vim.Main/
+   mvim/trunk/doc/monodoc/org.vim.Main/Launcher.xml
+Log:
+Added Documentation.
+
+
+Added: mvim/trunk/doc/monodoc/index.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/index.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/index.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,52 @@
++&lt;Overview&gt;
++  &lt;Assembly Version=&quot;0.2.0.0&quot;&gt;MonoVim&lt;/Assembly&gt;
++  &lt;Remarks&gt;To be added.&lt;/Remarks&gt;
++  &lt;Copyright&gt;To be added.&lt;/Copyright&gt;
++  &lt;Types&gt;
++    &lt;Namespace Name=&quot;org.vim.Components.VimBuffer.Model&quot;&gt;
++      &lt;Type Name=&quot;IVimBuffer&quot; /&gt;
++      &lt;Type Name=&quot;VimBuffer&quot; /&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Components.VimEntry.Model&quot;&gt;
++      &lt;Type Name=&quot;IVimEntryHandler&quot; /&gt;
++      &lt;Type Name=&quot;VimEntryHandler&quot; /&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Components.VimEntry.Controller&quot;&gt;
++      &lt;Type Name=&quot;IVimEntryController&quot; /&gt;
++      &lt;Type Name=&quot;VimEntryController&quot; /&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Components.VimEntry.View&quot;&gt;
++      &lt;Type Name=&quot;IVimEntryView&quot; /&gt;
++      &lt;Type Name=&quot;VimEntryView&quot; /&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Components.BufferedVimControl&quot;&gt;
++      &lt;Type Name=&quot;BufferedVimMain&quot; /&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Components.VimControl&quot;&gt;
++      &lt;Type Name=&quot;VimControlMain&quot; /&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Components.VimBuffer&quot;&gt;
++      &lt;Type Name=&quot;VimBufferMain&quot; /&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Components.VimEntry&quot;&gt;
++      &lt;Type Name=&quot;VimEntryMain&quot; /&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Components&quot;&gt;
++      &lt;Type Name=&quot;VimFactory&quot; /&gt;
++    &lt;/Namespace&gt;
++    &lt;Namespace Name=&quot;org.vim.Main&quot;&gt;
++      &lt;Type Name=&quot;Launcher&quot; /&gt;
++    &lt;/Namespace&gt;
++  &lt;/Types&gt;
++  &lt;Attributes&gt;
++    &lt;Attribute&gt;
++      &lt;AttributeName&gt;System.Reflection.AssemblyCopyright(Copyright=&quot;Copyright (c) 2005 N&#195;&#169;stor Salceda Alonso&quot;)&lt;/AttributeName&gt;
++    &lt;/Attribute&gt;
++    &lt;Attribute&gt;
++      &lt;AttributeName&gt;System.Reflection.AssemblyDescription(Description=&quot;A little editor, as vim.  Using Mono &amp; GTK#&quot;)&lt;/AttributeName&gt;
++    &lt;/Attribute&gt;
++    &lt;Attribute&gt;
++      &lt;AttributeName&gt;System.Reflection.AssemblyTitle(Title=&quot;MonoVim&quot;)&lt;/AttributeName&gt;
++    &lt;/Attribute&gt;
++  &lt;/Attributes&gt;
++&lt;/Overview&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components/VimFactory.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components/VimFactory.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components/VimFactory.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,29 @@
++&lt;Type Name=&quot;VimFactory&quot; FullName=&quot;org.vim.Components.VimFactory&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class VimFactory&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;MonoVim&lt;/AssemblyName&gt;
++    &lt;AssemblyVersion&gt;0.2.0.0&lt;/AssemblyVersion&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;Instance&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public static org.vim.Components.VimFactory Instance { get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;org.vim.Components.VimFactory&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;value&gt;To be added.&lt;/value&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Type&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.BufferedVimControl/BufferedVimMain.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.BufferedVimControl/BufferedVimMain.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.BufferedVimControl/BufferedVimMain.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,26 @@
++&lt;Type Name=&quot;BufferedVimMain&quot; FullName=&quot;org.vim.Components.BufferedVimControl.BufferedVimMain&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class BufferedVimMain&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;MonoVim&lt;/AssemblyName&gt;
++    &lt;AssemblyVersion&gt;0.2.0.0&lt;/AssemblyVersion&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public BufferedVimMain ();&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Type&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.BufferedVimControl.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.BufferedVimControl.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.BufferedVimControl.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,6 @@
++&lt;Namespace Name=&quot;org.vim.Components.BufferedVimControl&quot;&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Namespace&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer/VimBufferMain.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer/VimBufferMain.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer/VimBufferMain.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,26 @@
++&lt;Type Name=&quot;VimBufferMain&quot; FullName=&quot;org.vim.Components.VimBuffer.VimBufferMain&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class VimBufferMain&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;MonoVim&lt;/AssemblyName&gt;
++    &lt;AssemblyVersion&gt;0.2.0.0&lt;/AssemblyVersion&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public VimBufferMain ();&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Type&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.Model/IVimBuffer.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.Model/IVimBuffer.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.Model/IVimBuffer.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,26 @@
++&lt;Type Name=&quot;IVimBuffer&quot; FullName=&quot;org.vim.Components.VimBuffer.Model.IVimBuffer&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public interface IVimBuffer&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;MonoVim&lt;/AssemblyName&gt;
++    &lt;AssemblyVersion&gt;0.2.0.0&lt;/AssemblyVersion&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;Interfaces /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;Text&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string Text { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;value&gt;To be added.&lt;/value&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Type&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.Model/VimBuffer.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.Model/VimBuffer.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.Model/VimBuffer.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,42 @@
++&lt;Type Name=&quot;VimBuffer&quot; FullName=&quot;org.vim.Components.VimBuffer.Model.VimBuffer&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class VimBuffer : org.vim.Components.VimBuffer.Model.IVimBuffer&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;MonoVim&lt;/AssemblyName&gt;
++    &lt;AssemblyVersion&gt;0.2.0.0&lt;/AssemblyVersion&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;org.vim.Components.VimBuffer.Model.IVimBuffer&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public VimBuffer ();&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Text&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string Text { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;value&gt;To be added.&lt;/value&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Type&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.Model.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.Model.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.Model.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,6 @@
++&lt;Namespace Name=&quot;org.vim.Components.VimBuffer.Model&quot;&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Namespace&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimBuffer.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,6 @@
++&lt;Namespace Name=&quot;org.vim.Components.VimBuffer&quot;&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Namespace&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimControl/VimControlMain.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimControl/VimControlMain.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimControl/VimControlMain.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,26 @@
++&lt;Type Name=&quot;VimControlMain&quot; FullName=&quot;org.vim.Components.VimControl.VimControlMain&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class VimControlMain&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;MonoVim&lt;/AssemblyName&gt;
++    &lt;AssemblyVersion&gt;0.2.0.0&lt;/AssemblyVersion&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public VimControlMain ();&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Type&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimControl.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimControl.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimControl.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,6 @@
++&lt;Namespace Name=&quot;org.vim.Components.VimControl&quot;&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Namespace&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimEntry/VimEntryMain.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimEntry/VimEntryMain.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimEntry/VimEntryMain.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,26 @@
++&lt;Type Name=&quot;VimEntryMain&quot; FullName=&quot;org.vim.Components.VimEntry.VimEntryMain&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class VimEntryMain&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;MonoVim&lt;/AssemblyName&gt;
++    &lt;AssemblyVersion&gt;0.2.0.0&lt;/AssemblyVersion&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public VimEntryMain ();&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Type&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Controller/IVimEntryController.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Controller/IVimEntryController.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Controller/IVimEntryController.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,29 @@
++&lt;Type Name=&quot;IVimEntryController&quot; FullName=&quot;org.vim.Components.VimEntry.Controller.IVimEntryController&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public interface IVimEntryController&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;MonoVim&lt;/AssemblyName&gt;
++    &lt;AssemblyVersion&gt;0.2.0.0&lt;/AssemblyVersion&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;Interfaces /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;Execute&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public void Execute (string text);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;text&quot; Type=&quot;System.String&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;param name=&quot;text&quot;&gt;To be added.&lt;/param&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Type&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Controller/VimEntryController.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Controller/VimEntryController.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Controller/VimEntryController.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,50 @@
++&lt;Type Name=&quot;VimEntryController&quot; FullName=&quot;org.vim.Components.VimEntry.Controller.VimEntryController&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class VimEntryController : org.vim.Components.VimEntry.Controller.IVimEntryController&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;MonoVim&lt;/AssemblyName&gt;
++    &lt;AssemblyVersion&gt;0.2.0.0&lt;/AssemblyVersion&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;org.vim.Components.VimEntry.Controller.IVimEntryController&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public VimEntryController (org.vim.Components.VimEntry.Model.IVimEntryHandler vimEntryHandler, org.vim.Components.VimEntry.View.IVimEntryView vimEntryView);&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;vimEntryHandler&quot; Type=&quot;org.vim.Components.VimEntry.Model.IVimEntryHandler&quot; /&gt;
++        &lt;Parameter Name=&quot;vimEntryView&quot; Type=&quot;org.vim.Components.VimEntry.View.IVimEntryView&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;param name=&quot;vimEntryHandler&quot;&gt;To be added.&lt;/param&gt;
++        &lt;param name=&quot;vimEntryView&quot;&gt;To be added.&lt;/param&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Execute&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public void Execute (string text);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;text&quot; Type=&quot;System.String&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;param name=&quot;text&quot;&gt;To be added.&lt;/param&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Type&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Controller.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Controller.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Controller.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,6 @@
++&lt;Namespace Name=&quot;org.vim.Components.VimEntry.Controller&quot;&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Namespace&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Model/IVimEntryHandler.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Model/IVimEntryHandler.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Model/IVimEntryHandler.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,26 @@
++&lt;Type Name=&quot;IVimEntryHandler&quot; FullName=&quot;org.vim.Components.VimEntry.Model.IVimEntryHandler&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public interface IVimEntryHandler&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;MonoVim&lt;/AssemblyName&gt;
++    &lt;AssemblyVersion&gt;0.2.0.0&lt;/AssemblyVersion&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;Interfaces /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;Command&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string Command { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;value&gt;To be added.&lt;/value&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Type&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Model/VimEntryHandler.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Model/VimEntryHandler.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Model/VimEntryHandler.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,42 @@
++&lt;Type Name=&quot;VimEntryHandler&quot; FullName=&quot;org.vim.Components.VimEntry.Model.VimEntryHandler&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class VimEntryHandler : org.vim.Components.VimEntry.Model.IVimEntryHandler&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;MonoVim&lt;/AssemblyName&gt;
++    &lt;AssemblyVersion&gt;0.2.0.0&lt;/AssemblyVersion&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;org.vim.Components.VimEntry.Model.IVimEntryHandler&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public VimEntryHandler ();&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Command&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public string Command { set; get; };&quot; /&gt;
++      &lt;MemberType&gt;Property&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.String&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;value&gt;To be added.&lt;/value&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Type&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Model.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Model.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.Model.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,6 @@
++&lt;Namespace Name=&quot;org.vim.Components.VimEntry.Model&quot;&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Namespace&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.View/IVimEntryView.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.View/IVimEntryView.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.View/IVimEntryView.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,13 @@
++&lt;Type Name=&quot;IVimEntryView&quot; FullName=&quot;org.vim.Components.VimEntry.View.IVimEntryView&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public interface IVimEntryView&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;MonoVim&lt;/AssemblyName&gt;
++    &lt;AssemblyVersion&gt;0.2.0.0&lt;/AssemblyVersion&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;Interfaces /&gt;
++  &lt;Members /&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Type&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.View/VimEntryView.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.View/VimEntryView.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.View/VimEntryView.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,30 @@
++&lt;Type Name=&quot;VimEntryView&quot; FullName=&quot;org.vim.Components.VimEntry.View.VimEntryView&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class VimEntryView : Gtk.Entry, org.vim.Components.VimEntry.View.IVimEntryView&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;MonoVim&lt;/AssemblyName&gt;
++    &lt;AssemblyVersion&gt;0.2.0.0&lt;/AssemblyVersion&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;Gtk.Entry&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces&gt;
++    &lt;Interface&gt;
++      &lt;InterfaceName&gt;org.vim.Components.VimEntry.View.IVimEntryView&lt;/InterfaceName&gt;
++    &lt;/Interface&gt;
++  &lt;/Interfaces&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public VimEntryView ();&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Type&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.View.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.View.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.View.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,6 @@
++&lt;Namespace Name=&quot;org.vim.Components.VimEntry.View&quot;&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Namespace&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.VimEntry.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,6 @@
++&lt;Namespace Name=&quot;org.vim.Components.VimEntry&quot;&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Namespace&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Components.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Components.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Components.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,6 @@
++&lt;Namespace Name=&quot;org.vim.Components&quot;&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Namespace&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Main/Launcher.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Main/Launcher.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Main/Launcher.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,41 @@
++&lt;Type Name=&quot;Launcher&quot; FullName=&quot;org.vim.Main.Launcher&quot;&gt;
++  &lt;TypeSignature Language=&quot;C#&quot; Value=&quot;public class Launcher&quot; /&gt;
++  &lt;AssemblyInfo&gt;
++    &lt;AssemblyName&gt;MonoVim&lt;/AssemblyName&gt;
++    &lt;AssemblyVersion&gt;0.2.0.0&lt;/AssemblyVersion&gt;
++  &lt;/AssemblyInfo&gt;
++  &lt;Base&gt;
++    &lt;BaseTypeName&gt;System.Object&lt;/BaseTypeName&gt;
++  &lt;/Base&gt;
++  &lt;Interfaces /&gt;
++  &lt;Members&gt;
++    &lt;Member MemberName=&quot;.ctor&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public Launcher ();&quot; /&gt;
++      &lt;MemberType&gt;Constructor&lt;/MemberType&gt;
++      &lt;Parameters /&gt;
++      &lt;Docs&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++    &lt;Member MemberName=&quot;Main&quot;&gt;
++      &lt;MemberSignature Language=&quot;C#&quot; Value=&quot;public static void Main (string[] args);&quot; /&gt;
++      &lt;MemberType&gt;Method&lt;/MemberType&gt;
++      &lt;ReturnValue&gt;
++        &lt;ReturnType&gt;System.Void&lt;/ReturnType&gt;
++      &lt;/ReturnValue&gt;
++      &lt;Parameters&gt;
++        &lt;Parameter Name=&quot;args&quot; Type=&quot;System.String[]&quot; /&gt;
++      &lt;/Parameters&gt;
++      &lt;Docs&gt;
++        &lt;param name=&quot;args&quot;&gt;To be added.&lt;/param&gt;
++        &lt;summary&gt;To be added.&lt;/summary&gt;
++        &lt;remarks&gt;To be added.&lt;/remarks&gt;
++      &lt;/Docs&gt;
++    &lt;/Member&gt;
++  &lt;/Members&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Type&gt;
+
+Added: mvim/trunk/doc/monodoc/org.vim.Main.xml
+===================================================================
+--- mvim/trunk/doc/monodoc/org.vim.Main.xml	2005-02-14 08:59:27 UTC (rev 317)
++++ mvim/trunk/doc/monodoc/org.vim.Main.xml	2005-02-14 09:00:34 UTC (rev 318)
+@@ -0,0 +1,6 @@
++&lt;Namespace Name=&quot;org.vim.Main&quot;&gt;
++  &lt;Docs&gt;
++    &lt;summary&gt;To be added.&lt;/summary&gt;
++    &lt;remarks&gt;To be added.&lt;/remarks&gt;
++  &lt;/Docs&gt;
++&lt;/Namespace&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000051.html">[Mspace-checkins] r317 - / mvim mvim/trunk mvim/trunk/doc mvim/trunk/doc/design mvim/trunk/src mvim/trunk/src/lib mvim/trunk/src/org.vim.Components mvim/trunk/src/org.vim.Components/BufferedVimControl mvim/trunk/src/org.vim.Components/BufferedVimControl/Model mvim/trunk/src/org.vim.Components/VimBuffer mvim/trunk/src/org.vim.Components/VimBuffer/Model mvim/trunk/src/org.vim.Components/VimControl mvim/trunk/src/org.vim.Components/VimControl/Model mvim/trunk/src/org.vim.Components/VimEntry mvim/trunk/src/org.vim.Components/VimEntry/Controller mvim/trunk/src/org.vim.Components/VimEntry/Model mvim/trunk/src/org.vim.Components/VimEntry/View mvim/trunk/src/resources
+</A></li>
+	<LI>Next message: <A HREF="000053.html">[Mspace-checkins] r319 - in mvim/trunk: doc/monodoc src src/Vim.Components src/Vim.Components/BufferedVimControl src/Vim.Components/BufferedVimControl/Model src/Vim.Components/VimBuffer src/Vim.Components/VimBuffer/Model src/Vim.Components/VimControl src/Vim.Components/VimControl/Model src/Vim.Components/VimEntry src/Vim.Components/VimEntry/Controller src/Vim.Components/VimEntry/Model src/Vim.Components/VimEntry/View src/Vim.Main
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#52">[ date ]</a>
+              <a href="thread.html#52">[ thread ]</a>
+              <a href="subject.html#52">[ subject ]</a>
+              <a href="author.html#52">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

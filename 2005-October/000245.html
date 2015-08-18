@@ -1,0 +1,247 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r532 - in ComponentModel/trunk/src/ComponentModel: . Collections
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r532%20-%20in%20ComponentModel/trunk/src/ComponentModel%3A%20.%20Collections&In-Reply-To=%3C200510020207.j9227VoT017032%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000244.html">
+   <LINK REL="Next"  HREF="000246.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r532 - in ComponentModel/trunk/src/ComponentModel: . Collections</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r532%20-%20in%20ComponentModel/trunk/src/ComponentModel%3A%20.%20Collections&In-Reply-To=%3C200510020207.j9227VoT017032%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r532 - in ComponentModel/trunk/src/ComponentModel: . Collections">nestor at berlios.de
+       </A><BR>
+    <I>Sun Oct  2 04:07:31 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000244.html">[Mspace-checkins] r531 - in ComponentModel/trunk: . src/UnitTest/Components/TestComponent src/UnitTest/Components/TestComponent/Bo src/UnitTest/Components/TestComponent/Exceptions
+</A></li>
+        <LI>Next message: <A HREF="000246.html">[Mspace-checkins] r533 - in Cronus: . Views libmonotimer pruebas
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#245">[ date ]</a>
+              <a href="thread.html#245">[ thread ]</a>
+              <a href="subject.html#245">[ subject ]</a>
+              <a href="author.html#245">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-10-02 04:07:23 +0200 (Sun, 02 Oct 2005)
+New Revision: 532
+
+Added:
+   ComponentModel/trunk/src/ComponentModel/Collections/
+   ComponentModel/trunk/src/ComponentModel/Collections/IViewHandlerCollection.cs
+   ComponentModel/trunk/src/ComponentModel/Collections/IViewHandlerEnumerator.cs
+Log:
+Added ViewHandlerCollection, in order to store references of views of one
+component.
+
+
+
+Added: ComponentModel/trunk/src/ComponentModel/Collections/IViewHandlerCollection.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Collections/IViewHandlerCollection.cs	2005-10-02 01:17:09 UTC (rev 531)
++++ ComponentModel/trunk/src/ComponentModel/Collections/IViewHandlerCollection.cs	2005-10-02 02:07:23 UTC (rev 532)
+@@ -0,0 +1,122 @@
++using System;
++using System.Collections;
++using ComponentModel.Interfaces;
++
++namespace ComponentModel.Collections {
++    //Without generics support; this is the way to implement a collection which
++    //only support IViewHandler interfaces.
++    public sealed class IViewHandlerCollection : IList, IEnumerable, ICollection {
++        private ArrayList arrayList;
++
++        public IViewHandlerCollection () {
++            arrayList = new ArrayList ();
++        }
++        
++        public IViewHandler this [int index] {
++            get {return (IViewHandler) arrayList [index];}
++            set {arrayList [index] = value;}
++        }
++        
++        public int Count {
++            get {return arrayList.Count;}
++        }
++
++        bool IList.IsReadOnly {
++            get {return arrayList.IsReadOnly;}
++        }
++
++        bool IList.IsFixedSize {
++            get {return arrayList.IsFixedSize;}
++        }
++        
++        public int Add (IViewHandler value) {
++            return arrayList.Add (value);
++        }
++
++        public void AddRange (IViewHandler[] value) {
++            if (value == null) {
++                throw new ArgumentNullException (&quot;Value null&quot;);
++            }
++            arrayList.AddRange (value);
++        }
++
++        public void Clear () {
++            arrayList.Clear ();
++        }
++
++        public bool Contains (IViewHandler value) {
++            return arrayList.Contains (value);
++        }
++
++        public void CopyTo (IViewHandler[] array, int index) {
++            arrayList.CopyTo (array, index);
++        }
++
++
++        //IViewHandler enumerator please.
++        public IViewHandlerEnumerator GetEnumerator () {
++            return new IViewHandlerEnumerator (this);
++        }
++
++        public int IndexOf (IViewHandler value) {
++            return arrayList.IndexOf (value);
++        }
++
++        public void Insert (int index, IViewHandler value) {
++            arrayList.Insert (index, value);
++        }
++
++        public bool IsReadOnly {
++            get {return arrayList.IsReadOnly;}
++        }
++
++        public bool IsSynchronized {
++            get {return arrayList.IsSynchronized;}
++        }
++
++        public void Remove (IViewHandler value) {
++            arrayList.Remove (value);
++        }
++
++        public void RemoveAt (int index) {
++            arrayList.RemoveAt (index);
++        }
++
++        public object SyncRoot {
++            get {return this;}
++        }
++
++        object IList.this [int index] {
++            get {return this [index];}
++            set {this[index] = (IViewHandler) value;}
++        }
++
++        int IList.Add (object value) {
++            return Add ((IViewHandler) value);
++        }
++
++        bool IList.Contains (object value) {
++            return Contains ((IViewHandler) value);
++        }
++
++        int IList.IndexOf (object value) {
++            return IndexOf ((IViewHandler) value);
++        }
++
++        void IList.Insert (int index, object value) {
++            Insert (index, (IViewHandler) value);
++        }
++
++        void IList.Remove (object value) {
++            Remove ((IViewHandler) value);
++        }
++
++        void ICollection.CopyTo (Array array, int index) {
++            arrayList.CopyTo (array, index);
++        }
++
++        IEnumerator IEnumerable.GetEnumerator () {
++            return arrayList.GetEnumerator ();
++        }
++    }
++}
+
+Added: ComponentModel/trunk/src/ComponentModel/Collections/IViewHandlerEnumerator.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Collections/IViewHandlerEnumerator.cs	2005-10-02 01:17:09 UTC (rev 531)
++++ ComponentModel/trunk/src/ComponentModel/Collections/IViewHandlerEnumerator.cs	2005-10-02 02:07:23 UTC (rev 532)
+@@ -0,0 +1,38 @@
++using System;
++using System.Collections;
++using ComponentModel.Interfaces;
++
++namespace ComponentModel.Collections {
++    public class IViewHandlerEnumerator : IEnumerator {
++        private IEnumerator enumerator;
++
++        internal IViewHandlerEnumerator (IViewHandlerCollection collection) {
++            this.enumerator = ((IEnumerable)collection).GetEnumerator ();
++        }
++
++        public IViewHandler Current {
++            get {return (IViewHandler) enumerator.Current;}
++        }
++
++        public bool MoveNext () {
++            return enumerator.MoveNext ();
++        }
++
++        public void Reset () {
++            enumerator.Reset ();
++        }
++
++        object IEnumerator.Current {
++            get {return Current;}
++        }
++
++        bool IEnumerator.MoveNext () {
++            return MoveNext ();
++        }
++
++        void IEnumerator.Reset () {
++            Reset ();
++        }
++
++    }
++}
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000244.html">[Mspace-checkins] r531 - in ComponentModel/trunk: . src/UnitTest/Components/TestComponent src/UnitTest/Components/TestComponent/Bo src/UnitTest/Components/TestComponent/Exceptions
+</A></li>
+	<LI>Next message: <A HREF="000246.html">[Mspace-checkins] r533 - in Cronus: . Views libmonotimer pruebas
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#245">[ date ]</a>
+              <a href="thread.html#245">[ thread ]</a>
+              <a href="subject.html#245">[ subject ]</a>
+              <a href="author.html#245">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

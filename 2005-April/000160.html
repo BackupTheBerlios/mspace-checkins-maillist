@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r447 - koolboy/trunk/src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r447%20-%20koolboy/trunk/src&In-Reply-To=%3C200504271249.j3RCnaIw031518%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000159.html">
+   <LINK REL="Next"  HREF="000161.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r447 - koolboy/trunk/src</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r447%20-%20koolboy/trunk/src&In-Reply-To=%3C200504271249.j3RCnaIw031518%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r447 - koolboy/trunk/src">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Wed Apr 27 14:49:36 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000159.html">[Mspace-checkins] r446 - / koolboy koolboy/trunk
+</A></li>
+        <LI>Next message: <A HREF="000161.html">[Mspace-checkins] r448 - koolboy/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#160">[ date ]</a>
+              <a href="thread.html#160">[ thread ]</a>
+              <a href="subject.html#160">[ subject ]</a>
+              <a href="author.html#160">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-27 14:49:34 +0200 (Wed, 27 Apr 2005)
+New Revision: 447
+
+Added:
+   koolboy/trunk/src/fooboy.rb
+Log:
+Added isaac code
+
+
+
+Added: koolboy/trunk/src/fooboy.rb
+===================================================================
+--- koolboy/trunk/src/fooboy.rb	2005-04-27 12:36:08 UTC (rev 446)
++++ koolboy/trunk/src/fooboy.rb	2005-04-27 12:49:34 UTC (rev 447)
+@@ -0,0 +1,104 @@
++#!/usr/bin/ruby
++
++require 'Korundum'
++
++class SysTrayThing &lt; KDE::SystemTray
++	def initialize(parent, name )
++		super(parent, name)
++		setPixmap( KDE::SystemTray::loadIcon(&quot;kgpg&quot;));
++	end
++
++	def hideWindow
++		parentWidget.hide
++	end
++
++	def relocateWindow
++		size = parentWidget.sizeHint
++		winPos = Qt::Point.new(
++			width - size.width/2,
++			height - size.height/2)
++
++		winPos = mapToGlobal(winPos)
++		parentWidget.move(winPos)
++	end
++
++	def showWindow
++		relocateWindow
++		parentWidget.show
++		KDE::Win::activateWindow( parentWidget.winId );
++	end
++
++	def mousePressEvent( ev )
++		case ev.button
++		when Qt::LeftButton
++			if parentWidget.isVisible
++				hideWindow
++			else
++				showWindow
++			end
++
++		when Qt::MidButton
++			
++		when Qt::RightButton
++			if parentWidget
++				action = actionCollection.action(&quot;minimizeRestore&quot;)
++				if parentWidget.isVisible
++					action.setText(i18n(&quot;&amp;Minimize&quot;))
++				else
++					action.setText(i18n(&quot;&amp;Restore&quot;))
++				end 
++			end
++			contextMenuAboutToShow( contextMenu )
++			contextMenu.popup(ev.globalPos)
++		end
++	end
++end
++
++class MainWindow &lt; KDE::MainWindow
++	slots   'aboutToQuit()'
++
++	def initialize( name )
++		super(nil, name)
++		@shuttingDown = false
++
++		@systemTray = SysTrayThing.new( self, &quot;our fooboy&quot; )
++		connect(@systemTray, SIGNAL('quitSelected()'),
++			self, SLOT('aboutToQuit()'))
++
++		@text = KDE::TextEdit.new(self)
++		loadText
++		self.setCentralWidget(@text)
++
++		@systemTray.show
++	end
++
++	def loadText
++		file = KDE::StandardDirs::locateLocal(&quot;appdata&quot;,&quot;note&quot;)
++		test ?r, file and
++			File.open(file) { |f| @text.setText(f.gets(nil)) }
++	end
++
++	def aboutToQuit
++		@shuttingDown = true
++	end
++
++	def queryClose
++		if not @shuttingDown
++			hide
++			return false
++		else
++			file = KDE::StandardDirs::locateLocal(&quot;appdata&quot;,&quot;note&quot;)
++			File.open(file,&quot;w&quot;) { |f| f.print(@text.text) }
++			return true	
++		end
++	end
++end
++
++about = KDE::AboutData.new(&quot;fooboy&quot;, &quot;fooboy - nice stuff&quot;, &quot;0.1&quot;)
++KDE::CmdLineArgs.init(ARGV, about)
++a = KDE::UniqueApplication.new()
++
++window = MainWindow.new( &quot;our fooboy&quot; )
++
++a.mainWidget = window
++a.exec 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000159.html">[Mspace-checkins] r446 - / koolboy koolboy/trunk
+</A></li>
+	<LI>Next message: <A HREF="000161.html">[Mspace-checkins] r448 - koolboy/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#160">[ date ]</a>
+              <a href="thread.html#160">[ thread ]</a>
+              <a href="subject.html#160">[ subject ]</a>
+              <a href="author.html#160">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

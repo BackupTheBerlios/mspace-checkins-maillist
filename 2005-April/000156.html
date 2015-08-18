@@ -1,0 +1,368 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r443 - in ComponentModel/trunk/src: . ComponentModel.Container.Dao ComponentModel.ExceptionManager ComponentModel.Exceptions ComponentModel.Factory ComponentModel.Interfaces ComponentModel.VO
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r443%20-%20in%20ComponentModel/trunk/src%3A%20.%20ComponentModel.Container.Dao%20ComponentModel.ExceptionManager%20ComponentModel.Exceptions%20ComponentModel.Factory%20ComponentModel.Interfaces%20ComponentModel.VO&In-Reply-To=%3C200504181727.j3IHROiA018565%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000155.html">
+   <LINK REL="Next"  HREF="000157.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r443 - in ComponentModel/trunk/src: . ComponentModel.Container.Dao ComponentModel.ExceptionManager ComponentModel.Exceptions ComponentModel.Factory ComponentModel.Interfaces ComponentModel.VO</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r443%20-%20in%20ComponentModel/trunk/src%3A%20.%20ComponentModel.Container.Dao%20ComponentModel.ExceptionManager%20ComponentModel.Exceptions%20ComponentModel.Factory%20ComponentModel.Interfaces%20ComponentModel.VO&In-Reply-To=%3C200504181727.j3IHROiA018565%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r443 - in ComponentModel/trunk/src: . ComponentModel.Container.Dao ComponentModel.ExceptionManager ComponentModel.Exceptions ComponentModel.Factory ComponentModel.Interfaces ComponentModel.VO">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Mon Apr 18 19:27:24 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000155.html">[Mspace-checkins] r442 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container src/ComponentModel.Container.Dao src/ComponentModel.VO
+</A></li>
+        <LI>Next message: <A HREF="000157.html">[Mspace-checkins] r444 - in ComponentModel/trunk/src: ComponentModel.Container ComponentModel.Container.Dao
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#156">[ date ]</a>
+              <a href="thread.html#156">[ thread ]</a>
+              <a href="subject.html#156">[ subject ]</a>
+              <a href="author.html#156">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-04-18 19:27:15 +0200 (Mon, 18 Apr 2005)
+New Revision: 443
+
+Added:
+   ComponentModel/trunk/src/ComponentModel.Exceptions/TypeNotFoundException.cs
+   ComponentModel/trunk/src/ComponentModel.Factory/FactoryVO.cs
+   ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModelVO.cs
+Modified:
+   ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs
+   ComponentModel/trunk/src/ComponentModel.ExceptionManager/DefaultExceptionManager.cs
+   ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs
+   ComponentModel/trunk/src/ComponentModel.VO/ResponseMethodVO.cs
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Added:
+
+Factory for VO.
+
+Changes:
+
+Perform reflection operations.
+Standard notation in VO's.
+
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs	2005-04-16 16:29:58 UTC (rev 442)
++++ ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs	2005-04-18 17:27:15 UTC (rev 443)
+@@ -2,8 +2,10 @@
+ using System.Collections;
+ using System.Reflection;
+ using ComponentModel.Interfaces;
++using ComponentModel.Factory;
+ using ComponentModel.Container;
+ using ComponentModel.VO;
++using ComponentModel.Exceptions;
+ 
+ namespace ComponentModel.Container.Dao {
+     public class DefaultContainerDao {
+@@ -20,6 +22,18 @@
+             }
+         }
+ 
++        public Type GetType (string type) {
++            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies (); 
++            for (int i = 0; i &lt; assemblies.Length; i++) {
++                Type[] types = assemblies[i].GetTypes ();
++                for (int j = 0; j &lt; types.Length; j++) {
++                    if (types[j].FullName.Equals (type))
++                        return types[j];
++                }
++            }
++            throw new TypeNotFoundException (&quot;Type can't be resolved in current app domain.&quot;);
++        }
++        
+         public ICollection ProcessAssembly (Assembly assembly) {
+             ArrayList list = new ArrayList ();
+             Type[] types = assembly.GetTypes ();
+@@ -52,7 +66,7 @@
+          * Rellenamos el VO con los valores que tenga asociado ese tipo.
+          */
+         private ComponentModelVO fillVO (Type type) {
+-            ComponentModelVO componentModelVO = new ComponentModelVO ();
++            ComponentModelVO componentModelVO =  FactoryVO.Instance.CreateComponentModelVO ();
+             ComponentAttribute componentAttribute = (ComponentAttribute)(type.GetCustomAttributes (typeof (ComponentAttribute), true)[0]);
+             
+             componentModelVO.ComponentClassName = type.FullName;
+
+Modified: ComponentModel/trunk/src/ComponentModel.ExceptionManager/DefaultExceptionManager.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.ExceptionManager/DefaultExceptionManager.cs	2005-04-16 16:29:58 UTC (rev 442)
++++ ComponentModel/trunk/src/ComponentModel.ExceptionManager/DefaultExceptionManager.cs	2005-04-18 17:27:15 UTC (rev 443)
+@@ -4,7 +4,6 @@
+ namespace ComponentModel.ExceptionManager {
+     public class DefaultExceptionManager : IExceptionManager {
+         public virtual void ProcessException (Exception exception) {
+-            Console.WriteLine (exception.ToString ());
+         }
+     }
+ }
+
+Added: ComponentModel/trunk/src/ComponentModel.Exceptions/TypeNotFoundException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Exceptions/TypeNotFoundException.cs	2005-04-16 16:29:58 UTC (rev 442)
++++ ComponentModel/trunk/src/ComponentModel.Exceptions/TypeNotFoundException.cs	2005-04-18 17:27:15 UTC (rev 443)
+@@ -0,0 +1,7 @@
++using System;
++
++namespace ComponentModel.Exceptions {
++    public class TypeNotFoundException : ComponentModelException {
++        public TypeNotFoundException (string message) : base (message) {}
++    }
++}
+
+Added: ComponentModel/trunk/src/ComponentModel.Factory/FactoryVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Factory/FactoryVO.cs	2005-04-16 16:29:58 UTC (rev 442)
++++ ComponentModel/trunk/src/ComponentModel.Factory/FactoryVO.cs	2005-04-18 17:27:15 UTC (rev 443)
+@@ -0,0 +1,29 @@
++using System;
++using ComponentModel.VO;
++
++namespace ComponentModel.Factory {
++    public sealed class FactoryVO {
++        private static FactoryVO instance;
++
++        private FactoryVO () {
++        }
++
++        public static FactoryVO Instance {
++            get {
++                if (instance == null)
++                    instance = new FactoryVO ();
++                return instance;
++            }
++        }
++
++        public ComponentModelVO CreateComponentModelVO () {
++            return new ComponentModelVO ();
++        }
++
++        public ResponseMethodVO CreateResponseMethodVO () {
++            ResponseMethodVO responseMethodVO = new ResponseMethodVO ();
++            responseMethodVO.SetExecutionSuccess (false);
++            return responseMethodVO;
++        }
++    }
++}
+
+Added: ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModelVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModelVO.cs	2005-04-16 16:29:58 UTC (rev 442)
++++ ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModelVO.cs	2005-04-18 17:27:15 UTC (rev 443)
+@@ -0,0 +1,6 @@
++using System;
++
++namespace ComponentModel.Interfaces {
++    public interface IComponentModelVO {
++    }
++}
+
+Modified: ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs	2005-04-16 16:29:58 UTC (rev 442)
++++ ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs	2005-04-18 17:27:15 UTC (rev 443)
+@@ -7,6 +7,9 @@
+         private string componentClassName;
+         private string exceptionManagerClassName;
+ 
++        internal ComponentModelVO () {
++        }
++        
+         public string ExceptionManagerClassName {
+             get {return exceptionManagerClassName;}
+             set {exceptionManagerClassName = value;}
+
+Modified: ComponentModel/trunk/src/ComponentModel.VO/ResponseMethodVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.VO/ResponseMethodVO.cs	2005-04-16 16:29:58 UTC (rev 442)
++++ ComponentModel/trunk/src/ComponentModel.VO/ResponseMethodVO.cs	2005-04-18 17:27:15 UTC (rev 443)
+@@ -5,8 +5,8 @@
+         private bool executionSuccess;
+         private object methodResult;
+ 
+-        public ResponseMethodVO () {
+-            this.SetExecutionSuccess (false);
++        internal ResponseMethodVO () {
++            //this.SetExecutionSuccess (false);
+         }
+         
+         public object MethodResult {
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-04-16 16:29:58 UTC (rev 442)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-04-18 17:27:15 UTC (rev 443)
+@@ -3,6 +3,8 @@
+ using ComponentModel.Interfaces;
+ using ComponentModel.VO;
+ using ComponentModel.Container;
++using ComponentModel.Container.Dao;
++using ComponentModel.Factory;
+ using ComponentModel.ExceptionManager;
+ using ComponentModel.Exceptions;
+ using NLog;
+@@ -38,20 +40,17 @@
+             if ((exceptionManagerClassName == null) | (exceptionManagerClassName.Equals (String.Empty))) {
+                 throw new ExceptionManagerNotFoundException (&quot;Null exception managerClassName.&quot;);
+             }
+-            foreach (Assembly assembly in DefaultContainer.Instance.Assemblies) {
+-                foreach (Type type in assembly.GetTypes ()) {
+-                    if (type.IsSubclassOf (typeof (DefaultExceptionManager)) || type.IsSubclassOf (typeof (IExceptionManager))) {
+-                        if (type.ToString().Equals (exceptionManagerClassName)) {
+-                            logger.Debug (&quot;Getting type of exception manager: &quot; + type.ToString ());
+-                            return type;
+-                        }
+-                    }
+-                }
++            try {
++                Type type = DefaultContainerDao.Instance.GetType (exceptionManagerClassName);
++                if (type.IsSubclassOf (typeof (DefaultExceptionManager)) || (type.GetInterface (&quot;IExceptionManager&quot;) != null)) 
++                    return type;
+             }
++            catch (TypeNotFoundException ex) {
+             //PostCondition: return != null
+             //Si llega aqu&#237;, no ha encontrado el tipo del exceptionManager.
+-            throw new ExceptionManagerNotFoundException (&quot;Exception Manager Can't be found in Component.&quot;);
+-            //return null;
++                throw new ExceptionManagerNotFoundException (&quot;Exception Manager Can't be found in Component.&quot;);
++            }
++            return null;
+         }
+         
+         private MethodInfo GetMethodToExecute (string methodName, Type componentType) {
+@@ -75,12 +74,10 @@
+                 throw new ResponseNotFoundException (&quot;Please set up correctly Response Attribute.&quot;);    
+             }
+             MethodInfo responseMethod = viewType.GetMethod (componentMethodAttribute.ResponseName, BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public) ;
+-            if (responseMethod == null) {
++            if (responseMethod == null) 
+                 throw new ResponseNotFoundException (&quot;Response: &quot; + componentMethodAttribute.ResponseName + &quot; not found in: &quot; + viewType.ToString ());
+-            } 
+-            else {
++            else 
+                 logger.Debug (&quot;Finded response to execute: &quot; + responseMethod.ToString () + &quot; in: &quot; + viewType.ToString ());
+-            }
+             return responseMethod;
+         } 
+         
+@@ -96,7 +93,7 @@
+         
+         private ResponseMethodVO ExecuteCompleteSequence (MethodInfo methodToInvoke, object[] parameters, Type viewType, MethodInfo methodResponse) {
+             try {
+-                ResponseMethodVO responseMethodVO = new ResponseMethodVO ();
++                ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
+                 logger.Debug (&quot;Method &quot; + methodToInvoke + &quot; executing.&quot;);
+                 object ret = methodToInvoke.Invoke (this, parameters);
+                 responseMethodVO.MethodResult = ret;
+@@ -109,9 +106,8 @@
+                 return responseMethodVO;
+             }
+             catch (TargetInvocationException exception) {
+-                if (exception.InnerException is ComponentModelException) {
++                if (exception.InnerException is ComponentModelException) 
+                     throw exception.InnerException;
+-                }
+                 else {
+                     this.InstantiateExceptionManager ();
+                     defaultExceptionManager.ProcessException (exception);
+@@ -119,20 +115,25 @@
+             }
+             return null;
+         }
++       
++        private Type GetViewType (string viewType) {
++            if ((viewType == null) || (viewType.Equals (String.Empty)))
++                throw new ViewNotFoundException (&quot;Please, set up attributes correctly.&quot;);
++            try {
++                Type type = DefaultContainerDao.Instance.GetType (viewType);
++                if (type.GetInterface (&quot;IViewHandler&quot;) != null)
++                    return type;
++            }
++            catch (TypeNotFoundException exception) {
++                throw new ViewNotFoundException (&quot;View&quot; + viewType + &quot;not found.&quot;);
++            }
++            return null;
++        }
+         
+         private Type GetViewType (ComponentMethodAttribute componentMethodAttribute) {
+             if (componentMethodAttribute == null)
+                 throw new ViewNotFoundException (&quot;Please set up attributes correctly.&quot;);
+-            foreach (Assembly assembly in DefaultContainer.Instance.Assemblies) {
+-                foreach (Type type in assembly.GetTypes ()) {
+-                    if ((type.ToString ()).Equals (componentMethodAttribute.ViewName)) {
+-                        logger.Debug (&quot;ViewType finded: &quot; + type.ToString ());
+-                        if (type.GetInterface (&quot;IViewHandler&quot;) != null)    
+-                            return type;
+-                    }
+-                }
+-            }
+-            throw new ViewNotFoundException (&quot;View &quot; +componentMethodAttribute.ViewName + &quot; not found&quot;);
++            return this.GetViewType (componentMethodAttribute.ViewName);
+         }
+         
+         //Public Methods
+@@ -140,12 +141,18 @@
+             Type type = this.GetType ();
+ 
+             //Recollecting data for execution.
++            // Check if exists use case to execute
+             MethodInfo methodToExecute = this.GetMethodToExecute (methodName, type);
++            // Read attributes for this use case.
+             Attribute[] attributes = (Attribute[]) methodToExecute.GetCustomAttributes (typeof (ComponentMethodAttribute), false);
+             ComponentMethodAttribute componentMethodAttribute = (ComponentMethodAttribute) attributes[0];
++            //Gets viewType from information of attributes.
+             Type viewType = this.GetViewType (componentMethodAttribute);
+-            
++            // Si existe alg&#250;n miembro requerido para la ejecuci&#243;n que no es
++            // encontrado; no ejecutar&#225; nada denada.
++            //
+             //Execute method
++            // Get information from respone for view.
+             MethodInfo responseMethod = this.GetMethodResponse (viewType, componentMethodAttribute);
+             //Executing response to method
+             ResponseMethodVO responseMethodVO = this.ExecuteCompleteSequence (methodToExecute, parameters, viewType, responseMethod); 
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000155.html">[Mspace-checkins] r442 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container src/ComponentModel.Container.Dao src/ComponentModel.VO
+</A></li>
+	<LI>Next message: <A HREF="000157.html">[Mspace-checkins] r444 - in ComponentModel/trunk/src: ComponentModel.Container ComponentModel.Container.Dao
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#156">[ date ]</a>
+              <a href="thread.html#156">[ thread ]</a>
+              <a href="subject.html#156">[ subject ]</a>
+              <a href="author.html#156">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

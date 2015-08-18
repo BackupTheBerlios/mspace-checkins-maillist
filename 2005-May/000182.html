@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r469 - in ComponentModel/trunk/src: . ComponentModel.Interfaces
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r469%20-%20in%20ComponentModel/trunk/src%3A%20.%20ComponentModel.Interfaces&In-Reply-To=%3C200505012351.j41NptbU019856%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000181.html">
+   <LINK REL="Next"  HREF="000183.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r469 - in ComponentModel/trunk/src: . ComponentModel.Interfaces</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r469%20-%20in%20ComponentModel/trunk/src%3A%20.%20ComponentModel.Interfaces&In-Reply-To=%3C200505012351.j41NptbU019856%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r469 - in ComponentModel/trunk/src: . ComponentModel.Interfaces">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Mon May  2 01:51:55 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000181.html">[Mspace-checkins] r468 - koolboy/trunk/examples
+</A></li>
+        <LI>Next message: <A HREF="000183.html">[Mspace-checkins] r470 - koolboy/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#182">[ date ]</a>
+              <a href="thread.html#182">[ thread ]</a>
+              <a href="subject.html#182">[ subject ]</a>
+              <a href="author.html#182">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-05-02 01:51:39 +0200 (Mon, 02 May 2005)
+New Revision: 469
+
+Modified:
+   ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Added Redirection to an existing view.
+
+
+
+Modified: ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs	2005-05-01 12:04:03 UTC (rev 468)
++++ ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs	2005-05-01 23:51:39 UTC (rev 469)
+@@ -4,6 +4,8 @@
+     public interface IComponentModel {
+         ComponentModelVO VO {get;}
+ 
+-        ResponseMethodVO Execute (string methodName, params object[] parameters);
++        ResponseMethodVO Execute (string methodName, object[] parameters);//Redirige &amp; bloquea a la vista por defecto.
++        ResponseMethodVO Execute (string methodName, bool redirect, bool block, object[] parameters);// Igual sobra !!
++        ResponseMethodVO Execute (string methodName, bool redirect, bool block, object[] parameters, IViewHandler view);
+     }
+ }
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-01 12:04:03 UTC (rev 468)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-01 23:51:39 UTC (rev 469)
+@@ -115,7 +115,31 @@
+             }
+             return null;
+         }
+-       
++        
++
++        private ResponseMethodVO ExecuteCompleteSequence (MethodInfo methodToInvoke, object[] parameters, IViewHandler viewHandler, MethodInfo methodResponse) {
++            try {
++                ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
++                logger.Debug (&quot;Method &quot; + methodToInvoke + &quot; executing.&quot;);
++                object ret = methodToInvoke.Invoke (this, parameters);
++                responseMethodVO.MethodResult = ret;
++                logger.Debug (&quot;Executing response method: &quot; + methodResponse.ToString ());
++                responseMethodVO.SetExecutionSuccess (true);
++                logger.Debug (&quot;Setting excecuttion success as true.&quot;);
++                methodResponse.Invoke (viewHandler, new object[] {responseMethodVO});
++                return responseMethodVO;
++            }
++            catch (TargetInvocationException exception) {
++                if (exception.InnerException is ComponentModelException) 
++                    throw exception.InnerException;
++                else {
++                    this.InstantiateExceptionManager ();
++                    defaultExceptionManager.ProcessException (exception);
++                }
++            }
++            return null;
++        }
++        
+         private Type GetViewType (string viewType) {
+             if ((viewType == null) || (viewType.Equals (String.Empty)))
+                 throw new ViewNotFoundException (&quot;Please, set up attributes correctly.&quot;);
+@@ -137,7 +161,7 @@
+         }
+         
+         //Public Methods
+-        public ResponseMethodVO Execute (string methodName, params object[] parameters) {
++        public ResponseMethodVO Execute (string methodName, object[] parameters) {
+             Type type = this.GetType ();
+ 
+             //Recollecting data for execution.
+@@ -158,5 +182,22 @@
+             ResponseMethodVO responseMethodVO = this.ExecuteCompleteSequence (methodToExecute, parameters, viewType, responseMethod); 
+             return responseMethodVO;
+         }
++        
++        public ResponseMethodVO Execute (string methodName, bool redirect, bool block, object[] parameters) {
++            throw new Exception (&quot;Not implemented yet.&quot;);
++        }
++
++        public ResponseMethodVO Execute (string methodName, bool redirect, bool block, object[] parameters, IViewHandler view) {
++            Type type = this.GetType ();
++            
++            MethodInfo methodToExecute = this.GetMethodToExecute (methodName, type);
++            Attribute[] attributes = (Attribute[]) methodToExecute.GetCustomAttributes (typeof (ComponentMethodAttribute), false);
++            ComponentMethodAttribute componentMethodAttribute = (ComponentMethodAttribute) attributes[0];
++            MethodInfo responseMethod = this.GetMethodResponse (view.GetType (), componentMethodAttribute);
++            
++            ResponseMethodVO responseMethodVO = this.ExecuteCompleteSequence (methodToExecute, parameters, view, responseMethod);
++            return responseMethodVO;
++        }
++
+     }
+ }
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000181.html">[Mspace-checkins] r468 - koolboy/trunk/examples
+</A></li>
+	<LI>Next message: <A HREF="000183.html">[Mspace-checkins] r470 - koolboy/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#182">[ date ]</a>
+              <a href="thread.html#182">[ thread ]</a>
+              <a href="subject.html#182">[ subject ]</a>
+              <a href="author.html#182">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

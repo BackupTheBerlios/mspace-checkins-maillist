@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r472 - koolboy/trunk/src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r472%20-%20koolboy/trunk/src&In-Reply-To=%3C200505030728.j437SmWl007733%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000184.html">
+   <LINK REL="Next"  HREF="000186.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r472 - koolboy/trunk/src</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r472%20-%20koolboy/trunk/src&In-Reply-To=%3C200505030728.j437SmWl007733%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r472 - koolboy/trunk/src">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Tue May  3 09:28:48 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000184.html">[Mspace-checkins] r471 - koolboy/trunk/src
+</A></li>
+        <LI>Next message: <A HREF="000186.html">[Mspace-checkins] r473 - koolboy/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#185">[ date ]</a>
+              <a href="thread.html#185">[ thread ]</a>
+              <a href="subject.html#185">[ subject ]</a>
+              <a href="author.html#185">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-05-03 09:28:47 +0200 (Tue, 03 May 2005)
+New Revision: 472
+
+Modified:
+   koolboy/trunk/src/koolboy.rb
+Log:
+* Added about menu item to right click menu
+* Added some about info and authors
+* added explicit main function (if $0 == __FILE__)
+
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-05-02 14:43:33 UTC (rev 471)
++++ koolboy/trunk/src/koolboy.rb	2005-05-03 07:28:47 UTC (rev 472)
+@@ -4,9 +4,8 @@
+ require 'libkoolnotes.rb'
+ 
+ class Koolboy &lt; KDE::SystemTray
+-	slots   'sNewNote()',
+-		'sShowNote(int)',
+-		'sRemoveWindow(char*)'
++	slots   'sNewNote()', 'sShowNote(int)',
++			'sRemoveWindow(char*)', 'showAbout()'
+ 	
+ 	k_dcop 'QStringList lastNotes()'
+ 
+@@ -14,14 +13,20 @@
+ 		super(nil, name)
+ 		setPixmap( KDE::SystemTray::loadIcon(&quot;kgpg&quot;))
+ 		@windows = {}
++		@icons = KDE::IconLoader.new()
++		#add about to rightclick menu
++		contextMenu().insertItem( Qt::IconSet.new(@icons.loadIcon(&quot;about&quot;, KDE::Icon::Toolbar)),
++		                          &quot;About Koolboy&quot;, self, SLOT('showAbout()') )
+ 	end
+ 
+ 	def regenMenu
++		
++		
+ 		# create left menu
+ 		@leftMenu = KDE::PopupMenu.new(self)
+ 		@leftMenu.insertItem( i18n( &quot;&amp;New note&quot; ), self, SLOT('sNewNote()') )
+ 		@leftMenu.insertSeparator
+-
++		
+ 		@menuTitles = {}
+ 
+ 		NoteManager.instance.lastNotes.each { |note|
+@@ -57,6 +62,9 @@
+ 		@windows.delete(title)
+ 	end
+ 
++	def showAbout
++		KDE::AboutApplication.new.show
++	end
+ 	def mousePressEvent( ev )
+ 		case ev.button
+ 		when Qt::LeftButton
+@@ -125,12 +133,19 @@
+ 	end
+ end
+ 
+-about = KDE::AboutData.new(&quot;koolboy&quot;, &quot;Koolboy&quot;, &quot;0.1&quot;)
+-KDE::CmdLineArgs.init(ARGV, about)
+-a = KDE::UniqueApplication.new()
++if $0 == __FILE__
++	description = &quot;Note taking app&quot;
++	version     = &quot;0.1&quot;
++	about = KDE::AboutData.new(&quot;koolboy&quot;, &quot;Koolboy&quot;, version,
++						   description, KDE::AboutData::License_GPL,
++						   &quot;&quot;)
++	about.addAuthor(&quot;Isaac Clerencia&quot;, &quot;Core developer&quot;, &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">isaac at sindominio.net</A>&quot;)
++	about.addAuthor(&quot;Sergio Rubio&quot;, &quot;Core developer&quot;, &quot;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&quot;)
+ 
+-koolboy = Koolboy.new( &quot;koolboy&quot; )
+-koolboy.show
+-
+-a.mainWidget = koolboy
+-a.exec 
++	KDE::CmdLineArgs.init(ARGV,about)
++	a = KDE::UniqueApplication.new()
++	koolboy = Koolboy.new( &quot;koolboy&quot; )
++	koolboy.show
++	a.mainWidget = koolboy
++	a.exec
++end
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000184.html">[Mspace-checkins] r471 - koolboy/trunk/src
+</A></li>
+	<LI>Next message: <A HREF="000186.html">[Mspace-checkins] r473 - koolboy/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#185">[ date ]</a>
+              <a href="thread.html#185">[ thread ]</a>
+              <a href="subject.html#185">[ subject ]</a>
+              <a href="author.html#185">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

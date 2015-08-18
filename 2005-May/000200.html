@@ -1,0 +1,508 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r487 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Interfaces src/ComponentModel.Threading
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r487%20-%20in%20ComponentModel/trunk%3A%20ComponentTest/src%20ComponentTest/src/Components/Saludator/Bo%20ComponentTest/src/Components/Saludator/Exceptions%20ComponentTest/src/Components/Saludator/Form%20src%20src/ComponentModel.Interfaces%20src/ComponentModel.Threading&In-Reply-To=%3C200505120851.j4C8pFef032534%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000199.html">
+   <LINK REL="Next"  HREF="000201.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r487 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Interfaces src/ComponentModel.Threading</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r487%20-%20in%20ComponentModel/trunk%3A%20ComponentTest/src%20ComponentTest/src/Components/Saludator/Bo%20ComponentTest/src/Components/Saludator/Exceptions%20ComponentTest/src/Components/Saludator/Form%20src%20src/ComponentModel.Interfaces%20src/ComponentModel.Threading&In-Reply-To=%3C200505120851.j4C8pFef032534%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r487 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Interfaces src/ComponentModel.Threading">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Thu May 12 10:51:15 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000199.html">[Mspace-checkins] r486 - in ComponentModel: releases trunk/src trunk/src/ComponentModel.Interfaces trunk/src/ComponentModel.Threading
+</A></li>
+        <LI>Next message: <A HREF="000201.html">[Mspace-checkins] r488 - in ComponentModel/trunk/src: . ComponentModel.Threading
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#200">[ date ]</a>
+              <a href="thread.html#200">[ thread ]</a>
+              <a href="subject.html#200">[ subject ]</a>
+              <a href="author.html#200">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-05-12 10:51:13 +0200 (Thu, 12 May 2005)
+New Revision: 487
+
+Modified:
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs
+   ComponentModel/trunk/ComponentTest/src/Launcher.cs
+   ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs
+   ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Added another bit of non-block operations.
+
+Refactor and finished Executor.
+
+Improve Exception management.
+
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-05-11 22:06:32 UTC (rev 486)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-05-12 08:51:13 UTC (rev 487)
+@@ -18,7 +18,7 @@
+         public int Saluda () {
+             Console.WriteLine (&quot;//-----------------//&quot;);
+             Console.WriteLine (&quot;Que pasa co !!&quot;);
+-            //throw new Exception (&quot;Yeahhhh&quot;);
++            throw new Exception (&quot;Yeahhhh&quot;);
+             Console.WriteLine (&quot;//-----------------//&quot;);
+             return 1;
+         }
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs	2005-05-11 22:06:32 UTC (rev 486)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs	2005-05-12 08:51:13 UTC (rev 487)
+@@ -5,6 +5,7 @@
+ 
+     
+     public class SaludatorExceptionManager : DefaultExceptionManager {
++
+         public SaludatorExceptionManager () {
+         }
+         public override void ProcessException (Exception exception) {
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs	2005-05-11 22:06:32 UTC (rev 486)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs	2005-05-12 08:51:13 UTC (rev 487)
+@@ -45,7 +45,7 @@
+ 		void Button1Click(object sender, System.EventArgs ev) {
+                     DefaultComponentModel dcm = (DefaultComponentModel) DefaultContainer.Instance.GetComponentByName (&quot;Saludator&quot;); 
+                     //dcm.Execute (&quot;Saluda&quot;, null);
+-                    dcm.Execute (&quot;Saluda&quot;, false, false, null, this);
++                    dcm.Execute (&quot;Saluda&quot;, null, this);
+ 		}
+ 		
+                 public void ResponseInitApp (ResponseMethodVO response) {
+
+Modified: ComponentModel/trunk/ComponentTest/src/Launcher.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Launcher.cs	2005-05-11 22:06:32 UTC (rev 486)
++++ ComponentModel/trunk/ComponentTest/src/Launcher.cs	2005-05-12 08:51:13 UTC (rev 487)
+@@ -13,7 +13,7 @@
+                 Console.WriteLine (&quot;Dcm no es null&quot;);
+             else
+                 Console.WriteLine (&quot;Dcm es null&quot;);
+-            dcm.Execute (&quot;InitApp&quot;, null);
++            dcm.Execute (&quot;InitApp&quot;, null, null);
+             dcm.Execute (&quot;Saluda&quot;, null);
+         }
+     }
+
+Modified: ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs	2005-05-11 22:06:32 UTC (rev 486)
++++ ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs	2005-05-12 08:51:13 UTC (rev 487)
+@@ -6,7 +6,8 @@
+         ComponentModelVO VO {get;}
+ 
+         ResponseMethodVO Execute (string methodName, object[] parameters);//Redirige &amp; bloquea a la vista por defecto.
+-        ResponseMethodVO Execute (string methodName, bool redirect, bool block, object[] parameters);// Igual sobra !!
+-        ResponseMethodVO Execute (string methodName, bool redirect, bool block, object[] parameters, IViewHandler view);
++        ResponseMethodVO Execute (string methodName, object[] parameters, IViewHandler viewHandler);//Redirige y elige vista.
++        ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect);//Redirige o no redirige, si redirige vista nueva.
++        ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block);
+     }
+ }
+
+Modified: ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs	2005-05-11 22:06:32 UTC (rev 486)
++++ ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs	2005-05-12 08:51:13 UTC (rev 487)
+@@ -1,21 +1,83 @@
+ using System;
+ using System.Threading;
++using ComponentModel.VO;
++using System.Reflection;
++using ComponentModel;
++using ComponentModel.Factory;
++using ComponentModel.Interfaces;
+ 
+ namespace ComponentModel.Threading {
+     internal class ComponentActionDispatcher  {
+         /*Cojo los campos para la informaci&#243;n de ponerlo en segundo plano*/
+         private Thread thread;
+         private ThreadStart threadStart;
++
+         /*Recolecto datos para la ejecucuci&#243;n.*/
++        IComponentModel componentModel;
++        MethodInfo methodToExecute;
++        object[] parameters;
++        Type viewType;
++        IViewHandler viewHandler;
++        MethodInfo methodToResponse;
++        ResponseMethodVO responseMethodVO;
+         
+-        internal ComponentActionDispatcher () {
+-            
+-            threadStart += new ThreadStart (Run);            
++        internal ComponentActionDispatcher () {}
++        
++        /*Ctor new View*/
++        internal ComponentActionDispatcher (IComponentModel componentModel, MethodInfo methodToExecute, object[] parameters, Type viewType, MethodInfo methodToResponse) {
++            this.componentModel = componentModel;
++            this.methodToExecute = methodToExecute;
++            this.parameters = parameters;
++            this.viewType = viewType;
++            this.methodToResponse = methodToResponse;
++
++            //Set up Thread;
++            threadStart = new ThreadStart (CallBackExecuteRedirectNewView);
+             thread = new Thread (threadStart);
+-            thread.Start ();
+         }
+ 
+-        internal void Run () {
++        internal ComponentActionDispatcher (IComponentModel componentModel, MethodInfo methodToExecute, object[] parameters, IViewHandler viewHandler, MethodInfo methodToResponse) {
++            this.componentModel = componentModel;
++            this.methodToExecute = methodToExecute;
++            this.parameters = parameters;
++            this.viewHandler = viewHandler;
++            this.methodToResponse = methodToResponse;
++
++            threadStart = new ThreadStart (CallBackExecuteRedirectView);
++            thread = new Thread (threadStart);
+         }
++
++        internal ComponentActionDispatcher (IComponentModel componentModel, MethodInfo methodToExecute, object[] parameters) {
++            this.componentModel = componentModel;
++            this.methodToExecute = methodToExecute;
++            this.parameters = parameters;
++
++            threadStart = new ThreadStart (CallBackExecuteNoRedirect);
++            thread = new Thread (threadStart);
++        }
++        
++        internal void CallBackExecuteRedirectNewView () {
++            responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++            object ret = methodToExecute.Invoke (componentModel, parameters);
++            responseMethodVO.MethodResult = ret;
++            responseMethodVO.SetExecutionSuccess (true);
++            object obj = viewType.GetConstructor (null).Invoke (null);
++            methodToResponse.Invoke (obj, new object[] {responseMethodVO});
++        }
++
++        internal void CallBackExecuteRedirectView () {
++            responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++            object ret = methodToExecute.Invoke (componentModel, parameters);
++            responseMethodVO.MethodResult = ret;
++            responseMethodVO.SetExecutionSuccess (true);
++            methodToResponse.Invoke (viewHandler, new object[] {responseMethodVO});
++        }
++
++        internal void CallBackExecuteNoRedirect () {
++            responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++            object ret = methodToExecute.Invoke (componentModel, parameters);
++            responseMethodVO.MethodResult = ret;
++            responseMethodVO.SetExecutionSuccess (true);
++        }
+     }
+ }
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-11 22:06:32 UTC (rev 486)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-12 08:51:13 UTC (rev 487)
+@@ -68,8 +68,12 @@
+             //PostCondition: methodInfo != null
+             return methodInfo;
+         }
++
++        private MethodInfo GetMethodToExecute (string methodName) {
++            return this.GetMethodToExecute (methodName, this.GetType ());
++        }
+         
+-        private MethodInfo GetMethodResponse (Type viewType, ComponentMethodAttribute componentMethodAttribute) {
++        private MethodInfo GetMethodToResponse (Type viewType, ComponentMethodAttribute componentMethodAttribute) {
+             if (componentMethodAttribute == null) {
+                 throw new ResponseNotFoundException (&quot;Please set up correctly Response Attribute.&quot;);    
+             }
+@@ -81,126 +85,159 @@
+             return responseMethod;
+         } 
+         
+-        private void InstantiateExceptionManager () {
+-            if (defaultExceptionManager == null) {
+-                logger.Debug (&quot;Trying to instantiate ExceptionManager.&quot;);
+-                Type typeManager = this.GetTypeExceptionManager (this.VO.ExceptionManagerClassName);
+-                this.defaultExceptionManager = (IExceptionManager)typeManager.GetConstructor (null).Invoke (null);
+-                logger.Debug (&quot;Exception manager instatiated.&quot;);
++        private void MapException (Exception exception) {
++            if (exception.InnerException is ComponentModelException) 
++                throw exception.InnerException;
++            else {
++                if (this.defaultExceptionManager == null) {
++                    Type typeManager = this.GetTypeExceptionManager (this.VO.ExceptionManagerClassName);
++                    this.defaultExceptionManager = (IExceptionManager) typeManager.GetConstructor (null).Invoke (null);
++                }
++                this.defaultExceptionManager.ProcessException (exception.InnerException);
+             }
+-            logger.Debug (&quot;Exception manager already instatiated.&quot;);
+         }
+         
+-        private ResponseMethodVO ExecuteCompleteSequence (MethodInfo methodToInvoke, object[] parameters, Type viewType, MethodInfo methodResponse) {
++        private Type GetViewType (string viewType) {
++            if ((viewType == null) || (viewType.Equals (String.Empty)))
++                throw new ViewNotFoundException (&quot;Please, set up attributes correctly.&quot;);
+             try {
++                Type type = DefaultContainerDao.Instance.GetType (viewType);
++                if (type.GetInterface (&quot;IViewHandler&quot;) != null)
++                    return type;
++            }
++            catch (TypeNotFoundException exception) {
++                throw new ViewNotFoundException (&quot;View&quot; + viewType + &quot;not found.&quot;);
++            }
++            return null;
++        }
++        
++        private Type GetViewType (ComponentMethodAttribute componentMethodAttribute) {
++            if (componentMethodAttribute == null)
++                throw new ViewNotFoundException (&quot;Please set up attributes correctly.&quot;);
++            return this.GetViewType (componentMethodAttribute.ViewName);
++        }
++    
++        private ComponentMethodAttribute GetComponentAttributes (MethodInfo methodInfo) {
++            //Pre: MethodInfo != null
++            if (methodInfo == null)
++                //TODO: &#191;Es buena la excepci&#243;n?
++                throw new MethodNotFoundException (&quot;Please set up attributes correctly.&quot;);
++            Attribute[] atts = (Attribute[]) methodInfo.GetCustomAttributes (typeof (ComponentMethodAttribute), true);
++            //Post: atts != null
++            if (atts[0] == null)
++                throw new MethodNotFoundException (&quot;Can't find ComponentMethodAttribute.&quot;);
++            return ((ComponentMethodAttribute)atts[0]);
++        }
++
++
++        private ResponseMethodVO ExecuteRedirectNewView (MethodInfo methodToExecute, object[] parameters, Type viewType, MethodInfo methodToResponse) {
++            try {
+                 ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
+-                logger.Debug (&quot;Method &quot; + methodToInvoke + &quot; executing.&quot;);
+-                object ret = methodToInvoke.Invoke (this, parameters);
++                object ret = methodToExecute.Invoke (this, parameters);
+                 responseMethodVO.MethodResult = ret;
+-                logger.Debug (&quot;Redirecting to view: &quot; + viewType.ToString () + &quot; to response Method: &quot; + methodResponse.ToString ());
+                 object obj = viewType.GetConstructor (null).Invoke (null);
+-                logger.Debug (&quot;Executing response method: &quot; + methodResponse.ToString ());
+                 responseMethodVO.SetExecutionSuccess (true);
+-                logger.Debug (&quot;Setting excecuttion success as true.&quot;);
+-                methodResponse.Invoke (obj, new object[] {responseMethodVO});
++                methodToResponse.Invoke (obj, new object[] {responseMethodVO});
+                 return responseMethodVO;
+             }
+             catch (TargetInvocationException exception) {
+-                if (exception.InnerException is ComponentModelException) 
+-                    throw exception.InnerException;
+-                else {
+-                    this.InstantiateExceptionManager ();
+-                    //Console.WriteLine (exception.InnerException.GetType ().ToString ());
+-                    defaultExceptionManager.ProcessException (exception.InnerException);
+-                }
++                this.MapException (exception);
+             }
+             return null;
+         }
+-        
+ 
+-        private ResponseMethodVO ExecuteCompleteSequence (MethodInfo methodToInvoke, object[] parameters, IViewHandler viewHandler, MethodInfo methodResponse) {
++        private ResponseMethodVO ExecuteRedirectView (MethodInfo methodToExecute, object[] parameters, IViewHandler viewHandler, MethodInfo methodToResponse) {
+             try {
+                 ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
+-                logger.Debug (&quot;Method &quot; + methodToInvoke + &quot; executing.&quot;);
+-                object ret = methodToInvoke.Invoke (this, parameters);
++                object ret = methodToExecute.Invoke (this, parameters);
+                 responseMethodVO.MethodResult = ret;
+-                logger.Debug (&quot;Executing response method: &quot; + methodResponse.ToString ());
+                 responseMethodVO.SetExecutionSuccess (true);
+-                logger.Debug (&quot;Setting excecuttion success as true.&quot;);
+-                methodResponse.Invoke (viewHandler, new object[] {responseMethodVO});
+-                logger.Debug (&quot;Returning ResponseMethodVO&quot;);
++                methodToResponse.Invoke (viewHandler, new object[] {responseMethodVO});
+                 return responseMethodVO;
+             }
+             catch (TargetInvocationException exception) {
+-                if (exception.InnerException is ComponentModelException) 
+-                    throw exception.InnerException;
+-                else {
+-                    this.InstantiateExceptionManager ();
+-                    //Console.WriteLine (exception.InnerException.GetType ().ToString ());
+-                    defaultExceptionManager.ProcessException (exception.InnerException);
+-                }
++                this.MapException (exception);
+             }
+             return null;
+         }
+         
+-        private Type GetViewType (string viewType) {
+-            if ((viewType == null) || (viewType.Equals (String.Empty)))
+-                throw new ViewNotFoundException (&quot;Please, set up attributes correctly.&quot;);
++        private ResponseMethodVO ExecuteNoRedirect (MethodInfo methodToExecute, object[] parameters) {
+             try {
+-                Type type = DefaultContainerDao.Instance.GetType (viewType);
+-                if (type.GetInterface (&quot;IViewHandler&quot;) != null)
+-                    return type;
++                ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
++                object ret = methodToExecute.Invoke (this, parameters);
++                responseMethodVO.MethodResult = ret;
++                responseMethodVO.SetExecutionSuccess (true);
++                return responseMethodVO;
+             }
+-            catch (TypeNotFoundException exception) {
+-                throw new ViewNotFoundException (&quot;View&quot; + viewType + &quot;not found.&quot;);
++            catch (TargetInvocationException exception) {
++                this.MapException (exception);
+             }
+             return null;
+         }
+         
+-        private Type GetViewType (ComponentMethodAttribute componentMethodAttribute) {
+-            if (componentMethodAttribute == null)
+-                throw new ViewNotFoundException (&quot;Please set up attributes correctly.&quot;);
+-            return this.GetViewType (componentMethodAttribute.ViewName);
++        /*Executor overloads*/
++        public ResponseMethodVO Execute (string methodName, object[] parameters) {
++            return this.Execute (methodName, parameters, true, null, true);
+         }
+         
+-        //Public Methods
+-        public ResponseMethodVO Execute (string methodName, object[] parameters) {
+-            Type type = this.GetType ();
+-
+-            //Recollecting data for execution.
+-            // Check if exists use case to execute
+-            MethodInfo methodToExecute = this.GetMethodToExecute (methodName, type);
+-            // Read attributes for this use case.
+-            Attribute[] attributes = (Attribute[]) methodToExecute.GetCustomAttributes (typeof (ComponentMethodAttribute), false);
+-            ComponentMethodAttribute componentMethodAttribute = (ComponentMethodAttribute) attributes[0];
+-            //Gets viewType from information of attributes.
+-            Type viewType = this.GetViewType (componentMethodAttribute);
+-            // Si existe alg&#250;n miembro requerido para la ejecuci&#243;n que no es
+-            // encontrado; no ejecutar&#225; nada denada.
+-            //
+-            //Execute method
+-            // Get information from respone for view.
+-            MethodInfo responseMethod = this.GetMethodResponse (viewType, componentMethodAttribute);
+-            //Executing response to method
+-            ResponseMethodVO responseMethodVO = this.ExecuteCompleteSequence (methodToExecute, parameters, viewType, responseMethod); 
+-            return responseMethodVO;
++        public ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect) {
++            return this.Execute (methodName, parameters, redirect, null, true);
+         }
+         
+-        public ResponseMethodVO Execute (string methodName, bool redirect, bool block, object[] parameters) {
+-            throw new Exception (&quot;Not implemented yet.&quot;);
++        public ResponseMethodVO Execute (string methodName, object[] parameters, IViewHandler viewHandler) {
++            return this.Execute (methodName, parameters, true, viewHandler, true);
++        }       
++        
++        /*Executor commander !*/
++        public ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block) {
++            /*Existen cosas que siempre deben de buscarse*/
++            MethodInfo methodToExecute = this.GetMethodToExecute (methodName); 
++            ComponentMethodAttribute componentMethodAttribute = this.GetComponentAttributes (methodToExecute);
++            /*Primero discernimos si es bloqueante o no lo es*/
++            if (block) {
++                //Operaciones que son bloqueantes
++                if (redirect) {
++                    MethodInfo methodToResponse ;
++                    Type viewType;
++                    if (viewHandler == null) {
++                        //FIX: A&#250;n se podria mejorar esta invocaci&#243;n.
++                        viewType = this.GetViewType (componentMethodAttribute);
++                        methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
++                        return ExecuteRedirectNewView (methodToExecute, parameters, viewType, methodToResponse);
++                    }
++                    else {
++                        //Redirigimos a la que nos pide
++                        viewType = viewHandler.GetType ();
++                        methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
++                        return ExecuteRedirectView (methodToExecute, parameters, viewHandler, methodToResponse);
++                    }
++                }
++                else {
++                    //No necesitamos informaci&#243;n sobre la vista, ni el response.
++                    //No se va a ejecutar.
++                    return ExecuteNoRedirect (methodToExecute, parameters);
++                }
++            }
++            else {
++                //Operaciones bloqueantes, envolver en un hilo
++                throw new Exception (&quot;NOT IMPLEMENTED YET !!&quot;);
++                if (redirect) {
++                    MethodInfo methodToResponse;
++                    Type viewType;
++                    if (viewHandler == null) {
++                        viewType = this.GetViewType (componentMethodAttribute);
++                        methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
++                    }
++                    else {
++                        viewType = viewHandler.GetType ();
++                        methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
++                    }
++                }
++                else {
++                }
++            }
++            return null;
+         }
+ 
+-        public ResponseMethodVO Execute (string methodName, bool redirect, bool block, object[] parameters, IViewHandler view) {
+-            Type type = this.GetType ();
+-            
+-            MethodInfo methodToExecute = this.GetMethodToExecute (methodName, type);
+-            Attribute[] attributes = (Attribute[]) methodToExecute.GetCustomAttributes (typeof (ComponentMethodAttribute), false);
+-            ComponentMethodAttribute componentMethodAttribute = (ComponentMethodAttribute) attributes[0];
+-            MethodInfo responseMethod = this.GetMethodResponse (view.GetType (), componentMethodAttribute);
+-            
+-            ResponseMethodVO responseMethodVO = this.ExecuteCompleteSequence (methodToExecute, parameters, view, responseMethod);
+-            return responseMethodVO;
+-        }
+-
+     }
+ }
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000199.html">[Mspace-checkins] r486 - in ComponentModel: releases trunk/src trunk/src/ComponentModel.Interfaces trunk/src/ComponentModel.Threading
+</A></li>
+	<LI>Next message: <A HREF="000201.html">[Mspace-checkins] r488 - in ComponentModel/trunk/src: . ComponentModel.Threading
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#200">[ date ]</a>
+              <a href="thread.html#200">[ thread ]</a>
+              <a href="subject.html#200">[ subject ]</a>
+              <a href="author.html#200">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

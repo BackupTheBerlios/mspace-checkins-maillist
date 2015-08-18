@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r276 - in Chicken/releases: . chicken-0.1.4 chicken-0.1.4/debian
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r276%20-%20in%20Chicken/releases%3A%20.%20chicken-0.1.4%20chicken-0.1.4/debian&In-Reply-To=%3C200410121258.i9CCwkeK007631%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000011.html">
+   <LINK REL="Next"  HREF="000013.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r276 - in Chicken/releases: . chicken-0.1.4 chicken-0.1.4/debian</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r276%20-%20in%20Chicken/releases%3A%20.%20chicken-0.1.4%20chicken-0.1.4/debian&In-Reply-To=%3C200410121258.i9CCwkeK007631%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r276 - in Chicken/releases: . chicken-0.1.4 chicken-0.1.4/debian">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Tue Oct 12 14:58:46 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000011.html">[Mspace-checkins] r275 - monkeypop/trunk/debian
+</A></li>
+        <LI>Next message: <A HREF="000013.html">[Mspace-checkins] r277 - in monkeypop/releases: . monkeypop-0.1.2 monkeypop-0.1.2/debian
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#12">[ date ]</a>
+              <a href="thread.html#12">[ thread ]</a>
+              <a href="subject.html#12">[ subject ]</a>
+              <a href="author.html#12">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2004-10-12 14:58:45 +0200 (Tue, 12 Oct 2004)
+New Revision: 276
+
+Added:
+   Chicken/releases/chicken-0.1.4/
+   Chicken/releases/chicken-0.1.4/configure.in
+   Chicken/releases/chicken-0.1.4/debian/changelog
+Removed:
+   Chicken/releases/chicken-0.1.4/configure.in
+   Chicken/releases/chicken-0.1.4/debian/changelog
+Log:
+added release
+
+
+Copied: Chicken/releases/chicken-0.1.4 (from rev 267, Chicken/trunk)
+
+Deleted: Chicken/releases/chicken-0.1.4/configure.in
+===================================================================
+--- Chicken/trunk/configure.in	2004-10-12 12:18:30 UTC (rev 267)
++++ Chicken/releases/chicken-0.1.4/configure.in	2004-10-12 12:58:45 UTC (rev 276)
+@@ -1,97 +0,0 @@
+-AC_PREREQ(2.59)
+-AC_INIT(Chicken, 0.1.3, [<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>])
+-AM_CONFIG_HEADER(config.h)
+-AM_MAINTAINER_MODE
+-dnl AM_CONFIG_HEADER(config.h)
+-
+-AM_INIT_AUTOMAKE()
+-
+-# Checks for programs.
+-AC_PROG_INSTALL
+-#AC_PROG_CC
+-#AM_PROG_CC_STDC
+-AC_PROG_INSTALL
+-AM_PROG_LIBTOOL
+-
+-# Checks for libraries.
+-
+-dnl Version dependencies
+-MONO_REQUIRED=1.0
+-GTKSHARP_REQUIRED=1.0
+-GECKOSHARP_REQUIRED=0.5
+-GDK20_MINIMUM_VERSION=2.2.3
+-ATK_MINIMUM_VERSION=1.2.4
+-
+-dnl ###############
+-dnl Enabled Modules
+-dnl ###############
+-AC_ARG_ENABLE(gnome, [  --enable-gnome=[no/yes]	    compile with gnome support.],,enable_gnome=yes)
+-AM_CONDITIONAL(ENABLE_GNOME, test &quot;x$enable_gnome&quot; = &quot;xyes&quot;)
+-
+-
+-
+-
+-dnl ####################
+-dnl Configure PKG_CONFIG
+-dnl ####################
+-AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+-if test &quot;x$PKG_CONFIG&quot; = &quot;xno&quot;; then
+-    AC_MSG_ERROR([You need to install pkg-config])
+-fi
+-
+-
+-dnl ###################
+-dnl Pkgconfig
+-dnl ###################
+-PKG_CHECK_MODULES(MONO,
+-		  mono &gt;= $MONO_REQUIRED)
+-MCS_FLAGS=
+-MONO_FLAGS=
+-if test $USE_MAINTAINER_MODE = yes; then
+-	MCS_FLAGS=&quot;-g&quot;
+-	MONO_FLAGS=&quot;--debug&quot;
+-fi
+-AC_SUBST(MCS_FLAGS)
+-AC_SUBST(MONO_FLAGS)
+-
+-dnl Check for Mono
+-AC_PATH_PROG(MCS, mcs)
+-AC_PATH_PROG(MONO, mono)
+-
+-if test &quot;x$enable_gnome&quot; = &quot;xyes&quot;; then
+-
+-    PKG_CHECK_MODULES(GTKSHARP,
+-		      gtk-sharp &gt;= $GTKSHARP_REQUIRED \
+-		      gnome-sharp &gt;= $GTKSHARP_REQUIRED \
+-		      glade-sharp &gt;= $GTKSHARP_REQUIRED \
+-		      gtkhtml-sharp &gt;= $GTKSHARP_REQUIRED \
+-		      rsvg-sharp &gt;= $GTKSHARP_REQUIRED \
+-		      gconf-sharp &gt;= $GTKSHARP_REQUIRED)
+-
+-    AC_SUBST(GTKSHARP_LIBS)
+-    
+-    PKG_CHECK_MODULES(GECKOSHARP,
+-		      gecko-sharp &gt;= $GECKOSHARP_REQUIRED)
+-    AC_SUBST(GECKOSHARP_LIBS)
+-
+-    PKG_CHECK_MODULES(LIBTRAYICON,
+-			gdk-2.0 &gt;= $GDK20_MINIMUM_VERSION
+-			atk &gt;= $ATK_MINIMUM_VERSION)
+-    AC_SUBST(LIBTRAYICON_CFLAGS)
+-    AC_SUBST(LIBTRAYICON_LIBS)
+-fi
+-
+-
+-
+-AC_OUTPUT([
+-Makefile
+-images/Makefile
+-doc/Makefile
+-examples/Makefile
+-src/Makefile
+-src/Chicken.dll.config
+-src/chicken.pc
+-src/Gnome/Makefile
+-src/Gnome/TrayIcon/Makefile
+-src/Gnome/TrayIcon/libtrayicon/Makefile
+-])
+
+Copied: Chicken/releases/chicken-0.1.4/configure.in (from rev 272, Chicken/trunk/configure.in)
+
+Deleted: Chicken/releases/chicken-0.1.4/debian/changelog
+===================================================================
+--- Chicken/trunk/debian/changelog	2004-10-12 12:18:30 UTC (rev 267)
++++ Chicken/releases/chicken-0.1.4/debian/changelog	2004-10-12 12:58:45 UTC (rev 276)
+@@ -1,6 +0,0 @@
+-libchicken (0.1.3-1) unstable; urgency=low
+-
+-  * Initial Release.
+-
+- -- rubiojr &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;  Mon, 11 Oct 2004 19:12:56 +0200
+-
+
+Copied: Chicken/releases/chicken-0.1.4/debian/changelog (from rev 274, Chicken/trunk/debian/changelog)
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000011.html">[Mspace-checkins] r275 - monkeypop/trunk/debian
+</A></li>
+	<LI>Next message: <A HREF="000013.html">[Mspace-checkins] r277 - in monkeypop/releases: . monkeypop-0.1.2 monkeypop-0.1.2/debian
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#12">[ date ]</a>
+              <a href="thread.html#12">[ thread ]</a>
+              <a href="subject.html#12">[ subject ]</a>
+              <a href="author.html#12">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

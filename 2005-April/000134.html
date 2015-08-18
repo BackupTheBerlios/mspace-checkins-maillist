@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r421 - in Red.ProjectManager/trunk: . src/Red.ProjectManager
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r421%20-%20in%20Red.ProjectManager/trunk%3A%20.%20src/Red.ProjectManager&In-Reply-To=%3C200504082229.j38MTSkP014028%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000133.html">
+   <LINK REL="Next"  HREF="000135.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r421 - in Red.ProjectManager/trunk: . src/Red.ProjectManager</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r421%20-%20in%20Red.ProjectManager/trunk%3A%20.%20src/Red.ProjectManager&In-Reply-To=%3C200504082229.j38MTSkP014028%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r421 - in Red.ProjectManager/trunk: . src/Red.ProjectManager">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Sat Apr  9 00:29:28 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000133.html">[Mspace-checkins] r420 - in SimpleP/trunk: . src src/Contexts/SourceContext ui-data
+</A></li>
+        <LI>Next message: <A HREF="000135.html">[Mspace-checkins] r422 - in RedLib/trunk: . src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#134">[ date ]</a>
+              <a href="thread.html#134">[ thread ]</a>
+              <a href="subject.html#134">[ subject ]</a>
+              <a href="author.html#134">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-09 00:29:26 +0200 (Sat, 09 Apr 2005)
+New Revision: 421
+
+Added:
+   Red.ProjectManager/trunk/.svnignore
+Modified:
+   Red.ProjectManager/trunk/
+   Red.ProjectManager/trunk/ChangeLog
+   Red.ProjectManager/trunk/src/Red.ProjectManager/Project.boo
+Log:
+
+	* .svnignore: added ignores
+	* src/Red.ProjectManager/Project.boo: Added Contains (file) method.
+	Removed an unnecesary assert.
+
+
+
+Property changes on: Red.ProjectManager/trunk
+___________________________________________________________________
+Name: svn:ignore
+   - *.swp
+
+   + *.simplep
+*.bak
+*.swp
+
+
+Added: Red.ProjectManager/trunk/.svnignore
+===================================================================
+--- Red.ProjectManager/trunk/.svnignore	2005-04-08 22:23:37 UTC (rev 420)
++++ Red.ProjectManager/trunk/.svnignore	2005-04-08 22:29:26 UTC (rev 421)
+@@ -0,0 +1,3 @@
++*.simplep
++*.bak
++*.swp
+
+Modified: Red.ProjectManager/trunk/ChangeLog
+===================================================================
+--- Red.ProjectManager/trunk/ChangeLog	2005-04-08 22:23:37 UTC (rev 420)
++++ Red.ProjectManager/trunk/ChangeLog	2005-04-08 22:29:26 UTC (rev 421)
+@@ -1,3 +1,9 @@
++2005-04-09  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
++	* .svnignore: added ignores
++	* src/Red.ProjectManager/Project.boo: removed unnecesary assert. Added
++	Contains (file) method
++
+ 2005-04-08  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
+ 	* default.build: Do not delete the build dir, only its contents
+
+Modified: Red.ProjectManager/trunk/src/Red.ProjectManager/Project.boo
+===================================================================
+--- Red.ProjectManager/trunk/src/Red.ProjectManager/Project.boo	2005-04-08 22:23:37 UTC (rev 420)
++++ Red.ProjectManager/trunk/src/Red.ProjectManager/Project.boo	2005-04-08 22:29:26 UTC (rev 421)
+@@ -67,6 +67,9 @@
+ 		get:
+ 			return _folderCollection
+ 
++	def Contains ([required]fileName as string) as bool:
++		return fileCollection.Contains (fileName)
++
+ 	//Move this out of here
+ 	def GetFilesFromSubdir ([required]subdir as string) as IList:
+ 		dir = Path.Combine (Location, subdir)
+@@ -102,7 +105,6 @@
+ 		Save ()
+ 
+ 	def NewFile ([required]relPath as string) as ProjectFile:
+-		assert not System.IO.Path.IsPathRooted (relPath)
+ 		fullPath = System.IO.Path.Combine (Location, relPath)
+ 		if File.Exists (fullPath):
+ 			raise ArgumentException (&quot;File already exists&quot;)
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000133.html">[Mspace-checkins] r420 - in SimpleP/trunk: . src src/Contexts/SourceContext ui-data
+</A></li>
+	<LI>Next message: <A HREF="000135.html">[Mspace-checkins] r422 - in RedLib/trunk: . src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#134">[ date ]</a>
+              <a href="thread.html#134">[ thread ]</a>
+              <a href="subject.html#134">[ subject ]</a>
+              <a href="author.html#134">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

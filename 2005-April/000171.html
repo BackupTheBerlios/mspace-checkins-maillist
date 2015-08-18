@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r458 - koolboy/trunk/src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r458%20-%20koolboy/trunk/src&In-Reply-To=%3C200504302024.j3UKOMO1023931%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000170.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r458 - koolboy/trunk/src</H1>
+    <B>Isaac Clerencia at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r458%20-%20koolboy/trunk/src&In-Reply-To=%3C200504302024.j3UKOMO1023931%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r458 - koolboy/trunk/src">isaaccp at sheep.berlios.de
+       </A><BR>
+    <I>Sat Apr 30 22:24:22 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000170.html">[Mspace-checkins] r457 - koolboy/trunk/src
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#171">[ date ]</a>
+              <a href="thread.html#171">[ thread ]</a>
+              <a href="subject.html#171">[ subject ]</a>
+              <a href="author.html#171">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: isaaccp
+Date: 2005-04-30 22:24:21 +0200 (Sat, 30 Apr 2005)
+New Revision: 458
+
+Modified:
+   koolboy/trunk/src/libkoolnotes.rb
+Log:
+Read also size and location from notes
+
+
+Modified: koolboy/trunk/src/libkoolnotes.rb
+===================================================================
+--- koolboy/trunk/src/libkoolnotes.rb	2005-04-30 20:14:51 UTC (rev 457)
++++ koolboy/trunk/src/libkoolnotes.rb	2005-04-30 20:24:21 UTC (rev 458)
+@@ -59,6 +59,10 @@
+ 		begin
+ 			@doc = Document.new(@xml)
+ 			@text = @doc.root.elements[&quot;text&quot;]
++			@size = Qt::Size.new(@doc.root.elements[&quot;height&quot;],
++					@doc.root.elements[&quot;width&quot;])
++			@loc = Qt::Point.new(@doc.root.elements[&quot;x&quot;],
++					@doc.root.elements[&quot;y&quot;])
+ 			@read = true
+ 		rescue
+ 			p &quot;IGNORING Note: &quot; + @file
+@@ -76,12 +80,12 @@
+ 		attrs.each do |a|
+ 			module_eval &lt;&lt;-EOF
+ 			def #{a}
+-			@read or read
+-			@#{a}
++				@read or read
++				@#{a}
+ 			end
+ 			EOF
+ 		end
+ 	end
+ 
+-	attr_after_read :doc, :text
++	attr_after_read :doc, :text, :size, :loc
+ end
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000170.html">[Mspace-checkins] r457 - koolboy/trunk/src
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#171">[ date ]</a>
+              <a href="thread.html#171">[ thread ]</a>
+              <a href="subject.html#171">[ subject ]</a>
+              <a href="author.html#171">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

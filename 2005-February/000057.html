@@ -1,0 +1,329 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r323 - in mvim/trunk/src: . Vim.Components.Commands Vim.Components.Commands/Commands
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-February/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r323%20-%20in%20mvim/trunk/src%3A%20.%20Vim.Components.Commands%20Vim.Components.Commands/Commands&In-Reply-To=%3C200502141213.j1ECDlBu010381%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000056.html">
+   <LINK REL="Next"  HREF="000058.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r323 - in mvim/trunk/src: . Vim.Components.Commands Vim.Components.Commands/Commands</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r323%20-%20in%20mvim/trunk/src%3A%20.%20Vim.Components.Commands%20Vim.Components.Commands/Commands&In-Reply-To=%3C200502141213.j1ECDlBu010381%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r323 - in mvim/trunk/src: . Vim.Components.Commands Vim.Components.Commands/Commands">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Mon Feb 14 13:13:47 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000056.html">[Mspace-checkins] r322 - in mvim/trunk: . doc doc/monodoc
+</A></li>
+        <LI>Next message: <A HREF="000058.html">[Mspace-checkins] r324 - /
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#57">[ date ]</a>
+              <a href="thread.html#57">[ thread ]</a>
+              <a href="subject.html#57">[ subject ]</a>
+              <a href="author.html#57">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-02-14 13:13:45 +0100 (Mon, 14 Feb 2005)
+New Revision: 323
+
+Added:
+   mvim/trunk/src/Vim.Components.Commands/
+   mvim/trunk/src/Vim.Components.Commands/CommandLoader.cs
+   mvim/trunk/src/Vim.Components.Commands/CommandManager.cs
+   mvim/trunk/src/Vim.Components.Commands/Commands.cmbx
+   mvim/trunk/src/Vim.Components.Commands/Commands.prjx
+   mvim/trunk/src/Vim.Components.Commands/Commands/
+   mvim/trunk/src/Vim.Components.Commands/Commands/TestCommand.cs
+   mvim/trunk/src/Vim.Components.Commands/ICommand.cs
+   mvim/trunk/src/Vim.Components.Commands/ICommandLoaderStrategy.cs
+   mvim/trunk/src/Vim.Components.Commands/SimpleCommandLoaderStrategy.cs
+Log:
+Firs skeleton of Vim.Components.Commands
+
+Added: mvim/trunk/src/Vim.Components.Commands/CommandLoader.cs
+===================================================================
+--- mvim/trunk/src/Vim.Components.Commands/CommandLoader.cs	2005-02-14 11:44:52 UTC (rev 322)
++++ mvim/trunk/src/Vim.Components.Commands/CommandLoader.cs	2005-02-14 12:13:45 UTC (rev 323)
+@@ -0,0 +1,20 @@
++/*
++ * Created by SharpDevelop.
++ * User: rubiojr
++ * Date: 14/02/2005
++ * Time: 12:48
++ * 
++ * To change this template use Tools | Options | Coding | Edit Standard Headers.
++ */
++ 
++using System;
++namespace Vim.Components.Commands
++{
++	/// &lt;summary&gt;
++	/// Description of MyClass.
++	/// &lt;/summary&gt;
++	public class CommandLoader
++	{
++		private ICommandLoaderStrategy strategy;
++	}
++}
+
+Added: mvim/trunk/src/Vim.Components.Commands/CommandManager.cs
+===================================================================
+--- mvim/trunk/src/Vim.Components.Commands/CommandManager.cs	2005-02-14 11:44:52 UTC (rev 322)
++++ mvim/trunk/src/Vim.Components.Commands/CommandManager.cs	2005-02-14 12:13:45 UTC (rev 323)
+@@ -0,0 +1,23 @@
++/*
++ * Created by SharpDevelop.
++ * User: rubiojr
++ * Date: 14/02/2005
++ * Time: 12:52
++ * 
++ * To change this template use Tools | Options | Coding | Edit Standard Headers.
++ */
++
++using System;
++
++namespace Vim.Components.Commands
++{
++	/// &lt;summary&gt;
++	/// Description of CommandManager.
++	/// &lt;/summary&gt;
++	public class CommandManager
++	{
++		public CommandManager()
++		{
++		}
++	}
++}
+
+Added: mvim/trunk/src/Vim.Components.Commands/Commands/TestCommand.cs
+===================================================================
+--- mvim/trunk/src/Vim.Components.Commands/Commands/TestCommand.cs	2005-02-14 11:44:52 UTC (rev 322)
++++ mvim/trunk/src/Vim.Components.Commands/Commands/TestCommand.cs	2005-02-14 12:13:45 UTC (rev 323)
+@@ -0,0 +1,42 @@
++/*
++ * Created by SharpDevelop.
++ * User: rubiojr
++ * Date: 14/02/2005
++ * Time: 13:03
++ * 
++ * To change this template use Tools | Options | Coding | Edit Standard Headers.
++ */
++
++using System;
++using System.Collections;
++
++namespace Vim.Components.Commands
++{
++	/// &lt;summary&gt;
++	/// Description of Class1.
++	/// &lt;/summary&gt;
++	public class TestCommand : ICommand
++	{
++		
++		private ArrayList aliases;
++		public TestCommand (){
++		}
++	
++		public string Name {
++			get {
++				return &quot;TestCommand&quot;;
++			}
++		}
++		
++		public ArrayList Aliases {
++			get {
++				return aliases;
++			}
++		}
++		
++		public void Execute (object[] parameters)
++		{
++			
++		}
++	}
++}
+
+Added: mvim/trunk/src/Vim.Components.Commands/Commands.cmbx
+===================================================================
+--- mvim/trunk/src/Vim.Components.Commands/Commands.cmbx	2005-02-14 11:44:52 UTC (rev 322)
++++ mvim/trunk/src/Vim.Components.Commands/Commands.cmbx	2005-02-14 12:13:45 UTC (rev 323)
+@@ -0,0 +1,16 @@
++&lt;Combine fileversion=&quot;1.0&quot; name=&quot;Commands&quot; description=&quot;&quot;&gt;
++  &lt;StartMode startupentry=&quot;Commands&quot; single=&quot;True&quot;&gt;
++    &lt;Execute entry=&quot;Commands&quot; type=&quot;None&quot; /&gt;
++  &lt;/StartMode&gt;
++  &lt;Entries&gt;
++    &lt;Entry filename=&quot;.\.\Commands.prjx&quot; /&gt;
++  &lt;/Entries&gt;
++  &lt;Configurations active=&quot;Debug&quot;&gt;
++    &lt;Configuration name=&quot;Release&quot;&gt;
++      &lt;Entry name=&quot;Commands&quot; configurationname=&quot;Debug&quot; build=&quot;False&quot; /&gt;
++    &lt;/Configuration&gt;
++    &lt;Configuration name=&quot;Debug&quot;&gt;
++      &lt;Entry name=&quot;Commands&quot; configurationname=&quot;Debug&quot; build=&quot;False&quot; /&gt;
++    &lt;/Configuration&gt;
++  &lt;/Configurations&gt;
++&lt;/Combine&gt;
+\ No newline at end of file
+
+Added: mvim/trunk/src/Vim.Components.Commands/Commands.prjx
+===================================================================
+--- mvim/trunk/src/Vim.Components.Commands/Commands.prjx	2005-02-14 11:44:52 UTC (rev 322)
++++ mvim/trunk/src/Vim.Components.Commands/Commands.prjx	2005-02-14 12:13:45 UTC (rev 323)
+@@ -0,0 +1,30 @@
++&lt;Project name=&quot;Commands&quot; standardNamespace=&quot;Vim.Components.Commands&quot; description=&quot;&quot; newfilesearch=&quot;None&quot; enableviewstate=&quot;True&quot; version=&quot;1.1&quot; projecttype=&quot;C#&quot;&gt;
++  &lt;Contents&gt;
++    &lt;File name=&quot;.\ICommand.cs&quot; subtype=&quot;Code&quot; buildaction=&quot;Compile&quot; dependson=&quot;&quot; data=&quot;&quot; /&gt;
++    &lt;File name=&quot;.\CommandLoader.cs&quot; subtype=&quot;Code&quot; buildaction=&quot;Compile&quot; dependson=&quot;&quot; data=&quot;&quot; /&gt;
++    &lt;File name=&quot;.\CommandManager.cs&quot; subtype=&quot;Code&quot; buildaction=&quot;Compile&quot; dependson=&quot;&quot; data=&quot;&quot; /&gt;
++    &lt;File name=&quot;.\ICommandLoaderStrategy.cs&quot; subtype=&quot;Code&quot; buildaction=&quot;Compile&quot; dependson=&quot;&quot; data=&quot;&quot; /&gt;
++    &lt;File name=&quot;.\SimpleCommandLoaderStrategy.cs&quot; subtype=&quot;Code&quot; buildaction=&quot;Compile&quot; dependson=&quot;&quot; data=&quot;&quot; /&gt;
++    &lt;File name=&quot;.\Commands&quot; subtype=&quot;Directory&quot; buildaction=&quot;Compile&quot; dependson=&quot;&quot; data=&quot;&quot; /&gt;
++    &lt;File name=&quot;.\Commands\TestCommand.cs&quot; subtype=&quot;Code&quot; buildaction=&quot;Compile&quot; dependson=&quot;&quot; data=&quot;&quot; /&gt;
++  &lt;/Contents&gt;
++  &lt;References /&gt;
++  &lt;DeploymentInformation target=&quot;&quot; script=&quot;&quot; strategy=&quot;File&quot; /&gt;
++  &lt;Configuration runwithwarnings=&quot;True&quot; name=&quot;Debug&quot;&gt;
++    &lt;CodeGeneration runtime=&quot;MsNet&quot; compiler=&quot;Csc&quot; compilerversion=&quot;&quot; warninglevel=&quot;4&quot; nowarn=&quot;&quot; includedebuginformation=&quot;True&quot; optimize=&quot;False&quot; unsafecodeallowed=&quot;False&quot; generateoverflowchecks=&quot;True&quot; mainclass=&quot;&quot; target=&quot;Library&quot; definesymbols=&quot;&quot; generatexmldocumentation=&quot;False&quot; win32Icon=&quot;&quot; noconfig=&quot;False&quot; nostdlib=&quot;False&quot; /&gt;
++    &lt;Execution commandlineparameters=&quot;&quot; consolepause=&quot;False&quot; /&gt;
++    &lt;Output directory=&quot;..\bin\Debug&quot; assembly=&quot;Commands&quot; executeScript=&quot;&quot; executeBeforeBuild=&quot;&quot; executeAfterBuild=&quot;&quot; executeBeforeBuildArguments=&quot;&quot; executeAfterBuildArguments=&quot;&quot; /&gt;
++  &lt;/Configuration&gt;
++  &lt;Configurations active=&quot;Debug&quot;&gt;
++    &lt;Configuration runwithwarnings=&quot;True&quot; name=&quot;Debug&quot;&gt;
++      &lt;CodeGeneration runtime=&quot;MsNet&quot; compiler=&quot;Csc&quot; compilerversion=&quot;&quot; warninglevel=&quot;4&quot; nowarn=&quot;&quot; includedebuginformation=&quot;True&quot; optimize=&quot;False&quot; unsafecodeallowed=&quot;False&quot; generateoverflowchecks=&quot;True&quot; mainclass=&quot;&quot; target=&quot;Library&quot; definesymbols=&quot;&quot; generatexmldocumentation=&quot;False&quot; win32Icon=&quot;&quot; noconfig=&quot;False&quot; nostdlib=&quot;False&quot; /&gt;
++      &lt;Execution commandlineparameters=&quot;&quot; consolepause=&quot;False&quot; /&gt;
++      &lt;Output directory=&quot;..\bin\Debug&quot; assembly=&quot;Commands&quot; executeScript=&quot;&quot; executeBeforeBuild=&quot;&quot; executeAfterBuild=&quot;&quot; executeBeforeBuildArguments=&quot;&quot; executeAfterBuildArguments=&quot;&quot; /&gt;
++    &lt;/Configuration&gt;
++    &lt;Configuration runwithwarnings=&quot;True&quot; name=&quot;Release&quot;&gt;
++      &lt;CodeGeneration runtime=&quot;MsNet&quot; compiler=&quot;Csc&quot; compilerversion=&quot;&quot; warninglevel=&quot;4&quot; nowarn=&quot;&quot; includedebuginformation=&quot;False&quot; optimize=&quot;True&quot; unsafecodeallowed=&quot;False&quot; generateoverflowchecks=&quot;False&quot; mainclass=&quot;&quot; target=&quot;Library&quot; definesymbols=&quot;&quot; generatexmldocumentation=&quot;False&quot; win32Icon=&quot;&quot; noconfig=&quot;False&quot; nostdlib=&quot;False&quot; /&gt;
++      &lt;Execution commandlineparameters=&quot;&quot; consolepause=&quot;False&quot; /&gt;
++      &lt;Output directory=&quot;..\bin\Release&quot; assembly=&quot;Commands&quot; executeScript=&quot;&quot; executeBeforeBuild=&quot;&quot; executeAfterBuild=&quot;&quot; executeBeforeBuildArguments=&quot;&quot; executeAfterBuildArguments=&quot;&quot; /&gt;
++    &lt;/Configuration&gt;
++  &lt;/Configurations&gt;
++&lt;/Project&gt;
+\ No newline at end of file
+
+Added: mvim/trunk/src/Vim.Components.Commands/ICommand.cs
+===================================================================
+--- mvim/trunk/src/Vim.Components.Commands/ICommand.cs	2005-02-14 11:44:52 UTC (rev 322)
++++ mvim/trunk/src/Vim.Components.Commands/ICommand.cs	2005-02-14 12:13:45 UTC (rev 323)
+@@ -0,0 +1,24 @@
++/*
++ * Created by SharpDevelop.
++ * User: rubiojr
++ * Date: 14/02/2005
++ * Time: 12:40
++ * 
++ * To change this template use Tools | Options | Coding | Edit Standard Headers.
++ */
++using System;
++using System.Collections;
++
++namespace Vim.Components.Commands
++{
++	/// &lt;summary&gt;
++	/// Description of MyClass.
++	/// &lt;/summary&gt;
++	public interface ICommand
++	{
++		void Execute (object[] parameters);
++		
++		ArrayList Aliases { get; }
++		string Name { get; }
++	}
++}
+
+Added: mvim/trunk/src/Vim.Components.Commands/ICommandLoaderStrategy.cs
+===================================================================
+--- mvim/trunk/src/Vim.Components.Commands/ICommandLoaderStrategy.cs	2005-02-14 11:44:52 UTC (rev 322)
++++ mvim/trunk/src/Vim.Components.Commands/ICommandLoaderStrategy.cs	2005-02-14 12:13:45 UTC (rev 323)
+@@ -0,0 +1,21 @@
++/*
++ * Created by SharpDevelop.
++ * User: rubiojr
++ * Date: 14/02/2005
++ * Time: 12:56
++ * 
++ * To change this template use Tools | Options | Coding | Edit Standard Headers.
++ */
++
++using System;
++
++namespace Vim.Components.Commands
++{
++	/// &lt;summary&gt;
++	/// Description of Class1.
++	/// &lt;/summary&gt;
++	public interface ICommandLoaderStrategy
++	{
++		void LoadCommands ();
++	}
++}
+
+Added: mvim/trunk/src/Vim.Components.Commands/SimpleCommandLoaderStrategy.cs
+===================================================================
+--- mvim/trunk/src/Vim.Components.Commands/SimpleCommandLoaderStrategy.cs	2005-02-14 11:44:52 UTC (rev 322)
++++ mvim/trunk/src/Vim.Components.Commands/SimpleCommandLoaderStrategy.cs	2005-02-14 12:13:45 UTC (rev 323)
+@@ -0,0 +1,24 @@
++/*
++ * Created by SharpDevelop.
++ * User: rubiojr
++ * Date: 14/02/2005
++ * Time: 12:59
++ * 
++ * To change this template use Tools | Options | Coding | Edit Standard Headers.
++ */
++
++using System;
++
++namespace Vim.Components.Commands
++{
++	/// &lt;summary&gt;
++	/// Description of SimpleCommandLoaderStrategy.
++	/// &lt;/summary&gt;
++	public class SimpleCommandLoaderStrategy : ICommandLoaderStrategy
++	{
++		public void LoadCommands ()
++		{
++		
++		}
++	}
++}
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000056.html">[Mspace-checkins] r322 - in mvim/trunk: . doc doc/monodoc
+</A></li>
+	<LI>Next message: <A HREF="000058.html">[Mspace-checkins] r324 - /
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#57">[ date ]</a>
+              <a href="thread.html#57">[ thread ]</a>
+              <a href="subject.html#57">[ subject ]</a>
+              <a href="author.html#57">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

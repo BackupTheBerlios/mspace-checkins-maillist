@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r486 - in ComponentModel: releases trunk/src trunk/src/ComponentModel.Interfaces trunk/src/ComponentModel.Threading
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r486%20-%20in%20ComponentModel%3A%20releases%20trunk/src%20trunk/src/ComponentModel.Interfaces%20trunk/src/ComponentModel.Threading&In-Reply-To=%3C200505112206.j4BM6XIH017532%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000198.html">
+   <LINK REL="Next"  HREF="000200.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r486 - in ComponentModel: releases trunk/src trunk/src/ComponentModel.Interfaces trunk/src/ComponentModel.Threading</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r486%20-%20in%20ComponentModel%3A%20releases%20trunk/src%20trunk/src/ComponentModel.Interfaces%20trunk/src/ComponentModel.Threading&In-Reply-To=%3C200505112206.j4BM6XIH017532%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r486 - in ComponentModel: releases trunk/src trunk/src/ComponentModel.Interfaces trunk/src/ComponentModel.Threading">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Thu May 12 00:06:33 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000198.html">[Mspace-checkins] r485 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions src/ComponentModel.Container src/ComponentModel.Container.Dao
+</A></li>
+        <LI>Next message: <A HREF="000200.html">[Mspace-checkins] r487 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Interfaces src/ComponentModel.Threading
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#199">[ date ]</a>
+              <a href="thread.html#199">[ thread ]</a>
+              <a href="subject.html#199">[ subject ]</a>
+              <a href="author.html#199">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-05-12 00:06:32 +0200 (Thu, 12 May 2005)
+New Revision: 486
+
+Added:
+   ComponentModel/releases/ComponentModel.dll
+   ComponentModel/trunk/src/ComponentModel.Threading/
+   ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs
+Modified:
+   ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs
+Log:
+./svn-commit.tmp
+
+Added: ComponentModel/releases/ComponentModel.dll
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/releases/ComponentModel.dll
+___________________________________________________________________
+Name: svn:executable
+   + *
+Name: svn:mime-type
+   + application/octet-stream
+
+Modified: ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs	2005-05-08 18:24:53 UTC (rev 485)
++++ ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs	2005-05-11 22:06:32 UTC (rev 486)
+@@ -1,5 +1,6 @@
+ using System;
+ using ComponentModel.VO;
++
+ namespace ComponentModel.Interfaces {
+     public interface IComponentModel {
+         ComponentModelVO VO {get;}
+
+Added: ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs	2005-05-08 18:24:53 UTC (rev 485)
++++ ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs	2005-05-11 22:06:32 UTC (rev 486)
+@@ -0,0 +1,21 @@
++using System;
++using System.Threading;
++
++namespace ComponentModel.Threading {
++    internal class ComponentActionDispatcher  {
++        /*Cojo los campos para la informaci&#243;n de ponerlo en segundo plano*/
++        private Thread thread;
++        private ThreadStart threadStart;
++        /*Recolecto datos para la ejecucuci&#243;n.*/
++        
++        internal ComponentActionDispatcher () {
++            
++            threadStart += new ThreadStart (Run);            
++            thread = new Thread (threadStart);
++            thread.Start ();
++        }
++
++        internal void Run () {
++        }
++    }
++}
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000198.html">[Mspace-checkins] r485 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions src/ComponentModel.Container src/ComponentModel.Container.Dao
+</A></li>
+	<LI>Next message: <A HREF="000200.html">[Mspace-checkins] r487 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Interfaces src/ComponentModel.Threading
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#199">[ date ]</a>
+              <a href="thread.html#199">[ thread ]</a>
+              <a href="subject.html#199">[ subject ]</a>
+              <a href="author.html#199">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

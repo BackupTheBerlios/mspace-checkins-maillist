@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r560 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Resources/Templates
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r560%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20Bo%20Resources/Templates&In-Reply-To=%3C200510272133.j9RLXMbN008657%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000272.html">
+   <LINK REL="Next"  HREF="000274.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r560 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Resources/Templates</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r560%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20Bo%20Resources/Templates&In-Reply-To=%3C200510272133.j9RLXMbN008657%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r560 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Resources/Templates">nestor at berlios.de
+       </A><BR>
+    <I>Thu Oct 27 23:33:22 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000272.html">[Mspace-checkins] r559 - in BabuineComponentBuilder/trunk: . src/ComponentBuilder/Bo src/ComponentBuilder/Dto src/ComponentBuilder/Forms src/ComponentBuilder/Resources/Templates
+</A></li>
+        <LI>Next message: <A HREF="000274.html">[Mspace-checkins] r561 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Forms Resources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#273">[ date ]</a>
+              <a href="thread.html#273">[ thread ]</a>
+              <a href="subject.html#273">[ subject ]</a>
+              <a href="author.html#273">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-10-27 23:33:21 +0200 (Thu, 27 Oct 2005)
+New Revision: 560
+
+Modified:
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/ResponseMethod.template
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/ViewHandler.template
+Log:
+Finish generation.  
+
+Ya genera las vistas con sus responses :)
+
+
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs	2005-10-27 11:40:48 UTC (rev 559)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Bo/ComponentBuilderComponentModel.cs	2005-10-27 21:33:21 UTC (rev 560)
+@@ -97,24 +97,20 @@
+                 //TODO:Build parameters
+                 StringBuilder methodStringBuilder = new StringBuilder ();
+                 foreach (ParameterDTO parameterDTO in methodDTO.ParametersCollection) {
+-                    Console.WriteLine (&quot;Parameter detected.&quot;);
+                     methodStringBuilder.Append (parameterDTO.TypeName);
+                     methodStringBuilder.Append (&quot; &quot;);
+                     methodStringBuilder.Append (parameterDTO.VarName);
+                     methodStringBuilder.Append (&quot;, &quot;);
+-                    Console.WriteLine (methodStringBuilder.ToString ());
+                 }
+                 //Eliminamos la coma y el ultimo espacio.
+                 if (methodStringBuilder.Length != 0)
+                     methodStringBuilder.Remove (methodStringBuilder.Length -2, 2);
+-                Console.WriteLine (methodStringBuilder.ToString ());
+                 stringBuilder = stringBuilder.Replace (TagValuesDTO.Parameters, methodStringBuilder.ToString ());
+                 //Attributes.
+                 stringBuilder = stringBuilder.Replace (TagValuesDTO.ComponentName, componentSettingsDTO.ComponentName);
+                 stringBuilder = stringBuilder.Replace (TagValuesDTO.ViewName, methodDTO.ViewToResponse);
+                 stringBuilder = stringBuilder.Replace (TagValuesDTO.ResponseName, methodDTO.ResponseMethod);
+             }
+-            Console.WriteLine (&quot;MethodStringBuilder: \n&quot; +  stringBuilder.ToString ());
+             //Obtenemos el BO del componente y seteamos el valor, reemplazando.
+             //
+             StringCollection stringCollection = new StringCollection ();
+@@ -140,6 +136,24 @@
+             return componentTable;
+         }
+         
++        private Hashtable FillResponses (ComponentSettingsDTO componentSettingsDTO, Hashtable componentTable, Hashtable templateTable) {
++            foreach (string viewName in componentSettingsDTO.ViewsCollection) {
++                StringBuilder responseBuilder = new StringBuilder ();
++                foreach (MethodDTO methodDTO in componentSettingsDTO.MethodsCollection) {
++                    if (methodDTO.ViewToResponse.Equals (viewName)) {
++                        responseBuilder = responseBuilder.Append (templateTable[TemplateNamesDTO.ResponseMethod]);
++                        responseBuilder = responseBuilder.Replace (TagValuesDTO.ResponseName, methodDTO.ResponseMethod);
++                    }
++                }
++                Console.WriteLine (responseBuilder.ToString () + &quot; at ViewName &quot; +  viewName);
++                StringBuilder viewBuilder = new StringBuilder ((string)componentTable [viewName + &quot;.cs&quot;]);
++                Console.WriteLine (viewBuilder.ToString ());
++                viewBuilder = viewBuilder.Replace (TagValuesDTO.Body, responseBuilder.ToString ());
++                componentTable [viewName + &quot;.cs&quot;] = viewBuilder.ToString ();
++            }
++            return componentTable;
++        }
++        
+         [ComponentMethod (&quot;ComponentBuilder.Forms.MainComponentBuilderForm&quot;, &quot;ResponseGenerateComponent&quot;)]
+         public void GenerateComponent (ComponentSettingsDTO componentSettingsDTO) {
+             Console.WriteLine (&quot;/----/&quot;);
+@@ -148,6 +162,7 @@
+             componentTable = FillTable (componentSettingsDTO, componentTable);
+             //Haremos una segunda pasada para construir los m&#233;todos.
+             componentTable = FillMethods (componentSettingsDTO, componentTable, templateTable);
++            componentTable = FillResponses (componentSettingsDTO, componentTable, templateTable);
+             
+             IDictionaryEnumerator enumerator = componentTable.GetEnumerator ();
+             while (enumerator.MoveNext ()) {
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/ResponseMethod.template
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/ResponseMethod.template	2005-10-27 11:40:48 UTC (rev 559)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/ResponseMethod.template	2005-10-27 21:33:21 UTC (rev 560)
+@@ -1,4 +1,4 @@
+-public void ${response_name} (ResponseMethodDTO response) {
+-    if (response.ExecutionSuccess) {
+-    }
+-}
++        public void ${response_name} (ResponseMethodDTO response) {
++            if (response.ExecutionSuccess) {
++            }
++        }
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/ViewHandler.template
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/ViewHandler.template	2005-10-27 11:40:48 UTC (rev 559)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/Templates/ViewHandler.template	2005-10-27 21:33:21 UTC (rev 560)
+@@ -17,5 +17,9 @@
+ 
+         public void ClearForm () {
+         }
++
++        //Responses
++
++${body}
+     }
+ }
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000272.html">[Mspace-checkins] r559 - in BabuineComponentBuilder/trunk: . src/ComponentBuilder/Bo src/ComponentBuilder/Dto src/ComponentBuilder/Forms src/ComponentBuilder/Resources/Templates
+</A></li>
+	<LI>Next message: <A HREF="000274.html">[Mspace-checkins] r561 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Bo Forms Resources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#273">[ date ]</a>
+              <a href="thread.html#273">[ thread ]</a>
+              <a href="subject.html#273">[ subject ]</a>
+              <a href="author.html#273">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

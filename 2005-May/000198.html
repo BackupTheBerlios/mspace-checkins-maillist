@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r485 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions src/ComponentModel.Container src/ComponentModel.Container.Dao
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r485%20-%20in%20ComponentModel/trunk%3A%20ComponentTest/src/Components/Saludator/Bo%20ComponentTest/src/Components/Saludator/Exceptions%20src/ComponentModel.Container%20src/ComponentModel.Container.Dao&In-Reply-To=%3C200505081824.j48IOsj0021008%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000197.html">
+   <LINK REL="Next"  HREF="000199.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r485 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions src/ComponentModel.Container src/ComponentModel.Container.Dao</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r485%20-%20in%20ComponentModel/trunk%3A%20ComponentTest/src/Components/Saludator/Bo%20ComponentTest/src/Components/Saludator/Exceptions%20src/ComponentModel.Container%20src/ComponentModel.Container.Dao&In-Reply-To=%3C200505081824.j48IOsj0021008%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r485 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions src/ComponentModel.Container src/ComponentModel.Container.Dao">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Sun May  8 20:24:54 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000197.html">[Mspace-checkins] r484 - servicemenus/uploadToServer
+</A></li>
+        <LI>Next message: <A HREF="000199.html">[Mspace-checkins] r486 - in ComponentModel: releases trunk/src trunk/src/ComponentModel.Interfaces trunk/src/ComponentModel.Threading
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#198">[ date ]</a>
+              <a href="thread.html#198">[ thread ]</a>
+              <a href="subject.html#198">[ subject ]</a>
+              <a href="author.html#198">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-05-08 20:24:53 +0200 (Sun, 08 May 2005)
+New Revision: 485
+
+Modified:
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs
+   ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs
+   ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+Log:
+Argh !! No s?\195?\169 que cambios he hecho !!
+
+
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-05-05 07:50:31 UTC (rev 484)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-05-08 18:24:53 UTC (rev 485)
+@@ -18,7 +18,7 @@
+         public int Saluda () {
+             Console.WriteLine (&quot;//-----------------//&quot;);
+             Console.WriteLine (&quot;Que pasa co !!&quot;);
+-            throw new Exception (&quot;Yeahhhh&quot;);
++            //throw new Exception (&quot;Yeahhhh&quot;);
+             Console.WriteLine (&quot;//-----------------//&quot;);
+             return 1;
+         }
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs	2005-05-05 07:50:31 UTC (rev 484)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Exceptions/SaludatorExceptionManager.cs	2005-05-08 18:24:53 UTC (rev 485)
+@@ -9,10 +9,7 @@
+         }
+         public override void ProcessException (Exception exception) {
+             base.ProcessException (exception);
+-            if (exception is Exception) {
+-                Console.WriteLine (&quot;Exception has been ocurred: &quot; + exception.Message);
+-            }
+-            Console.WriteLine (&quot;Ha ocurrido una exception.&quot;);
++            Console.WriteLine (&quot;Ha ocurrido una exception.&quot; + exception.Message);
+         }
+     }
+ }
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-05-05 07:50:31 UTC (rev 484)
++++ ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-05-08 18:24:53 UTC (rev 485)
+@@ -104,6 +104,14 @@
+              */
+             if (componentList.Contains (component))
+                 return;
++            /*Chequeamos que no existan dos componentes con el mismo nombre.*/
++            for (int i = 0; i&lt; componentList.Count; i++) {
++                if (((IComponentModel)componentList[i]).VO.ComponentName.Equals (component.VO.ComponentName)) {
++                    /*No lanzo una excepci&#243;n porque no se debe parar la
++                     * ejecuci&#243;n del programa por este error.*/
++                    return;
++                }
++            }
+             componentList.Add (component);
+             logger.Info (&quot;Registering component: &quot; + component + &quot; as Name: &quot; + component.VO.ComponentName);
+         }
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs	2005-05-05 07:50:31 UTC (rev 484)
++++ ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs	2005-05-08 18:24:53 UTC (rev 485)
+@@ -56,8 +56,8 @@
+                         //Seteamos el vo con reflection y mantener oculto el
+                         //resto.
+                         FieldInfo voFieldInfo = types[i].GetField (&quot;vO&quot;, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetField); // | BindingFlags.DeclaredOnly);
+-                        if (voFieldInfo == null)
+-                            Console.WriteLine (&quot;FieldInfo == null.&quot;);
++                        //if (voFieldInfo == null)
++                        //    Console.WriteLine (&quot;FieldInfo == null.&quot;);
+                         voFieldInfo.SetValue (defaultComponentModel, componentModelVO);
+                         list.Add (defaultComponentModel);
+                     }
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000197.html">[Mspace-checkins] r484 - servicemenus/uploadToServer
+</A></li>
+	<LI>Next message: <A HREF="000199.html">[Mspace-checkins] r486 - in ComponentModel: releases trunk/src trunk/src/ComponentModel.Interfaces trunk/src/ComponentModel.Threading
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#198">[ date ]</a>
+              <a href="thread.html#198">[ thread ]</a>
+              <a href="subject.html#198">[ subject ]</a>
+              <a href="author.html#198">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

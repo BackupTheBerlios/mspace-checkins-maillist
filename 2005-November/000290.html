@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r578 - BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-November/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r578%20-%20BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms&In-Reply-To=%3C200511121533.jACFXpY6002984%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000289.html">
+   <LINK REL="Next"  HREF="000291.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r578 - BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r578%20-%20BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms&In-Reply-To=%3C200511121533.jACFXpY6002984%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r578 - BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms">nestor at berlios.de
+       </A><BR>
+    <I>Sat Nov 12 16:33:51 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000289.html">[Mspace-checkins] r577 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Dto Forms Forms/TableModel
+</A></li>
+        <LI>Next message: <A HREF="000291.html">[Mspace-checkins] r579 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Dto Forms
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#290">[ date ]</a>
+              <a href="thread.html#290">[ thread ]</a>
+              <a href="subject.html#290">[ subject ]</a>
+              <a href="author.html#290">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-11-12 16:33:51 +0100 (Sat, 12 Nov 2005)
+New Revision: 578
+
+Modified:
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs
+Log:
+AboutDialog no existe a?\195?\186n con GTK#.
+
+
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs	2005-11-09 16:41:18 UTC (rev 577)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs	2005-11-12 15:33:51 UTC (rev 578)
+@@ -63,6 +63,14 @@
+         }
+         
+         private void OnMenuAboutActivate (object sender, EventArgs args) {
++            Glade.XML aboutForm = new Glade.XML (null, &quot;MainComponentBuilderForm.glade&quot;, &quot;aboutDialog&quot;, null);
++            //AboutDialog no existe todavia en GTK#.
++            //Gtk.AboutDialog aboutDialog = (Gtk.AboutDialog) aboutForm [&quot;aboutDialog&quot;];
++            //aboutDialog.Logo = Gdk.PixBuf.LoadFromResource (&quot;mono-powered.png&quot;);
++            //aboutDialog.Run ();
++            //aboutDialog.Destroy ();
++            //aboutDialog = null;
++            aboutForm = null;
+         }
+ 
+         /*Toolbar*/
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000289.html">[Mspace-checkins] r577 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Dto Forms Forms/TableModel
+</A></li>
+	<LI>Next message: <A HREF="000291.html">[Mspace-checkins] r579 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Dto Forms
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#290">[ date ]</a>
+              <a href="thread.html#290">[ thread ]</a>
+              <a href="subject.html#290">[ subject ]</a>
+              <a href="author.html#290">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

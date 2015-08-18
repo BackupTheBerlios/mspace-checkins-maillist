@@ -1,0 +1,370 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r418 - in SimpleP/trunk: . doc doc-html images installer resources src src/Contexts src/Contexts/GladeContext src/Contexts/OthersContext src/Contexts/SourceContext src/Contexts/TargetsContext src/PopupMenuService ui-data
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r418%20-%20in%20SimpleP/trunk%3A%20.%20doc%20doc-html%20images%20installer%20resources%20src%20src/Contexts%20src/Contexts/GladeContext%20src/Contexts/OthersContext%20src/Contexts/SourceContext%20src/Contexts/TargetsContext%20src/PopupMenuService%20ui-data&In-Reply-To=%3C200504081408.j38E8agB020101%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000130.html">
+   <LINK REL="Next"  HREF="000132.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r418 - in SimpleP/trunk: . doc doc-html images installer resources src src/Contexts src/Contexts/GladeContext src/Contexts/OthersContext src/Contexts/SourceContext src/Contexts/TargetsContext src/PopupMenuService ui-data</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r418%20-%20in%20SimpleP/trunk%3A%20.%20doc%20doc-html%20images%20installer%20resources%20src%20src/Contexts%20src/Contexts/GladeContext%20src/Contexts/OthersContext%20src/Contexts/SourceContext%20src/Contexts/TargetsContext%20src/PopupMenuService%20ui-data&In-Reply-To=%3C200504081408.j38E8agB020101%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r418 - in SimpleP/trunk: . doc doc-html images installer resources src src/Contexts src/Contexts/GladeContext src/Contexts/OthersContext src/Contexts/SourceContext src/Contexts/TargetsContext src/PopupMenuService ui-data">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Fri Apr  8 16:08:36 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000130.html">[Mspace-checkins] r417 - in Red.Gtk/trunk: . src
+</A></li>
+        <LI>Next message: <A HREF="000132.html">[Mspace-checkins] r419 - SimpleP/trunk
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#131">[ date ]</a>
+              <a href="thread.html#131">[ thread ]</a>
+              <a href="subject.html#131">[ subject ]</a>
+              <a href="author.html#131">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-08 16:08:35 +0200 (Fri, 08 Apr 2005)
+New Revision: 418
+
+Modified:
+   SimpleP/trunk/ChangeLog
+   SimpleP/trunk/doc-html/
+   SimpleP/trunk/doc/
+   SimpleP/trunk/images/
+   SimpleP/trunk/installer/
+   SimpleP/trunk/resources/
+   SimpleP/trunk/src/
+   SimpleP/trunk/src/Contexts/
+   SimpleP/trunk/src/Contexts/GladeContext/
+   SimpleP/trunk/src/Contexts/OthersContext/
+   SimpleP/trunk/src/Contexts/SourceContext/
+   SimpleP/trunk/src/Contexts/TargetsContext/
+   SimpleP/trunk/src/MainWindow.boo
+   SimpleP/trunk/src/PopupMenuService/
+   SimpleP/trunk/ui-data/
+   SimpleP/trunk/ui-data/simplep.glade
+Log:
+
+	* src/MainWindow.boo: Used the the dialog factory methods in Red.Gtk
+	* ui-data/simplep.glade: Chaged the Clear project menu item to reimport
+	
+
+
+Modified: SimpleP/trunk/ChangeLog
+===================================================================
+--- SimpleP/trunk/ChangeLog	2005-04-08 14:07:09 UTC (rev 417)
++++ SimpleP/trunk/ChangeLog	2005-04-08 14:08:35 UTC (rev 418)
+@@ -1,5 +1,10 @@
+ 2005-04-08  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
++	* src/MainWindow.boo: Used the the dialog factory methods in Red.Gtk
++	* ui-data/simplep.glade: Chaged the Clear project menu item to reimport
++
++2005-04-08  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
+ 	* simplep: fixed starting path
+ 	* src/MainWindow.boo: Added a couple of dialogs when importing project
+ 	files
+
+
+Property changes on: SimpleP/trunk/doc
+___________________________________________________________________
+Name: svn:ignore
+   + *.bak
+*.swp
+build/*
+
+
+
+Property changes on: SimpleP/trunk/doc-html
+___________________________________________________________________
+Name: svn:ignore
+   + *.bak
+*.swp
+build/*
+
+
+
+Property changes on: SimpleP/trunk/images
+___________________________________________________________________
+Name: svn:ignore
+   + *.bak
+*.swp
+build/*
+
+
+
+Property changes on: SimpleP/trunk/installer
+___________________________________________________________________
+Name: svn:ignore
+   + *.bak
+*.swp
+build/*
+
+
+
+Property changes on: SimpleP/trunk/resources
+___________________________________________________________________
+Name: svn:ignore
+   + *.bak
+*.swp
+build/*
+
+
+
+Property changes on: SimpleP/trunk/src
+___________________________________________________________________
+Name: svn:ignore
+   + *.bak
+*.swp
+build/*
+
+
+
+Property changes on: SimpleP/trunk/src/Contexts
+___________________________________________________________________
+Name: svn:ignore
+   + *.bak
+*.swp
+build/*
+
+
+
+Property changes on: SimpleP/trunk/src/Contexts/GladeContext
+___________________________________________________________________
+Name: svn:ignore
+   + *.bak
+*.swp
+build/*
+
+
+
+Property changes on: SimpleP/trunk/src/Contexts/OthersContext
+___________________________________________________________________
+Name: svn:ignore
+   + *.bak
+*.swp
+build/*
+
+
+
+Property changes on: SimpleP/trunk/src/Contexts/SourceContext
+___________________________________________________________________
+Name: svn:ignore
+   + *.bak
+*.swp
+build/*
+
+
+
+Property changes on: SimpleP/trunk/src/Contexts/TargetsContext
+___________________________________________________________________
+Name: svn:ignore
+   + *.bak
+*.swp
+build/*
+
+
+Modified: SimpleP/trunk/src/MainWindow.boo
+===================================================================
+--- SimpleP/trunk/src/MainWindow.boo	2005-04-08 14:07:09 UTC (rev 417)
++++ SimpleP/trunk/src/MainWindow.boo	2005-04-08 14:08:35 UTC (rev 418)
+@@ -95,18 +95,18 @@
+ 			try:
+ 				Services.ProjectManager.SetActiveProject (name)
+ 				if Services.ProjectManager.MissingFiles != null: 
+-					DialogFactory.ShowInfoDialog (self,&quot;&lt;b&gt;Missing files&lt;/b&gt;\nSome files in the project are missing.&quot;)
++					DialogFactory.ShowInfoDialog (self,&quot;Missing filesgc&quot;, &quot;Some files in the project are missing.&quot;)
+ 				Title = &quot;SimpleP - ${name}&quot;
+ 
+ 			except ex as InvalidProjectFileException:
+ 				print &quot;MESSAGE: ${ex.Message}&quot;
+ 				print &quot;STACK TRACE:\n&quot; + ex.StackTrace
+-				DialogFactory.ShowErrorDialog (self, &quot;&lt;b&gt;Invalid project file&lt;/b&gt;\nThe project file is corrupted.&quot;)
++				DialogFactory.ShowErrorDialog (self, &quot;Invalid project file&quot;,&quot;The project file is corrupted.&quot;)
+ 				
+ 			except ex as Exception:
+ 				print &quot;MESSAGE: ${ex.Message}&quot;
+ 				print &quot;STACK TRACE:\n&quot; + ex.StackTrace
+-				DialogFactory.ShowErrorDialog (self, &quot;&lt;b&gt;Error changing project&lt;/b&gt;\nProject file cannot be loaded.&quot;)	
++				DialogFactory.ShowErrorDialog (self, &quot;Error changing project&quot;,&quot;Project file cannot be loaded.&quot;)	
+ 
+ 		
+ 	_lastWidget as Widget
+@@ -152,17 +152,24 @@
+ 	private def ImportProjectFilesClicked (sender, args):
+ 		project = Services.ProjectManager.CurrentProject
+ 		if project:
+-			DialogFactory.ShowInfoDialog (self, &quot;&lt;b&gt;Importing notice&lt;/b&gt;\n\ndot files and directories (i.e. .svn or .cvsignore) are discarded when importing files.&quot;)
++			DialogFactory.ShowInfoDialog (self, &quot;Importing notice&quot;, &quot;dot files and directories (i.e. .svn or .cvsignore) are discarded when importing files.&quot;)
+ 			lastFileCount = project.Files.Count
+ 			project.ImportFiles (true)
+ 			fileCount = project.Files.Count - lastFileCount
+-			DialogFactory.ShowInfoDialog (self, &quot;&lt;b&gt;Importing files&lt;/b&gt;\n\n&lt;b&gt;${fileCount}&lt;/b&gt; files imported.&quot;)
++			DialogFactory.ShowInfoDialog (self, &quot;Importing files&quot;,&quot;&lt;b&gt;${fileCount}&lt;/b&gt; files imported.&quot;)
+ 		else:
+-			DialogFactory.ShowInfoDialog (self, &quot;&lt;b&gt;No project selected&lt;/b&gt;\n\nYou should choose a project first, then try to import the files again.&quot;)
++			DialogFactory.ShowInfoDialog (self, &quot;No project selected&quot;,&quot;You should choose a project first, then try to import the files again.&quot;)
+ 
+-	private def ClearProjectClicked (sernder, args):
+-		Services.ProjectManager.CurrentProject.Clear ()
+-		Services.ProjectManager.CurrentProject.Save ()
++	private def ReimportProjectClicked (sernder, args):
++		currentProject = Services.ProjectManager.CurrentProject
++		if currentProject:
++			Services.ProjectManager.CurrentProject.Clear ()
++			currentProject.ImportFiles (true)
++			fileCount = currentProject.Files.Count
++			Services.ProjectManager.CurrentProject.Save ()
++			DialogFactory.ShowInfoDialog (self, &quot;Importing files&quot;,&quot;&lt;b&gt;${fileCount}&lt;/b&gt; files imported.&quot;)
++		else:
++			DialogFactory.ShowInfoDialog (self, &quot;No project selected&quot;, &quot;You should choose a project first, then try to import the files again.&quot;)
+ 
+ 	private def MessagePushed (sender,args as  MessagePushedArgs):
+ 		statusbar.Push (statusbar.GetContextId (args.Message), args.Message)
+@@ -197,7 +204,10 @@
+ 			cast(ListStore, model).AppendValues ( (name,) )
+ 		
+ 	private def RemoveProjectClicked (sender, args):
+-		response = DialogFactory.ShowQuestionDialog (self, &quot;&lt;b&gt;Removing project&lt;/b&gt;\nDo you want to remove the project ${Services.ProjectManager.CurrentProject.Name}?\n\n&lt;b&gt;Note:&lt;/b&gt;\nThe project files will not be deleted&quot;)
+-		if response == -8:
+-			Services.ProjectManager.RemoveCurrentProject ()
+-		
++		currentProject = Services.ProjectManager.CurrentProject
++		if currentProject:
++			response = DialogFactory.ShowQuestionDialog (self, &quot;Removing project&quot;,&quot;Do you want to remove the project ${Services.ProjectManager.CurrentProject.Name}?\n\n&lt;b&gt;Note:&lt;/b&gt;\nThe project files will not be deleted&quot;)
++			if response == -8:
++				Services.ProjectManager.RemoveCurrentProject ()
++		else:
++			DialogFactory.ShowInfoDialog (self, &quot;No project selected&quot;,&quot;Choose a project first and then remove it.&quot;)
+
+
+Property changes on: SimpleP/trunk/src/PopupMenuService
+___________________________________________________________________
+Name: svn:ignore
+   + *.bak
+*.swp
+build/*
+
+
+
+Property changes on: SimpleP/trunk/ui-data
+___________________________________________________________________
+Name: svn:ignore
+   + *.bak
+*.swp
+build/*
+
+
+Modified: SimpleP/trunk/ui-data/simplep.glade
+===================================================================
+--- SimpleP/trunk/ui-data/simplep.glade	2005-04-08 14:07:09 UTC (rev 417)
++++ SimpleP/trunk/ui-data/simplep.glade	2005-04-08 14:08:35 UTC (rev 418)
+@@ -47,7 +47,7 @@
+ 		      &lt;signal name=&quot;activate&quot; handler=&quot;NewFileMenuClicked&quot; last_modification_time=&quot;Fri, 25 Mar 2005 20:32:32 GMT&quot;/&gt;
+ 
+ 		      &lt;child internal-child=&quot;image&quot;&gt;
+-			&lt;widget class=&quot;GtkImage&quot; id=&quot;image110&quot;&gt;
++			&lt;widget class=&quot;GtkImage&quot; id=&quot;image128&quot;&gt;
+ 			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 			  &lt;property name=&quot;stock&quot;&gt;gtk-new&lt;/property&gt;
+ 			  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+@@ -81,7 +81,7 @@
+ 		      &lt;signal name=&quot;activate&quot; handler=&quot;NewProjectMenuClicked&quot; last_modification_time=&quot;Fri, 25 Mar 2005 20:31:38 GMT&quot;/&gt;
+ 
+ 		      &lt;child internal-child=&quot;image&quot;&gt;
+-			&lt;widget class=&quot;GtkImage&quot; id=&quot;image111&quot;&gt;
++			&lt;widget class=&quot;GtkImage&quot; id=&quot;image129&quot;&gt;
+ 			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 			  &lt;property name=&quot;stock&quot;&gt;gtk-new&lt;/property&gt;
+ 			  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+@@ -102,7 +102,7 @@
+ 		      &lt;signal name=&quot;activate&quot; handler=&quot;OpenMenuClicked&quot; last_modification_time=&quot;Thu, 24 Mar 2005 17:47:04 GMT&quot;/&gt;
+ 
+ 		      &lt;child internal-child=&quot;image&quot;&gt;
+-			&lt;widget class=&quot;GtkImage&quot; id=&quot;image112&quot;&gt;
++			&lt;widget class=&quot;GtkImage&quot; id=&quot;image130&quot;&gt;
+ 			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 			  &lt;property name=&quot;stock&quot;&gt;gtk-open&lt;/property&gt;
+ 			  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+@@ -129,7 +129,7 @@
+ 		      &lt;signal name=&quot;activate&quot; handler=&quot;RemoveProjectClicked&quot; last_modification_time=&quot;Mon, 04 Apr 2005 12:25:38 GMT&quot;/&gt;
+ 
+ 		      &lt;child internal-child=&quot;image&quot;&gt;
+-			&lt;widget class=&quot;GtkImage&quot; id=&quot;image113&quot;&gt;
++			&lt;widget class=&quot;GtkImage&quot; id=&quot;image131&quot;&gt;
+ 			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 			  &lt;property name=&quot;stock&quot;&gt;gtk-delete&lt;/property&gt;
+ 			  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+@@ -150,7 +150,7 @@
+ 		      &lt;signal name=&quot;activate&quot; handler=&quot;ImportProjectFilesClicked&quot; last_modification_time=&quot;Sat, 26 Mar 2005 18:33:55 GMT&quot;/&gt;
+ 
+ 		      &lt;child internal-child=&quot;image&quot;&gt;
+-			&lt;widget class=&quot;GtkImage&quot; id=&quot;image114&quot;&gt;
++			&lt;widget class=&quot;GtkImage&quot; id=&quot;image132&quot;&gt;
+ 			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 			  &lt;property name=&quot;stock&quot;&gt;gtk-refresh&lt;/property&gt;
+ 			  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+@@ -166,12 +166,12 @@
+ 		  &lt;child&gt;
+ 		    &lt;widget class=&quot;GtkImageMenuItem&quot; id=&quot;clear1&quot;&gt;
+ 		      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;_Clear&lt;/property&gt;
++		      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;_Reimport files&lt;/property&gt;
+ 		      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-		      &lt;signal name=&quot;activate&quot; handler=&quot;ClearProjectClicked&quot; last_modification_time=&quot;Sat, 26 Mar 2005 19:43:27 GMT&quot;/&gt;
++		      &lt;signal name=&quot;activate&quot; handler=&quot;ReimportProjectClicked&quot; last_modification_time=&quot;Fri, 08 Apr 2005 13:31:56 GMT&quot;/&gt;
+ 
+ 		      &lt;child internal-child=&quot;image&quot;&gt;
+-			&lt;widget class=&quot;GtkImage&quot; id=&quot;image115&quot;&gt;
++			&lt;widget class=&quot;GtkImage&quot; id=&quot;image133&quot;&gt;
+ 			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 			  &lt;property name=&quot;stock&quot;&gt;gtk-clear&lt;/property&gt;
+ 			  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+@@ -213,7 +213,7 @@
+ 		      &lt;signal name=&quot;activate&quot; handler=&quot;AboutMenuClicked&quot; last_modification_time=&quot;Thu, 24 Mar 2005 17:47:04 GMT&quot;/&gt;
+ 
+ 		      &lt;child internal-child=&quot;image&quot;&gt;
+-			&lt;widget class=&quot;GtkImage&quot; id=&quot;image116&quot;&gt;
++			&lt;widget class=&quot;GtkImage&quot; id=&quot;image134&quot;&gt;
+ 			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+ 			  &lt;property name=&quot;stock&quot;&gt;gtk-about&lt;/property&gt;
+ 			  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000130.html">[Mspace-checkins] r417 - in Red.Gtk/trunk: . src
+</A></li>
+	<LI>Next message: <A HREF="000132.html">[Mspace-checkins] r419 - SimpleP/trunk
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#131">[ date ]</a>
+              <a href="thread.html#131">[ thread ]</a>
+              <a href="subject.html#131">[ subject ]</a>
+              <a href="author.html#131">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

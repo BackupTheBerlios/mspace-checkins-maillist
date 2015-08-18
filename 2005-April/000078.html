@@ -1,0 +1,467 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r365 - in SimpleP: . trunk
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r365%20-%20in%20SimpleP%3A%20.%20trunk&In-Reply-To=%3C200504041441.j34EfJ6A014475%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000079.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r365 - in SimpleP: . trunk</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r365%20-%20in%20SimpleP%3A%20.%20trunk&In-Reply-To=%3C200504041441.j34EfJ6A014475%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r365 - in SimpleP: . trunk">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Mon Apr  4 16:41:19 CEST 2005</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000079.html">[Mspace-checkins] r366 - in Red.Gtk: . trunk
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#78">[ date ]</a>
+              <a href="thread.html#78">[ thread ]</a>
+              <a href="subject.html#78">[ subject ]</a>
+              <a href="author.html#78">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-04 16:41:17 +0200 (Mon, 04 Apr 2005)
+New Revision: 365
+
+Added:
+   SimpleP/trunk/
+   SimpleP/trunk/AUTHORS
+   SimpleP/trunk/LICENSE
+   SimpleP/trunk/Makefile
+   SimpleP/trunk/README
+   SimpleP/trunk/THANKS
+   SimpleP/trunk/build/
+   SimpleP/trunk/doc-html/
+   SimpleP/trunk/doc/
+   SimpleP/trunk/ext/
+   SimpleP/trunk/images/
+   SimpleP/trunk/installer/
+   SimpleP/trunk/simplep
+   SimpleP/trunk/simplep.desktop
+   SimpleP/trunk/simplep.simplep
+   SimpleP/trunk/src/
+   SimpleP/trunk/ui-data/
+Removed:
+   SimpleP/AUTHORS
+   SimpleP/LICENSE
+   SimpleP/Makefile
+   SimpleP/README
+   SimpleP/THANKS
+   SimpleP/build/
+   SimpleP/doc-html/
+   SimpleP/doc/
+   SimpleP/ext/
+   SimpleP/images/
+   SimpleP/installer/
+   SimpleP/simplep
+   SimpleP/simplep.desktop
+   SimpleP/simplep.simplep
+   SimpleP/src/
+   SimpleP/ui-data/
+Log:
+Moved all to trunk
+
+
+
+Deleted: SimpleP/AUTHORS
+===================================================================
+--- SimpleP/AUTHORS	2005-04-04 14:38:02 UTC (rev 364)
++++ SimpleP/AUTHORS	2005-04-04 14:41:17 UTC (rev 365)
+@@ -1 +0,0 @@
+-Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+
+Deleted: SimpleP/LICENSE
+===================================================================
+--- SimpleP/LICENSE	2005-04-04 14:38:02 UTC (rev 364)
++++ SimpleP/LICENSE	2005-04-04 14:41:17 UTC (rev 365)
+@@ -1,9 +0,0 @@
+-MIT License
+-
+-Copyright (c) 2005 Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+-
+-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+-
+-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-
+-THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Deleted: SimpleP/Makefile
+===================================================================
+--- SimpleP/Makefile	2005-04-04 14:38:02 UTC (rev 364)
++++ SimpleP/Makefile	2005-04-04 14:41:17 UTC (rev 365)
+@@ -1,17 +0,0 @@
+-FILES =						\
+-		src/*.boo			\
+-		src/*/*/*.boo			\
+-		src/*/*.boo
+-
+-REFERENCES=`pkg-config --libs gtk-sharp-2.0`		 		\
+-				`pkg-config --libs glade-sharp-2.0`		 		\
+-				-r:ext/Red.Gtk.dll						\
+-				-r:ext/Red.dll							\
+-				-r:ext/NLog.dll
+-all: update-refs
+-	booc $(FILES) -out:build/SimpleP.exe -target:winexe -r:./ext/Red.ProjectManager.dll $(REFERENCES)
+-
+-update-refs:
+-	cp ext/* build/	
+-	cp ui-data/*.glade build/
+-	cp -a images build
+
+Deleted: SimpleP/README
+===================================================================
+--- SimpleP/README	2005-04-04 14:38:02 UTC (rev 364)
++++ SimpleP/README	2005-04-04 14:41:17 UTC (rev 365)
+@@ -1,3 +0,0 @@
+-SimpleP - Simple project management software
+-
+-
+
+Deleted: SimpleP/THANKS
+===================================================================
+--- SimpleP/THANKS	2005-04-04 14:38:02 UTC (rev 364)
++++ SimpleP/THANKS	2005-04-04 14:41:17 UTC (rev 365)
+@@ -1,3 +0,0 @@
+-Most of the artwork is from the GNOME project (<A HREF="http://www.gnome.org">http://www.gnome.org</A>)
+-In particular, the Wasp and Gorilla SVG icons
+-
+
+Deleted: SimpleP/simplep
+===================================================================
+--- SimpleP/simplep	2005-04-04 14:38:02 UTC (rev 364)
++++ SimpleP/simplep	2005-04-04 14:41:17 UTC (rev 365)
+@@ -1,4 +0,0 @@
+-#!/bin/bash
+-pushd build/
+-mono SimpleP.exe
+-popd
+
+Deleted: SimpleP/simplep.desktop
+===================================================================
+--- SimpleP/simplep.desktop	2005-04-04 14:38:02 UTC (rev 364)
++++ SimpleP/simplep.desktop	2005-04-04 14:41:17 UTC (rev 365)
+@@ -1,10 +0,0 @@
+-[Desktop Entry]
+-Encoding=UTF-8
+-Name=SimpleP project manager
+-Comment=Simple Project Manager
+-Exec=@@installdir@@/bin/simplep
+-Terminal=false
+-Type=Application
+-Icon=@@installdir@@/share/pixmaps/simplep/simplep.png
+-Categories=Application;Development;
+-MimeType=application/x-simplep;
+
+Deleted: SimpleP/simplep.simplep
+===================================================================
+--- SimpleP/simplep.simplep	2005-04-04 14:38:02 UTC (rev 364)
++++ SimpleP/simplep.simplep	2005-04-04 14:41:17 UTC (rev 365)
+@@ -1,236 +0,0 @@
+-&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+-&lt;Project&gt;
+-    &lt;Name&gt;SimpleP&lt;/Name&gt;
+-    &lt;FileSet&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/SimpleP-full-logo.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/OthersContext/OthersContext.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/Data-icon.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/SimpleP.exe&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/ICSharpCode.SharpZipLib.dll&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/Red.Gtk.dll&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/Red.ProjectManager.dll&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/glade-20.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/Makefile&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/ContextManager.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/glade-16.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/GladeContext/GladeContext.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ui-data/simplep.glade&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/Other-icon.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/NewProjectWindow.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/simplep.simplep&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ui-data/simplep.gladep.bak&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ext/Boo.dll&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/folder.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/UI-icon.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Run.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/target.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ext/Red.Gtk.dll&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/Other-icon.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Services.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/file.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/NLog.dll.nlog&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/file.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/SimpleP-full-logo.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ext/NLog.dll&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/simplep.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/glade-20.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/PathNavigator.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/Boo.dll&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/installer/simplep.inc&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/.simplep&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/simplep.desktop&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/GladeContext/GladeContextView.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/LICENSE&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ext/ICSharpCode.SharpZipLib.dll&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/README&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/PopupMenuService/PopupMenuService.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/Source-icon.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ext/NLog.dll.nlog&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/IProjectContext.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ui-data/simplep.glade.bak&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/PopupMenuService/FileOperationsMenu.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/simplep.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/simplep&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/SourceContext/ProjectStore.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/target.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/installer/postinstallation.sh&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/SimpleP-icon-gears.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/Data-icon.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/AUTHORS&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/THANKS&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/SimpleP-icon-gears.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/TargetsContext/TargetsContext.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/NLog.dll&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/empty.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/AboutWindow.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ext/Red.dll&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/empty.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/UI-icon.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/images/folder.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/InvalidPathException.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ext/Red.ProjectManager.dll&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/SourceContext/ProjectBrowser.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/Red.dll&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/ui-data/simplep.gladep&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Globals.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/build/images/Source-icon.png&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/StatusbarService.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/MainWindow.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/Contexts/SourceContext/SourceContext.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/SimpleP/src/MimetypeService.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-    &lt;/FileSet&gt;
+-    &lt;FolderSet&gt;
+-&lt;/FolderSet&gt;
+-&lt;/Project&gt;
+\ No newline at end of file
+
+Copied: SimpleP/trunk/AUTHORS (from rev 364, SimpleP/AUTHORS)
+
+Copied: SimpleP/trunk/LICENSE (from rev 364, SimpleP/LICENSE)
+
+Copied: SimpleP/trunk/Makefile (from rev 364, SimpleP/Makefile)
+
+Copied: SimpleP/trunk/README (from rev 364, SimpleP/README)
+
+Copied: SimpleP/trunk/THANKS (from rev 364, SimpleP/THANKS)
+
+Copied: SimpleP/trunk/build (from rev 364, SimpleP/build)
+
+Copied: SimpleP/trunk/doc (from rev 364, SimpleP/doc)
+
+Copied: SimpleP/trunk/doc-html (from rev 364, SimpleP/doc-html)
+
+Copied: SimpleP/trunk/ext (from rev 364, SimpleP/ext)
+
+Copied: SimpleP/trunk/images (from rev 364, SimpleP/images)
+
+Copied: SimpleP/trunk/installer (from rev 364, SimpleP/installer)
+
+Copied: SimpleP/trunk/simplep (from rev 364, SimpleP/simplep)
+
+Copied: SimpleP/trunk/simplep.desktop (from rev 364, SimpleP/simplep.desktop)
+
+Copied: SimpleP/trunk/simplep.simplep (from rev 364, SimpleP/simplep.simplep)
+
+Copied: SimpleP/trunk/src (from rev 364, SimpleP/src)
+
+Copied: SimpleP/trunk/ui-data (from rev 364, SimpleP/ui-data)
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000079.html">[Mspace-checkins] r366 - in Red.Gtk: . trunk
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#78">[ date ]</a>
+              <a href="thread.html#78">[ thread ]</a>
+              <a href="subject.html#78">[ subject ]</a>
+              <a href="author.html#78">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

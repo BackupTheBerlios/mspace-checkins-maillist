@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r488 - in ComponentModel/trunk/src: . ComponentModel.Threading
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r488%20-%20in%20ComponentModel/trunk/src%3A%20.%20ComponentModel.Threading&In-Reply-To=%3C200505122125.j4CLPMIc017632%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000200.html">
+   <LINK REL="Next"  HREF="000202.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r488 - in ComponentModel/trunk/src: . ComponentModel.Threading</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r488%20-%20in%20ComponentModel/trunk/src%3A%20.%20ComponentModel.Threading&In-Reply-To=%3C200505122125.j4CLPMIc017632%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r488 - in ComponentModel/trunk/src: . ComponentModel.Threading">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Thu May 12 23:25:22 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000200.html">[Mspace-checkins] r487 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Interfaces src/ComponentModel.Threading
+</A></li>
+        <LI>Next message: <A HREF="000202.html">[Mspace-checkins] r489 - ComponentModel/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#201">[ date ]</a>
+              <a href="thread.html#201">[ thread ]</a>
+              <a href="subject.html#201">[ subject ]</a>
+              <a href="author.html#201">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-05-12 23:25:21 +0200 (Thu, 12 May 2005)
+New Revision: 488
+
+Modified:
+   ComponentModel/trunk/src/AssemblyInfo.cs
+   ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Ended non-block execution.
+
+
+
+Modified: ComponentModel/trunk/src/AssemblyInfo.cs
+===================================================================
+--- ComponentModel/trunk/src/AssemblyInfo.cs	2005-05-12 08:51:13 UTC (rev 487)
++++ ComponentModel/trunk/src/AssemblyInfo.cs	2005-05-12 21:25:21 UTC (rev 488)
+@@ -9,4 +9,4 @@
+ [assembly: AssemblyCopyright(&quot;2005 (C) N&#233;stor Salceda Alonso&quot;)]
+ [assembly: AssemblyTrademark(&quot;&quot;)]
+ [assembly: AssemblyCulture(&quot;&quot;)]
+-[assembly: AssemblyVersion(&quot;0.1.*&quot;)]
++[assembly: AssemblyVersion(&quot;0.2.*&quot;)]
+
+Modified: ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs	2005-05-12 08:51:13 UTC (rev 487)
++++ ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs	2005-05-12 21:25:21 UTC (rev 488)
+@@ -20,6 +20,14 @@
+         IViewHandler viewHandler;
+         MethodInfo methodToResponse;
+         ResponseMethodVO responseMethodVO;
++
++        internal ResponseMethodVO ResponseMethodVO {
++            get {
++                lock (responseMethodVO) {
++                    return responseMethodVO;
++                }
++            }
++        }
+         
+         internal ComponentActionDispatcher () {}
+         
+@@ -56,28 +64,40 @@
+             thread = new Thread (threadStart);
+         }
+         
+-        internal void CallBackExecuteRedirectNewView () {
+-            responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
+-            object ret = methodToExecute.Invoke (componentModel, parameters);
+-            responseMethodVO.MethodResult = ret;
+-            responseMethodVO.SetExecutionSuccess (true);
+-            object obj = viewType.GetConstructor (null).Invoke (null);
+-            methodToResponse.Invoke (obj, new object[] {responseMethodVO});
++        private void CallBackExecuteRedirectNewView () {
++            lock (responseMethodVO) {
++                responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++                object ret = methodToExecute.Invoke (componentModel, parameters);
++                responseMethodVO.MethodResult = ret;
++                responseMethodVO.SetExecutionSuccess (true);
++                object obj = viewType.GetConstructor (null).Invoke (null);
++                methodToResponse.Invoke (obj, new object[] {responseMethodVO});
++            }
+         }
+ 
+-        internal void CallBackExecuteRedirectView () {
+-            responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
+-            object ret = methodToExecute.Invoke (componentModel, parameters);
+-            responseMethodVO.MethodResult = ret;
+-            responseMethodVO.SetExecutionSuccess (true);
+-            methodToResponse.Invoke (viewHandler, new object[] {responseMethodVO});
++        private void CallBackExecuteRedirectView () {
++            lock (responseMethodVO) {
++                responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++                object ret = methodToExecute.Invoke (componentModel, parameters);
++                responseMethodVO.MethodResult = ret;
++                responseMethodVO.SetExecutionSuccess (true);
++                methodToResponse.Invoke (viewHandler, new object[] {responseMethodVO});
++            }
+         }
+ 
+-        internal void CallBackExecuteNoRedirect () {
+-            responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
+-            object ret = methodToExecute.Invoke (componentModel, parameters);
+-            responseMethodVO.MethodResult = ret;
+-            responseMethodVO.SetExecutionSuccess (true);
++        private void CallBackExecuteNoRedirect () {
++            lock (responseMethodVO) {
++                responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++                object ret = methodToExecute.Invoke (componentModel, parameters);
++                responseMethodVO.MethodResult = ret;
++                responseMethodVO.SetExecutionSuccess (true);
++            }
+         }
++
++        internal void Do () {
++            if (thread != null) {
++                thread.Start ();
++            }
++        }
+     }
+ }
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-12 08:51:13 UTC (rev 487)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-05-12 21:25:21 UTC (rev 488)
+@@ -6,6 +6,7 @@
+ using ComponentModel.Container.Dao;
+ using ComponentModel.Factory;
+ using ComponentModel.ExceptionManager;
++using ComponentModel.Threading;
+ using ComponentModel.Exceptions;
+ using NLog;
+ 
+@@ -219,24 +220,33 @@
+                 }
+             }
+             else {
++                ComponentActionDispatcher componentActionDispatcher;
+                 //Operaciones bloqueantes, envolver en un hilo
+-                throw new Exception (&quot;NOT IMPLEMENTED YET !!&quot;);
+                 if (redirect) {
+                     MethodInfo methodToResponse;
+                     Type viewType;
+                     if (viewHandler == null) {
+                         viewType = this.GetViewType (componentMethodAttribute);
+                         methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
++                        componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters, viewType, methodToResponse);
++                        componentActionDispatcher.Do ();
++                        return componentActionDispatcher.ResponseMethodVO;
+                     }
+                     else {
+                         viewType = viewHandler.GetType ();
+                         methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
++                        componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters, viewHandler, methodToResponse);
++                        componentActionDispatcher.Do ();
++                        return componentActionDispatcher.ResponseMethodVO;
+                     }
+                 }
+                 else {
++                   componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters); 
++                   componentActionDispatcher.Do ();
++                   return componentActionDispatcher.ResponseMethodVO;
+                 }
+             }
+-            return null;
++            //return null;
+         }
+ 
+     }
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000200.html">[Mspace-checkins] r487 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exceptions ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Interfaces src/ComponentModel.Threading
+</A></li>
+	<LI>Next message: <A HREF="000202.html">[Mspace-checkins] r489 - ComponentModel/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#201">[ date ]</a>
+              <a href="thread.html#201">[ thread ]</a>
+              <a href="subject.html#201">[ subject ]</a>
+              <a href="author.html#201">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

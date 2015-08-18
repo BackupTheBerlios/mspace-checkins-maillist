@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r464 - koolboy/trunk/src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-May/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r464%20-%20koolboy/trunk/src&In-Reply-To=%3C200505010003.j4103QLD005626%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000176.html">
+   <LINK REL="Next"  HREF="000178.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r464 - koolboy/trunk/src</H1>
+    <B>Isaac Clerencia at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r464%20-%20koolboy/trunk/src&In-Reply-To=%3C200505010003.j4103QLD005626%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r464 - koolboy/trunk/src">isaaccp at sheep.berlios.de
+       </A><BR>
+    <I>Sun May  1 02:03:26 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000176.html">[Mspace-checkins] r463 - in koolboy/trunk: . examples
+</A></li>
+        <LI>Next message: <A HREF="000178.html">[Mspace-checkins] r465 - koolboy/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#177">[ date ]</a>
+              <a href="thread.html#177">[ thread ]</a>
+              <a href="subject.html#177">[ subject ]</a>
+              <a href="author.html#177">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: isaaccp
+Date: 2005-05-01 02:02:31 +0200 (Sun, 01 May 2005)
+New Revision: 464
+
+Modified:
+   koolboy/trunk/src/koolboy.rb
+   koolboy/trunk/src/libkoolnotes.rb
+Log:
+Ok, it almost works again :P
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-04-30 23:35:26 UTC (rev 463)
++++ koolboy/trunk/src/koolboy.rb	2005-05-01 00:02:31 UTC (rev 464)
+@@ -72,7 +72,7 @@
+ 		@note = NoteManager.instance.getNote(name)
+ 
+ 		resize(@note.size)
+-		move(@note.loc)
++		move(@note.pos)
+ 
+ 		@text = KDE::TextEdit.new(self)
+ 		@text.setText(@note.text)
+@@ -83,12 +83,11 @@
+ 		text = @text.text.strip
+ 		if text.length != 0
+ 		then
+-			@note.title = text.split(&quot;\n&quot;).first
+-			@note.text = @text.text
++			title = text.split(&quot;\n&quot;).first
++			NoteManager.instance.change(@note,title,text,size,pos)
+ 		else
+-			@note.title = ''
++			NoteManager.instance.delete(@note)
+ 		end 
+-		NoteManager.instance.storeNote(@note)
+ 		return true
+ 	end
+ end
+
+Modified: koolboy/trunk/src/libkoolnotes.rb
+===================================================================
+--- koolboy/trunk/src/libkoolnotes.rb	2005-04-30 23:35:26 UTC (rev 463)
++++ koolboy/trunk/src/libkoolnotes.rb	2005-05-01 00:02:31 UTC (rev 464)
+@@ -1,5 +1,6 @@
+ require 'sqlite3'
+ require 'singleton'
++require 'rexml/document'
+ 
+ class NoteManager
+ 	
+@@ -28,7 +29,18 @@
+ 		#@notes.sort {|a,b| a[1].time &lt;=&gt; b[1].time }.collect { |x| x[0] }[0..5]
+ 		@notes.values.sort_by { |x| x.time }[0..5].map { |x| x.title }
+ 	end
+-	
++
++	def change (note,title,text,size,pos)
++		@notes.delete(note.title)
++		note.change(title,text,size,pos)
++		@notes[title] = note 	
++	end
++
++	def delete (note)
++		@notes.delete(note.title)
++		note.delete
++	end
++
+ 	private
+ 	def loadNotes
+ 		Dir.foreach(@dir) do |file|
+@@ -46,8 +58,6 @@
+ #	Notes implementations
+ #######################################
+ class XmlNote
+-	require &quot;rexml/document&quot;
+-	include REXML
+ 	
+ 	attr_accessor :title, :time
+ 	
+@@ -62,11 +72,11 @@
+ 	def read
+ 		@xml = IO.readlines(@file).join(&quot;\n&quot;)
+ 		begin
+-			@doc = Document.new(@xml)
++			@doc = REXML::Document.new(@xml)
+ 			@text = @doc.root.elements[&quot;text&quot;].text.to_s
+ 			@size = Qt::Size.new(@doc.root.elements[&quot;height&quot;].text.to_i,
+ 					@doc.root.elements[&quot;width&quot;].text.to_i)
+-			@loc = Qt::Point.new(@doc.root.elements[&quot;x&quot;].text.to_i,
++			@pos = Qt::Point.new(@doc.root.elements[&quot;x&quot;].text.to_i,
+ 					@doc.root.elements[&quot;y&quot;].text.to_i)
+ 			@read = true
+ 		rescue
+@@ -75,7 +85,23 @@
+ 		end
+ 	end
+ 
+-	def to_s()
++	def change (title,text,size,pos)
++		File.delete(@file)	
++		@title = title
++		@text = text
++		@size = size
++		@pos = pos
++		@file = KDE::StandardDirs::locateLocal(
++			&quot;appdata&quot;,&quot;notes/#{@title}.note&quot;)
++		@time = Time.new
++		#rewrite the file
++	end
++
++	def delete
++		File.delete(@file)	
++	end
++
++	def to_s
+ 		return @xml
+ 	end
+ 
+@@ -96,5 +122,5 @@
+ 		end
+ 	end
+ 
+-	attr_after_read :text, :size, :loc
++	attr_after_read :text, :size, :pos
+ end
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000176.html">[Mspace-checkins] r463 - in koolboy/trunk: . examples
+</A></li>
+	<LI>Next message: <A HREF="000178.html">[Mspace-checkins] r465 - koolboy/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#177">[ date ]</a>
+              <a href="thread.html#177">[ thread ]</a>
+              <a href="subject.html#177">[ subject ]</a>
+              <a href="author.html#177">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r436 - in Red.ProjectManager/trunk: . src/Red.ProjectManager
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r436%20-%20in%20Red.ProjectManager/trunk%3A%20.%20src/Red.ProjectManager&In-Reply-To=%3C200504151213.j3FCDdvS024913%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000148.html">
+   <LINK REL="Next"  HREF="000150.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r436 - in Red.ProjectManager/trunk: . src/Red.ProjectManager</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r436%20-%20in%20Red.ProjectManager/trunk%3A%20.%20src/Red.ProjectManager&In-Reply-To=%3C200504151213.j3FCDdvS024913%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r436 - in Red.ProjectManager/trunk: . src/Red.ProjectManager">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Fri Apr 15 14:13:39 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000148.html">[Mspace-checkins] r435 - in Red.ProjectManager/trunk: . src/Red.ProjectManager
+</A></li>
+        <LI>Next message: <A HREF="000150.html">[Mspace-checkins] r437 - in Red.ProjectManager/trunk: . src src/Interface src/Red.ProjectManager
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#149">[ date ]</a>
+              <a href="thread.html#149">[ thread ]</a>
+              <a href="subject.html#149">[ subject ]</a>
+              <a href="author.html#149">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-15 14:13:38 +0200 (Fri, 15 Apr 2005)
+New Revision: 436
+
+Modified:
+   Red.ProjectManager/trunk/ChangeLog
+   Red.ProjectManager/trunk/src/Red.ProjectManager/Project.boo
+   Red.ProjectManager/trunk/src/Red.ProjectManager/ProjectFile.boo
+   Red.ProjectManager/trunk/src/Red.ProjectManager/ProjectNavigator.boo
+Log:
+
+	* src/Red.ProjectManager/Project.boo:
+	* src/Red.ProjectManager/ProjectFile.boo:
+	* src/Red.ProjectManager/ProjectNavigator.boo:
+	Each of these classes implements their interface
+
+
+
+Modified: Red.ProjectManager/trunk/ChangeLog
+===================================================================
+--- Red.ProjectManager/trunk/ChangeLog	2005-04-14 22:32:11 UTC (rev 435)
++++ Red.ProjectManager/trunk/ChangeLog	2005-04-15 12:13:38 UTC (rev 436)
+@@ -1,5 +1,13 @@
+ 2005-04-15  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
++	* src/Red.ProjectManager/Project.boo:
++	* src/Red.ProjectManager/ProjectFile.boo:
++	* src/Red.ProjectManager/ProjectNavigator.boo:
++	Each of these classes implements their interface
++
++
++2005-04-15  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
+ 	* src/Red.ProjectManager/IProjectFile.boo:
+ 	* src/Red.ProjectManager/IProjectNavigator.boo:
+ 	Added the interfaces to some components
+
+Modified: Red.ProjectManager/trunk/src/Red.ProjectManager/Project.boo
+===================================================================
+--- Red.ProjectManager/trunk/src/Red.ProjectManager/Project.boo	2005-04-14 22:32:11 UTC (rev 435)
++++ Red.ProjectManager/trunk/src/Red.ProjectManager/Project.boo	2005-04-15 12:13:38 UTC (rev 436)
+@@ -77,7 +77,7 @@
+ 			dir = dir[:-1]
+ 		
+ 		files as IList = []
+-		for file as ProjectFile in Files:
++		for file as IProjectFile in Files:
+ 			dirname = System.IO.Path.GetDirectoryName (file.FullName)
+ 			files.Add (file) if dirname == dir
+ 		return files
+@@ -85,7 +85,7 @@
+ 	//Move this out of here
+ 	def GetFilesWithExtension (extensions as IList) as IList:
+ 		files as IList = []
+-		for file as ProjectFile in fileCollection.Values:
++		for file as IProjectFile in fileCollection.Values:
+ 			if Path.GetExtension (file.Name) in extensions:
+ 				files.Add (file)
+ 		return files
+@@ -93,7 +93,7 @@
+ 	//Move this out of here
+ 	def GetFilesWithoutExtension (extensions as IList) as IList:
+ 		files as IList = []
+-		for file as ProjectFile in fileCollection.Values:
++		for file as IProjectFile in fileCollection.Values:
+ 			if not (Path.GetExtension (file.Name) in extensions):
+ 				files.Add (file)
+ 		return files
+@@ -104,17 +104,17 @@
+ 		ContentsChanged (self, EventArgs.Empty) if ContentsChanged
+ 		Save ()
+ 
+-	def NewFile ([required]relPath as string) as ProjectFile:
++	def NewFile ([required]relPath as string) as IProjectFile:
+ 		fullPath = System.IO.Path.Combine (Location, relPath)
+ 		if File.Exists (fullPath):
+ 			raise ArgumentException (&quot;File already exists&quot;)
+ 		stream as FileStream = File.Create (fullPath)
+ 		stream.Close ()
+-		file as ProjectFile = Red.ProjectManager.ProjectFile(fullPath)
++		file as IProjectFile = Red.ProjectManager.ProjectFile(fullPath)
+ 		AddFile (file)
+ 		return file
+ 
+-	def AddFile ([required]file as ProjectFile):
++	def AddFile ([required]file as IProjectFile):
+ 		if not File.Exists (file.FullName):
+ 			raise FileNotFoundException (&quot;File does not exist&quot;, file.FullName)
+ 		fileCollection.Add (file.FullName, file)
+
+Modified: Red.ProjectManager/trunk/src/Red.ProjectManager/ProjectFile.boo
+===================================================================
+--- Red.ProjectManager/trunk/src/Red.ProjectManager/ProjectFile.boo	2005-04-14 22:32:11 UTC (rev 435)
++++ Red.ProjectManager/trunk/src/Red.ProjectManager/ProjectFile.boo	2005-04-15 12:13:38 UTC (rev 436)
+@@ -3,12 +3,19 @@
+ import System
+ import System.IO
+ 
+-class ProjectFile:
++class ProjectFile (IProjectFile):
+ 
+-	public Name as string	
+-	public FullName as string
++	_name as string
++	public Name as string:
++		get:
++			return _name
++			
++	_fullName as string
++	public FullName as string:
++		get:
++			return _fullName
+ 
+ 	def constructor (fullName as string):
+ 		assert fullName; assert Path.IsPathRooted (fullName)
+-		FullName = fullName
+-		Name = Path.GetFileName (fullName)
++		_fullName = fullName
++		_name = Path.GetFileName (fullName)
+
+Modified: Red.ProjectManager/trunk/src/Red.ProjectManager/ProjectNavigator.boo
+===================================================================
+--- Red.ProjectManager/trunk/src/Red.ProjectManager/ProjectNavigator.boo	2005-04-14 22:32:11 UTC (rev 435)
++++ Red.ProjectManager/trunk/src/Red.ProjectManager/ProjectNavigator.boo	2005-04-15 12:13:38 UTC (rev 436)
+@@ -15,7 +15,7 @@
+ import System.Collections
+ import System.IO
+ 
+-class ProjectNavigator:
++class ProjectNavigator (IProjectNavigator):
+ 
+ 	dirs = {}
+ 	sep = System.IO.Path.DirectorySeparatorChar
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000148.html">[Mspace-checkins] r435 - in Red.ProjectManager/trunk: . src/Red.ProjectManager
+</A></li>
+	<LI>Next message: <A HREF="000150.html">[Mspace-checkins] r437 - in Red.ProjectManager/trunk: . src src/Interface src/Red.ProjectManager
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#149">[ date ]</a>
+              <a href="thread.html#149">[ thread ]</a>
+              <a href="subject.html#149">[ subject ]</a>
+              <a href="author.html#149">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

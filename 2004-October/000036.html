@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r300 - in Chicken/trunk: . doc
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r300%20-%20in%20Chicken/trunk%3A%20.%20doc&In-Reply-To=%3C200410211541.i9LFfJa3022247%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000035.html">
+   <LINK REL="Next"  HREF="000037.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r300 - in Chicken/trunk: . doc</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r300%20-%20in%20Chicken/trunk%3A%20.%20doc&In-Reply-To=%3C200410211541.i9LFfJa3022247%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r300 - in Chicken/trunk: . doc">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Thu Oct 21 17:41:19 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000035.html">[Mspace-checkins] r299 - in monkeypop/trunk: . monkeypopd
+</A></li>
+        <LI>Next message: <A HREF="000037.html">[Mspace-checkins] r301 - WebNotes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#36">[ date ]</a>
+              <a href="thread.html#36">[ thread ]</a>
+              <a href="subject.html#36">[ subject ]</a>
+              <a href="author.html#36">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2004-10-21 17:41:18 +0200 (Thu, 21 Oct 2004)
+New Revision: 300
+
+Modified:
+   Chicken/trunk/ChangeLog
+   Chicken/trunk/configure.in
+   Chicken/trunk/doc/Makefile.am
+Log:
+2004-10-21  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+
+        * configure.in: cleaned
+        * doc/Makefile.am: Fixed dist-hook
+
+
+
+Modified: Chicken/trunk/ChangeLog
+===================================================================
+--- Chicken/trunk/ChangeLog	2004-10-21 15:11:02 UTC (rev 299)
++++ Chicken/trunk/ChangeLog	2004-10-21 15:41:18 UTC (rev 300)
+@@ -1,5 +1,10 @@
+ 2004-10-21  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
++	* configure.in: cleaned
++	* doc/Makefile.am: Fixed dist-hook
++
++2004-10-21  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
+ 	* src/Gnome/TrayIcon/libtrayicon/Makefile.am: removed -avoid-version
+ 	to solve packaging issues.
+ 
+
+Modified: Chicken/trunk/configure.in
+===================================================================
+--- Chicken/trunk/configure.in	2004-10-21 15:11:02 UTC (rev 299)
++++ Chicken/trunk/configure.in	2004-10-21 15:41:18 UTC (rev 300)
+@@ -8,9 +8,6 @@
+ 
+ # Checks for programs.
+ AC_PROG_INSTALL
+-#AC_PROG_CC
+-#AM_PROG_CC_STDC
+-AC_PROG_INSTALL
+ AM_PROG_LIBTOOL
+ 
+ # Checks for libraries.
+
+Modified: Chicken/trunk/doc/Makefile.am
+===================================================================
+--- Chicken/trunk/doc/Makefile.am	2004-10-21 15:11:02 UTC (rev 299)
++++ Chicken/trunk/doc/Makefile.am	2004-10-21 15:41:18 UTC (rev 300)
+@@ -1,5 +1,6 @@
+ ASSEMBLER = monodoc --assemble
+ UPDATER = monodoc --update
++NAMESPACES=Chicken.Configuration Chicken.Gnome.TrayIcon Chicken.Gnome.Notification Nini.Util Nini.Ini Nini.Config
+ 
+ all: assemble
+ 
+@@ -12,8 +13,12 @@
+ 	$(UPDATER) ../src/Chicken.dll -o ./en
+ 
+ dist-hook:
+-	mkdir -p $(distdir)/en	
+-	cp -a $(srcdir)/en/* $(distdir)/en
++	mkdir -p $(distdir)/en
++	cp en/*.xml $(distdir)/en/
++	for i in $(NAMESPACES); do				\
++		mkdir -p $(distdir)/en/$$i;			\
++		cp $(srcdir)/en/$$i/*.xml $(distdir)/en/$$i;	\
++	done
+ 
+ docsdir = $(libdir)/monodoc/sources
+ docs_DATA = chicken-framework.source chicken-framework.tree chicken-framework.zip
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000035.html">[Mspace-checkins] r299 - in monkeypop/trunk: . monkeypopd
+</A></li>
+	<LI>Next message: <A HREF="000037.html">[Mspace-checkins] r301 - WebNotes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#36">[ date ]</a>
+              <a href="thread.html#36">[ thread ]</a>
+              <a href="subject.html#36">[ subject ]</a>
+              <a href="author.html#36">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

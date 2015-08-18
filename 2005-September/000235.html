@@ -1,0 +1,581 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r522 - in ComponentModel/trunk: . lib lib/nunit src/ComponentModel src/ComponentModel/Container src/UnitTest src/UnitTest/Components src/UnitTest/Components/TestComponent src/UnitTest/Components/TestComponent/Bo src/UnitTest/Components/TestComponent/Exceptions src/UnitTest/Components/TestComponent/Form
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-September/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r522%20-%20in%20ComponentModel/trunk%3A%20.%20lib%20lib/nunit%20src/ComponentModel%20src/ComponentModel/Container%20src/UnitTest%20src/UnitTest/Components%20src/UnitTest/Components/TestComponent%20src/UnitTest/Components/TestComponent/Bo%20src/UnitTest/Components/TestComponent/Exceptions%20src/UnitTest/Components/TestComponent/Form&In-Reply-To=%3C200509271341.j8RDfNak013256%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000234.html">
+   <LINK REL="Next"  HREF="000236.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r522 - in ComponentModel/trunk: . lib lib/nunit src/ComponentModel src/ComponentModel/Container src/UnitTest src/UnitTest/Components src/UnitTest/Components/TestComponent src/UnitTest/Components/TestComponent/Bo src/UnitTest/Components/TestComponent/Exceptions src/UnitTest/Components/TestComponent/Form</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r522%20-%20in%20ComponentModel/trunk%3A%20.%20lib%20lib/nunit%20src/ComponentModel%20src/ComponentModel/Container%20src/UnitTest%20src/UnitTest/Components%20src/UnitTest/Components/TestComponent%20src/UnitTest/Components/TestComponent/Bo%20src/UnitTest/Components/TestComponent/Exceptions%20src/UnitTest/Components/TestComponent/Form&In-Reply-To=%3C200509271341.j8RDfNak013256%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r522 - in ComponentModel/trunk: . lib lib/nunit src/ComponentModel src/ComponentModel/Container src/UnitTest src/UnitTest/Components src/UnitTest/Components/TestComponent src/UnitTest/Components/TestComponent/Bo src/UnitTest/Components/TestComponent/Exceptions src/UnitTest/Components/TestComponent/Form">nestor at berlios.de
+       </A><BR>
+    <I>Tue Sep 27 15:41:23 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000234.html">[Mspace-checkins] r521 - ComponentModel/trunk
+</A></li>
+        <LI>Next message: <A HREF="000236.html">[Mspace-checkins] r523 - in ComponentModel/trunk/src: ComponentModel/Container UnitTest
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#235">[ date ]</a>
+              <a href="thread.html#235">[ thread ]</a>
+              <a href="subject.html#235">[ subject ]</a>
+              <a href="author.html#235">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-09-27 15:41:19 +0200 (Tue, 27 Sep 2005)
+New Revision: 522
+
+Added:
+   ComponentModel/trunk/lib/nunit/
+   ComponentModel/trunk/lib/nunit/license.rtf
+   ComponentModel/trunk/lib/nunit/nunit-console.exe
+   ComponentModel/trunk/lib/nunit/nunit-console.exe.config
+   ComponentModel/trunk/lib/nunit/nunit.core.dll
+   ComponentModel/trunk/lib/nunit/nunit.extensions.dll
+   ComponentModel/trunk/lib/nunit/nunit.framework.dll
+   ComponentModel/trunk/lib/nunit/nunit.mocks.dll
+   ComponentModel/trunk/lib/nunit/nunit.util.dll
+   ComponentModel/trunk/src/ComponentModel/Dto/
+   ComponentModel/trunk/src/UnitTest/Components/
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Bo/
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Bo/TestComponentComponentModel.cs
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Dto/
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Exceptions/
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Exceptions/TestComponentExceptionManager.cs
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/MainTestComponentForm.cs
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs
+   ComponentModel/trunk/src/UnitTest/DefaultContainerUnit.cs
+   ComponentModel/trunk/src/UnitTest/Launcher.cs
+Modified:
+   ComponentModel/trunk/ComponentModel.build
+   ComponentModel/trunk/lib/NLog.dll.nlog
+   ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs
+   ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs
+Log:
+Infraestructura y algunos test de ejemplo creados.
+
+Hay que terminar la primera pasada de tests de unidad.
+
+
+
+
+Modified: ComponentModel/trunk/ComponentModel.build
+===================================================================
+--- ComponentModel/trunk/ComponentModel.build	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/ComponentModel.build	2005-09-27 13:41:19 UTC (rev 522)
+@@ -34,6 +34,7 @@
+     &lt;property name=&quot;src_component&quot; value=&quot;${src}/ComponentModel&quot;/&gt;
+     &lt;property name=&quot;src_unit_test&quot; value=&quot;${src}/UnitTest&quot;/&gt;
+     &lt;property name=&quot;lib&quot; value=&quot;lib&quot;/&gt;
++    &lt;property name=&quot;lib_nunit&quot; value=&quot;${lib}/nunit&quot;/&gt;
+     &lt;!-- Other mspace components --&gt;
+     &lt;property name=&quot;components&quot; value=&quot;lib/components&quot;/&gt;
+     &lt;property name=&quot;doc&quot; value=&quot;doc&quot;/&gt;
+@@ -75,7 +76,7 @@
+     &lt;!-- Ejecuta el componente (Lo compila como un exe y luego lo ejecuta) --&gt;
+     &lt;!-- En este caso solo deber&#225; ejecutar los test de unidad--&gt;
+     &lt;target name=&quot;run&quot; depends=&quot;build&quot;&gt;
+-        &lt;csc target=&quot;exe&quot; output=&quot;${bin}/${component_name}UnitTest.exe&quot; debug=&quot;true&quot;
++        &lt;csc target=&quot;library&quot; output=&quot;${bin}/${component_name}UnitTest.dll&quot; debug=&quot;true&quot;
+         verbose=&quot;false&quot;&gt;
+             &lt;sources basedir=&quot;${src_unit_test}&quot;&gt;
+                 &lt;include name=&quot;**/*.cs&quot;/&gt;
+@@ -84,21 +85,25 @@
+                 &lt;include name=&quot;**/${lib}/*.dll&quot;/&gt;
+                 &lt;include name=&quot;**/${lib}/components/*.dll&quot;/&gt;
+                 &lt;include name=&quot;**/${bin}/*.dll&quot;/&gt;    
++                &lt;include name=&quot;**/${lib_nunit}/*.dll&quot;/&gt;
+             &lt;/references&gt;
+         &lt;/csc&gt;
+-          
+-        &lt;exec program=&quot;${bin}/${component_name}UnitTest.exe&quot; useruntimeengine=&quot;true&quot;&gt;
++        &lt;exec program=&quot;${lib_nunit}/nunit-console.exe&quot; useruntimeengine=&quot;true&quot;
++        verbose = &quot;false&quot;&gt;
++            &lt;!-- Esto se queda ahi temporalmente, se deber&#225; hacer que se meta a
++            resources/ComponentModelTest.xml--&gt;
++            &lt;arg line=&quot;/xml:ComponentModelTest.xml ${bin}/${component_name}UnitTest.dll&quot;/&gt;
+             &lt;environment&gt;
+                 &lt;variable name=&quot;MONO_PATH&quot;&gt;
+                     &lt;path&gt;
+                         &lt;pathelement file=&quot;${lib}&quot;/&gt;
+                         &lt;pathelement file=&quot;${components}&quot;/&gt;
+                         &lt;pathelement file=&quot;${bin}&quot;/&gt;
++                        &lt;pathelement file=&quot;${lib_nunit}&quot;/&gt;
+                     &lt;/path&gt;
+                 &lt;/variable&gt;
+             &lt;/environment&gt;
+         &lt;/exec&gt;
+-
+         &lt;tstamp/&gt;
+     &lt;/target&gt;
+ 
+
+Modified: ComponentModel/trunk/lib/NLog.dll.nlog
+===================================================================
+--- ComponentModel/trunk/lib/NLog.dll.nlog	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/lib/NLog.dll.nlog	2005-09-27 13:41:19 UTC (rev 522)
+@@ -3,6 +3,6 @@
+             &lt;appender name=&quot;debug&quot;  type=&quot;Console&quot; /&gt;
+         &lt;/appenders&gt;
+ 	&lt;rules&gt;
+-		&lt;logger name=&quot;*&quot; levels=&quot;Info,Warn,Debug&quot; appendTo=&quot;debug&quot;/&gt;
++		&lt;logger name=&quot;*&quot; levels=&quot;Info, Warn, Debug&quot; appendTo=&quot;debug&quot;/&gt;
+ 	&lt;/rules&gt;
+ &lt;/nlog&gt;
+
+Added: ComponentModel/trunk/lib/nunit/license.rtf
+===================================================================
+--- ComponentModel/trunk/lib/nunit/license.rtf	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/lib/nunit/license.rtf	2005-09-27 13:41:19 UTC (rev 522)
+@@ -0,0 +1,38 @@
++{\rtf1\ansi\ansicpg1252\uc1\deff0\stshfdbch13\stshfloch0\stshfhich0\stshfbi0\deflang1033\deflangfe1033{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}
++{\f2\fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Courier New;}{\f13\fnil\fcharset134\fprq2{\*\panose 02010600030101010101}SimSun{\*\falt ????\'a8\'ac??};}{\f36\fnil\fcharset134\fprq2{\*\panose 00000000000000000000}@SimSun;}
++{\f37\froman\fcharset238\fprq2 Times New Roman CE;}{\f38\froman\fcharset204\fprq2 Times New Roman Cyr;}{\f40\froman\fcharset161\fprq2 Times New Roman Greek;}{\f41\froman\fcharset162\fprq2 Times New Roman Tur;}
++{\f42\froman\fcharset177\fprq2 Times New Roman (Hebrew);}{\f43\froman\fcharset178\fprq2 Times New Roman (Arabic);}{\f44\froman\fcharset186\fprq2 Times New Roman Baltic;}{\f45\froman\fcharset163\fprq2 Times New Roman (Vietnamese);}
++{\f57\fmodern\fcharset238\fprq1 Courier New CE;}{\f58\fmodern\fcharset204\fprq1 Courier New Cyr;}{\f60\fmodern\fcharset161\fprq1 Courier New Greek;}{\f61\fmodern\fcharset162\fprq1 Courier New Tur;}{\f62\fmodern\fcharset177\fprq1 Courier New (Hebrew);}
++{\f63\fmodern\fcharset178\fprq1 Courier New (Arabic);}{\f64\fmodern\fcharset186\fprq1 Courier New Baltic;}{\f65\fmodern\fcharset163\fprq1 Courier New (Vietnamese);}}{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;
++\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;
++\red128\green128\blue128;\red192\green192\blue192;}{\stylesheet{\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe2052\loch\f0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp2052 \snext0 Normal;}{\*\cs10 
++\additive \ssemihidden Default Paragraph Font;}{\*\ts11\tsrowd\trftsWidthB3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\trcbpat1\trcfpat1\tscellwidthfts0\tsvertalt\tsbrdrt\tsbrdrl\tsbrdrb\tsbrdrr\tsbrdrdgl\tsbrdrdgr\tsbrdrh\tsbrdrv 
++\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1024\langfe1024\loch\f0\hich\af0\dbch\af13\cgrid\langnp1024\langfenp1024 \snext11 \ssemihidden Normal Table;}{
++\s15\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe2052\loch\f2\hich\af2\dbch\af13\cgrid\langnp1033\langfenp2052 \sbasedon0 \snext15 \styrsid9332467 Plain Text;}}{\*\rsidtbl \rsid610709\rsid818068
++\rsid7476632\rsid8721477\rsid9332467\rsid10426157\rsid11172945\rsid11871043\rsid15552035}{\*\generator Microsoft Word 10.0.3416;}{\info{\title Copyright (c) 2002 James W}{\author James Newkirk}{\operator Charlie}{\creatim\yr2002\mo9\dy11\hr14\min43}
++{\revtim\yr2004\mo5\dy15\hr15\min52}{\version7}{\edmins5}{\nofpages1}{\nofwords159}{\nofchars912}{\*\company Nascent Software, Inc.}{\nofcharsws1069}{\vern16453}}\margl1319\margr1319 
++\widowctrl\ftnbj\aenddoc\noxlattoyen\expshrtn\noultrlspc\dntblnsbdb\nospaceforul\hyphcaps0\formshade\horzdoc\dgmargin\dghspace180\dgvspace180\dghorigin1319\dgvorigin1440\dghshow1\dgvshow1
++\jexpand\viewkind1\viewscale120\pgbrdrhead\pgbrdrfoot\splytwnine\ftnlytwnine\htmautsp\nolnhtadjtbl\useltbaln\alntblind\lytcalctblwd\lyttblrtgr\lnbrkrule\nobrkwrptbl\snaptogridincell\allowfieldendsel\wrppunct\asianbrkrule\rsidroot15552035 \fet0\sectd 
++\linex0\endnhere\sectlinegrid360\sectdefaultcl\sectrsid9332467\sftnbj {\*\pnseclvl1\pnucrm\pnstart1\pnindent720\pnhang {\pntxta .}}{\*\pnseclvl2\pnucltr\pnstart1\pnindent720\pnhang {\pntxta .}}{\*\pnseclvl3\pndec\pnstart1\pnindent720\pnhang {\pntxta .}}
++{\*\pnseclvl4\pnlcltr\pnstart1\pnindent720\pnhang {\pntxta )}}{\*\pnseclvl5\pndec\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl6\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl7\pnlcrm\pnstart1\pnindent720\pnhang 
++{\pntxtb (}{\pntxta )}}{\*\pnseclvl8\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl9\pnlcrm\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}\pard\plain 
++\s15\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid9332467 \fs20\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\cgrid\langnp1033\langfenp2052 {\insrsid610709\charrsid9332467 \hich\af2\dbch\af13\loch\f2 Copyright }{
++\insrsid10426157 \loch\af2\dbch\af13\hich\f2 \'a9\loch\f2  }{\insrsid610709\charrsid9332467 \hich\af2\dbch\af13\loch\f2 2002}{\insrsid8721477 \hich\af2\dbch\af13\loch\f2 -200}{\insrsid11871043 \hich\af2\dbch\af13\loch\f2 4}{\insrsid610709\charrsid9332467 
++\hich\af2\dbch\af13\loch\f2  James W. Newkirk, Mich}{\insrsid7476632 \hich\af2\dbch\af13\loch\f2 ael C. Two, Alexei A. Vorontsov, Charlie Poole
++\par }{\insrsid11871043 \hich\af2\dbch\af13\loch\f2 \hich\f2 Copyright \'a9\loch\f2  2000-2004}{\insrsid610709\charrsid9332467 \hich\af2\dbch\af13\loch\f2  Philip A. Craig
++\par 
++\par \hich\af2\dbch\af13\loch\f2 This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
++\par 
++\par \hich\af2\dbch\af13\loch\f2 Permission is granted to anyone to use this software for any purpose, including \hich\af2\dbch\af13\loch\f2 commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
++\par 
++\par \hich\af2\dbch\af13\loch\f2 1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a p\hich\af2\dbch\af13\loch\f2 
++roduct, an acknowledgment (see the following) in the product documentation is required.
++\par 
++\par \hich\af2\dbch\af13\loch\f2 Portions Copyright }{\insrsid10426157 \loch\af2\dbch\af13\hich\f2 \'a9\loch\f2  2002}{\insrsid11871043 \hich\af2\dbch\af13\loch\f2 -2004}{\insrsid10426157 \hich\af2\dbch\af13\loch\f2  James W. Newkirk, }{
++\insrsid610709\charrsid9332467 \hich\af2\dbch\af13\loch\f2 Michael C. Two, Alexei A. Vorontsov, Charlie Poole or Copyright }{\insrsid10426157 \loch\af2\dbch\af13\hich\f2 \'a9}{\insrsid11871043 \hich\af2\dbch\af13\loch\f2  2000-2004}{
++\insrsid610709\charrsid9332467 \hich\af2\dbch\af13\loch\f2  Philip A. Craig
++\par 
++\par \hich\af2\dbch\af13\loch\f2 2. Altered source version\hich\af2\dbch\af13\loch\f2 s must be plainly marked as such, and must not be misrepresented as being the original software.
++\par 
++\par \hich\af2\dbch\af13\loch\f2 3. This notice may not be removed or altered from any source distribution.}{\insrsid9332467 
++\par }}
+\ No newline at end of file
+
+Added: ComponentModel/trunk/lib/nunit/nunit-console.exe
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/trunk/lib/nunit/nunit-console.exe
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: ComponentModel/trunk/lib/nunit/nunit-console.exe.config
+===================================================================
+--- ComponentModel/trunk/lib/nunit/nunit-console.exe.config	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/lib/nunit/nunit-console.exe.config	2005-09-27 13:41:19 UTC (rev 522)
+@@ -0,0 +1,92 @@
++&lt;?xml version=&quot;1.0&quot; encoding=&quot;Windows-1252&quot;?&gt;
++&lt;configuration&gt;
++    &lt;!--
++     Application settings for NUnit-console.exe. Do NOT put settings
++	 for use by your tests here.
++	--&gt;
++  &lt;appSettings&gt;
++
++	&lt;!--	Specify the location to be used by .NET for the cache --&gt;
++    &lt;add key=&quot;shadowfiles.path&quot; value=&quot;%temp%\nunit20\ShadowCopyCache&quot; /&gt;
++  
++  &lt;/appSettings&gt;
++  
++    &lt;!-- 
++     These statements specify the runtime versions supported
++     in the order that they will be used if more than one
++     is present. You can change the order of these if you like
++     or remove any that do not apply.
++	 
++	 Since .NET 1.0 does not recognize the &lt;supportedRuntime&gt; elements,
++	 a &lt;requiredRuntime&gt; element is used in case it is the only version
++	 of the framework that is installed.
++    --&gt;
++  &lt;startup&gt;
++
++	  &lt;supportedRuntime version=&quot;v1.1.4322&quot; /&gt;
++	  &lt;supportedRuntime version=&quot;v2.0.40607&quot; /&gt;
++	  &lt;supportedRuntime version=&quot;v1.0.3705&quot; /&gt;
++	
++	  &lt;requiredRuntime version=&quot;v1.0.3705&quot; /&gt;
++
++  &lt;/startup&gt;
++
++   &lt;!--
++    The following &lt;runtime&gt; section allows running nunit under 
++    .NET 1.0 by redirecting assemblies. The appliesTo attribute
++    causes the section to be ignored except under .NET 1.0version 1
++    on a machine with only the .NET version 1.0 runtime installed.
++    If application and its tests were built for .NET 1.1 you will
++    also need to redirect system assemblies in the test config file.
++   --&gt;
++  
++ &lt;runtime&gt;
++    
++    &lt;assemblyBinding xmlns=&quot;urn:schemas-microsoft-com:asm.v1&quot;
++			appliesTo=&quot;v1.0.3705&quot;&gt;
++
++      &lt;dependentAssembly&gt; 
++        &lt;assemblyIdentity name=&quot;System&quot; 
++                          publicKeyToken=&quot;b77a5c561934e089&quot; 
++                          culture=&quot;&quot;/&gt;
++        &lt;bindingRedirect  oldVersion=&quot;1.0.5000.0&quot; 
++                          newVersion=&quot;1.0.3300.0&quot;/&gt;
++      &lt;/dependentAssembly&gt;
++
++      &lt;dependentAssembly&gt; 
++        &lt;assemblyIdentity name=&quot;System.Data&quot; 
++                          publicKeyToken=&quot;b77a5c561934e089&quot; 
++                          culture=&quot;&quot;/&gt;
++        &lt;bindingRedirect  oldVersion=&quot;1.0.5000.0&quot; 
++                          newVersion=&quot;1.0.3300.0&quot;/&gt;
++      &lt;/dependentAssembly&gt;
++
++      &lt;dependentAssembly&gt; 
++        &lt;assemblyIdentity name=&quot;System.Drawing&quot; 
++                          publicKeyToken=&quot;b03f5f7f11d50a3a&quot; 
++                          culture=&quot;&quot;/&gt;
++        &lt;bindingRedirect  oldVersion=&quot;1.0.5000.0&quot; 
++                          newVersion=&quot;1.0.3300.0&quot;/&gt;
++      &lt;/dependentAssembly&gt;
++
++      &lt;dependentAssembly&gt; 
++        &lt;assemblyIdentity name=&quot;System.Windows.Forms&quot; 
++                          publicKeyToken=&quot;b77a5c561934e089&quot; 
++                          culture=&quot;&quot;/&gt;
++        &lt;bindingRedirect  oldVersion=&quot;1.0.5000.0&quot; 
++                          newVersion=&quot;1.0.3300.0&quot;/&gt;
++      &lt;/dependentAssembly&gt;
++
++      &lt;dependentAssembly&gt; 
++        &lt;assemblyIdentity name=&quot;System.Xml&quot; 
++                          publicKeyToken=&quot;b77a5c561934e089&quot; 
++                          culture=&quot;&quot;/&gt;
++        &lt;bindingRedirect  oldVersion=&quot;1.0.5000.0&quot; 
++                          newVersion=&quot;1.0.3300.0&quot;/&gt;
++      &lt;/dependentAssembly&gt;
++
++    &lt;/assemblyBinding&gt;
++
++  &lt;/runtime&gt;
++  
++&lt;/configuration&gt;
+\ No newline at end of file
+
+Added: ComponentModel/trunk/lib/nunit/nunit.core.dll
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/trunk/lib/nunit/nunit.core.dll
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: ComponentModel/trunk/lib/nunit/nunit.extensions.dll
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/trunk/lib/nunit/nunit.extensions.dll
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: ComponentModel/trunk/lib/nunit/nunit.framework.dll
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/trunk/lib/nunit/nunit.framework.dll
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: ComponentModel/trunk/lib/nunit/nunit.mocks.dll
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/trunk/lib/nunit/nunit.mocks.dll
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: ComponentModel/trunk/lib/nunit/nunit.util.dll
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/trunk/lib/nunit/nunit.util.dll
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Modified: ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs	2005-09-27 13:41:19 UTC (rev 522)
+@@ -38,6 +38,7 @@
+         Logger logger = LogManager.GetLogger (&quot;ComponentModel.Container.DefaultContainer&quot;);
+         
+         private DefaultContainer () {
++            Console.WriteLine (&quot;--- Babuine Component Model &amp; Babuine Framework Inicializated ----&quot;);
+             logger.Debug (&quot;Init DefaultContainer&quot;);
+             logger.Debug (&quot;Getting Relative Search Path: &quot; + AppDomain.CurrentDomain.RelativeSearchPath);
+             logger.Debug (&quot;Getting Dynamic Directory: &quot; + AppDomain.CurrentDomain.DynamicDirectory);
+
+Modified: ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs	2005-09-27 13:41:19 UTC (rev 522)
+@@ -116,6 +116,7 @@
+          * Este m&#233;todo no soporta la b&#250;squeda mediante la sobrecarga de m&#233;todos.
+          * 
+          */ 
++        /*
+         private MethodInfo GetMethodToExecute (string methodName, Type componentType) {
+             //Precondition: methodName != null &amp;&amp; methodName != String.Empty &amp;&amp;
+             //componentType != null
+@@ -131,7 +132,8 @@
+             //PostCondition: methodInfo != null
+             return methodInfo;
+         }
+-
++        */
++        
+         private MethodInfo GetMethodToExecute (string methodName, object[] parameters) {
+             return this.GetMethodToExecute (methodName, parameters, this.GetType ());
+         }
+
+Added: ComponentModel/trunk/src/UnitTest/Components/TestComponent/Bo/TestComponentComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Components/TestComponent/Bo/TestComponentComponentModel.cs	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/src/UnitTest/Components/TestComponent/Bo/TestComponentComponentModel.cs	2005-09-27 13:41:19 UTC (rev 522)
+@@ -0,0 +1,14 @@
++using System;
++using ComponentModel;
++
++namespace UnitTest.Components.TestComponent {
++    [Component (&quot;TestUnidad1&quot;, &quot;UnitTest.Components.TestComponent.Exceptions.TestComponentExceptionManager&quot;)]
++    public sealed class TestComponentComponentModel : DefaultComponentModel {
++        
++        [ComponentMethod (&quot;ResponseReturnValue&quot;,&quot;UnitTest.Components.TestComponent.Form.MainTestComponentForm&quot;)]
++        public int ReturnValue (int x) {
++            return x;
++        }
++
++    }
++}
+
+Added: ComponentModel/trunk/src/UnitTest/Components/TestComponent/Exceptions/TestComponentExceptionManager.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Components/TestComponent/Exceptions/TestComponentExceptionManager.cs	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/src/UnitTest/Components/TestComponent/Exceptions/TestComponentExceptionManager.cs	2005-09-27 13:41:19 UTC (rev 522)
+@@ -0,0 +1,13 @@
++using System;
++using ComponentModel.Interfaces;
++
++namespace UnitTest.Components.TestComponent {
++    public sealed class TestComponentExceptionManager : IExceptionManager {
++        public void ProcessException (Exception exception) {
++            Console.WriteLine (&quot;BEGIN EXCEPTION&quot;);
++            Console.WriteLine (&quot;Exception caught !! by &quot; + this.GetType ());
++            Console.WriteLine (exception.ToString ());
++            Console.WriteLine (&quot;END EXCEPTION&quot;);
++        }
++    }
++}
+
+Added: ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/MainTestComponentForm.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/MainTestComponentForm.cs	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/MainTestComponentForm.cs	2005-09-27 13:41:19 UTC (rev 522)
+@@ -0,0 +1,16 @@
++using System;
++using ComponentModel.Interfaces;
++
++namespace UnitTest.Components.TestComponent.Form {
++    public sealed class MainTestComponentForm : IViewHandler {
++        public IDataTransferObject GetDataForm () {
++            return null;
++        }
++
++        public void LoadDataForm (IDataTransferObject dto) {
++        }
++
++        public void ClearForm () {
++        }
++    }
++}
+
+Added: ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs	2005-09-27 13:41:19 UTC (rev 522)
+@@ -0,0 +1,48 @@
++using System;
++using ComponentModel.Container;
++using ComponentModel.Interfaces;
++using ComponentModel.VO;
++using NUnit.Framework;
++
++namespace UnitTest.Components.TestComponent {
++    /*
++     * Bater&#237;a de tests para este componente.
++     */
++    [TestFixture]
++    public sealed class TestComponentUnit {
++
++        [SetUp]
++        public void SetUp () {
++        }
++
++        [TearDown]
++        public void TearDown () {
++        }
++
++        /*A partir de aqui escribiremos los tests*/
++
++        [Test]
++        public void GetComponentFromContainer () {
++            Assert.IsNotNull (DefaultContainer.Instance.GetComponentByName (&quot;TestUnidad1&quot;));
++        }
++
++        [Test]
++        public void ExecutionNonRedirect () {
++            int x = 4;
++            ResponseMethodVO responseMethodVO;
++            int returnValue;
++            
++            IComponentModel componentModel = DefaultContainer.Instance.GetComponentByName (&quot;TestUnidad1&quot;);
++            responseMethodVO = componentModel.Execute (&quot;ReturnValue&quot;, new object[]{x}, false);
++            Assert.AreEqual (responseMethodVO.ExecutionSuccess, true);
++            Assert.IsNotNull (responseMethodVO.MethodResult);
++            if (responseMethodVO.ExecutionSuccess == true) {
++                returnValue = (int) responseMethodVO.MethodResult;    
++                Assert.AreEqual (returnValue, x);
++                //Al estar usando reflection, no creo que se devuelva la misma
++                //posici&#243;n de memoria.
++                //Assert.AreNotSame (returnValue, x);
++            }
++        }
++    }
++}
+
+Added: ComponentModel/trunk/src/UnitTest/DefaultContainerUnit.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/DefaultContainerUnit.cs	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/src/UnitTest/DefaultContainerUnit.cs	2005-09-27 13:41:19 UTC (rev 522)
+@@ -0,0 +1,27 @@
++using System;
++using ComponentModel.Container;
++using NUnit.Framework;
++
++namespace UnitTest {
++    /*
++     * Bater&#237;a de tests para este componente.
++     */
++    [TestFixture]
++    public sealed class DefaultContainerUnit {
++
++        [SetUp]
++        public void SetUp () {
++        }
++
++        [TearDown]
++        public void TearDown () {
++        }
++
++        /*A partir de aqui escribiremos los tests*/
++
++        [Test]
++        public void InitContainer () {
++            Assert.IsNotNull (DefaultContainer.Instance);
++        }
++    }
++}
+
+Added: ComponentModel/trunk/src/UnitTest/Launcher.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Launcher.cs	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/src/UnitTest/Launcher.cs	2005-09-27 13:41:19 UTC (rev 522)
+@@ -0,0 +1,22 @@
++using System;
++using NUnit.Framework;
++using NUnit.Core;
++using UnitTest.Components.TestComponent;
++
++namespace UnitTest {
++    /*
++     *  Contendr&#225; la suite para realizar los tests de unidad.
++     */
++    public sealed class Launcher {
++        [Suite]
++        public static TestSuite Suite {
++            get {
++                TestSuite suite = new TestSuite(&quot;All Tests&quot;);
++                suite.Add (new DefaultContainerUnit ());
++                suite.Add (new TestComponentUnit ());
++                return suite;
++            }
++        }
++        
++    }
++}
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000234.html">[Mspace-checkins] r521 - ComponentModel/trunk
+</A></li>
+	<LI>Next message: <A HREF="000236.html">[Mspace-checkins] r523 - in ComponentModel/trunk/src: ComponentModel/Container UnitTest
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#235">[ date ]</a>
+              <a href="thread.html#235">[ thread ]</a>
+              <a href="subject.html#235">[ subject ]</a>
+              <a href="author.html#235">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

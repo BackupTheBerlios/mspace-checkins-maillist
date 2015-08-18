@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r441 - in ComponentModel/releases: . doc doc/pre-alpha
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r441%20-%20in%20ComponentModel/releases%3A%20.%20doc%20doc/pre-alpha&In-Reply-To=%3C200504161535.j3GFZaJY003020%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000153.html">
+   <LINK REL="Next"  HREF="000155.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r441 - in ComponentModel/releases: . doc doc/pre-alpha</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r441%20-%20in%20ComponentModel/releases%3A%20.%20doc%20doc/pre-alpha&In-Reply-To=%3C200504161535.j3GFZaJY003020%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r441 - in ComponentModel/releases: . doc doc/pre-alpha">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Sat Apr 16 17:35:36 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000153.html">[Mspace-checkins] r440 - in Red.Components/trunk: . Project/Interface
+</A></li>
+        <LI>Next message: <A HREF="000155.html">[Mspace-checkins] r442 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container src/ComponentModel.Container.Dao src/ComponentModel.VO
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#154">[ date ]</a>
+              <a href="thread.html#154">[ thread ]</a>
+              <a href="subject.html#154">[ subject ]</a>
+              <a href="author.html#154">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-04-16 17:35:25 +0200 (Sat, 16 Apr 2005)
+New Revision: 441
+
+Added:
+   ComponentModel/releases/doc/
+   ComponentModel/releases/doc/motivations/
+   ComponentModel/releases/doc/pre-alpha/
+   ComponentModel/releases/doc/pre-alpha/requisitos.pdf
+   ComponentModel/releases/doc/pre-alpha/requisitos.tex
+Log:
+A?\195?\177adida documentaci?\195?\179n de la fase inicial del proyecto.
+
+
+Added: ComponentModel/releases/doc/pre-alpha/requisitos.pdf
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/releases/doc/pre-alpha/requisitos.pdf
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: ComponentModel/releases/doc/pre-alpha/requisitos.tex
+===================================================================
+--- ComponentModel/releases/doc/pre-alpha/requisitos.tex	2005-04-16 10:52:22 UTC (rev 440)
++++ ComponentModel/releases/doc/pre-alpha/requisitos.tex	2005-04-16 15:35:25 UTC (rev 441)
+@@ -0,0 +1,65 @@
++\documentclass{article}
++\usepackage[utf8]{inputenc}
++\usepackage[activeacute,spanish]{babel}
++\author{N&#233;stor Salceda}
++\title{MSpace ComponentModel 0.1}
++\date{\today}
++\begin{document}
++\maketitle
++\section{Propiedades y requisitos que cada componente software debe cumplir:}
++\begin{itemize}
++\item Cumplimiento del paradigma de la programaci&#243;n orientada a componentes
++software.
++\item Separaci&#243;n clara entre modelo, vista y controlador.
++\item Independencia entre componentes.
++\item &#191;Variaci&#243;n del comportamiento de un componente seg&#250;n una definici&#243;n
++exterior, sin modificar el c&#243;digo fuente?
++\item Estandarizaci&#243;n de la nomenclatura y de la jerarquia de clases interna de
++un componente.
++\end{itemize}
++\section{Propiedades de la framework para la versi&#243;n 0.1:}
++\begin{itemize}
++\item Localizaci&#243;n de los componentes por un nombre e identificador &#250;nico.
++\item Ejecuci&#243;n de los casos de uso de un componente din&#225;micamente.
++\item Posiblidad de redirecci&#243;n a la vista:
++\begin{itemize}
++\item Indicar manejo de la vista.
++\item Indicar que m&#233;todo rebe ser ejecutado en la vista como respuesta a un caso
++de uso.
++\item Indicar qu&#233; instancia de la vista se debe utilizar.
++\end{itemize}
++\item Posibilidad de llamar a m&#233;todos no bloqueantes.
++\item Concentraci&#243;n en el manejo de excepciones.
++\end{itemize}
++\section{Explicaci&#243;n de cada una de las propiedades:}
++\subsection{Localizaci&#243;n de componentes por nombre:}
++Para tener acceso a los servicios que nos brinda un componente se debe conseguir
++una instancia de dicho componente, para conseguir esta instancia se le pasar&#225; el
++nombre (identificador) de un componente.
++Una vez conseguida la instancia se provee una interface com&#250;n para el acceso a
++los servicios que ofrece el componente.
++\subsection{Ejecuci&#243;n de los m&#233;todos din&#225;micamente:}
++Resoluci&#243;n de los m&#233;todos a ejecutar en tiempo de ejecuci&#243;n, pudiendo variar el
++comportamiento de la ejecuci&#243;n de los casos de uso; seg&#250;n los par&#225;metros
++pasados.
++\subsection{Redirecci&#243;n a la vista:}
++Cuando ejecutamos un caso de uso del componente, se puede optar por redirigir a
++la vista la salida de ejecuci&#243;n de dicho caso de uso.  Al igual que a veces no
++tiene porqu&#233; ser necesario el redirigirlo a una vista.  Y tambi&#233;n se debe poder
++especificar a qu&#233; vista queremos que se le redirija.
++\subsection{M&#233;todos no bloqueantes:}
++Se trata de no esperar a que un m&#233;todo finalice su ejecuci&#243;n para poder
++proseguir con la siguiente ejecuci&#243;n.  Un ejemplo claro es la ejecuci&#243;n de un
++m&#233;todo en segundo plano.
++\subsection{Manejo de excepciones:}
++A trav&#233;s de un controlador de excepciones, todas las excepciones producidas de
++la ejecuci&#243;n de un m&#233;todo ser&#225;n redirigidas a un controlador de excepciones y
++desde ah&#237; exisitir&#225; un m&#233;todo com&#250;n de procesado de las excepciones.
++\section{Posibles propiedades de la framework en versiones futuras:}
++\begin{itemize}
++\item Acceso a los casos de uso mediante roles.
++\item Ejecuci&#243;n de los m&#233;todos y las respuestas de manera transaccional.
++\item M&#233;todos virtuales.
++\item Preejecuci&#243;n, postejecuci&#243;n e intercepci&#243;n de m&#233;todos.
++\end{itemize}
++\end{document}
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000153.html">[Mspace-checkins] r440 - in Red.Components/trunk: . Project/Interface
+</A></li>
+	<LI>Next message: <A HREF="000155.html">[Mspace-checkins] r442 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container src/ComponentModel.Container.Dao src/ComponentModel.VO
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#154">[ date ]</a>
+              <a href="thread.html#154">[ thread ]</a>
+              <a href="subject.html#154">[ subject ]</a>
+              <a href="author.html#154">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

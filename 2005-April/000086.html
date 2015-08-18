@@ -1,0 +1,1182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r373 - SimpleP/trunk/build
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r373%20-%20SimpleP/trunk/build&In-Reply-To=%3C200504041648.j34GmQiP013496%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000085.html">
+   <LINK REL="Next"  HREF="000087.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r373 - SimpleP/trunk/build</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r373%20-%20SimpleP/trunk/build&In-Reply-To=%3C200504041648.j34GmQiP013496%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r373 - SimpleP/trunk/build">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Mon Apr  4 18:48:26 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000085.html">[Mspace-checkins] r372 - in Red.ProjectManager/trunk: . build ext src/Red.ProjectManager
+</A></li>
+        <LI>Next message: <A HREF="000087.html">[Mspace-checkins] r374 - in ComponentModel/trunk/src: . ComponentModel.Container ComponentModel.Container.Dao ComponentModel.Interfaces ComponentModel.VO
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#86">[ date ]</a>
+              <a href="thread.html#86">[ thread ]</a>
+              <a href="subject.html#86">[ subject ]</a>
+              <a href="author.html#86">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-04 18:48:19 +0200 (Mon, 04 Apr 2005)
+New Revision: 373
+
+Removed:
+   SimpleP/trunk/build/Boo.dll
+   SimpleP/trunk/build/ICSharpCode.SharpZipLib.dll
+   SimpleP/trunk/build/NLog.dll
+   SimpleP/trunk/build/NLog.dll.nlog
+   SimpleP/trunk/build/Red.Gtk.dll
+   SimpleP/trunk/build/Red.ProjectManager.dll
+   SimpleP/trunk/build/Red.dll
+   SimpleP/trunk/build/SimpleP.exe
+   SimpleP/trunk/build/images/
+   SimpleP/trunk/build/report.log
+   SimpleP/trunk/build/simplep.glade
+Log:
+This should not be in the repository
+
+
+
+Deleted: SimpleP/trunk/build/Boo.dll
+===================================================================
+(Binary files differ)
+
+Deleted: SimpleP/trunk/build/ICSharpCode.SharpZipLib.dll
+===================================================================
+(Binary files differ)
+
+Deleted: SimpleP/trunk/build/NLog.dll
+===================================================================
+(Binary files differ)
+
+Deleted: SimpleP/trunk/build/NLog.dll.nlog
+===================================================================
+--- SimpleP/trunk/build/NLog.dll.nlog	2005-04-04 15:15:21 UTC (rev 372)
++++ SimpleP/trunk/build/NLog.dll.nlog	2005-04-04 16:48:19 UTC (rev 373)
+@@ -1,9 +0,0 @@
+-&lt;nlog&gt;
+-	&lt;appenders&gt;
+-            &lt;appender name=&quot;report&quot; type=&quot;File&quot; filename=&quot;report.log&quot; /&gt;
+-    &lt;/appenders&gt;
+-	&lt;rules&gt;
+-		&lt;logger name=&quot;*&quot; levels=&quot;Error&quot; appendTo=&quot;report&quot;/&gt;
+-		&lt;logger name=&quot;*&quot; levels=&quot;Info,Warn,Debug&quot; appendTo=&quot;debug&quot;/&gt;
+-	&lt;/rules&gt;
+-&lt;/nlog&gt;
+
+Deleted: SimpleP/trunk/build/Red.Gtk.dll
+===================================================================
+(Binary files differ)
+
+Deleted: SimpleP/trunk/build/Red.ProjectManager.dll
+===================================================================
+(Binary files differ)
+
+Deleted: SimpleP/trunk/build/Red.dll
+===================================================================
+(Binary files differ)
+
+Deleted: SimpleP/trunk/build/SimpleP.exe
+===================================================================
+(Binary files differ)
+
+Deleted: SimpleP/trunk/build/report.log
+===================================================================
+--- SimpleP/trunk/build/report.log	2005-04-04 15:15:21 UTC (rev 372)
++++ SimpleP/trunk/build/report.log	2005-04-04 16:48:19 UTC (rev 373)
+@@ -1,17 +0,0 @@
+-&#65279;2005-04-04 16:20:46.9697|ERROR|MainWindow|
+-Unhandled Exception:
+-
+-&#65279;2005-04-04 16:20:47.0086|ERROR|MainWindow|---------------------------------
+-&#65279;2005-04-04 16:20:47.0131|ERROR|MainWindow|
+- 
+-&#65279;2005-04-04 16:20:47.0174|ERROR|MainWindow|---------------------------------
+-&#65279;2005-04-04 16:20:47.0285|ERROR|MainWindow|
+-in &lt;0x00043&gt; SimpleP.AboutWindow:.ctor ()
+-in &lt;0x0001a&gt; SimpleP.MainWindow:AboutMenuClicked (System.Object sender, System.Object args)
+-in (wrapper delegate-invoke) System.MulticastDelegate:invoke_void_object_EventArgs (object,System.EventArgs)
+-in &lt;0x00096&gt; GLib.Signal:voidObjectCallback (IntPtr handle, IntPtr gch)
+-in (wrapper native-to-managed) GLib.Signal:voidObjectCallback (intptr,intptr)
+-in &lt;0x00000&gt; &lt;unknown method&gt;
+-in (wrapper managed-to-native) Gtk.Application:gtk_main ()
+-in &lt;0x00007&gt; Gtk.Application:Run ()
+-in &lt;0x00104&gt; SimpleP.RunModule:Main (System.String[] argv)
+
+Deleted: SimpleP/trunk/build/simplep.glade
+===================================================================
+--- SimpleP/trunk/build/simplep.glade	2005-04-04 15:15:21 UTC (rev 372)
++++ SimpleP/trunk/build/simplep.glade	2005-04-04 16:48:19 UTC (rev 373)
+@@ -1,1028 +0,0 @@
+-&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt; &lt;!--*- mode: xml -*--&gt;
+-&lt;!DOCTYPE glade-interface SYSTEM &quot;<A HREF="http://glade.gnome.org/glade-2.0.dtd">http://glade.gnome.org/glade-2.0.dtd</A>&quot;&gt;
+-
+-&lt;glade-interface&gt;
+-
+-&lt;widget class=&quot;GtkWindow&quot; id=&quot;projectManagerWindow&quot;&gt;
+-  &lt;property name=&quot;width_request&quot;&gt;450&lt;/property&gt;
+-  &lt;property name=&quot;height_request&quot;&gt;350&lt;/property&gt;
+-  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-  &lt;property name=&quot;title&quot; translatable=&quot;yes&quot;&gt;R Project Manager&lt;/property&gt;
+-  &lt;property name=&quot;type&quot;&gt;GTK_WINDOW_TOPLEVEL&lt;/property&gt;
+-  &lt;property name=&quot;window_position&quot;&gt;GTK_WIN_POS_NONE&lt;/property&gt;
+-  &lt;property name=&quot;modal&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;resizable&quot;&gt;True&lt;/property&gt;
+-  &lt;property name=&quot;destroy_with_parent&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;decorated&quot;&gt;True&lt;/property&gt;
+-  &lt;property name=&quot;skip_taskbar_hint&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;skip_pager_hint&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;type_hint&quot;&gt;GDK_WINDOW_TYPE_HINT_NORMAL&lt;/property&gt;
+-  &lt;property name=&quot;gravity&quot;&gt;GDK_GRAVITY_NORTH_WEST&lt;/property&gt;
+-  &lt;property name=&quot;focus_on_map&quot;&gt;True&lt;/property&gt;
+-
+-  &lt;child&gt;
+-    &lt;widget class=&quot;GtkVBox&quot; id=&quot;vbox1&quot;&gt;
+-      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-      &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
+-      &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
+-
+-      &lt;child&gt;
+-	&lt;widget class=&quot;GtkMenuBar&quot; id=&quot;menubar&quot;&gt;
+-	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkMenuItem&quot; id=&quot;file1&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;_File&lt;/property&gt;
+-	      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-
+-	      &lt;child&gt;
+-		&lt;widget class=&quot;GtkMenu&quot; id=&quot;file1_menu&quot;&gt;
+-
+-		  &lt;child&gt;
+-		    &lt;widget class=&quot;GtkImageMenuItem&quot; id=&quot;new3&quot;&gt;
+-		      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;_New&lt;/property&gt;
+-		      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-		      &lt;signal name=&quot;activate&quot; handler=&quot;NewFileMenuClicked&quot; last_modification_time=&quot;Fri, 25 Mar 2005 20:32:32 GMT&quot;/&gt;
+-
+-		      &lt;child internal-child=&quot;image&quot;&gt;
+-			&lt;widget class=&quot;GtkImage&quot; id=&quot;image110&quot;&gt;
+-			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-			  &lt;property name=&quot;stock&quot;&gt;gtk-new&lt;/property&gt;
+-			  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+-			  &lt;property name=&quot;xalign&quot;&gt;0.5&lt;/property&gt;
+-			  &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
+-			  &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
+-			  &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
+-			&lt;/widget&gt;
+-		      &lt;/child&gt;
+-		    &lt;/widget&gt;
+-		  &lt;/child&gt;
+-		&lt;/widget&gt;
+-	      &lt;/child&gt;
+-	    &lt;/widget&gt;
+-	  &lt;/child&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkMenuItem&quot; id=&quot;projectMenu&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;_Project&lt;/property&gt;
+-	      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-
+-	      &lt;child&gt;
+-		&lt;widget class=&quot;GtkMenu&quot; id=&quot;projectMenu_menu&quot;&gt;
+-
+-		  &lt;child&gt;
+-		    &lt;widget class=&quot;GtkImageMenuItem&quot; id=&quot;new2&quot;&gt;
+-		      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;_New&lt;/property&gt;
+-		      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-		      &lt;signal name=&quot;activate&quot; handler=&quot;NewProjectMenuClicked&quot; last_modification_time=&quot;Fri, 25 Mar 2005 20:31:38 GMT&quot;/&gt;
+-
+-		      &lt;child internal-child=&quot;image&quot;&gt;
+-			&lt;widget class=&quot;GtkImage&quot; id=&quot;image111&quot;&gt;
+-			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-			  &lt;property name=&quot;stock&quot;&gt;gtk-new&lt;/property&gt;
+-			  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+-			  &lt;property name=&quot;xalign&quot;&gt;0.5&lt;/property&gt;
+-			  &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
+-			  &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
+-			  &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
+-			&lt;/widget&gt;
+-		      &lt;/child&gt;
+-		    &lt;/widget&gt;
+-		  &lt;/child&gt;
+-
+-		  &lt;child&gt;
+-		    &lt;widget class=&quot;GtkImageMenuItem&quot; id=&quot;open2&quot;&gt;
+-		      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;_Open&lt;/property&gt;
+-		      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-		      &lt;signal name=&quot;activate&quot; handler=&quot;OpenMenuClicked&quot; last_modification_time=&quot;Thu, 24 Mar 2005 17:47:04 GMT&quot;/&gt;
+-
+-		      &lt;child internal-child=&quot;image&quot;&gt;
+-			&lt;widget class=&quot;GtkImage&quot; id=&quot;image112&quot;&gt;
+-			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-			  &lt;property name=&quot;stock&quot;&gt;gtk-open&lt;/property&gt;
+-			  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+-			  &lt;property name=&quot;xalign&quot;&gt;0.5&lt;/property&gt;
+-			  &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
+-			  &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
+-			  &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
+-			&lt;/widget&gt;
+-		      &lt;/child&gt;
+-		    &lt;/widget&gt;
+-		  &lt;/child&gt;
+-
+-		  &lt;child&gt;
+-		    &lt;widget class=&quot;GtkSeparatorMenuItem&quot; id=&quot;separator1&quot;&gt;
+-		      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		    &lt;/widget&gt;
+-		  &lt;/child&gt;
+-
+-		  &lt;child&gt;
+-		    &lt;widget class=&quot;GtkImageMenuItem&quot; id=&quot;remove_project1&quot;&gt;
+-		      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;_Remove project&lt;/property&gt;
+-		      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-		      &lt;signal name=&quot;activate&quot; handler=&quot;RemoveProjectClicked&quot; last_modification_time=&quot;Mon, 04 Apr 2005 12:25:38 GMT&quot;/&gt;
+-
+-		      &lt;child internal-child=&quot;image&quot;&gt;
+-			&lt;widget class=&quot;GtkImage&quot; id=&quot;image113&quot;&gt;
+-			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-			  &lt;property name=&quot;stock&quot;&gt;gtk-delete&lt;/property&gt;
+-			  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+-			  &lt;property name=&quot;xalign&quot;&gt;0.5&lt;/property&gt;
+-			  &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
+-			  &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
+-			  &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
+-			&lt;/widget&gt;
+-		      &lt;/child&gt;
+-		    &lt;/widget&gt;
+-		  &lt;/child&gt;
+-
+-		  &lt;child&gt;
+-		    &lt;widget class=&quot;GtkImageMenuItem&quot; id=&quot;import_files1&quot;&gt;
+-		      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;_Import files&lt;/property&gt;
+-		      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-		      &lt;signal name=&quot;activate&quot; handler=&quot;ImportProjectFilesClicked&quot; last_modification_time=&quot;Sat, 26 Mar 2005 18:33:55 GMT&quot;/&gt;
+-
+-		      &lt;child internal-child=&quot;image&quot;&gt;
+-			&lt;widget class=&quot;GtkImage&quot; id=&quot;image114&quot;&gt;
+-			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-			  &lt;property name=&quot;stock&quot;&gt;gtk-refresh&lt;/property&gt;
+-			  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+-			  &lt;property name=&quot;xalign&quot;&gt;0.5&lt;/property&gt;
+-			  &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
+-			  &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
+-			  &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
+-			&lt;/widget&gt;
+-		      &lt;/child&gt;
+-		    &lt;/widget&gt;
+-		  &lt;/child&gt;
+-
+-		  &lt;child&gt;
+-		    &lt;widget class=&quot;GtkImageMenuItem&quot; id=&quot;clear1&quot;&gt;
+-		      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;_Clear&lt;/property&gt;
+-		      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-		      &lt;signal name=&quot;activate&quot; handler=&quot;ClearProjectClicked&quot; last_modification_time=&quot;Sat, 26 Mar 2005 19:43:27 GMT&quot;/&gt;
+-
+-		      &lt;child internal-child=&quot;image&quot;&gt;
+-			&lt;widget class=&quot;GtkImage&quot; id=&quot;image115&quot;&gt;
+-			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-			  &lt;property name=&quot;stock&quot;&gt;gtk-clear&lt;/property&gt;
+-			  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+-			  &lt;property name=&quot;xalign&quot;&gt;0.5&lt;/property&gt;
+-			  &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
+-			  &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
+-			  &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
+-			&lt;/widget&gt;
+-		      &lt;/child&gt;
+-		    &lt;/widget&gt;
+-		  &lt;/child&gt;
+-		&lt;/widget&gt;
+-	      &lt;/child&gt;
+-	    &lt;/widget&gt;
+-	  &lt;/child&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkMenuItem&quot; id=&quot;contextMenues&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;Contexts&lt;/property&gt;
+-	      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-	    &lt;/widget&gt;
+-	  &lt;/child&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkMenuItem&quot; id=&quot;menuitem4&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;_Help&lt;/property&gt;
+-	      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-
+-	      &lt;child&gt;
+-		&lt;widget class=&quot;GtkMenu&quot; id=&quot;menuitem4_menu&quot;&gt;
+-
+-		  &lt;child&gt;
+-		    &lt;widget class=&quot;GtkImageMenuItem&quot; id=&quot;about1&quot;&gt;
+-		      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;_About&lt;/property&gt;
+-		      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-		      &lt;signal name=&quot;activate&quot; handler=&quot;AboutMenuClicked&quot; last_modification_time=&quot;Thu, 24 Mar 2005 17:47:04 GMT&quot;/&gt;
+-
+-		      &lt;child internal-child=&quot;image&quot;&gt;
+-			&lt;widget class=&quot;GtkImage&quot; id=&quot;image116&quot;&gt;
+-			  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-			  &lt;property name=&quot;stock&quot;&gt;gtk-about&lt;/property&gt;
+-			  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+-			  &lt;property name=&quot;xalign&quot;&gt;0.5&lt;/property&gt;
+-			  &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
+-			  &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
+-			  &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
+-			&lt;/widget&gt;
+-		      &lt;/child&gt;
+-		    &lt;/widget&gt;
+-		  &lt;/child&gt;
+-		&lt;/widget&gt;
+-	      &lt;/child&gt;
+-	    &lt;/widget&gt;
+-	  &lt;/child&gt;
+-	&lt;/widget&gt;
+-	&lt;packing&gt;
+-	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-	  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
+-	  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
+-	&lt;/packing&gt;
+-      &lt;/child&gt;
+-
+-      &lt;child&gt;
+-	&lt;widget class=&quot;GtkHPaned&quot; id=&quot;hpaned1&quot;&gt;
+-	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;position&quot;&gt;160&lt;/property&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkVBox&quot; id=&quot;vbox5&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
+-
+-	      &lt;child&gt;
+-		&lt;widget class=&quot;GtkComboBox&quot; id=&quot;projectCombo&quot;&gt;
+-		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;items&quot; translatable=&quot;yes&quot;&gt;&lt;/property&gt;
+-		  &lt;property name=&quot;add_tearoffs&quot;&gt;False&lt;/property&gt;
+-		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
+-		&lt;/widget&gt;
+-		&lt;packing&gt;
+-		  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-		  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
+-		  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
+-		&lt;/packing&gt;
+-	      &lt;/child&gt;
+-
+-	      &lt;child&gt;
+-		&lt;widget class=&quot;GtkVBox&quot; id=&quot;treeViewBox&quot;&gt;
+-		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
+-		  &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
+-
+-		  &lt;child&gt;
+-		    &lt;placeholder/&gt;
+-		  &lt;/child&gt;
+-		&lt;/widget&gt;
+-		&lt;packing&gt;
+-		  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-		  &lt;property name=&quot;expand&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
+-		&lt;/packing&gt;
+-	      &lt;/child&gt;
+-	    &lt;/widget&gt;
+-	    &lt;packing&gt;
+-	      &lt;property name=&quot;shrink&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;resize&quot;&gt;False&lt;/property&gt;
+-	    &lt;/packing&gt;
+-	  &lt;/child&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkVBox&quot; id=&quot;itemViewBox&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
+-
+-	      &lt;child&gt;
+-		&lt;placeholder/&gt;
+-	      &lt;/child&gt;
+-	    &lt;/widget&gt;
+-	    &lt;packing&gt;
+-	      &lt;property name=&quot;shrink&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;resize&quot;&gt;True&lt;/property&gt;
+-	    &lt;/packing&gt;
+-	  &lt;/child&gt;
+-	&lt;/widget&gt;
+-	&lt;packing&gt;
+-	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-	  &lt;property name=&quot;expand&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
+-	&lt;/packing&gt;
+-      &lt;/child&gt;
+-
+-      &lt;child&gt;
+-	&lt;widget class=&quot;GtkStatusbar&quot; id=&quot;statusbar&quot;&gt;
+-	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;has_resize_grip&quot;&gt;True&lt;/property&gt;
+-	&lt;/widget&gt;
+-	&lt;packing&gt;
+-	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-	  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
+-	  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
+-	&lt;/packing&gt;
+-      &lt;/child&gt;
+-    &lt;/widget&gt;
+-  &lt;/child&gt;
+-&lt;/widget&gt;
+-
+-&lt;widget class=&quot;GtkWindow&quot; id=&quot;newProjectWindow&quot;&gt;
+-  &lt;property name=&quot;width_request&quot;&gt;429&lt;/property&gt;
+-  &lt;property name=&quot;height_request&quot;&gt;197&lt;/property&gt;
+-  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-  &lt;property name=&quot;title&quot; translatable=&quot;yes&quot;&gt;New Project&lt;/property&gt;
+-  &lt;property name=&quot;type&quot;&gt;GTK_WINDOW_TOPLEVEL&lt;/property&gt;
+-  &lt;property name=&quot;window_position&quot;&gt;GTK_WIN_POS_CENTER&lt;/property&gt;
+-  &lt;property name=&quot;modal&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;resizable&quot;&gt;True&lt;/property&gt;
+-  &lt;property name=&quot;destroy_with_parent&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;decorated&quot;&gt;True&lt;/property&gt;
+-  &lt;property name=&quot;skip_taskbar_hint&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;skip_pager_hint&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;type_hint&quot;&gt;GDK_WINDOW_TYPE_HINT_NORMAL&lt;/property&gt;
+-  &lt;property name=&quot;gravity&quot;&gt;GDK_GRAVITY_NORTH_WEST&lt;/property&gt;
+-  &lt;property name=&quot;focus_on_map&quot;&gt;True&lt;/property&gt;
+-
+-  &lt;child&gt;
+-    &lt;widget class=&quot;GtkVBox&quot; id=&quot;vbox3&quot;&gt;
+-      &lt;property name=&quot;border_width&quot;&gt;12&lt;/property&gt;
+-      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-      &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
+-      &lt;property name=&quot;spacing&quot;&gt;6&lt;/property&gt;
+-
+-      &lt;child&gt;
+-	&lt;widget class=&quot;GtkTable&quot; id=&quot;table1&quot;&gt;
+-	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;n_rows&quot;&gt;2&lt;/property&gt;
+-	  &lt;property name=&quot;n_columns&quot;&gt;2&lt;/property&gt;
+-	  &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
+-	  &lt;property name=&quot;row_spacing&quot;&gt;6&lt;/property&gt;
+-	  &lt;property name=&quot;column_spacing&quot;&gt;6&lt;/property&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkLabel&quot; id=&quot;label1&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;Project name:&lt;/property&gt;
+-	      &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;use_markup&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_LEFT&lt;/property&gt;
+-	      &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;xalign&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
+-	      &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
+-	      &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
+-	      &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
+-	    &lt;/widget&gt;
+-	    &lt;packing&gt;
+-	      &lt;property name=&quot;left_attach&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;right_attach&quot;&gt;1&lt;/property&gt;
+-	      &lt;property name=&quot;top_attach&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;bottom_attach&quot;&gt;1&lt;/property&gt;
+-	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
+-	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
+-	    &lt;/packing&gt;
+-	  &lt;/child&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;projectNameEntry&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;tooltip&quot; translatable=&quot;yes&quot;&gt;Type here the name of your project.&lt;/property&gt;
+-	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;has_focus&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;visibility&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;max_length&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;text&quot; translatable=&quot;yes&quot;&gt;Project1&lt;/property&gt;
+-	      &lt;property name=&quot;has_frame&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;invisible_char&quot;&gt;*&lt;/property&gt;
+-	      &lt;property name=&quot;activates_default&quot;&gt;False&lt;/property&gt;
+-	    &lt;/widget&gt;
+-	    &lt;packing&gt;
+-	      &lt;property name=&quot;left_attach&quot;&gt;1&lt;/property&gt;
+-	      &lt;property name=&quot;right_attach&quot;&gt;2&lt;/property&gt;
+-	      &lt;property name=&quot;top_attach&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;bottom_attach&quot;&gt;1&lt;/property&gt;
+-	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
+-	    &lt;/packing&gt;
+-	  &lt;/child&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkLabel&quot; id=&quot;label2&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;Project directory:&lt;/property&gt;
+-	      &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;use_markup&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_LEFT&lt;/property&gt;
+-	      &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;xalign&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
+-	      &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
+-	      &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
+-	      &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
+-	    &lt;/widget&gt;
+-	    &lt;packing&gt;
+-	      &lt;property name=&quot;left_attach&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;right_attach&quot;&gt;1&lt;/property&gt;
+-	      &lt;property name=&quot;top_attach&quot;&gt;1&lt;/property&gt;
+-	      &lt;property name=&quot;bottom_attach&quot;&gt;2&lt;/property&gt;
+-	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
+-	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
+-	    &lt;/packing&gt;
+-	  &lt;/child&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkHBox&quot; id=&quot;hbox1&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;spacing&quot;&gt;4&lt;/property&gt;
+-
+-	      &lt;child&gt;
+-		&lt;widget class=&quot;GtkEntry&quot; id=&quot;projectDirEntry&quot;&gt;
+-		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;tooltip&quot; translatable=&quot;yes&quot;&gt;Choose the directory of your project.&lt;/property&gt;
+-		  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;visibility&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;max_length&quot;&gt;0&lt;/property&gt;
+-		  &lt;property name=&quot;text&quot; translatable=&quot;yes&quot;&gt;&lt;/property&gt;
+-		  &lt;property name=&quot;has_frame&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;invisible_char&quot;&gt;*&lt;/property&gt;
+-		  &lt;property name=&quot;activates_default&quot;&gt;False&lt;/property&gt;
+-		&lt;/widget&gt;
+-		&lt;packing&gt;
+-		  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-		  &lt;property name=&quot;expand&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
+-		&lt;/packing&gt;
+-	      &lt;/child&gt;
+-
+-	      &lt;child&gt;
+-		&lt;widget class=&quot;GtkButton&quot; id=&quot;chooserButton&quot;&gt;
+-		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;...&lt;/property&gt;
+-		  &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+-		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
+-		  &lt;signal name=&quot;clicked&quot; handler=&quot;ChooserButtonClicked&quot; last_modification_time=&quot;Fri, 25 Mar 2005 12:02:02 GMT&quot;/&gt;
+-		&lt;/widget&gt;
+-		&lt;packing&gt;
+-		  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-		  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
+-		  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
+-		&lt;/packing&gt;
+-	      &lt;/child&gt;
+-	    &lt;/widget&gt;
+-	    &lt;packing&gt;
+-	      &lt;property name=&quot;left_attach&quot;&gt;1&lt;/property&gt;
+-	      &lt;property name=&quot;right_attach&quot;&gt;2&lt;/property&gt;
+-	      &lt;property name=&quot;top_attach&quot;&gt;1&lt;/property&gt;
+-	      &lt;property name=&quot;bottom_attach&quot;&gt;2&lt;/property&gt;
+-	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
+-	      &lt;property name=&quot;y_options&quot;&gt;fill&lt;/property&gt;
+-	    &lt;/packing&gt;
+-	  &lt;/child&gt;
+-	&lt;/widget&gt;
+-	&lt;packing&gt;
+-	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-	  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
+-	  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
+-	&lt;/packing&gt;
+-      &lt;/child&gt;
+-
+-      &lt;child&gt;
+-	&lt;widget class=&quot;GtkVBox&quot; id=&quot;vbox4&quot;&gt;
+-	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
+-	  &lt;property name=&quot;spacing&quot;&gt;6&lt;/property&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkCheckButton&quot; id=&quot;importCheckButton&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;Import existing files&lt;/property&gt;
+-	      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+-	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;active&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;inconsistent&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;draw_indicator&quot;&gt;True&lt;/property&gt;
+-	    &lt;/widget&gt;
+-	    &lt;packing&gt;
+-	      &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
+-	    &lt;/packing&gt;
+-	  &lt;/child&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkHBox&quot; id=&quot;hbox2&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;spacing&quot;&gt;18&lt;/property&gt;
+-
+-	      &lt;child&gt;
+-		&lt;widget class=&quot;GtkLabel&quot; id=&quot;label3&quot;&gt;
+-		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;Files to import:&lt;/property&gt;
+-		  &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
+-		  &lt;property name=&quot;use_markup&quot;&gt;False&lt;/property&gt;
+-		  &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_LEFT&lt;/property&gt;
+-		  &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
+-		  &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
+-		  &lt;property name=&quot;xalign&quot;&gt;0.5&lt;/property&gt;
+-		  &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
+-		  &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
+-		  &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
+-		  &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
+-		  &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
+-		  &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
+-		  &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
+-		&lt;/widget&gt;
+-		&lt;packing&gt;
+-		  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-		  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
+-		  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
+-		&lt;/packing&gt;
+-	      &lt;/child&gt;
+-
+-	      &lt;child&gt;
+-		&lt;widget class=&quot;GtkEntry&quot; id=&quot;fileImportEntry&quot;&gt;
+-		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;tooltip&quot; translatable=&quot;yes&quot;&gt;Add all the file extensions you want. Each file extension must be separated by a white space.&lt;/property&gt;
+-		  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;visibility&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;max_length&quot;&gt;0&lt;/property&gt;
+-		  &lt;property name=&quot;text&quot; translatable=&quot;yes&quot;&gt;boo cs java c cpp py pl&lt;/property&gt;
+-		  &lt;property name=&quot;has_frame&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;invisible_char&quot;&gt;*&lt;/property&gt;
+-		  &lt;property name=&quot;activates_default&quot;&gt;False&lt;/property&gt;
+-		&lt;/widget&gt;
+-		&lt;packing&gt;
+-		  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-		  &lt;property name=&quot;expand&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
+-		&lt;/packing&gt;
+-	      &lt;/child&gt;
+-	    &lt;/widget&gt;
+-	    &lt;packing&gt;
+-	      &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
+-	    &lt;/packing&gt;
+-	  &lt;/child&gt;
+-	&lt;/widget&gt;
+-	&lt;packing&gt;
+-	  &lt;property name=&quot;padding&quot;&gt;14&lt;/property&gt;
+-	  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
+-	  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
+-	&lt;/packing&gt;
+-      &lt;/child&gt;
+-
+-      &lt;child&gt;
+-	&lt;widget class=&quot;GtkHButtonBox&quot; id=&quot;hbuttonbox1&quot;&gt;
+-	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;layout_style&quot;&gt;GTK_BUTTONBOX_END&lt;/property&gt;
+-	  &lt;property name=&quot;spacing&quot;&gt;6&lt;/property&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkButton&quot; id=&quot;button2&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;label&quot;&gt;gtk-cancel&lt;/property&gt;
+-	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+-	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
+-	      &lt;signal name=&quot;clicked&quot; handler=&quot;OnCancelClicked&quot; last_modification_time=&quot;Fri, 25 Mar 2005 18:42:30 GMT&quot;/&gt;
+-	    &lt;/widget&gt;
+-	  &lt;/child&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkButton&quot; id=&quot;button3&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;label&quot;&gt;gtk-ok&lt;/property&gt;
+-	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+-	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
+-	      &lt;signal name=&quot;clicked&quot; handler=&quot;OnOkClicked&quot; last_modification_time=&quot;Fri, 25 Mar 2005 18:41:49 GMT&quot;/&gt;
+-	    &lt;/widget&gt;
+-	  &lt;/child&gt;
+-	&lt;/widget&gt;
+-	&lt;packing&gt;
+-	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-	  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
+-	  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
+-	&lt;/packing&gt;
+-      &lt;/child&gt;
+-    &lt;/widget&gt;
+-  &lt;/child&gt;
+-&lt;/widget&gt;
+-
+-&lt;widget class=&quot;GtkMenu&quot; id=&quot;fileOperationsMenu&quot;&gt;
+-
+-  &lt;child&gt;
+-    &lt;widget class=&quot;GtkMenuItem&quot; id=&quot;remove_from_project1&quot;&gt;
+-      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;Remove from project&lt;/property&gt;
+-      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-      &lt;signal name=&quot;activate&quot; handler=&quot;RemoveFromProjectClicked&quot; last_modification_time=&quot;Wed, 30 Mar 2005 13:34:52 GMT&quot;/&gt;
+-    &lt;/widget&gt;
+-  &lt;/child&gt;
+-
+-  &lt;child&gt;
+-    &lt;widget class=&quot;GtkImageMenuItem&quot; id=&quot;remove_from_disk1&quot;&gt;
+-      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;Remove from disk&lt;/property&gt;
+-      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-      &lt;signal name=&quot;activate&quot; handler=&quot;RemoveFromDiskClicked&quot; last_modification_time=&quot;Wed, 30 Mar 2005 13:35:03 GMT&quot;/&gt;
+-
+-      &lt;child internal-child=&quot;image&quot;&gt;
+-	&lt;widget class=&quot;GtkImage&quot; id=&quot;image56&quot;&gt;
+-	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;stock&quot;&gt;gtk-harddisk&lt;/property&gt;
+-	  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+-	  &lt;property name=&quot;xalign&quot;&gt;0.5&lt;/property&gt;
+-	  &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
+-	  &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
+-	  &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
+-	&lt;/widget&gt;
+-      &lt;/child&gt;
+-    &lt;/widget&gt;
+-  &lt;/child&gt;
+-
+-  &lt;child&gt;
+-    &lt;widget class=&quot;GtkImageMenuItem&quot; id=&quot;add_new_file1&quot;&gt;
+-      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;Add new file&lt;/property&gt;
+-      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-      &lt;signal name=&quot;activate&quot; handler=&quot;AddNewFileClicked&quot; last_modification_time=&quot;Fri, 01 Apr 2005 17:55:11 GMT&quot;/&gt;
+-
+-      &lt;child internal-child=&quot;image&quot;&gt;
+-	&lt;widget class=&quot;GtkImage&quot; id=&quot;image57&quot;&gt;
+-	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;stock&quot;&gt;gtk-file&lt;/property&gt;
+-	  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+-	  &lt;property name=&quot;xalign&quot;&gt;0.5&lt;/property&gt;
+-	  &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
+-	  &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
+-	  &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
+-	&lt;/widget&gt;
+-      &lt;/child&gt;
+-    &lt;/widget&gt;
+-  &lt;/child&gt;
+-
+-  &lt;child&gt;
+-    &lt;widget class=&quot;GtkImageMenuItem&quot; id=&quot;add_new_directory1&quot;&gt;
+-      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;Add new directory&lt;/property&gt;
+-      &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-      &lt;signal name=&quot;activate&quot; handler=&quot;AddNewDirectoryClicked&quot; last_modification_time=&quot;Fri, 01 Apr 2005 17:55:11 GMT&quot;/&gt;
+-
+-      &lt;child internal-child=&quot;image&quot;&gt;
+-	&lt;widget class=&quot;GtkImage&quot; id=&quot;image58&quot;&gt;
+-	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;stock&quot;&gt;gtk-directory&lt;/property&gt;
+-	  &lt;property name=&quot;icon_size&quot;&gt;1&lt;/property&gt;
+-	  &lt;property name=&quot;xalign&quot;&gt;0.5&lt;/property&gt;
+-	  &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
+-	  &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
+-	  &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
+-	&lt;/widget&gt;
+-      &lt;/child&gt;
+-    &lt;/widget&gt;
+-  &lt;/child&gt;
+-&lt;/widget&gt;
+-
+-&lt;widget class=&quot;GtkWindow&quot; id=&quot;navigatorWindow&quot;&gt;
+-  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-  &lt;property name=&quot;title&quot; translatable=&quot;yes&quot;&gt;window1&lt;/property&gt;
+-  &lt;property name=&quot;type&quot;&gt;GTK_WINDOW_TOPLEVEL&lt;/property&gt;
+-  &lt;property name=&quot;window_position&quot;&gt;GTK_WIN_POS_NONE&lt;/property&gt;
+-  &lt;property name=&quot;modal&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;resizable&quot;&gt;True&lt;/property&gt;
+-  &lt;property name=&quot;destroy_with_parent&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;decorated&quot;&gt;True&lt;/property&gt;
+-  &lt;property name=&quot;skip_taskbar_hint&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;skip_pager_hint&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;type_hint&quot;&gt;GDK_WINDOW_TYPE_HINT_NORMAL&lt;/property&gt;
+-  &lt;property name=&quot;gravity&quot;&gt;GDK_GRAVITY_NORTH_WEST&lt;/property&gt;
+-  &lt;property name=&quot;focus_on_map&quot;&gt;True&lt;/property&gt;
+-
+-  &lt;child&gt;
+-    &lt;widget class=&quot;GtkVBox&quot; id=&quot;navigatorWidget&quot;&gt;
+-      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-      &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
+-      &lt;property name=&quot;spacing&quot;&gt;4&lt;/property&gt;
+-
+-      &lt;child&gt;
+-	&lt;widget class=&quot;GtkFrame&quot; id=&quot;navigatorFrame&quot;&gt;
+-	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;label_xalign&quot;&gt;0&lt;/property&gt;
+-	  &lt;property name=&quot;label_yalign&quot;&gt;0.5&lt;/property&gt;
+-	  &lt;property name=&quot;shadow_type&quot;&gt;GTK_SHADOW_NONE&lt;/property&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;placeholder/&gt;
+-	  &lt;/child&gt;
+-	&lt;/widget&gt;
+-	&lt;packing&gt;
+-	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-	  &lt;property name=&quot;expand&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
+-	&lt;/packing&gt;
+-      &lt;/child&gt;
+-    &lt;/widget&gt;
+-  &lt;/child&gt;
+-&lt;/widget&gt;
+-
+-&lt;widget class=&quot;GtkWindow&quot; id=&quot;importFilesWindow&quot;&gt;
+-  &lt;property name=&quot;width_request&quot;&gt;411&lt;/property&gt;
+-  &lt;property name=&quot;height_request&quot;&gt;0&lt;/property&gt;
+-  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-  &lt;property name=&quot;title&quot; translatable=&quot;yes&quot;&gt;Import Files&lt;/property&gt;
+-  &lt;property name=&quot;type&quot;&gt;GTK_WINDOW_TOPLEVEL&lt;/property&gt;
+-  &lt;property name=&quot;window_position&quot;&gt;GTK_WIN_POS_NONE&lt;/property&gt;
+-  &lt;property name=&quot;modal&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;resizable&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;destroy_with_parent&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;decorated&quot;&gt;True&lt;/property&gt;
+-  &lt;property name=&quot;skip_taskbar_hint&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;skip_pager_hint&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;type_hint&quot;&gt;GDK_WINDOW_TYPE_HINT_NORMAL&lt;/property&gt;
+-  &lt;property name=&quot;gravity&quot;&gt;GDK_GRAVITY_NORTH_WEST&lt;/property&gt;
+-  &lt;property name=&quot;focus_on_map&quot;&gt;True&lt;/property&gt;
+-
+-  &lt;child&gt;
+-    &lt;widget class=&quot;GtkVBox&quot; id=&quot;vbox6&quot;&gt;
+-      &lt;property name=&quot;border_width&quot;&gt;12&lt;/property&gt;
+-      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-      &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
+-      &lt;property name=&quot;spacing&quot;&gt;6&lt;/property&gt;
+-
+-      &lt;child&gt;
+-	&lt;widget class=&quot;GtkTable&quot; id=&quot;table2&quot;&gt;
+-	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;n_rows&quot;&gt;2&lt;/property&gt;
+-	  &lt;property name=&quot;n_columns&quot;&gt;2&lt;/property&gt;
+-	  &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
+-	  &lt;property name=&quot;row_spacing&quot;&gt;6&lt;/property&gt;
+-	  &lt;property name=&quot;column_spacing&quot;&gt;6&lt;/property&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkLabel&quot; id=&quot;label5&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;Import from:&lt;/property&gt;
+-	      &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;use_markup&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_LEFT&lt;/property&gt;
+-	      &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;xalign&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
+-	      &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
+-	      &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
+-	      &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
+-	    &lt;/widget&gt;
+-	    &lt;packing&gt;
+-	      &lt;property name=&quot;left_attach&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;right_attach&quot;&gt;1&lt;/property&gt;
+-	      &lt;property name=&quot;top_attach&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;bottom_attach&quot;&gt;1&lt;/property&gt;
+-	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
+-	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
+-	    &lt;/packing&gt;
+-	  &lt;/child&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkHBox&quot; id=&quot;hbox3&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;spacing&quot;&gt;4&lt;/property&gt;
+-
+-	      &lt;child&gt;
+-		&lt;widget class=&quot;GtkEntry&quot; id=&quot;entry2&quot;&gt;
+-		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;tooltip&quot; translatable=&quot;yes&quot;&gt;Choose the directory of your project.&lt;/property&gt;
+-		  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;visibility&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;max_length&quot;&gt;0&lt;/property&gt;
+-		  &lt;property name=&quot;text&quot; translatable=&quot;yes&quot;&gt;&lt;/property&gt;
+-		  &lt;property name=&quot;has_frame&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;invisible_char&quot;&gt;*&lt;/property&gt;
+-		  &lt;property name=&quot;activates_default&quot;&gt;False&lt;/property&gt;
+-		&lt;/widget&gt;
+-		&lt;packing&gt;
+-		  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-		  &lt;property name=&quot;expand&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
+-		&lt;/packing&gt;
+-	      &lt;/child&gt;
+-
+-	      &lt;child&gt;
+-		&lt;widget class=&quot;GtkButton&quot; id=&quot;button4&quot;&gt;
+-		  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;...&lt;/property&gt;
+-		  &lt;property name=&quot;use_underline&quot;&gt;True&lt;/property&gt;
+-		  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+-		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
+-		  &lt;signal name=&quot;clicked&quot; handler=&quot;ChooserButtonClicked&quot; last_modification_time=&quot;Fri, 25 Mar 2005 12:02:02 GMT&quot;/&gt;
+-		&lt;/widget&gt;
+-		&lt;packing&gt;
+-		  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-		  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
+-		  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
+-		&lt;/packing&gt;
+-	      &lt;/child&gt;
+-	    &lt;/widget&gt;
+-	    &lt;packing&gt;
+-	      &lt;property name=&quot;left_attach&quot;&gt;1&lt;/property&gt;
+-	      &lt;property name=&quot;right_attach&quot;&gt;2&lt;/property&gt;
+-	      &lt;property name=&quot;top_attach&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;bottom_attach&quot;&gt;1&lt;/property&gt;
+-	      &lt;property name=&quot;y_options&quot;&gt;fill&lt;/property&gt;
+-	    &lt;/packing&gt;
+-	  &lt;/child&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkLabel&quot; id=&quot;label6&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;Files to exclude:&lt;/property&gt;
+-	      &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;use_markup&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_LEFT&lt;/property&gt;
+-	      &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;xalign&quot;&gt;0.5&lt;/property&gt;
+-	      &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
+-	      &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
+-	      &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
+-	      &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
+-	      &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
+-	    &lt;/widget&gt;
+-	    &lt;packing&gt;
+-	      &lt;property name=&quot;left_attach&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;right_attach&quot;&gt;1&lt;/property&gt;
+-	      &lt;property name=&quot;top_attach&quot;&gt;1&lt;/property&gt;
+-	      &lt;property name=&quot;bottom_attach&quot;&gt;2&lt;/property&gt;
+-	      &lt;property name=&quot;x_options&quot;&gt;fill&lt;/property&gt;
+-	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
+-	    &lt;/packing&gt;
+-	  &lt;/child&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;entry3&quot;&gt;
+-	      &lt;property name=&quot;width_request&quot;&gt;158&lt;/property&gt;
+-	      &lt;property name=&quot;height_request&quot;&gt;23&lt;/property&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;tooltip&quot; translatable=&quot;yes&quot;&gt;Add all the file extensions or file names you want to exclude. Each file extension must be separated by a white space.&lt;/property&gt;
+-	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;visibility&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;max_length&quot;&gt;0&lt;/property&gt;
+-	      &lt;property name=&quot;text&quot; translatable=&quot;yes&quot;&gt;bak ~ swp&lt;/property&gt;
+-	      &lt;property name=&quot;has_frame&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;invisible_char&quot;&gt;*&lt;/property&gt;
+-	      &lt;property name=&quot;activates_default&quot;&gt;False&lt;/property&gt;
+-	    &lt;/widget&gt;
+-	    &lt;packing&gt;
+-	      &lt;property name=&quot;left_attach&quot;&gt;1&lt;/property&gt;
+-	      &lt;property name=&quot;right_attach&quot;&gt;2&lt;/property&gt;
+-	      &lt;property name=&quot;top_attach&quot;&gt;1&lt;/property&gt;
+-	      &lt;property name=&quot;bottom_attach&quot;&gt;2&lt;/property&gt;
+-	      &lt;property name=&quot;y_options&quot;&gt;&lt;/property&gt;
+-	    &lt;/packing&gt;
+-	  &lt;/child&gt;
+-	&lt;/widget&gt;
+-	&lt;packing&gt;
+-	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-	  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
+-	  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
+-	&lt;/packing&gt;
+-      &lt;/child&gt;
+-
+-      &lt;child&gt;
+-	&lt;widget class=&quot;GtkHButtonBox&quot; id=&quot;hbuttonbox2&quot;&gt;
+-	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;layout_style&quot;&gt;GTK_BUTTONBOX_END&lt;/property&gt;
+-	  &lt;property name=&quot;spacing&quot;&gt;6&lt;/property&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkButton&quot; id=&quot;button5&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;label&quot;&gt;gtk-cancel&lt;/property&gt;
+-	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+-	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
+-	      &lt;signal name=&quot;clicked&quot; handler=&quot;OnCancelClicked&quot; last_modification_time=&quot;Fri, 25 Mar 2005 18:42:30 GMT&quot;/&gt;
+-	    &lt;/widget&gt;
+-	  &lt;/child&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkButton&quot; id=&quot;button6&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;label&quot;&gt;gtk-ok&lt;/property&gt;
+-	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+-	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
+-	      &lt;signal name=&quot;clicked&quot; handler=&quot;OnOkClicked&quot; last_modification_time=&quot;Fri, 25 Mar 2005 18:41:49 GMT&quot;/&gt;
+-	    &lt;/widget&gt;
+-	  &lt;/child&gt;
+-	&lt;/widget&gt;
+-	&lt;packing&gt;
+-	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-	  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
+-	  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
+-	&lt;/packing&gt;
+-      &lt;/child&gt;
+-    &lt;/widget&gt;
+-  &lt;/child&gt;
+-&lt;/widget&gt;
+-
+-&lt;widget class=&quot;GtkWindow&quot; id=&quot;aboutWindow&quot;&gt;
+-  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-  &lt;property name=&quot;title&quot; translatable=&quot;yes&quot;&gt;About SimpleP&lt;/property&gt;
+-  &lt;property name=&quot;type&quot;&gt;GTK_WINDOW_TOPLEVEL&lt;/property&gt;
+-  &lt;property name=&quot;window_position&quot;&gt;GTK_WIN_POS_CENTER_ALWAYS&lt;/property&gt;
+-  &lt;property name=&quot;modal&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;resizable&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;destroy_with_parent&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;decorated&quot;&gt;True&lt;/property&gt;
+-  &lt;property name=&quot;skip_taskbar_hint&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;skip_pager_hint&quot;&gt;False&lt;/property&gt;
+-  &lt;property name=&quot;type_hint&quot;&gt;GDK_WINDOW_TYPE_HINT_DIALOG&lt;/property&gt;
+-  &lt;property name=&quot;gravity&quot;&gt;GDK_GRAVITY_NORTH_WEST&lt;/property&gt;
+-  &lt;property name=&quot;focus_on_map&quot;&gt;True&lt;/property&gt;
+-
+-  &lt;child&gt;
+-    &lt;widget class=&quot;GtkVBox&quot; id=&quot;vbox7&quot;&gt;
+-      &lt;property name=&quot;border_width&quot;&gt;12&lt;/property&gt;
+-      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-      &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
+-      &lt;property name=&quot;spacing&quot;&gt;8&lt;/property&gt;
+-
+-      &lt;child&gt;
+-	&lt;widget class=&quot;GtkImage&quot; id=&quot;aboutImage&quot;&gt;
+-	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;xalign&quot;&gt;0.5&lt;/property&gt;
+-	  &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
+-	  &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
+-	  &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
+-	&lt;/widget&gt;
+-	&lt;packing&gt;
+-	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-	  &lt;property name=&quot;expand&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
+-	&lt;/packing&gt;
+-      &lt;/child&gt;
+-
+-      &lt;child&gt;
+-	&lt;widget class=&quot;GtkHButtonBox&quot; id=&quot;hbuttonbox3&quot;&gt;
+-	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	  &lt;property name=&quot;layout_style&quot;&gt;GTK_BUTTONBOX_END&lt;/property&gt;
+-	  &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
+-
+-	  &lt;child&gt;
+-	    &lt;widget class=&quot;GtkButton&quot; id=&quot;button7&quot;&gt;
+-	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;label&quot;&gt;gtk-close&lt;/property&gt;
+-	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+-	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+-	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
+-	      &lt;signal name=&quot;clicked&quot; handler=&quot;OnCloseClicked&quot; last_modification_time=&quot;Tue, 29 Mar 2005 15:36:32 GMT&quot;/&gt;
+-	    &lt;/widget&gt;
+-	  &lt;/child&gt;
+-	&lt;/widget&gt;
+-	&lt;packing&gt;
+-	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+-	  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
+-	  &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
+-	&lt;/packing&gt;
+-      &lt;/child&gt;
+-    &lt;/widget&gt;
+-  &lt;/child&gt;
+-&lt;/widget&gt;
+-
+-&lt;/glade-interface&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000085.html">[Mspace-checkins] r372 - in Red.ProjectManager/trunk: . build ext src/Red.ProjectManager
+</A></li>
+	<LI>Next message: <A HREF="000087.html">[Mspace-checkins] r374 - in ComponentModel/trunk/src: . ComponentModel.Container ComponentModel.Container.Dao ComponentModel.Interfaces ComponentModel.VO
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#86">[ date ]</a>
+              <a href="thread.html#86">[ thread ]</a>
+              <a href="subject.html#86">[ subject ]</a>
+              <a href="author.html#86">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

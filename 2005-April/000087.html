@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r374 - in ComponentModel/trunk/src: . ComponentModel.Container ComponentModel.Container.Dao ComponentModel.Interfaces ComponentModel.VO
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r374%20-%20in%20ComponentModel/trunk/src%3A%20.%20ComponentModel.Container%20ComponentModel.Container.Dao%20ComponentModel.Interfaces%20ComponentModel.VO&In-Reply-To=%3C200504041904.j34J4iXV030928%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000086.html">
+   <LINK REL="Next"  HREF="000088.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r374 - in ComponentModel/trunk/src: . ComponentModel.Container ComponentModel.Container.Dao ComponentModel.Interfaces ComponentModel.VO</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r374%20-%20in%20ComponentModel/trunk/src%3A%20.%20ComponentModel.Container%20ComponentModel.Container.Dao%20ComponentModel.Interfaces%20ComponentModel.VO&In-Reply-To=%3C200504041904.j34J4iXV030928%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r374 - in ComponentModel/trunk/src: . ComponentModel.Container ComponentModel.Container.Dao ComponentModel.Interfaces ComponentModel.VO">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Mon Apr  4 21:04:44 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000086.html">[Mspace-checkins] r373 - SimpleP/trunk/build
+</A></li>
+        <LI>Next message: <A HREF="000088.html">[Mspace-checkins] r375 - in ComponentModel/trunk: ComponentTest ComponentTest/src ComponentTest/src/Components/MainComponent ComponentTest/src/Components/MainComponent/Bo ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exception src src/ComponentModel.Container src/ComponentModel.Container.Dao
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#87">[ date ]</a>
+              <a href="thread.html#87">[ thread ]</a>
+              <a href="subject.html#87">[ subject ]</a>
+              <a href="author.html#87">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-04-04 21:04:43 +0200 (Mon, 04 Apr 2005)
+New Revision: 374
+
+Added:
+   ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs
+   ComponentModel/trunk/src/ComponentModel.VO/
+Removed:
+   ComponentModel/trunk/src/ComponentModel.Vo/
+Modified:
+   ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+   ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs
+   ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Casi a punto de finalizar un registro de un componente en el contenedor.
+
+Refactorizaci?\195?\179n de VO.
+
+
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-04-04 16:48:19 UTC (rev 373)
++++ ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-04-04 19:04:43 UTC (rev 374)
+@@ -1,16 +1,27 @@
+ using System;
++using System.Diagnostics;
++using System.Reflection;
+ using System.Collections;
+ using ComponentModel.Interfaces;
++using ComponentModel.Container.Dao;
+ 
+ namespace ComponentModel.Container {
+     public class DefaultContainer : IContainer {
+-        private static DefaultContainer instance; 
++        private static DefaultContainer instance = null; 
+        
+         private IList componentList;
+         
+         private DefaultContainer () {
+             componentList = new ArrayList ();
+-            //Leer&#225; el xml y cargara en la lista los componentes
++            //Toma el &#250;nico dominio de la aplicacion
++            AppDomain appDomain = AppDomain.CurrentDomain;
++            Assembly[] assemblies = appDomain.GetAssemblies ();
++            foreach (Assembly ass  in assemblies) {
++                DefaultContainerDao.Instance.ProcessAssembly (ass);
++            }
++            //En cada ensamblado, cargar&#225; el / los componente y lo registrar&#225; con el
++            //nombre que se le ha dado al atributo.
++
+         }
+ 
+         public static DefaultContainer Instance {
+
+Added: ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs	2005-04-04 16:48:19 UTC (rev 373)
++++ ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs	2005-04-04 19:04:43 UTC (rev 374)
+@@ -0,0 +1,52 @@
++using System;
++using System.Reflection;
++using ComponentModel.Interfaces;
++using ComponentModel.Container;
++using ComponentModel.VO;
++
++namespace ComponentModel.Container.Dao {
++    public class DefaultContainerDao {
++        private static DefaultContainerDao instance = null;
++        
++        private DefaultContainerDao () {
++        }
++        
++        public static DefaultContainerDao Instance {
++            get {
++                if (instance == null)
++                    instance = new DefaultContainerDao ();
++                return instance;
++            }
++        }
++
++        public void ProcessAssembly (Assembly assembly) {
++            Type[] types = assembly.GetTypes ();
++            //TODO filter with memberfilter :)
++            for (int i = 0; i &lt; types.Length; i++) {
++                //Debe ser una subclase de DefaultComponentModel (implemente
++                //IComponentModel)
++                if (types[i].IsSubclassOf (typeof (DefaultComponentModel))) {
++                    Attribute[] attributes = (Attribute[])types[i].GetCustomAttributes (typeof (ComponentAttribute), true); 
++                    if (attributes.Length.Equals (1)) { 
++                        //Deberiamos registrar el tipo en el Container. Y
++                        //parsear la informaci&#243;n para rellenar su VO.
++                        ComponentModelVO componentModelVO = this.fillVO (types[i]);
++
++                        Console.WriteLine (types[i]);
++                    }
++                }
++            }
++        }
++
++        private ComponentModelVO fillVO (Type type) {
++            ComponentModelVO componentModelVO = new ComponentModelVO ();
++            ComponentAttribute componentAttribute = (ComponentAttribute)(type.GetCustomAttributes (typeof (ComponentAttribute), true)[0]);
++            
++            componentModelVO.ClassName = type.FullName;
++            componentModelVO.Name = componentAttribute.ComponentName;
++            componentModelVO.ExceptionClassName = componentAttribute.ExceptionManager;
++            
++            return componentModelVO;
++        }
++    }
++}
+
+Modified: ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs	2005-04-04 16:48:19 UTC (rev 373)
++++ ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs	2005-04-04 19:04:43 UTC (rev 374)
+@@ -1,5 +1,5 @@
+ using System;
+-using ComponentModel.Vo;
++using ComponentModel.VO;
+ namespace ComponentModel.Interfaces {
+     public interface IComponentModel {
+         ComponentModelVO VO {get;}
+
+Copied: ComponentModel/trunk/src/ComponentModel.VO (from rev 362, ComponentModel/trunk/src/ComponentModel.Vo)
+
+Modified: ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Vo/ComponentModelVO.cs	2005-04-04 09:24:35 UTC (rev 362)
++++ ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs	2005-04-04 19:04:43 UTC (rev 374)
+@@ -1,7 +1,7 @@
+ using System;
+ using System.Collections;
+ 
+-namespace ComponentModel.Vo {
++namespace ComponentModel.VO {
+     public class ComponentModelVO {
+         private string name;
+         private string interfaceFile;
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-04-04 16:48:19 UTC (rev 373)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-04-04 19:04:43 UTC (rev 374)
+@@ -1,6 +1,6 @@
+ using System;
+ using ComponentModel.Interfaces;
+-using ComponentModel.Vo;
++using ComponentModel.VO;
+ 
+ namespace ComponentModel {
+     public class DefaultComponentModel : IComponentModel {
+@@ -9,10 +9,8 @@
+         public ComponentModelVO VO {
+             get {return vO;}
+         }
+-
+         
+-        internal DefaultComponentModel () {
+-            //Deber&#225; rellenar del xml sus datos
++        public DefaultComponentModel () {
+         }
+           
+     
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000086.html">[Mspace-checkins] r373 - SimpleP/trunk/build
+</A></li>
+	<LI>Next message: <A HREF="000088.html">[Mspace-checkins] r375 - in ComponentModel/trunk: ComponentTest ComponentTest/src ComponentTest/src/Components/MainComponent ComponentTest/src/Components/MainComponent/Bo ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exception src src/ComponentModel.Container src/ComponentModel.Container.Dao
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#87">[ date ]</a>
+              <a href="thread.html#87">[ thread ]</a>
+              <a href="subject.html#87">[ subject ]</a>
+              <a href="author.html#87">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

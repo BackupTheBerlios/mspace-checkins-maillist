@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r333 - in mvim/trunk/src/Vim.Components.VimBuffer: . Model
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-February/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r333%20-%20in%20mvim/trunk/src/Vim.Components.VimBuffer%3A%20.%20Model&In-Reply-To=%3C200502152240.j1FMeSfN009081%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000066.html">
+   <LINK REL="Next"  HREF="000068.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r333 - in mvim/trunk/src/Vim.Components.VimBuffer: . Model</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r333%20-%20in%20mvim/trunk/src/Vim.Components.VimBuffer%3A%20.%20Model&In-Reply-To=%3C200502152240.j1FMeSfN009081%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r333 - in mvim/trunk/src/Vim.Components.VimBuffer: . Model">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Tue Feb 15 23:40:28 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000066.html">[Mspace-checkins] r332 - in mvim/trunk/src: . Vim.Components.BufferedVimControl Vim.Components.VimBuffer Vim.Components.VimBuffer/Model/VimBufferStrategy Vim.Components.VimControl Vim.Components.VimEntry
+</A></li>
+        <LI>Next message: <A HREF="000068.html">[Mspace-checkins] r334 - in mvim/trunk/src: . Vim.Components.VimBuffer Vim.Components.VimBuffer/Model
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#67">[ date ]</a>
+              <a href="thread.html#67">[ thread ]</a>
+              <a href="subject.html#67">[ subject ]</a>
+              <a href="author.html#67">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-02-15 23:40:28 +0100 (Tue, 15 Feb 2005)
+New Revision: 333
+
+Added:
+   mvim/trunk/src/Vim.Components.VimBuffer/IVimBuffer.cs
+   mvim/trunk/src/Vim.Components.VimBuffer/VimBuffer.cs
+Removed:
+   mvim/trunk/src/Vim.Components.VimBuffer/Model/IVimBuffer.cs
+   mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBuffer.cs
+Log:
+I forget one entry :D
+
+
+Copied: mvim/trunk/src/Vim.Components.VimBuffer/IVimBuffer.cs (from rev 326, mvim/trunk/src/Vim.Components.VimBuffer/Model/IVimBuffer.cs)
+
+Deleted: mvim/trunk/src/Vim.Components.VimBuffer/Model/IVimBuffer.cs
+===================================================================
+--- mvim/trunk/src/Vim.Components.VimBuffer/Model/IVimBuffer.cs	2005-02-15 22:39:12 UTC (rev 332)
++++ mvim/trunk/src/Vim.Components.VimBuffer/Model/IVimBuffer.cs	2005-02-15 22:40:28 UTC (rev 333)
+@@ -1,18 +0,0 @@
+-//
+-// Vim.Components.VimBuffer.Model.IVimBuffer.cs :  
+-//
+-// Author:
+-//      N&#233;stor Salceda Alonso (<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">wizito at gentelibre.org</A>)
+-// (C) 2005
+-
+-namespace Vim.Components.VimBuffer.Model {
+-    //
+-    //&lt;summary&gt;
+-    //  We try use same Buffer as SharpDevelop do.
+-    //  Try use a Gap Buffer.
+-    //&lt;/summary&gt;
+-    //
+-    public interface IVimBuffer {
+-         
+-    }
+-}
+
+Deleted: mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBuffer.cs
+===================================================================
+--- mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBuffer.cs	2005-02-15 22:39:12 UTC (rev 332)
++++ mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBuffer.cs	2005-02-15 22:40:28 UTC (rev 333)
+@@ -1,11 +0,0 @@
+-namespace Vim.Components.VimBuffer.Model {
+-
+-    public class VimBuffer : IVimBuffer {
+-        private string text;
+-
+-        public string Text {
+-            get {return text;}
+-            set {text = value;}
+-        }
+-    }
+-}
+
+Copied: mvim/trunk/src/Vim.Components.VimBuffer/VimBuffer.cs (from rev 326, mvim/trunk/src/Vim.Components.VimBuffer/Model/VimBuffer.cs)
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000066.html">[Mspace-checkins] r332 - in mvim/trunk/src: . Vim.Components.BufferedVimControl Vim.Components.VimBuffer Vim.Components.VimBuffer/Model/VimBufferStrategy Vim.Components.VimControl Vim.Components.VimEntry
+</A></li>
+	<LI>Next message: <A HREF="000068.html">[Mspace-checkins] r334 - in mvim/trunk/src: . Vim.Components.VimBuffer Vim.Components.VimBuffer/Model
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#67">[ date ]</a>
+              <a href="thread.html#67">[ thread ]</a>
+              <a href="subject.html#67">[ subject ]</a>
+              <a href="author.html#67">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

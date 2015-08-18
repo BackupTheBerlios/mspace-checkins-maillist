@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r407 - ComponentModel/trunk/ComponentTest/src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r407%20-%20ComponentModel/trunk/ComponentTest/src&In-Reply-To=%3C200504062349.j36Nn3qA003415%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000119.html">
+   <LINK REL="Next"  HREF="000121.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r407 - ComponentModel/trunk/ComponentTest/src</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r407%20-%20ComponentModel/trunk/ComponentTest/src&In-Reply-To=%3C200504062349.j36Nn3qA003415%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r407 - ComponentModel/trunk/ComponentTest/src">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Thu Apr  7 01:49:03 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000119.html">[Mspace-checkins] r406 - in ComponentModel/trunk: ComponentTest/src src src/ComponentModel.Container
+</A></li>
+        <LI>Next message: <A HREF="000121.html">[Mspace-checkins] r408 - ComponentModel/trunk/ComponentTest/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#120">[ date ]</a>
+              <a href="thread.html#120">[ thread ]</a>
+              <a href="subject.html#120">[ subject ]</a>
+              <a href="author.html#120">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-04-07 01:48:40 +0200 (Thu, 07 Apr 2005)
+New Revision: 407
+
+Removed:
+   ComponentModel/trunk/ComponentTest/src/Launcher.cs
+Log:
+Strange error, fix in next commit.
+
+
+
+Deleted: ComponentModel/trunk/ComponentTest/src/Launcher.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Launcher.cs	2005-04-06 23:39:38 UTC (rev 406)
++++ ComponentModel/trunk/ComponentTest/src/Launcher.cs	2005-04-06 23:48:40 UTC (rev 407)
+@@ -1,23 +0,0 @@
+-using System;
+-using System.Diagnostics;
+-using System.Reflection;
+-using ComponentModel.Container;
+-
+-namespace ComponentModel.ComponentTest {
+-    public class Launcher {
+-        public static void Main () {
+-            DefaultContainer defaultContainer = DefaultContainer.Instance; 
+-        //    Console.WriteLine (Assembly.GetExecutingAssembly ().FullName);
+-            DefaultComponentModel dcm = (DefaultComponentModel)defaultContainer.GetComponentByName (&quot;Saludator&quot;);
+-            Debug.Assert (dcm != null);
+-            if (dcm != null)
+-                Console.WriteLine (&quot;Dcm no es null&quot;);
+-            else
+-                Console.WriteLine (&quot;Dcm es null&quot;);
+-            dcm.Execute (&quot;Saluda&quot;, null);
+-            //dcm.Execute (&quot;SaludaATodos&quot;, null);
+-            //dcm = (DefaultComponentModel)defaultContainer.GetComponentByName (&quot;Saludador!&quot;);
+-            Console.WriteLine (&quot;Fin exec terminated program.&quot;);
+-        }
+-    }
+-}
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000119.html">[Mspace-checkins] r406 - in ComponentModel/trunk: ComponentTest/src src src/ComponentModel.Container
+</A></li>
+	<LI>Next message: <A HREF="000121.html">[Mspace-checkins] r408 - ComponentModel/trunk/ComponentTest/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#120">[ date ]</a>
+              <a href="thread.html#120">[ thread ]</a>
+              <a href="subject.html#120">[ subject ]</a>
+              <a href="author.html#120">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

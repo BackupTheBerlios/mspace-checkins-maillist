@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r366 - in Red.Gtk: . trunk
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r366%20-%20in%20Red.Gtk%3A%20.%20trunk&In-Reply-To=%3C200504041442.j34EgmWe014625%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000078.html">
+   <LINK REL="Next"  HREF="000080.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r366 - in Red.Gtk: . trunk</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r366%20-%20in%20Red.Gtk%3A%20.%20trunk&In-Reply-To=%3C200504041442.j34EgmWe014625%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r366 - in Red.Gtk: . trunk">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Mon Apr  4 16:42:48 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000078.html">[Mspace-checkins] r365 - in SimpleP: . trunk
+</A></li>
+        <LI>Next message: <A HREF="000080.html">[Mspace-checkins] r367 - in RedLib: . trunk
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#79">[ date ]</a>
+              <a href="thread.html#79">[ thread ]</a>
+              <a href="subject.html#79">[ subject ]</a>
+              <a href="author.html#79">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-04 16:42:47 +0200 (Mon, 04 Apr 2005)
+New Revision: 366
+
+Added:
+   Red.Gtk/trunk/
+   Red.Gtk/trunk/Makefile
+   Red.Gtk/trunk/build/
+   Red.Gtk/trunk/doc-html/
+   Red.Gtk/trunk/doc/
+   Red.Gtk/trunk/ext/
+   Red.Gtk/trunk/red.gtk.simplep
+   Red.Gtk/trunk/src/
+Removed:
+   Red.Gtk/Makefile
+   Red.Gtk/build/
+   Red.Gtk/doc-html/
+   Red.Gtk/doc/
+   Red.Gtk/ext/
+   Red.Gtk/red.gtk.simplep
+   Red.Gtk/src/
+Log:
+Moved all to trunk
+
+
+
+Deleted: Red.Gtk/Makefile
+===================================================================
+--- Red.Gtk/Makefile	2005-04-04 14:41:17 UTC (rev 365)
++++ Red.Gtk/Makefile	2005-04-04 14:42:47 UTC (rev 366)
+@@ -1,15 +0,0 @@
+-REFERENCES=														\
+-		-r:/usr/share/dotnet/mono/gtk-sharp-2.0/gtk-sharp.dll 	\
+-    	-r:/usr/share/dotnet/mono/gtk-sharp-2.0/glade-sharp.dll \
+-		-r:/usr/share/dotnet/mono/gtk-sharp-2.0/gdk-sharp.dll
+-
+-all: build/Red.Gtk.dll
+-									
+-build/Red.Gtk.dll: src/*.boo
+-	booc src/*.boo -out:build/Red.Gtk.dll -target:library $(REFERENCES)
+-
+-copy-ext:
+-	cp ext/* build
+-	
+-clean:
+-	rm build/*.dll
+
+Deleted: Red.Gtk/red.gtk.simplep
+===================================================================
+--- Red.Gtk/red.gtk.simplep	2005-04-04 14:41:17 UTC (rev 365)
++++ Red.Gtk/red.gtk.simplep	2005-04-04 14:42:47 UTC (rev 366)
+@@ -1,33 +0,0 @@
+-&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+-&lt;Project&gt;
+-    &lt;Name&gt;Red.Gtk&lt;/Name&gt;
+-    &lt;FileSet&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/ext/node1/test.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/ext/node1/node12/test.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/ext/node1/node11/test.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/red.gtk.simplep&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/src/DialogFactory.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/ext/node3/test.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/build/Red.Gtk.dll&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/Makefile&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/ext/node2/node21/test.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-    &lt;/FileSet&gt;
+-&lt;/Project&gt;
+\ No newline at end of file
+
+Copied: Red.Gtk/trunk/Makefile (from rev 364, Red.Gtk/Makefile)
+
+Copied: Red.Gtk/trunk/build (from rev 364, Red.Gtk/build)
+
+Copied: Red.Gtk/trunk/doc (from rev 364, Red.Gtk/doc)
+
+Copied: Red.Gtk/trunk/doc-html (from rev 364, Red.Gtk/doc-html)
+
+Copied: Red.Gtk/trunk/ext (from rev 364, Red.Gtk/ext)
+
+Copied: Red.Gtk/trunk/red.gtk.simplep (from rev 364, Red.Gtk/red.gtk.simplep)
+
+Copied: Red.Gtk/trunk/src (from rev 364, Red.Gtk/src)
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000078.html">[Mspace-checkins] r365 - in SimpleP: . trunk
+</A></li>
+	<LI>Next message: <A HREF="000080.html">[Mspace-checkins] r367 - in RedLib: . trunk
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#79">[ date ]</a>
+              <a href="thread.html#79">[ thread ]</a>
+              <a href="subject.html#79">[ subject ]</a>
+              <a href="author.html#79">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

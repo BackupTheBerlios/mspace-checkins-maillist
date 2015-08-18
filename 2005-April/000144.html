@@ -1,0 +1,316 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r431 - in ComponentModel/trunk: ComponentTest/src/Components/MainComponent/Bo ComponentTest/src/Components/Saludator/Bo src src/ComponentModel.Container
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r431%20-%20in%20ComponentModel/trunk%3A%20ComponentTest/src/Components/MainComponent/Bo%20ComponentTest/src/Components/Saludator/Bo%20src%20src/ComponentModel.Container&In-Reply-To=%3C200504122135.j3CLZ1X4019578%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000143.html">
+   <LINK REL="Next"  HREF="000145.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r431 - in ComponentModel/trunk: ComponentTest/src/Components/MainComponent/Bo ComponentTest/src/Components/Saludator/Bo src src/ComponentModel.Container</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r431%20-%20in%20ComponentModel/trunk%3A%20ComponentTest/src/Components/MainComponent/Bo%20ComponentTest/src/Components/Saludator/Bo%20src%20src/ComponentModel.Container&In-Reply-To=%3C200504122135.j3CLZ1X4019578%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r431 - in ComponentModel/trunk: ComponentTest/src/Components/MainComponent/Bo ComponentTest/src/Components/Saludator/Bo src src/ComponentModel.Container">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Tue Apr 12 23:35:01 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000143.html">[Mspace-checkins] r430 - in SimpleP/trunk: . resources src src/Contexts/StartPage ui-data
+</A></li>
+        <LI>Next message: <A HREF="000145.html">[Mspace-checkins] r432 - / gksu-sharp gksu-sharp/examples gksu-sharp/gksu gksu-sharp/gksu/generated gksu-sharp/gksu.ui gksu-sharp/gksu.ui/generated gksu-sharp/sources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#144">[ date ]</a>
+              <a href="thread.html#144">[ thread ]</a>
+              <a href="subject.html#144">[ subject ]</a>
+              <a href="author.html#144">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-04-12 23:35:00 +0200 (Tue, 12 Apr 2005)
+New Revision: 431
+
+Modified:
+   ComponentModel/trunk/ComponentTest/src/Components/MainComponent/Bo/MainComponentComponentModel.cs
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+   ComponentModel/trunk/src/ComponentAttribute.cs
+   ComponentModel/trunk/src/ComponentMethodAttribute.cs
+   ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Reformed Attributes.
+    *Shorter.
+    *Autochecked, more robustness :) . &lt;-- Creo que mi ingl?\195?\169s sux.
+
+
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/MainComponent/Bo/MainComponentComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/MainComponent/Bo/MainComponentComponentModel.cs	2005-04-11 15:02:39 UTC (rev 430)
++++ ComponentModel/trunk/ComponentTest/src/Components/MainComponent/Bo/MainComponentComponentModel.cs	2005-04-12 21:35:00 UTC (rev 431)
+@@ -2,7 +2,7 @@
+ using ComponentModel;
+ 
+ namespace ComponentModel.ComponentTest.Components.MainComponent.Bo {
+-    [Component (ComponentName=&quot;MainComponent&quot;, ExceptionManager=&quot;ComponentModel.ComponentTest.Components.MainComponent.Exception.MainComponentExceptionManager&quot;)]
++    [Component (&quot;MainComponent&quot;, &quot;ComponentModel.ComponentTest.Components.MainComponent.Exception.MainComponentExceptionManager&quot;)]
+     public class MainComponentComponentModel : DefaultComponentModel {
+     }
+ }
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-04-11 15:02:39 UTC (rev 430)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-04-12 21:35:00 UTC (rev 431)
+@@ -2,23 +2,23 @@
+ using ComponentModel;
+ 
+ namespace ComponentModel.ComponentTest.Components.Saludator.Bo {
+-   [Component (ComponentName=&quot;Saludator&quot;, ExceptionManager=&quot;ComponentModel.ComponentTest.Components.Saludator.Exceptions.SaludatorExceptionManager&quot;)] 
++   [Component (&quot;Saludator&quot;,&quot;ComponentModel.ComponentTest.Components.Saludator.Exceptions.SaludatorExceptionManager&quot;)] 
+    public sealed class SaludatorComponentModel : DefaultComponentModel {
+        public SaludatorComponentModel () : base () {
+        }
+ 
+-        [ComponentMethod (ViewName = &quot;ComponentModel.ComponentTest.Components.Saludator.Form.SaludatorForm&quot;, ResponseName = &quot;ResponseInitApp&quot;)]
++        [ComponentMethod (&quot;ComponentModel.ComponentTest.Components.Saludator.Form.SaludatorForm&quot;, &quot;ResponseInitApp&quot;)]
+         public void InitApp () {
+         }
+        
+-        [ComponentMethod (ViewName = &quot;ComponentModel.ComponentTest.Components.Saludator.Form.SaludatorForm&quot;, ResponseName = &quot;ResponseSaluda&quot;)]
++        [ComponentMethod (&quot;ComponentModel.ComponentTest.Components.Saludator.Form.SaludatorForm&quot;, &quot;ResponseSaluda&quot;)]
+         public int Saluda () {
+             Console.WriteLine (&quot;Que pasa co !!&quot;);
+             throw new Exception (&quot;Yeahhhh&quot;);
+             return 1;
+         }
+ 
+-        [ComponentMethod (ViewName = &quot;ComponentModel.ComponentTest.Components.Saludator.Form.SaludatorForm&quot;, ResponseName = &quot;ResponseSaludaATodos&quot;)]
++        [ComponentMethod (&quot;ComponentModel.ComponentTest.Components.Saludator.Form.SaludatorForm&quot;, &quot;ResponseSaludaATodos&quot;)]
+         public void SaludaATodos () {
+             Console.WriteLine (&quot;Saludar&#233; a todos si me los pides, bellaco !!&quot;); 
+         }
+
+Modified: ComponentModel/trunk/src/ComponentAttribute.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentAttribute.cs	2005-04-11 15:02:39 UTC (rev 430)
++++ ComponentModel/trunk/src/ComponentAttribute.cs	2005-04-12 21:35:00 UTC (rev 431)
+@@ -4,25 +4,44 @@
+     
+     [AttributeUsage (AttributeTargets.Class,  AllowMultiple = false, Inherited = false)]
+     public class ComponentAttribute : Attribute {
++        //Campos
+         private string componentName;
+         private string exceptionManager;
+-
++        
++        //Propiedades p&#250;blicos.
+         public string ExceptionManager {
+             get {return exceptionManager;}
+-            set {exceptionManager = value;}
+         }
+         
+         public string ComponentName {
+             get {return componentName;}
+-            set {componentName = value;}
+         }
+-
+-        public ComponentAttribute () : base () {
++        
++        //M&#233;todos privados.
++        private void SetExceptionManager (string exceptionManager) {
++            if (exceptionManager == null)
++                throw new Exception (&quot;Null value not allowed.&quot;);
++            if (exceptionManager.Equals (String.Empty))
++                throw new Exception (&quot;String empty not allowed.&quot;);
++            this.exceptionManager = exceptionManager;
+         }
+         
++        private void SetComponentName (string componentName) {
++            if (componentName == null) 
++                throw new Exception (&quot;Null value not allowed.&quot;);
++            if (componentName.Equals (String.Empty))
++                throw new Exception (&quot;String empty not allowed.&quot;);
++            this.componentName = componentName;
++        }
++        
++        /**
++         * Generalmente los par&#225;metros requeridos se deben pasar en el
++         * constructor, para forzar as&#237; en tiempo de compilaci&#243;n el checkeo de
++         * que el n&#250;mero es correcto.
++         */
+         public ComponentAttribute (string componentName, string exceptionManager) : base () {
+-            this.ComponentName = componentName;    
+-            this.ExceptionManager = exceptionManager;
++            this.SetComponentName (componentName);
++            this.SetExceptionManager (exceptionManager);
+         }
+     }
+ }
+
+Modified: ComponentModel/trunk/src/ComponentMethodAttribute.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentMethodAttribute.cs	2005-04-11 15:02:39 UTC (rev 430)
++++ ComponentModel/trunk/src/ComponentMethodAttribute.cs	2005-04-12 21:35:00 UTC (rev 431)
+@@ -4,25 +4,43 @@
+ 
+     [AttributeUsage (AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+     public class ComponentMethodAttribute : Attribute {
++        //Campos
+         private string responseName;
+         private string viewName;
+ 
++        //Propiedades p&#250;blicas.
+         public string ViewName {
+             get {return viewName;}
+-            set {viewName = value;}
+         }
+         
+         public string ResponseName {
+             get {return responseName;}
+-            set {responseName = value;}
+         }
+ 
+-        public ComponentMethodAttribute () : base () {
++        //M&#233;todos privados.
++        private void SetViewName (string viewName) {
++            if (viewName == null)
++                throw new Exception (&quot;Null value not allowed.&quot;);
++            if (viewName.Equals (String.Empty))
++                throw new Exception (&quot;String empty not allowed.&quot;);
++            this.viewName = viewName;
+         }
+         
++        private void SetResponseName (string responseName) {
++            if (responseName == null)
++                throw new Exception (&quot;Null value not allowed.&quot;);
++            if (responseName.Equals (String.Empty))
++                throw new Exception (&quot;String empty not allowed.&quot;);
++            this.responseName = responseName;
++        }
++
++        /**
++         * Generalmente los par&#225;metros requeridos se le pasan en orden al
++         * constructor.  Los opcionales se le pasar&#225;n como propiedades.
++         */
+         public ComponentMethodAttribute (string viewName, string responseName) : base () {
+-            this.ViewName = viewName;
+-            this.ResponseName = responseName;
++            this.SetViewName (viewName);
++            this.SetResponseName (responseName);
+         }
+         
+     }
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-04-11 15:02:39 UTC (rev 430)
++++ ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-04-12 21:35:00 UTC (rev 431)
+@@ -7,7 +7,6 @@
+ using ComponentModel.Exceptions;
+ using NLog;
+ 
+-using System.Threading;
+ 
+ namespace ComponentModel.Container {
+     public class DefaultContainer : IContainer {
+@@ -19,6 +18,7 @@
+         
+         internal Assembly[] Assemblies {
+             get {
++                //Esta parte igual sobra.
+                 if (assemblies == null) {
+                     AppDomain appDomain = AppDomain.CurrentDomain;
+                     assemblies = appDomain.GetAssemblies ();
+@@ -49,6 +49,7 @@
+             logger.Debug (&quot;Finded &quot; + collection.Count + &quot; components&quot;);
+             IEnumerator enumerator = collection.GetEnumerator ();
+             while (enumerator.MoveNext ()) {
++                //&#191;Intefaces ?!!
+                 DefaultComponentModel defaultComponentModel = (DefaultComponentModel)enumerator.Current;
+                 this.Add (defaultComponentModel); 
+             }
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-04-11 15:02:39 UTC (rev 430)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-04-12 21:35:00 UTC (rev 431)
+@@ -2,10 +2,10 @@
+ using System.Reflection;
+ using ComponentModel.Interfaces;
+ using ComponentModel.VO;
+-using NLog;
+ using ComponentModel.Container;
+ using ComponentModel.ExceptionManager;
+ using ComponentModel.Exceptions;
++using NLog;
+ 
+ namespace ComponentModel {
+     public class DefaultComponentModel : IComponentModel {
+@@ -30,6 +30,8 @@
+         }
+       
+         private Type GetTypeExceptionManager (string exceptionManagerClassName) {
++            //Precondition: exceptionManagerClassName != null &amp;&amp;
++            //exceptionManagerClassName != String.Empty
+             if ((exceptionManagerClassName == null) | (exceptionManagerClassName.Equals (String.Empty))) {
+                 throw new ExceptionManagerNotFoundException (&quot;Null exception managerClassName.&quot;);
+             }
+@@ -43,12 +45,15 @@
+                     }
+                 }
+             }
++            //PostCondition: return != null
+             //Si llega aqu&#237;, no ha encontrado el tipo del exceptionManager.
+             throw new ExceptionManagerNotFoundException (&quot;Exception Manager Can't be found in Component.&quot;);
+             //return null;
+         }
+         
+         private MethodInfo GetMethodToExecute (string methodName, Type componentType) {
++            //Precondition: methodName != null &amp;&amp; methodName != String.Empty &amp;&amp;
++            //componentType != null
+             logger.Debug (&quot;Entering GetMethodToExecute. Searching: &quot; + methodName + &quot; in: &quot; + componentType.ToString ());
+             MethodInfo methodInfo = componentType.GetMethod (methodName, BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public);
+             //Checkeamos que lo haya encontrado
+@@ -58,6 +63,7 @@
+             else {
+                 logger.Debug (&quot;Finded method to execute: &quot; + methodInfo.ToString ());
+             }
++            //PostCondition: methodInfo != null
+             return methodInfo;
+         }
+         
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000143.html">[Mspace-checkins] r430 - in SimpleP/trunk: . resources src src/Contexts/StartPage ui-data
+</A></li>
+	<LI>Next message: <A HREF="000145.html">[Mspace-checkins] r432 - / gksu-sharp gksu-sharp/examples gksu-sharp/gksu gksu-sharp/gksu/generated gksu-sharp/gksu.ui gksu-sharp/gksu.ui/generated gksu-sharp/sources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#144">[ date ]</a>
+              <a href="thread.html#144">[ thread ]</a>
+              <a href="subject.html#144">[ subject ]</a>
+              <a href="author.html#144">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

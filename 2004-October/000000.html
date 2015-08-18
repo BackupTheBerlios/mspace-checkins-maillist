@@ -1,0 +1,394 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r264 - in Chicken/Trunk: . debian doc src/Gnome/TrayIcon/libtrayicon
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r264%20-%20in%20Chicken/Trunk%3A%20.%20debian%20doc%20src/Gnome/TrayIcon/libtrayicon&In-Reply-To=%3C200410121130.i9CBUNBB004070%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000001.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r264 - in Chicken/Trunk: . debian doc src/Gnome/TrayIcon/libtrayicon</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r264%20-%20in%20Chicken/Trunk%3A%20.%20debian%20doc%20src/Gnome/TrayIcon/libtrayicon&In-Reply-To=%3C200410121130.i9CBUNBB004070%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r264 - in Chicken/Trunk: . debian doc src/Gnome/TrayIcon/libtrayicon">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Tue Oct 12 13:30:23 CEST 2004</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000001.html">[Mspace-checkins] r265 - in Chicken: . branches branches/Chicken-0.1.3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#0">[ date ]</a>
+              <a href="thread.html#0">[ thread ]</a>
+              <a href="subject.html#0">[ subject ]</a>
+              <a href="author.html#0">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2004-10-12 13:30:19 +0200 (Tue, 12 Oct 2004)
+New Revision: 264
+
+Added:
+   Chicken/Trunk/debian/compat
+   Chicken/Trunk/debian/fulldeps.control
+   Chicken/Trunk/debian/libchicken.dirs
+   Chicken/Trunk/debian/libchicken.docs
+Removed:
+   Chicken/Trunk/debian/compat
+   Chicken/Trunk/debian/dirs
+   Chicken/Trunk/debian/docs
+   Chicken/Trunk/debian/libchicken.shlibs.in
+Modified:
+   Chicken/Trunk/ChangeLog
+   Chicken/Trunk/configure.in
+   Chicken/Trunk/debian/README.Debian
+   Chicken/Trunk/debian/changelog
+   Chicken/Trunk/debian/control
+   Chicken/Trunk/debian/libchicken.files
+   Chicken/Trunk/debian/rules
+   Chicken/Trunk/doc/Makefile.am
+   Chicken/Trunk/src/Gnome/TrayIcon/libtrayicon/Makefile.am
+Log:
+debian package changes
+fixed lib compilation flags
+
+
+
+Modified: Chicken/Trunk/ChangeLog
+===================================================================
+--- Chicken/Trunk/ChangeLog	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/ChangeLog	2004-10-12 11:30:19 UTC (rev 264)
+@@ -1,3 +1,21 @@
++2004-10-12  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
++	* configure.in: refactored
++	* debian/README.Debian:
++	* debian/changelog:
++	* debian/compat:
++	* debian/control:
++	* debian/dirs:
++	* debian/docs:
++	* debian/fulldeps.control:
++	* debian/libchicken.dirs:
++	* debian/libchicken.docs:
++	* debian/libchicken.files:
++	* debian/libchicken.shlibs.in:
++	* debian/rules: debian package changes
++	* doc/Makefile.am: fixed doc instalation
++	* src/Gnome/TrayIcon/libtrayicon/Makefile.am: fixed compilation fralgs
++
+ 2004-10-11  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
+ 	* debian/control: added some deps
+
+Modified: Chicken/Trunk/configure.in
+===================================================================
+--- Chicken/Trunk/configure.in	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/configure.in	2004-10-12 11:30:19 UTC (rev 264)
+@@ -74,13 +74,11 @@
+ 		      gecko-sharp &gt;= $GECKOSHARP_REQUIRED)
+     AC_SUBST(GECKOSHARP_LIBS)
+ 
+-    PKG_CHECK_MODULES(GDK20, gdk-2.0 &gt;= $GDK20_MINIMUM_VERSION)
+-    AC_SUBST(GDK20_CFLAGS)
+-    AC_SUBST(GDK20_LIBS)
+-
+-    PKG_CHECK_MODULES(ATK, atk &gt;= $ATK_MINIMUM_VERSION)
+-    AC_SUBST(ATK_CFLAGS)
+-    AC_SUBST(ATK_LIBS)
++    PKG_CHECK_MODULES(LIBTRAYICON,
++			gdk-2.0 &gt;= $GDK20_MINIMUM_VERSION
++			atk &gt;= $ATK_MINIMUM_VERSION)
++    AC_SUBST(LIBTRAYICON_CFLAGS)
++    AC_SUBST(LIBTRAYICON_LIBS)
+ fi
+ 
+ 
+
+Modified: Chicken/Trunk/debian/README.Debian
+===================================================================
+--- Chicken/Trunk/debian/README.Debian	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/debian/README.Debian	2004-10-12 11:30:19 UTC (rev 264)
+@@ -7,4 +7,14 @@
+ as a system package, but you will need mono &gt;= 1.0, gtk-sharp &gt;= 1.0 and gecko-sharp &gt;= 0.5 installed
+ if you want to use this library.
+ 
++*******
++WARNING
++*******
++mono &gt;= 1.0
++gtk-sharp &gt;= 1.0
++gecko-sharp &gt;= 0.5
++monodoc &gt;= 1.0
++
++MUST be installed in your system.
++
+  -- rubiojr &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;, Mon, 11 Oct 2004 19:12:56 +0200
+
+Modified: Chicken/Trunk/debian/changelog
+===================================================================
+--- Chicken/Trunk/debian/changelog	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/debian/changelog	2004-10-12 11:30:19 UTC (rev 264)
+@@ -1,4 +1,4 @@
+-chicken (0.1.3-1) unstable; urgency=low
++libchicken (0.1.3-1) unstable; urgency=low
+ 
+   * Initial Release.
+ 
+
+Deleted: Chicken/Trunk/debian/compat
+===================================================================
+--- Chicken/Trunk/debian/compat	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/debian/compat	2004-10-12 11:30:19 UTC (rev 264)
+@@ -1 +0,0 @@
+-4
+
+Added: Chicken/Trunk/debian/compat
+===================================================================
+--- Chicken/Trunk/debian/compat	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/debian/compat	2004-10-12 11:30:19 UTC (rev 264)
+@@ -0,0 +1 @@
++4
+
+Modified: Chicken/Trunk/debian/control
+===================================================================
+--- Chicken/Trunk/debian/control	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/debian/control	2004-10-12 11:30:19 UTC (rev 264)
+@@ -1,13 +1,13 @@
+-Source: chicken
++Source: libchicken
++Section: libs
+ Priority: optional
+ Maintainer: Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++Standards-Version: 3.6.1
+ Build-Depends: debhelper (&gt;= 4.0.0), libgtk2.0-dev (&gt;= 2.2.0), automake1.7
+-Standards-Version: 3.6.1
+ 
+ Package: libchicken
+-Section: libs
+ Architecture: powerpc i386 sparc s390
+-Depends: ${shlibs:Depends}, ${misc:Depends}
++Depends: ${shlibs:Depends}
+ Description: Misc .Net/Mono components.
+  .
+  Desktop notification messages, notification bubbles,
+
+Deleted: Chicken/Trunk/debian/dirs
+===================================================================
+--- Chicken/Trunk/debian/dirs	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/debian/dirs	2004-10-12 11:30:19 UTC (rev 264)
+@@ -1,2 +0,0 @@
+-usr/bin
+-usr/sbin
+
+Deleted: Chicken/Trunk/debian/docs
+===================================================================
+--- Chicken/Trunk/debian/docs	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/debian/docs	2004-10-12 11:30:19 UTC (rev 264)
+@@ -1,2 +0,0 @@
+-NEWS
+-README
+
+Added: Chicken/Trunk/debian/fulldeps.control
+===================================================================
+--- Chicken/Trunk/debian/fulldeps.control	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/debian/fulldeps.control	2004-10-12 11:30:19 UTC (rev 264)
+@@ -0,0 +1,15 @@
++Source: libchicken
++Section: libs
++Priority: optional
++Maintainer: Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++Standards-Version: 3.6.1
++Build-Depends: debhelper (&gt;= 4.0.0), libgtk2.0-dev (&gt;= 2.2.0), automake1.7, libgtk-cil (&gt;= 1.0.0), librsvg-cil (&gt;= 1.0.0), libgecko-cil (&gt;= 0.5), monodoc (&gt;= 1.0.0)
++
++Package: libchicken
++Architecture: powerpc i386 sparc s390
++Depends: ${shlibs:Depends}, ${misc:Depends}
++Description: Misc .Net/Mono components.
++ .
++ Desktop notification messages, notification bubbles,
++ configuration helpers and many more. Nini framework
++ (see <A HREF="http://nini.sf.net">http://nini.sf.net</A>) is also included.
+
+Added: Chicken/Trunk/debian/libchicken.dirs
+===================================================================
+--- Chicken/Trunk/debian/libchicken.dirs	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/debian/libchicken.dirs	2004-10-12 11:30:19 UTC (rev 264)
+@@ -0,0 +1,2 @@
++usr/lib
++
+
+Added: Chicken/Trunk/debian/libchicken.docs
+===================================================================
+--- Chicken/Trunk/debian/libchicken.docs	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/debian/libchicken.docs	2004-10-12 11:30:19 UTC (rev 264)
+@@ -0,0 +1,2 @@
++NEWS
++README
+
+Modified: Chicken/Trunk/debian/libchicken.files
+===================================================================
+--- Chicken/Trunk/debian/libchicken.files	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/debian/libchicken.files	2004-10-12 11:30:19 UTC (rev 264)
+@@ -1,3 +1,4 @@
+ usr/lib/libchicken*.so.*
+ usr/lib/pkgconfig/chicken.pc
+ usr/lib/Chicken.dll
++usr/lib/monodoc
+
+Deleted: Chicken/Trunk/debian/libchicken.shlibs.in
+===================================================================
+--- Chicken/Trunk/debian/libchicken.shlibs.in	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/debian/libchicken.shlibs.in	2004-10-12 11:30:19 UTC (rev 264)
+@@ -1 +0,0 @@
+-libchicken 0 libchicken (= _VERSION_)
+
+Modified: Chicken/Trunk/debian/rules
+===================================================================
+--- Chicken/Trunk/debian/rules	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/debian/rules	2004-10-12 11:30:19 UTC (rev 264)
+@@ -30,7 +30,7 @@
+ config.status: configure
+ 	dh_testdir
+ 	# Add here commands to configure the package.
+-	CFLAGS=&quot;$(CFLAGS)&quot; ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info
++	CFLAGS=&quot;$(CFLAGS)&quot; ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --disable-static
+ 
+ 
+ build: build-stamp
+@@ -68,7 +68,7 @@
+ 	dh_installdirs
+ 
+ 	# Add here commands to install the package into debian/chicken.
+-	$(MAKE) install DESTDIR=$(CURDIR)/debian/chicken
++	$(MAKE) install DESTDIR=$(CURDIR)/debian/libchicken
+ 
+ 
+ # Build architecture-independent files here.
+@@ -77,34 +77,19 @@
+ 
+ # Build architecture-dependent files here.
+ binary-arch: build install
+-	dh_testdir
+-	dh_testroot
+-	dh_installchangelogs ChangeLog
+-	dh_installdocs
+-	dh_installexamples
+-#	dh_install
+-#	dh_installmenu
+-#	dh_installdebconf	
+-#	dh_installlogrotate
+-#	dh_installemacsen
+-#	dh_installpam
+-#	dh_installmime
+-#	dh_installinit
+-#	dh_installcron
+-#	dh_installinfo
+-	dh_installman
+-	dh_link
+-	dh_strip
+-	dh_compress
+-	dh_fixperms
+-#	dh_perl
+-#	dh_python
+-#	dh_makeshlibs
++	dh_testdir -a
++	dh_testroot -a
++	dh_installchangelogs -a ChangeLog
++	dh_installdocs -a
++	dh_link -a
++	dh_strip -a
++	dh_compress -a
++	dh_fixperms -a
+ 	dh_makeshlibs -plibchicken -V 'libchicken-$(UPVERSION)'
+-	dh_installdeb
+-	dh_shlibdeps
+-	dh_gencontrol
+-	dh_md5sums
++	dh_installdeb -a
++	dh_shlibdeps -s
++	dh_gencontrol -a -v -- -VUpstream-Version=$(UPVERSION)
++	dh_md5sums -a
+ 	dh_builddeb
+ 
+ binary: binary-indep binary-arch
+
+Modified: Chicken/Trunk/doc/Makefile.am
+===================================================================
+--- Chicken/Trunk/doc/Makefile.am	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/doc/Makefile.am	2004-10-12 11:30:19 UTC (rev 264)
+@@ -15,7 +15,7 @@
+ 	mkdir -p $(distdir)/en	
+ 	cp -a $(srcdir)/en/* $(distdir)/en
+ 
+-docsdir = `monodoc --get-sourcesdir`
++docsdir = $(libdir)/monodoc/sources
+ docs_DATA = chicken-framework.source chicken-framework.tree chicken-framework.zip
+ 
+ CLEANFILES = chicken-framework.tree chicken-framework.zip 
+
+Modified: Chicken/Trunk/src/Gnome/TrayIcon/libtrayicon/Makefile.am
+===================================================================
+--- Chicken/Trunk/src/Gnome/TrayIcon/libtrayicon/Makefile.am	2004-10-11 21:26:31 UTC (rev 263)
++++ Chicken/Trunk/src/Gnome/TrayIcon/libtrayicon/Makefile.am	2004-10-12 11:30:19 UTC (rev 264)
+@@ -1,20 +1,20 @@
+-TRAY_ICON_CFLAGS = $(GDK20_CFLAGS) $(ATK_CFLAGS)
+-TRAY_ICON_LIBS = $(GDK20_LIBS) $(ATK_LIBS)
+-
+ EXTRA_DIST = eggtrayicon.h
+ 
+ INCLUDES = \
+-  $(TRAY_ICON_CFLAGS) \
++  $(LIBTRAYICON_CFLAGS) \
+   -DEGG_COMPILATION \
+   -DGTK_DISABLE_DEPRECATED \
+   -DGDK_DISABLE_DEPRECATED \
+   -DG_DISABLE_DEPRECATED
+ 
+-trayiconlibdir = $(libdir)
+-trayiconlib_LTLIBRARIES = libchicken.la
++chickenlibdir = $(libdir)
++chickenlib_LTLIBRARIES = libchicken.la
+ 
+ libchicken_la_SOURCES = \
+   eggtrayicon.c		
+ 
++libchicken_la_LDFLAGS = -export-dinamyc -module -avoid-version
++libchicken_la_LIBADD = $(LIBTRAYICON_LIBS)
++
+ maintainer-clean-local:
+ 	rm -f Makefile.in
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000001.html">[Mspace-checkins] r265 - in Chicken: . branches branches/Chicken-0.1.3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#0">[ date ]</a>
+              <a href="thread.html#0">[ thread ]</a>
+              <a href="subject.html#0">[ subject ]</a>
+              <a href="author.html#0">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

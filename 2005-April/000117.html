@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r404 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r404%20-%20in%20ComponentModel/trunk%3A%20ComponentTest/src%20ComponentTest/src/Components/Saludator/Bo%20ComponentTest/src/Components/Saludator/Form%20src&In-Reply-To=%3C200504061136.j36BaWxO002066%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000116.html">
+   <LINK REL="Next"  HREF="000118.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r404 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r404%20-%20in%20ComponentModel/trunk%3A%20ComponentTest/src%20ComponentTest/src/Components/Saludator/Bo%20ComponentTest/src/Components/Saludator/Form%20src&In-Reply-To=%3C200504061136.j36BaWxO002066%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r404 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Wed Apr  6 13:36:32 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000116.html">[Mspace-checkins] r403 - in ComponentModel/trunk: ComponentTest/src/Components/MainComponent ComponentTest/src/Components/MainComponent/Bo ComponentTest/src/Components/MainComponent/Exception ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exception src src/ComponentModel.Container src/ComponentModel.Exceptions src/ComponentModel.Interfaces src/ComponentModel.VO
+</A></li>
+        <LI>Next message: <A HREF="000118.html">[Mspace-checkins] r405 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo src src/ComponentModel.Container src/ComponentModel.Exceptions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#117">[ date ]</a>
+              <a href="thread.html#117">[ thread ]</a>
+              <a href="subject.html#117">[ subject ]</a>
+              <a href="author.html#117">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-04-06 13:36:22 +0200 (Wed, 06 Apr 2005)
+New Revision: 404
+
+Modified:
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs
+   ComponentModel/trunk/ComponentTest/src/Launcher.cs
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Refactored.
+
+Looks nicer.
+
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-04-05 23:58:52 UTC (rev 403)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Bo/SaludatorComponentModel.cs	2005-04-06 11:36:22 UTC (rev 404)
+@@ -7,12 +7,16 @@
+        public SaludatorComponentModel () : base () {
+        }
+ 
+-       //ComponentModel.ComponentTest.Components.Saludator.Form.SaludatorForm
+        [ComponentMethod (ViewName = &quot;ComponentModel.ComponentTest.Components.Saludator.Form.SaludatorForm&quot;, ResponseName = &quot;ResponseSaluda&quot;)]
+        public int Saluda () {
+            Console.WriteLine (&quot;Que pasa co !!&quot;);
+            throw new System.Exception (&quot;Yeahhh&quot;);
+            return 1;
+        }
++
++       [ComponentMethod (ViewName = &quot;ComponentModel.ComponentTest.Components.Saludator.Form.SaludatorForm&quot;, ResponseName = &quot;ResponseSaludaATodos&quot;)]
++       public void SaludaATodos () {
++            Console.WriteLine (&quot;Saludar&#233; a todos si me los pides, bellaco !!&quot;); 
++       }
+    }
+ }
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs	2005-04-05 23:58:52 UTC (rev 403)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs	2005-04-06 11:36:22 UTC (rev 404)
+@@ -11,5 +11,9 @@
+             Console.WriteLine (&quot;Response hola !!&quot;);
+             Console.WriteLine ((int)response.ResponseValue);
+         }
++
++        public void ResponseSaludaATodos (ResponseMethodVO response) {
++            Console.WriteLine (&quot;Aqu&#237; ejecutar&#233; el response del caso de uso.\nBellaco lo ser&#225; tu calavera en almibar.&quot;);
++        }
+     }
+ }
+
+Modified: ComponentModel/trunk/ComponentTest/src/Launcher.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Launcher.cs	2005-04-05 23:58:52 UTC (rev 403)
++++ ComponentModel/trunk/ComponentTest/src/Launcher.cs	2005-04-06 11:36:22 UTC (rev 404)
+@@ -15,6 +15,7 @@
+             else
+                 Console.WriteLine (&quot;Dcm es null&quot;);
+             dcm.Execute (&quot;Saluda&quot;, null);
++            dcm.Execute (&quot;SaludaATodos&quot;, null);
+         }
+     }
+ }
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-04-05 23:58:52 UTC (rev 403)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-04-06 11:36:22 UTC (rev 404)
+@@ -31,8 +31,6 @@
+             foreach (Assembly assembly in DefaultContainer.Instance.Assemblies) {
+                 foreach (Type type in assembly.GetTypes ()) {
+                     if (type.IsSubclassOf (typeof (DefaultExceptionManager)) || type.IsSubclassOf (typeof (IExceptionManager))) {
+-                        logger.Debug (&quot;Subclass is from exceptionmanager. &quot; + type.ToString ());
+-                        logger.Debug (type.ToString ());
+                         if (type.ToString().Equals (exceptionManagerClassName)) {
+                             logger.Debug (&quot;Getting type of exception manager: &quot; + type.ToString ());
+                             return type;
+@@ -43,52 +41,48 @@
+             return null;
+         }
+         
++        private MethodInfo GetMethodToExecute (string methodName, Type componentType) {
++            logger.Debug (&quot;Entering GetMethodToExecute. Searching: &quot; + methodName + &quot; in: &quot; + componentType.ToString ());
++            MethodInfo methodInfo = componentType.GetMethod (methodName, BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public);
++            logger.Debug (&quot;Finded method to execute: &quot; + methodInfo.ToString ());
++            return methodInfo;
++        }
+         
++        private MethodInfo GetMethodResponse (Type viewType, ComponentMethodAttribute componentMethodAttribute) {
++            MethodInfo responseMethod = viewType.GetMethod (componentMethodAttribute.ResponseName, BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public) ;
++            logger.Debug (&quot;Finded response to execute: &quot; + responseMethod.ToString () + &quot; in: &quot; + viewType.ToString ());
++            return responseMethod;
++        } 
+         
+-        public ResponseMethodVO Execute (string methodName, params object[] parameters) {
+-            logger.Debug (&quot;Enter method Execute.&quot;);
+-            Type type = this.GetType ();
+-            logger.Debug (&quot;Type of component invoke: &quot; + type.ToString ());
+-            ResponseMethodVO responseMethodVO = new ResponseMethodVO ();
+-            // Solo se aceptan m&#233;todos no est&#225;ticos, declarados y p&#250;blicos.
+-            MethodInfo methodInfo = type.GetMethod (methodName, BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public);
+-            logger.Debug (&quot;Finded method to execute: &quot; + methodInfo.ToString ());
+-            //Cumple requisitos de ejecuci&#243;n?
+-            Attribute[] attributes = (Attribute[])methodInfo.GetCustomAttributes (typeof (ComponentMethodAttribute),false);
+-            if (attributes.Length == 1) {
+-                if (defaultExceptionManager == null) {
+-                    logger.Debug (&quot;Try instantiate defaultExceptionManager&quot;);
+-                    //FIXME esto es bastante cambiable
+-                    //defaultExceptionManager = this.GetExceptionManager ();
+-                    Type typeManager = this.GetTypeExceptionManager (this.VO.ExceptionClassName); 
+-                    defaultExceptionManager = (DefaultExceptionManager)typeManager.GetConstructor (null).Invoke (null);
+-                    logger.Debug (&quot;ExceptionManagerInstanciated.&quot;);
+-                }
+-                ComponentMethodAttribute componentMethodAttribute = (ComponentMethodAttribute)attributes[0];
+-                logger.Debug (&quot;Finded Attribute: &quot; + componentMethodAttribute.GetType ());
+-                logger.Debug (&quot;Reading attribute viewName: &quot; + componentMethodAttribute.ViewName);
+-                Type viewType = this.GetViewType (componentMethodAttribute);
+-                logger.Debug (&quot;Finded view Type: &quot; + viewType.ToString ());
+-                try {
+-                    //Execute Method here !!
+-                    object ret = methodInfo.Invoke (this, parameters);
+-                    responseMethodVO.ResponseValue = ret;
+-                    //Redirecting to view.
+-                    object obj = viewType.GetConstructor (null).Invoke (null);
+-                    methodInfo = viewType.GetMethod (componentMethodAttribute.ResponseName, BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public);
+-                //Executing response.
+-                    methodInfo.Invoke (obj, new object[]{responseMethodVO});
+-                } catch (Exception e) {
+-                    defaultExceptionManager.ProcessException (e);
+-                }
+-                logger.Debug (&quot;Finded response Method in view: &quot; + viewType.ToString() + &quot; &quot; + methodInfo.ToString ());
++        private void InstantiateExceptionManager () {
++            if (defaultExceptionManager == null) {
++                logger.Debug (&quot;Trying to instantiate ExceptionManager.&quot;);
++                Type typeManager = this.GetTypeExceptionManager (this.VO.ExceptionClassName);
++                this.defaultExceptionManager = (DefaultExceptionManager)typeManager.GetConstructor (null).Invoke (null);
++                logger.Debug (&quot;Exception manager instatiated.&quot;);
+             }
+-            logger.Debug (&quot;Exiting method Execute&quot;);
+-            if (responseMethodVO.ResponseValue != null)
++            logger.Debug (&quot;Exception manager already instatiated.&quot;);
++        }
++        
++        private ResponseMethodVO ExecuteCompleteSequence (MethodInfo methodToInvoke, object[] parameters, Type viewType, MethodInfo methodResponse) {
++            try {
++                ResponseMethodVO responseMethodVO = new ResponseMethodVO ();
++                logger.Debug (&quot;Method &quot; + methodToInvoke + &quot; executing.&quot;);
++                object ret = methodToInvoke.Invoke (this, parameters);
++                responseMethodVO.ResponseValue = ret;
++                logger.Debug (&quot;Redirecting to view: &quot; + viewType.ToString () + &quot; to response Method: &quot; + methodResponse.ToString ());
++                object obj = viewType.GetConstructor (null).Invoke (null);
++                logger.Debug (&quot;Executing response method: &quot; + methodResponse.ToString ());
++                methodResponse.Invoke (obj, new object[] {responseMethodVO});
+                 return responseMethodVO;
++            }
++            catch (Exception exception) {
++                this.InstantiateExceptionManager ();
++                defaultExceptionManager.ProcessException (exception);
++            }
+             return null;
+         }
+-
++        
+         private Type GetViewType (ComponentMethodAttribute componentMethodAttribute) {
+             foreach (Assembly assembly in DefaultContainer.Instance.Assemblies) {
+                 foreach (Type type in assembly.GetTypes ()) {
+@@ -106,5 +100,19 @@
+             this.vO = vo;
+         }
+          
++        public ResponseMethodVO Execute (string methodName, object[] parameters) {
++            Type type = this.GetType ();
++            logger.Debug (&quot;Type of component invoke. &quot; + type.ToString ());
++
++            //Recollecting data for execution.
++            MethodInfo methodToExecute = this.GetMethodToExecute (methodName, type);
++            Attribute[] attributes = (Attribute[]) methodToExecute.GetCustomAttributes (typeof (ComponentMethodAttribute), false);
++            ComponentMethodAttribute componentMethodAttribute = (ComponentMethodAttribute) attributes[0];
++            Type viewType = this.GetViewType (componentMethodAttribute);
++            MethodInfo responseMethod = this.GetMethodResponse (viewType, componentMethodAttribute);
++            //Executing 
++            ResponseMethodVO responseMethodVO = this.ExecuteCompleteSequence (methodToExecute, parameters, viewType, responseMethod); 
++            return responseMethodVO;
++        }
+     }
+ }
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000116.html">[Mspace-checkins] r403 - in ComponentModel/trunk: ComponentTest/src/Components/MainComponent ComponentTest/src/Components/MainComponent/Bo ComponentTest/src/Components/MainComponent/Exception ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Exception src src/ComponentModel.Container src/ComponentModel.Exceptions src/ComponentModel.Interfaces src/ComponentModel.VO
+</A></li>
+	<LI>Next message: <A HREF="000118.html">[Mspace-checkins] r405 - in ComponentModel/trunk: ComponentTest/src ComponentTest/src/Components/Saludator/Bo src src/ComponentModel.Container src/ComponentModel.Exceptions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#117">[ date ]</a>
+              <a href="thread.html#117">[ thread ]</a>
+              <a href="subject.html#117">[ subject ]</a>
+              <a href="author.html#117">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

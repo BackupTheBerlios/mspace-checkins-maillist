@@ -1,0 +1,498 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r596 - / twittinho
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2007-June/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r596%20-%20/%20twittinho&In-Reply-To=%3C200706031524.l53FOcJS006024%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000309.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r596 - / twittinho</H1>
+    <B>luis at mail.berlios.de</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r596%20-%20/%20twittinho&In-Reply-To=%3C200706031524.l53FOcJS006024%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r596 - / twittinho">luis at mail.berlios.de
+       </A><BR>
+    <I>Sun Jun  3 17:24:38 CEST 2007</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000309.html">[Mspace-checkins] r597 - twittinho
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#308">[ date ]</a>
+              <a href="thread.html#308">[ thread ]</a>
+              <a href="subject.html#308">[ subject ]</a>
+              <a href="author.html#308">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: luis
+Date: 2007-06-03 17:24:24 +0200 (Sun, 03 Jun 2007)
+New Revision: 596
+
+Added:
+   twittinho/
+   twittinho/controller.rb
+   twittinho/gui.rb
+   twittinho/model.rb
+   twittinho/nucleo.rb
+Log:
+Insercion del proyecto Twittinho, cliente de twitter para Gnome hecho en Ruby.
+
+
+Added: twittinho/controller.rb
+===================================================================
+--- twittinho/controller.rb	2007-03-07 20:31:27 UTC (rev 595)
++++ twittinho/controller.rb	2007-06-03 15:24:24 UTC (rev 596)
+@@ -0,0 +1,33 @@
++$KCODE = 'u'
++
++require 'gconf2'
++require 'gui'
++require 'model'
++require 'nucleo'
++
++gconfPath = &quot;/apps/twitinho/&quot;
++client = GConf::Client.default
++
++if client.dir_exists?(gconfPath.chomp(&quot;\/&quot;))
++	config = readConfig(client)
++else
++	WindowPreferences.new(client, false)
++end
++
++initState = true
++
++nucleo = Nucleo.new(config)
++mainWindow = MainWindow.new(nucleo, config)
++statusIcon = StatusIcon.new(mainWindow, client)
++
++
++thread = Thread.new do
++        loop {
++		nucleo.refreshStatuses(statusIcon, initState, config)
++		initState = false
++		sleep(config[&quot;refresh&quot;])
++	}
++end
++
++Gtk.main
++
+
+Added: twittinho/gui.rb
+===================================================================
+--- twittinho/gui.rb	2007-03-07 20:31:27 UTC (rev 595)
++++ twittinho/gui.rb	2007-06-03 15:24:24 UTC (rev 596)
+@@ -0,0 +1,245 @@
++$KCODE = 'u'
++
++require 'gtk2'
++require 'libnotify'
++
++class MainWindow &lt; Gtk::Window
++
++	def initialize (nucleo, config)
++		
++		@pixbufRend = Gtk::CellRendererPixbuf.new()
++
++		@textRend = Gtk::CellRendererText.new()
++		@textRend.set_property('wrap_mode', Pango::Layout::WRAP_WORD_CHAR)
++		@textRend.set_single_paragraph_mode(false)
++		@textRend.set_width(50)
++
++		@imageCol = Gtk::TreeViewColumn.new(&quot;Cara&quot;, @pixbufRend, :pixbuf =&gt; 0)
++		@imageCol.set_resizable(false)
++		@imageCol.set_spacing(5)
++		
++		@textCol = Gtk::TreeViewColumn.new(&quot;Nombre&quot;, @textRend, :markup =&gt; 1)
++		@textCol.set_resizable(true)
++		@textCol.set_fixed_width(500)
++		@textCol.set_sizing(Gtk::TreeViewColumn::FIXED)
++		@textCol.set_spacing(20)
++		
++		@listView = Gtk::TreeView.new()
++		@listView.set_model(nucleo.listStore)
++		@listView.append_column(@imageCol)
++		@listView.append_column(@textCol)
++		@listView.headers_visible = false
++		@listView.rules_hint = true
++
++		@scrolledWindow = Gtk::ScrolledWindow.new()
++		@scrolledWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC)
++		@scrolledWindow.add(@listView)
++
++		@vBox = Gtk::VBox.new()
++		@vBox.set_spacing(6)
++		@vBox.add(@scrolledWindow)
++
++		@btnHome = Gtk::Button.new(Gtk::Stock::HOME)
++		@btnHome.set_relief(Gtk::RELIEF_HALF)
++		@btnHome.signal_connect( &quot;clicked&quot; ) { |w| 
++			system(&quot;gnome-open <A HREF="http://twitter.com/#{config[">http://twitter.com/#{config[</A>'user']}&quot;)
++		}
++		
++		@entry = Gtk::Entry.new
++		@entry.max_length = 140
++		@entry.signal_connect( &quot;changed&quot; ) { |w|OnPostEntryChanged(w, @labelCarac) }
++		@entry.signal_connect( &quot;activate&quot; ) { |w| OnPostEntryActivated(w, nucleo.connection) }
++		
++		@labelCarac = Gtk::Label.new(&quot;140&quot;)
++		
++		@hBox = Gtk::HBox.new
++		
++		@hBox.pack_start(@btnHome, expand=false)
++		@hBox.add(@entry)
++		@hBox.pack_start(@labelCarac, expand=false)
++		
++		@vBox.pack_start(@hBox, expand=false)
++		
++		@statusBar = Gtk::Statusbar.new
++		
++		@vBox.pack_start(@statusBar, expand=false)
++
++		super()
++		
++		set_title(&quot;Twitinho Alpha 0.2&quot;)		
++		set_default_size(300, 500)
++                set_border_width(6)
++		resizable = false
++		signal_connect(&quot;delete_event&quot;) { Gtk.main_quit; exit! }
++		add(@vBox)
++
++		show_all
++
++	end		
++
++	def getListView
++		return @listView
++	end
++
++	def OnPostEntryChanged(texto,label)
++	        label.text = (140 - texto.text.length).to_s
++	end
++	
++	def OnPostEntryActivated(entry, connection)
++		entry.editable = false
++		connection.update(entry.text)
++		entry.text = &quot;&quot;
++		entry.editable = true
++	end
++	
++
++end
++
++class StatusMenu &lt; Gtk::Menu
++
++	def initialize (client)
++		#refreshItem = Gtk::ImageMenuItem.new(Gtk::Stock::REFRESH)
++		#refreshItem.signal_connect(&quot;activate&quot;) { Thread.new { nucleo.refreshStatuses } }
++		#refreshItem.show
++		
++		preferencesItem = Gtk::ImageMenuItem.new(Gtk::Stock::PREFERENCES)
++		preferencesItem.signal_connect(&quot;activate&quot;) { WindowPreferences.new(client, true) }
++		preferencesItem.show
++		
++		quitItem = Gtk::ImageMenuItem.new(Gtk::Stock::QUIT)
++		quitItem.signal_connect(&quot;activate&quot;) { Gtk.main_quit }
++		quitItem.show
++		
++		
++		super()
++
++		#add(refreshItem)
++		add(preferencesItem)
++		add(quitItem)
++	end
++end
++
++class StatusIcon &lt; Gtk::StatusIcon
++
++	def initialize(window, client)
++		@menu = StatusMenu.new(client)
++		super()
++		
++		set_icon_name(Gtk::Stock::HOME)
++		set_tooltip(&quot;Twitinho&quot;)
++		signal_connect(&quot;popup_menu&quot;) { |w, button, time| OnStatusIconPopUp(w, button, time, @menu) }
++		signal_connect(&quot;activate&quot;) { |w, button, time| OnStatusIconActivated(w, window) }
++	end	
++	
++	def OnStatusIconPopUp (w, button, time, menu)
++	        menu.popup(nil, nil, button, time)
++	
++	end
++	
++	def OnStatusIconActivated (w, window)
++		if window.visible?
++			window.hide
++		else
++			window.show
++		end
++	end
++end
++
++
++
++class WindowPreferences &lt; Gtk::Window
++
++	def initialize (client, configState)
++		if configState
++			config = readConfig(client)		
++		else
++			config = Hash.new
++			config[&quot;user&quot;] = &quot;&quot;
++			config[&quot;password&quot;] = &quot;&quot;
++			config[&quot;refresh&quot;] = 120
++			config[&quot;notifications&quot;] = false
++		end
++
++		labelAuthentication = Gtk::Label.new()
++		labelAuthentication.set_markup('&lt;b&gt;Authentication&lt;/b&gt;')
++		
++		labelUser = Gtk::Label.new('Username')
++		
++		entryUser = Gtk::Entry.new()
++		entryUser.set_text(config[&quot;user&quot;])
++		
++		labelPassword = Gtk::Label.new('Password')
++		
++		entryPassword = Gtk::Entry.new()
++		entryPassword.set_visibility(false)
++		entryPassword.set_text(config[&quot;password&quot;])
++		
++		
++		labelOthers = Gtk::Label.new()
++		labelOthers.set_markup('&lt;b&gt;Others&lt;/b&gt;')
++		labelOthers.set_justify(Gtk::JUSTIFY_LEFT)
++		
++		checkButtonNotifications = Gtk::CheckButton.new('Active Notifications?')
++		checkButtonNotifications.set_active(config[&quot;notifications&quot;])	
++		
++		refreshLabel = Gtk::Label.new('States Refresh Time (in seconds)')
++
++		refreshEntry = Gtk::Entry.new()
++		refreshEntry.set_text(config[&quot;refresh&quot;].to_s)
++		acceptButton = Gtk::Button.new(Gtk::Stock::OK)
++		acceptButton.signal_connect(&quot;clicked&quot;) {
++			OnAcceptButtonClicked(client, entryUser, entryPassword, checkButtonNotifications, refreshEntry) 
++			destroy	
++		}
++		cancelButton = Gtk::Button.new(Gtk::Stock::CANCEL)
++		cancelButton.signal_connect(&quot;clicked&quot;) { destroy }
++		
++		hButtonBox = Gtk::HButtonBox.new()
++		hButtonBox.pack_start(cancelButton, padding = 5)	
++		hButtonBox.pack_start(acceptButton, padding = 5)	
++		hButtonBox.set_layout_style(Gtk::ButtonBox::Style::END)
++		hButtonBox.set_spacing(20)
++		
++		
++		table = Gtk::Table.new(7,4,homogeneus = false)
++		
++		table.attach(labelAuthentication, 1, 2, 1, 2, Gtk::FILL, Gtk::FILL, 8, 8)
++		table.attach(labelUser, 1, 2, 2, 3, Gtk::FILL, Gtk::FILL, 8, 8)
++		table.attach(entryUser, 2, 3, 2, 3, Gtk::FILL, Gtk::FILL, 8, 8)
++		table.attach(labelPassword, 1, 2, 3, 4, Gtk::FILL, Gtk::FILL, 8, 8)
++		table.attach(entryPassword, 2, 3, 3, 4, Gtk::FILL, Gtk::FILL, 8, 8)
++		table.attach(labelOthers, 1, 2, 4, 5, Gtk::FILL, Gtk::FILL, 8, 8)
++		table.attach(checkButtonNotifications, 1, 3, 5, 6, Gtk::FILL, Gtk::FILL, 8, 8)
++		table.attach(refreshLabel, 1, 2, 6, 7, Gtk::FILL, Gtk::FILL, 8, 8)
++		table.attach(refreshEntry, 2, 3, 6, 7, Gtk::FILL, Gtk::FILL, 8, 8)
++		
++		vbox = Gtk::VBox.new()
++		vbox.add(table)
++		vbox.add(hButtonBox)
++		vbox.set_spacing(6)		
++	
++		super()		
++		set_title(&quot;Preferences&quot;)	
++		set_default_size(320, 250)
++		set_border_width(6)
++		set_resizable = false
++		set_modal(true)
++		signal_connect(&quot;delete_event&quot;) { destroy }
++		
++		add(vbox)
++		show_all
++	end
++	
++	def OnAcceptButtonClicked (client, user, password, notifications, refresh)
++		config = Hash.new
++		config[&quot;user&quot;] = user.text	
++		config[&quot;password&quot;] = password.text
++		config[&quot;notifications&quot;] = notifications.active?
++		config[&quot;refresh&quot;] = refresh.text
++		writeConfig(client, config)
++	end
++
++	
++	
++
++end
+
+Added: twittinho/model.rb
+===================================================================
+--- twittinho/model.rb	2007-03-07 20:31:27 UTC (rev 595)
++++ twittinho/model.rb	2007-06-03 15:24:24 UTC (rev 596)
+@@ -0,0 +1,29 @@
++$KCODE = 'u'
++
++require 'twitter'
++
++GCONF_PATH = '/apps/twitinho/'
++
++def connect(email, password)
++	return Twitter::Base.new(email, password)
++end
++
++def readConfig (client)
++	gconfPath = GCONF_PATH
++        configs = Hash.new
++        configs[&quot;user&quot;] = client[&quot;#{gconfPath}user&quot;]
++        configs[&quot;password&quot;] = client[&quot;#{gconfPath}password&quot;]
++        configs[&quot;refresh&quot;] =  client[&quot;#{gconfPath}refresh&quot;]
++        configs[&quot;notifications&quot;] = client[&quot;#{gconfPath}notifications&quot;]
++
++        return configs
++end
++
++
++def writeConfig (client, config)
++	gconfPath = GCONF_PATH
++        client[&quot;#{gconfPath}user&quot;] = config[&quot;user&quot;]
++        client[&quot;#{gconfPath}password&quot;] = config[&quot;password&quot;]
++        client[&quot;#{gconfPath}refresh&quot;] = config[&quot;refresh&quot;].to_i
++        client[&quot;#{gconfPath}notifications&quot;] = config[&quot;notifications&quot;]
++end
+
+Added: twittinho/nucleo.rb
+===================================================================
+--- twittinho/nucleo.rb	2007-03-07 20:31:27 UTC (rev 595)
++++ twittinho/nucleo.rb	2007-06-03 15:24:24 UTC (rev 596)
+@@ -0,0 +1,94 @@
++$KCODE = 'u'
++
++require 'gtk2'
++require 'twitter'
++require 'curb'
++require 'fileutils'
++require 'model'
++
++class Nucleo
++
++	def initialize(config)
++		@connection = connect(config[&quot;user&quot;], config[&quot;password&quot;])
++		@lastStatusID = 0
++		@listStore = Gtk::ListStore.new(Gdk::Pixbuf, String)
++	end
++
++	def setLastStatusId(statusID)
++		@lastStatusID = statusID
++	end
++
++	def connection
++		@connection
++	end
++		
++	def listStore
++		@listStore
++	end
++
++	def checkNewStates
++        	return @connection.timeline(:friends)
++	end
++
++	def refreshStatuses(statusIcon, initState, config)
++        	statusesToUpdate = updateStatus
++        	if !statusesToUpdate.empty?
++        	        statusesToUpdate.each do |state|
++        	                getFaces(state.user)
++        	                insertState(state)
++        	                sendNotify(state.user, state.text, statusIcon) if config[&quot;notifications&quot;] &amp;&amp; ! initState
++        	                setLastStatusId(state.id)
++        	        end
++        	end
++	end
++
++	def updateStatus
++		newStates = checkNewStates
++		newStates = newStates.reverse!
++                statesArray = Array.new
++		newStates.each do |state|
++                	if state.id.to_i &gt; @lastStatusID.to_i
++				statesArray &lt;&lt; state
++			end
++		end
++		return statesArray
++	end
++
++	def insertState(state)
++        	## Rows are been inserted at the first position on the model. Surely it could be improved.
++        	iter = @listStore.insert(0)
++        	iter[0] = Gdk::Pixbuf.new(face(state.user.screen_name))
++        	iter[1] = state.text
++		@lastStatusID = state.id
++		#if listStore.get_iter(Gtk::TreePath.new(19))
++                #	listStore.remove(listStore.get_iter(Gtk::TreePath.new(19)))
++                #end
++
++	end
++
++	def face(twitterUser)
++		return ENV['HOME'] + '/.twitinho/images/' +  twitterUser + '.png'
++	end
++	
++	def getFaces(user)
++        	if File.exist?(face(user.screen_name))
++        	        return
++        	else
++			from = ENV['HOME'] + '/.twitinho/default_face.png'
++			FileUtils.copy(from, face(user.screen_name))
++			Thread.new do
++	        	        sleep(1)
++				url = user.profile_image_url
++        		        Curl::Easy.download(url, face(user.screen_name))
++			end
++        	end
++	end
++
++	def sendNotify(user, state, statusIcon) 
++                LibNotify.init( &quot;Twittinho&quot; )
++		test = LibNotify::Notification.new(user.name, state, face(user.screen_name), statusIcon)
++                test.timeout= 10000      # 5 seconds
++                test.show
++	end
++	
++end
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000309.html">[Mspace-checkins] r597 - twittinho
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#308">[ date ]</a>
+              <a href="thread.html#308">[ thread ]</a>
+              <a href="subject.html#308">[ subject ]</a>
+              <a href="author.html#308">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

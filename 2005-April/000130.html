@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r417 - in Red.Gtk/trunk: . src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r417%20-%20in%20Red.Gtk/trunk%3A%20.%20src&In-Reply-To=%3C200504081407.j38E7Dmk020018%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000129.html">
+   <LINK REL="Next"  HREF="000131.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r417 - in Red.Gtk/trunk: . src</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r417%20-%20in%20Red.Gtk/trunk%3A%20.%20src&In-Reply-To=%3C200504081407.j38E7Dmk020018%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r417 - in Red.Gtk/trunk: . src">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Fri Apr  8 16:07:13 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000129.html">[Mspace-checkins] r416 - in SimpleP/trunk: . build ext src
+</A></li>
+        <LI>Next message: <A HREF="000131.html">[Mspace-checkins] r418 - in SimpleP/trunk: . doc doc-html images installer resources src src/Contexts src/Contexts/GladeContext src/Contexts/OthersContext src/Contexts/SourceContext src/Contexts/TargetsContext src/PopupMenuService ui-data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#130">[ date ]</a>
+              <a href="thread.html#130">[ thread ]</a>
+              <a href="subject.html#130">[ subject ]</a>
+              <a href="author.html#130">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-08 16:07:09 +0200 (Fri, 08 Apr 2005)
+New Revision: 417
+
+Removed:
+   Red.Gtk/trunk/red.gtk.simplep
+Modified:
+   Red.Gtk/trunk/Makefile
+   Red.Gtk/trunk/src/DialogFactory.boo
+Log:
+removed simplep project file from here
+New DialogFactory methods
+changed the references to the gtk# dlls in Makefile
+
+
+
+Modified: Red.Gtk/trunk/Makefile
+===================================================================
+--- Red.Gtk/trunk/Makefile	2005-04-08 13:22:41 UTC (rev 416)
++++ Red.Gtk/trunk/Makefile	2005-04-08 14:07:09 UTC (rev 417)
+@@ -1,7 +1,7 @@
+ REFERENCES=														\
+-		-r:/usr/share/dotnet/mono/gtk-sharp-2.0/gtk-sharp.dll 	\
+-    	-r:/usr/share/dotnet/mono/gtk-sharp-2.0/glade-sharp.dll \
+-		-r:/usr/share/dotnet/mono/gtk-sharp-2.0/gdk-sharp.dll
++		-r:/opt/mono-1.1.6/lib/mono/gtk-sharp-2.0/gtk-sharp.dll 	\
++    	-r:/opt/mono-1.1.6/lib/mono/gtk-sharp-2.0/glade-sharp.dll \
++		-r:/opt/mono-1.1.6/lib/mono/gtk-sharp-2.0/gdk-sharp.dll
+ 
+ all: build/Red.Gtk.dll
+ 									
+
+Deleted: Red.Gtk/trunk/red.gtk.simplep
+===================================================================
+--- Red.Gtk/trunk/red.gtk.simplep	2005-04-08 13:22:41 UTC (rev 416)
++++ Red.Gtk/trunk/red.gtk.simplep	2005-04-08 14:07:09 UTC (rev 417)
+@@ -1,33 +0,0 @@
+-&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+-&lt;Project&gt;
+-    &lt;Name&gt;Red.Gtk&lt;/Name&gt;
+-    &lt;FileSet&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/ext/node1/test.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/ext/node1/node12/test.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/ext/node1/node11/test.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/red.gtk.simplep&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/src/DialogFactory.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/ext/node3/test.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/build/Red.Gtk.dll&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/Makefile&lt;/Path&gt;
+-        &lt;/File&gt;
+-        &lt;File&gt;
+-            &lt;Path&gt;/home/rubiojr/Projects/Red.Gtk/ext/node2/node21/test.boo&lt;/Path&gt;
+-        &lt;/File&gt;
+-    &lt;/FileSet&gt;
+-&lt;/Project&gt;
+\ No newline at end of file
+
+Modified: Red.Gtk/trunk/src/DialogFactory.boo
+===================================================================
+--- Red.Gtk/trunk/src/DialogFactory.boo	2005-04-08 13:22:41 UTC (rev 416)
++++ Red.Gtk/trunk/src/DialogFactory.boo	2005-04-08 14:07:09 UTC (rev 417)
+@@ -14,6 +14,9 @@
+ 		dialog.Run ()
+ 		dialog.Destroy ()
+ 	
++	public static def ShowWarningDialog (parent as Window, description as string, msg as string):
++		ShowWarningDialog (parent, &quot;&lt;b&gt;&lt;big&gt;${description}&lt;/big&gt;&lt;/b&gt;\n\n${msg}&quot;)
++	
+ 	public static def ShowQuestionDialog (parent as Window, msg as string) as int:
+ 		dialog = MessageDialog (parent,
+ 						DialogFlags.Modal,
+@@ -25,7 +28,10 @@
+ 		response = dialog.Run ()
+ 		dialog.Destroy ()
+ 		return response
+-
++	
++	public static def ShowQuestionDialog (parent as Window, description as string, msg as string):
++		return ShowQuestionDialog (parent, &quot;&lt;b&gt;&lt;big&gt;${description}&lt;/big&gt;&lt;/b&gt;\n\n${msg}&quot;)
++	
+ 	public static def ShowInfoDialog (parent as Window, msg as string):
+ 		dialog = MessageDialog (parent,
+ 						DialogFlags.Modal,
+@@ -37,6 +43,9 @@
+ 		dialog.Run ()
+ 		dialog.Destroy ()
+ 	
++	public static def ShowInfoDialog (parent as Window, description as string, msg as string):
++		ShowInfoDialog (parent, &quot;&lt;b&gt;&lt;big&gt;${description}&lt;/big&gt;&lt;/b&gt;\n\n${msg}&quot;)
++	
+ 	public static def ShowErrorDialog (parent as Window, msg as string):
+ 		dialog = MessageDialog (parent,
+ 						DialogFlags.Modal,
+@@ -47,3 +56,6 @@
+ 						)
+ 		dialog.Run ()
+ 		dialog.Destroy ()
++	
++	public static def ShowErrorDialog (parent as Window, description as string, msg as string):
++		ShowErrorDialog (parent, &quot;&lt;b&gt;&lt;big&gt;${description}&lt;/big&gt;&lt;/b&gt;\n\n${msg}&quot;)
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000129.html">[Mspace-checkins] r416 - in SimpleP/trunk: . build ext src
+</A></li>
+	<LI>Next message: <A HREF="000131.html">[Mspace-checkins] r418 - in SimpleP/trunk: . doc doc-html images installer resources src src/Contexts src/Contexts/GladeContext src/Contexts/OthersContext src/Contexts/SourceContext src/Contexts/TargetsContext src/PopupMenuService ui-data
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#130">[ date ]</a>
+              <a href="thread.html#130">[ thread ]</a>
+              <a href="subject.html#130">[ subject ]</a>
+              <a href="author.html#130">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

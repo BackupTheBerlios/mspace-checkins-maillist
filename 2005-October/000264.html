@@ -1,0 +1,516 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r551 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Forms/TableModel Interfaces Resources
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r551%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20Forms%20Forms/TableModel%20Interfaces%20Resources&In-Reply-To=%3C200510221541.j9MFfENu020277%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000263.html">
+   <LINK REL="Next"  HREF="000265.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r551 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Forms/TableModel Interfaces Resources</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r551%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20Forms%20Forms/TableModel%20Interfaces%20Resources&In-Reply-To=%3C200510221541.j9MFfENu020277%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r551 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Forms/TableModel Interfaces Resources">nestor at berlios.de
+       </A><BR>
+    <I>Sat Oct 22 17:41:14 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000263.html">[Mspace-checkins] r550 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: . Bo Forms Forms/TableModel Interfaces Resources
+</A></li>
+        <LI>Next message: <A HREF="000265.html">[Mspace-checkins] r552 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Dto Forms Forms/TableModel Resources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#264">[ date ]</a>
+              <a href="thread.html#264">[ thread ]</a>
+              <a href="subject.html#264">[ subject ]</a>
+              <a href="author.html#264">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-10-22 17:41:12 +0200 (Sat, 22 Oct 2005)
+New Revision: 551
+
+Modified:
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/MethodTableModel.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/ViewTableModel.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Interfaces/ITableModel.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak
+Log:
+Para a?\195?\177adir vistas :)
+
+
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs	2005-10-20 11:34:11 UTC (rev 550)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs	2005-10-22 15:41:12 UTC (rev 551)
+@@ -8,11 +8,16 @@
+ 
+ namespace ComponentBuilder.Forms {
+     public sealed class MainComponentBuilderForm : IViewHandler {
+-        Glade.XML gxml = null;
++        Glade.XML gxml, newViewDialog = null;
+         [Widget] Statusbar statusbar1;
+         [Widget] TreeView viewsTreeView, methodsTreeView;
++
++        ViewTableModel viewTableModel;
++        MethodTableModel methodTableModel;
+         
+         public MainComponentBuilderForm () {
++            //La gracia ser&#237;a sacar el VBox y pasarlo como si fuera un
++            //container.
+             gxml = new Glade.XML (null, &quot;MainComponentBuilderForm.glade&quot;, &quot;window1&quot;, null);
+             gxml.Autoconnect (this);
+ 
+@@ -44,13 +49,35 @@
+                 response.MethodResult = gxml[&quot;vbox1&quot;];
+                 statusbar1.Push (0, String.Format (&quot;Welcome to Babuine Component Builder: {0}@{1}&quot;, Environment.UserName, Environment.MachineName));
+                 //Vamos a instanciar tambi&#233;n los modelos de las vistas.
+-                viewsTreeView.Model = new ViewTableModel ().ListStore;
+-                methodsTreeView.Model = new MethodTableModel ().ListStore;
++                viewTableModel = new ViewTableModel ();
++                viewsTreeView.Model = viewTableModel.ListStore;
++                methodTableModel = new MethodTableModel ();
++                methodsTreeView.Model = methodTableModel.ListStore;
+             }
+         }
+         
+         private void OnWindow1DeleteEvent (object sender, DeleteEventArgs args) {
+             Application.Quit ();
+         }
++
++        private void OnNewViewClicked (object sender, EventArgs args) {
++            newViewDialog = new Glade.XML (null, &quot;MainComponentBuilderForm.glade&quot;, &quot;newViewDialog&quot;, null);
++            Dialog dialog = (Dialog) newViewDialog [&quot;newViewDialog&quot;];
++            switch (dialog.Run ()) {
++                case (int) ResponseType.Ok:
++                    Entry viewNameEntry = (Entry) newViewDialog [&quot;viewNameEntry&quot;];
++                    if (viewNameEntry.Text.Length != 0) {
++                        viewTableModel.Add (viewNameEntry.Text);
++                        viewsTreeView.Model = viewTableModel.ListStore;
++                    }
++                    break;
++                case (int) ResponseType.Cancel:
++                    break;
++                default:
++                    break;
++            }
++            dialog.Destroy ();
++            newViewDialog = null;
++        }
+     }
+ }
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/MethodTableModel.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/MethodTableModel.cs	2005-10-20 11:34:11 UTC (rev 550)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/MethodTableModel.cs	2005-10-22 15:41:12 UTC (rev 551)
+@@ -9,6 +9,7 @@
+     public sealed class MethodTableModel : ITableModel {
+         private ListStore listStore; 
+         private Type[] tipos;
++        private IList list;
+ 
+         public MethodTableModel () {
+             tipos = new Type[5];
+@@ -16,6 +17,7 @@
+                 tipos[i] = typeof (string);
+             }
+             listStore = new ListStore (tipos);
++            list = new ArrayList ();
+         }
+ 
+         public MethodTableModel (IList list) {
+@@ -34,16 +36,22 @@
+                         methodDTO.ResponseMethod,
+                         methodDTO.ParametersCollection.ToString ()
+                         );
++                list.Add (methodDTO);
+             }
+         }
+ 
+         public void Clear () {
+             listStore.Clear ();
++            list.Clear ();
+         }
+         
+         public ListStore ListStore {
+             get {return listStore;}
+         }
+ 
++        public IList ListModel {
++            get {return list;}
++        }
++
+     }
+ }
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/ViewTableModel.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/ViewTableModel.cs	2005-10-20 11:34:11 UTC (rev 550)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/TableModel/ViewTableModel.cs	2005-10-22 15:41:12 UTC (rev 551)
+@@ -9,8 +9,10 @@
+     public sealed class ViewTableModel : ITableModel {
+         private ListStore listStore; 
+         private Type[] tipos;
++        private IList list;
+ 
+         public ViewTableModel () {
++            list = new ArrayList ();
+             tipos = new Type[1];
+             for (int i = 0; i &lt; tipos.Length; i++) {
+                 tipos[i] = typeof (string);
+@@ -26,6 +28,7 @@
+ 
+         public void Add (string view) {
+             listStore.AppendValues (view);
++            list.Add (view);
+         }
+         
+         public void Add (IDataTransferObject dto) {
+@@ -34,11 +37,16 @@
+ 
+         public void Clear () {
+             listStore.Clear ();
++            list.Clear ();
+         }
+         
+         public ListStore ListStore {
+             get {return listStore;}
+         }
+ 
++        public IList ListModel {
++            get {return list;}
++        }
++
+     }
+ }
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Interfaces/ITableModel.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Interfaces/ITableModel.cs	2005-10-20 11:34:11 UTC (rev 550)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Interfaces/ITableModel.cs	2005-10-22 15:41:12 UTC (rev 551)
+@@ -5,6 +5,7 @@
+ 
+ namespace ComponentBuilder.Interfaces {
+     internal interface ITableModel {
++        IList ListModel {get;}
+         void Clear ();
+         void Add (IDataTransferObject dto);
+         ListStore ListStore {get;}
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade	2005-10-20 11:34:11 UTC (rev 550)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade	2005-10-22 15:41:12 UTC (rev 551)
+@@ -262,6 +262,7 @@
+ 		  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+ 		  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+ 		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++		  &lt;signal name=&quot;clicked&quot; handler=&quot;OnNewViewClicked&quot; last_modification_time=&quot;Sat, 22 Oct 2005 15:21:29 GMT&quot;/&gt;
+ 		&lt;/widget&gt;
+ 	      &lt;/child&gt;
+ 
+@@ -428,4 +429,126 @@
+   &lt;/child&gt;
+ &lt;/widget&gt;
+ 
++&lt;widget class=&quot;GtkDialog&quot; id=&quot;newViewDialog&quot;&gt;
++  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;title&quot; translatable=&quot;yes&quot;&gt;Nueva Vista&lt;/property&gt;
++  &lt;property name=&quot;type&quot;&gt;GTK_WINDOW_TOPLEVEL&lt;/property&gt;
++  &lt;property name=&quot;window_position&quot;&gt;GTK_WIN_POS_CENTER_ON_PARENT&lt;/property&gt;
++  &lt;property name=&quot;modal&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;resizable&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;destroy_with_parent&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;decorated&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;skip_taskbar_hint&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;skip_pager_hint&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;type_hint&quot;&gt;GDK_WINDOW_TYPE_HINT_DIALOG&lt;/property&gt;
++  &lt;property name=&quot;gravity&quot;&gt;GDK_GRAVITY_NORTH_WEST&lt;/property&gt;
++  &lt;property name=&quot;focus_on_map&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;urgency_hint&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;has_separator&quot;&gt;True&lt;/property&gt;
++
++  &lt;child internal-child=&quot;vbox&quot;&gt;
++    &lt;widget class=&quot;GtkVBox&quot; id=&quot;dialog-vbox1&quot;&gt;
++      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++      &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
++      &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
++
++      &lt;child internal-child=&quot;action_area&quot;&gt;
++	&lt;widget class=&quot;GtkHButtonBox&quot; id=&quot;dialog-action_area1&quot;&gt;
++	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;layout_style&quot;&gt;GTK_BUTTONBOX_END&lt;/property&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkButton&quot; id=&quot;cancelbutton1&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot;&gt;gtk-cancel&lt;/property&gt;
++	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;response_id&quot;&gt;-6&lt;/property&gt;
++	    &lt;/widget&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkButton&quot; id=&quot;okbutton1&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot;&gt;gtk-ok&lt;/property&gt;
++	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;response_id&quot;&gt;-5&lt;/property&gt;
++	    &lt;/widget&gt;
++	  &lt;/child&gt;
++	&lt;/widget&gt;
++	&lt;packing&gt;
++	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;pack_type&quot;&gt;GTK_PACK_END&lt;/property&gt;
++	&lt;/packing&gt;
++      &lt;/child&gt;
++
++      &lt;child&gt;
++	&lt;widget class=&quot;GtkHBox&quot; id=&quot;hbox1&quot;&gt;
++	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
++	  &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkLabel&quot; id=&quot;label5&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;&lt;b&gt;Nombre: &lt;/b&gt;&lt;/property&gt;
++	      &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;use_markup&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_CENTER&lt;/property&gt;
++	      &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;xalign&quot;&gt;0.5&lt;/property&gt;
++	      &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
++	      &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
++	      &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
++	      &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;viewNameEntry&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;visibility&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;max_length&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;text&quot; translatable=&quot;yes&quot;&gt;&lt;/property&gt;
++	      &lt;property name=&quot;has_frame&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;invisible_char&quot;&gt;*&lt;/property&gt;
++	      &lt;property name=&quot;activates_default&quot;&gt;False&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;expand&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++	&lt;/widget&gt;
++	&lt;packing&gt;
++	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	  &lt;property name=&quot;expand&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
++	&lt;/packing&gt;
++      &lt;/child&gt;
++    &lt;/widget&gt;
++  &lt;/child&gt;
++&lt;/widget&gt;
++
+ &lt;/glade-interface&gt;
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak	2005-10-20 11:34:11 UTC (rev 550)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak	2005-10-22 15:41:12 UTC (rev 551)
+@@ -262,6 +262,7 @@
+ 		  &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+ 		  &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+ 		  &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++		  &lt;signal name=&quot;clicked&quot; handler=&quot;OnNewViewClicked&quot; last_modification_time=&quot;Sat, 22 Oct 2005 15:21:29 GMT&quot;/&gt;
+ 		&lt;/widget&gt;
+ 	      &lt;/child&gt;
+ 
+@@ -428,4 +429,126 @@
+   &lt;/child&gt;
+ &lt;/widget&gt;
+ 
++&lt;widget class=&quot;GtkDialog&quot; id=&quot;newViewDialog&quot;&gt;
++  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;title&quot; translatable=&quot;yes&quot;&gt;Nueva Vista&lt;/property&gt;
++  &lt;property name=&quot;type&quot;&gt;GTK_WINDOW_TOPLEVEL&lt;/property&gt;
++  &lt;property name=&quot;window_position&quot;&gt;GTK_WIN_POS_NONE&lt;/property&gt;
++  &lt;property name=&quot;modal&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;resizable&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;destroy_with_parent&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;decorated&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;skip_taskbar_hint&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;skip_pager_hint&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;type_hint&quot;&gt;GDK_WINDOW_TYPE_HINT_DIALOG&lt;/property&gt;
++  &lt;property name=&quot;gravity&quot;&gt;GDK_GRAVITY_NORTH_WEST&lt;/property&gt;
++  &lt;property name=&quot;focus_on_map&quot;&gt;True&lt;/property&gt;
++  &lt;property name=&quot;urgency_hint&quot;&gt;False&lt;/property&gt;
++  &lt;property name=&quot;has_separator&quot;&gt;True&lt;/property&gt;
++
++  &lt;child internal-child=&quot;vbox&quot;&gt;
++    &lt;widget class=&quot;GtkVBox&quot; id=&quot;dialog-vbox1&quot;&gt;
++      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++      &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
++      &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
++
++      &lt;child internal-child=&quot;action_area&quot;&gt;
++	&lt;widget class=&quot;GtkHButtonBox&quot; id=&quot;dialog-action_area1&quot;&gt;
++	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;layout_style&quot;&gt;GTK_BUTTONBOX_END&lt;/property&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkButton&quot; id=&quot;cancelbutton1&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot;&gt;gtk-cancel&lt;/property&gt;
++	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;response_id&quot;&gt;-6&lt;/property&gt;
++	    &lt;/widget&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkButton&quot; id=&quot;okbutton1&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_default&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot;&gt;gtk-ok&lt;/property&gt;
++	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
++	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;response_id&quot;&gt;-5&lt;/property&gt;
++	    &lt;/widget&gt;
++	  &lt;/child&gt;
++	&lt;/widget&gt;
++	&lt;packing&gt;
++	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	  &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;pack_type&quot;&gt;GTK_PACK_END&lt;/property&gt;
++	&lt;/packing&gt;
++      &lt;/child&gt;
++
++      &lt;child&gt;
++	&lt;widget class=&quot;GtkHBox&quot; id=&quot;hbox1&quot;&gt;
++	  &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;homogeneous&quot;&gt;False&lt;/property&gt;
++	  &lt;property name=&quot;spacing&quot;&gt;0&lt;/property&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkLabel&quot; id=&quot;label5&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;label&quot; translatable=&quot;yes&quot;&gt;&lt;b&gt;Nombre: &lt;/b&gt;&lt;/property&gt;
++	      &lt;property name=&quot;use_underline&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;use_markup&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;justify&quot;&gt;GTK_JUSTIFY_CENTER&lt;/property&gt;
++	      &lt;property name=&quot;wrap&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;selectable&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;xalign&quot;&gt;0.5&lt;/property&gt;
++	      &lt;property name=&quot;yalign&quot;&gt;0.5&lt;/property&gt;
++	      &lt;property name=&quot;xpad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ypad&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;ellipsize&quot;&gt;PANGO_ELLIPSIZE_NONE&lt;/property&gt;
++	      &lt;property name=&quot;width_chars&quot;&gt;-1&lt;/property&gt;
++	      &lt;property name=&quot;single_line_mode&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;angle&quot;&gt;0&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;expand&quot;&gt;False&lt;/property&gt;
++	      &lt;property name=&quot;fill&quot;&gt;False&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++
++	  &lt;child&gt;
++	    &lt;widget class=&quot;GtkEntry&quot; id=&quot;viewNameEntry&quot;&gt;
++	      &lt;property name=&quot;visible&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;can_focus&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;editable&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;visibility&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;max_length&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;text&quot; translatable=&quot;yes&quot;&gt;&lt;/property&gt;
++	      &lt;property name=&quot;has_frame&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;invisible_char&quot;&gt;*&lt;/property&gt;
++	      &lt;property name=&quot;activates_default&quot;&gt;False&lt;/property&gt;
++	    &lt;/widget&gt;
++	    &lt;packing&gt;
++	      &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	      &lt;property name=&quot;expand&quot;&gt;True&lt;/property&gt;
++	      &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
++	    &lt;/packing&gt;
++	  &lt;/child&gt;
++	&lt;/widget&gt;
++	&lt;packing&gt;
++	  &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
++	  &lt;property name=&quot;expand&quot;&gt;True&lt;/property&gt;
++	  &lt;property name=&quot;fill&quot;&gt;True&lt;/property&gt;
++	&lt;/packing&gt;
++      &lt;/child&gt;
++    &lt;/widget&gt;
++  &lt;/child&gt;
++&lt;/widget&gt;
++
+ &lt;/glade-interface&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000263.html">[Mspace-checkins] r550 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: . Bo Forms Forms/TableModel Interfaces Resources
+</A></li>
+	<LI>Next message: <A HREF="000265.html">[Mspace-checkins] r552 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Dto Forms Forms/TableModel Resources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#264">[ date ]</a>
+              <a href="thread.html#264">[ thread ]</a>
+              <a href="subject.html#264">[ subject ]</a>
+              <a href="author.html#264">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,1166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r306 - in Muine.Sdk: . DataKits/Sqlite examples src src/Configuration src/Data src/Services
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r306%20-%20in%20Muine.Sdk%3A%20.%20DataKits/Sqlite%20examples%20src%20src/Configuration%20src/Data%20src/Services&In-Reply-To=%3C200410241250.i9OCo2NS007152%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000041.html">
+   <LINK REL="Next"  HREF="000043.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r306 - in Muine.Sdk: . DataKits/Sqlite examples src src/Configuration src/Data src/Services</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r306%20-%20in%20Muine.Sdk%3A%20.%20DataKits/Sqlite%20examples%20src%20src/Configuration%20src/Data%20src/Services&In-Reply-To=%3C200410241250.i9OCo2NS007152%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r306 - in Muine.Sdk: . DataKits/Sqlite examples src src/Configuration src/Data src/Services">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Sun Oct 24 14:50:02 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000041.html">[Mspace-checkins] r305 - in WebNotes/trunk: . images src/WebNotes
+</A></li>
+        <LI>Next message: <A HREF="000043.html">[Mspace-checkins] r307 - in Muine.Sdk: . doc doc/arch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#42">[ date ]</a>
+              <a href="thread.html#42">[ thread ]</a>
+              <a href="subject.html#42">[ subject ]</a>
+              <a href="author.html#42">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2004-10-24 14:49:58 +0200 (Sun, 24 Oct 2004)
+New Revision: 306
+
+Added:
+   Muine.Sdk/DataKits/Sqlite/SqliteDataKit.cs
+   Muine.Sdk/examples/DbTest.cs
+   Muine.Sdk/examples/Makefile.am
+   Muine.Sdk/src/Configuration/FileStore.cs
+Removed:
+   Muine.Sdk/DataKits/Sqlite/SqliteMusicDb.cs
+Modified:
+   Muine.Sdk/ChangeLog
+   Muine.Sdk/Makefile.am
+   Muine.Sdk/MuineSdk.ini
+   Muine.Sdk/configure.in
+   Muine.Sdk/src/Configuration/Configuration.cs
+   Muine.Sdk/src/Data/Album.cs
+   Muine.Sdk/src/Data/Song.cs
+   Muine.Sdk/src/Services/SdkServices.cs
+   Muine.Sdk/src/sources.list
+Log:
+2004-10-24  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+
+    * DataKits/Sqlite/SqliteDataKit.cs: Fixes in tables creation and
+    connection string
+    * DataKits/Sqlite/SqliteMusicDb.cs: Renamed to SqliteDataKit
+    * Makefile.am: Added examples subdir
+    * MuineSdk.ini: Added Type and Assembly configuration for sections
+    * configure.in: Added examples dir
+    * examples/DbTest.cs: (DbTest), (DbTest.DbTest), (DbTest.Main): new
+    Example to test the database.
+    * examples/Makefile.am: Added
+    * src/Configuration/Configuration.cs: Some fixes in configuration handling
+    * src/Configuration/FileStore.cs: Copy from Chicken framework.
+    * src/Data/Album.cs: Default values for propperties
+    * src/Data/Song.cs: ditto
+    * src/Services/SdkServices.cs: Services loading fixes and some debugging
+    code
+    * src/sources.list: updated
+
+
+
+Modified: Muine.Sdk/ChangeLog
+===================================================================
+--- Muine.Sdk/ChangeLog	2004-10-22 15:08:27 UTC (rev 305)
++++ Muine.Sdk/ChangeLog	2004-10-24 12:49:58 UTC (rev 306)
+@@ -0,0 +1,19 @@
++2004-10-24  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
++	* DataKits/Sqlite/SqliteDataKit.cs: Fixes in tables creation and
++	connection string
++	* DataKits/Sqlite/SqliteMusicDb.cs: Renamed to SqliteDataKit
++	* Makefile.am: Added examples subdir
++	* MuineSdk.ini: Added Type and Assembly configuration for sections
++	* configure.in: Added examples dir
++	* examples/DbTest.cs: (DbTest), (DbTest.DbTest), (DbTest.Main): new
++	Example to test the database.
++	* examples/Makefile.am: Added
++	* src/Configuration/Configuration.cs: Some fixes in configuration handling
++	* src/Configuration/FileStore.cs: Copy from Chicken framework.
++	* src/Data/Album.cs: Default values for propperties
++	* src/Data/Song.cs: ditto
++	* src/Services/SdkServices.cs: Services loading fixes and some debugging
++	code
++	* src/sources.list: updated
++
+
+Copied: Muine.Sdk/DataKits/Sqlite/SqliteDataKit.cs (from rev 250, Muine.Sdk/DataKits/Sqlite/SqliteMusicDb.cs)
+===================================================================
+--- Muine.Sdk/DataKits/Sqlite/SqliteMusicDb.cs	2004-10-09 20:44:50 UTC (rev 250)
++++ Muine.Sdk/DataKits/Sqlite/SqliteDataKit.cs	2004-10-24 12:49:58 UTC (rev 306)
+@@ -0,0 +1,228 @@
++/*
++ * Copyright (C) 2004 Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of the
++ * License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public
++ * License along with this program; if not, write to the
++ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++
++namespace Muine.Sdk.Data.Kits 
++{
++    using System;
++    using Muine.Sdk.Data;
++    using Muine.Sdk.Configuration;
++    using System.Collections;
++    using Mono.Data.SqliteClient;
++    using System.IO;
++    using System.Text;
++
++    public class SqliteDataKit : IMusicDb
++    {
++	private SqliteConnection conn;
++	private string dbfile = &quot;musicdb.sqlite&quot;;
++	private bool isNew = false;
++
++	public SqliteDataKit ()
++	{
++	    conn = new SqliteConnection ();
++	    if (!File.Exists (Path.Combine (Configuration.GetInstance ().UserConfigDir, dbfile)))
++		isNew = true;
++	    conn.ConnectionString = &quot;URI=file:&quot; + Path.Combine (Configuration.GetInstance ().UserConfigDir, dbfile);
++	    conn.Open ();
++	    if (isNew)
++		SetupDb ();
++	}
++
++	public ArrayList Songs {
++	    get {
++		ArrayList songs = new ArrayList ();
++		SqliteCommand cmd = new SqliteCommand ();
++		cmd.Connection = conn;
++		cmd.CommandText = &quot;SELECT * FROM songs&quot;;
++		SqliteDataReader reader = cmd.ExecuteReader ();
++		while (reader.Read ())
++		{
++		    SongMetadata sm = new SongMetadata ();
++		    sm.Filename = reader[1].ToString ();
++		    sm.Title = reader[2].ToString ();
++		    sm.Artists = SqlStringToArray (reader[3].ToString ());
++		    sm.Performers = SqlStringToArray (reader[4].ToString ());
++		    sm.Album = reader[5].ToString ();
++		    sm.TrackNumber = Int32.Parse (reader[6].ToString ());
++		    sm.Year = Int32.Parse (reader[7].ToString ());
++		    sm.Duration = Int32.Parse (reader[8].ToString ());
++		    sm.MTime = Int32.Parse (reader[9].ToString ());
++		    sm.Gain = Double.Parse (reader[10].ToString ());
++		    Song s =  new Song (sm);
++		    songs.Add (s); 
++		}
++		cmd.Dispose ();
++		return songs;
++	    }
++	}
++
++	public ArrayList Albums {
++	    get {
++		ArrayList albums = new ArrayList ();
++		SqliteCommand cmd = new SqliteCommand ();
++		cmd.Connection = conn;
++		cmd.CommandText = &quot;SELECT * FROM albums&quot;;
++		SqliteDataReader reader = cmd.ExecuteReader ();
++		while (reader.Read ())
++		{
++		    AlbumMetadata am = new AlbumMetadata ();
++		    am.Name = reader[1].ToString ();
++		    am.Songs = SqlStringToArray (reader[2].ToString ());
++		    am.Artists = SqlStringToArray (reader[3].ToString ());
++		    am.Performers = SqlStringToArray (reader[4].ToString ());
++		    am.Year = Int32.Parse (reader[5].ToString ());
++		    Album album = new Album (am);
++		    albums.Add (album); 
++		}
++		cmd.Dispose ();
++		return albums;
++	    }
++	}
++
++	public bool AddSong (Song song)
++	{
++	    string artists = ArrayToSqlString (song.Artists);
++	    string performers = ArrayToSqlString (song.Performers);
++
++	    SqliteCommand cmd = new SqliteCommand ();
++	    cmd.Connection = conn;
++	    cmd.CommandText = String.Format (&quot;INSERT INTO songs (id, filename, title, artists, performers, album, tracknumber, year, duration, mtime, gain) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}')&quot;,
++						song.GetHashCode (),
++						song.Filename,
++						song.Title,
++						artists,
++						performers,
++						song.Album,
++						song.TrackNumber,
++						song.Year,
++						song.Duration,
++						song.MTime,
++						song.Gain);
++	    int res = cmd.ExecuteNonQuery ();
++	    if (res &gt; 0)
++		return true;
++	    return false;
++	}
++
++	public bool AddAlbum (Album album)
++	{
++
++	    string songs = ArrayToSqlString (album.Songs);
++	    string artists = ArrayToSqlString (album.Artists);
++	    string performers = ArrayToSqlString (album.Performers);
++	    
++	    SqliteCommand cmd = new SqliteCommand ();
++	    cmd.Connection = conn;
++	    cmd.CommandText = String.Format (&quot;INSERT INTO albums (id, name, songs, artists, performers, year) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')&quot;,
++						album.GetHashCode (),
++						album.Name,
++						songs,
++						artists,
++						performers,
++						album.Year);
++	    int res = cmd.ExecuteNonQuery ();
++	    if (res &gt; 0)
++		return true;
++	    return false;
++	}
++
++	public bool RemoveSong (Song song)
++	{
++	    SqliteCommand cmd = new SqliteCommand ();
++	    cmd.Connection = conn;
++	    cmd.CommandText = String.Format (&quot;REMOVE FROM songs WHERE id = {0}&quot;, song.GetHashCode ());
++	    int res = cmd.ExecuteNonQuery ();
++	    if (res &gt; 0)
++		return true;
++	    return false;
++	}
++
++	public bool RemoveAlbum (Album album)
++	{
++	    SqliteCommand cmd = new SqliteCommand ();
++	    cmd.Connection = conn;
++	    cmd.CommandText = String.Format (&quot;REMOVE FROM albums WHERE id = {0}&quot;, album.GetHashCode ());
++	    int res = cmd.ExecuteNonQuery ();
++	    if (res &gt; 0)
++		return true;
++	    return false;
++	}
++
++	private void SetupDb ()
++	{
++	    SqliteCommand command = new SqliteCommand ();
++	    command.Connection = conn;
++	    command.CommandText = 
++		 &quot;CREATE TABLE songs (						    &quot; +
++                        &quot;       id		    INTEGER PRIMARY KEY NOT NULL,   	&quot; +
++                        &quot;       filename	    STRING  NOT NULL,		    	&quot; +
++                        &quot;       title		    STRING  NOT NULL,               &quot; +
++                        &quot;       artists		    STRING  NOT NULL,               &quot; +
++                        &quot;       performers	    STRING  NOT NULL,               &quot; +
++                        &quot;       album		    STRING  NOT NULL,               &quot; +
++                        &quot;       tracknumber	    INTEGER NOT NULL,               &quot; +
++                        &quot;       year		    INTEGER NOT NULL,               &quot; +
++                        &quot;       duration	    INTEGER NOT NULL,               &quot; +
++                        &quot;       mtime		    INTEGER NOT NULL,               &quot; +
++                        &quot;       gain		    FLOAT   NOT NULL                &quot; +
++                        &quot;)&quot;;
++	    command.ExecuteNonQuery ();
++	    command.Dispose ();
++	    
++	    command = new SqliteCommand ();
++	    command.Connection = conn;
++	    command.CommandText = 
++		 &quot;CREATE TABLE albums (						    &quot; +
++                        &quot;       id		    INTEGER PRIMARY KEY NOT NULL,	&quot; +
++                        &quot;       name		    STRING  NOT NULL,           &quot; +
++                        &quot;       artists		    STRING  NOT NULL,           &quot; +
++                        &quot;       songs		    STRING  NOT NULL,           &quot; +
++                        &quot;       performers	    STRING  NOT NULL,           &quot; +
++                        &quot;       year		    INTEGER NOT NULL           &quot; +
++                        &quot;)&quot;;
++	    command.ExecuteNonQuery ();
++	    command.Dispose ();
++	}
++	
++	public string ArrayToSqlString (ArrayList list)
++	{
++	    StringBuilder builder = new StringBuilder ();
++	    foreach (string s in list)
++	    {
++		builder.Append (s);
++		builder.Append (&quot;%&quot;);
++	    }
++	    return builder.ToString ();
++	}
++
++	public ArrayList SqlStringToArray (string list)
++	{
++	    string[] tokens = list.Split ('%');
++	    ArrayList array = new ArrayList ();
++	    foreach (string s in tokens)
++	    {
++		array.Add (s);	
++	    }
++	    return array;
++	}
++    }
++
++
++}
++
+
+Deleted: Muine.Sdk/DataKits/Sqlite/SqliteMusicDb.cs
+===================================================================
+--- Muine.Sdk/DataKits/Sqlite/SqliteMusicDb.cs	2004-10-22 15:08:27 UTC (rev 305)
++++ Muine.Sdk/DataKits/Sqlite/SqliteMusicDb.cs	2004-10-24 12:49:58 UTC (rev 306)
+@@ -1,228 +0,0 @@
+-/*
+- * Copyright (C) 2004 Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of the
+- * License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- * General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public
+- * License along with this program; if not, write to the
+- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+- * Boston, MA 02111-1307, USA.
+- */
+-
+-namespace Muine.Sdk.Data.Kits 
+-{
+-    using System;
+-    using Muine.Sdk.Data;
+-    using Muine.Sdk.Configuration;
+-    using System.Collections;
+-    using Mono.Data.SqliteClient;
+-    using System.IO;
+-    using System.Text;
+-
+-    public class SqliteMusicDb : IMusicDb
+-    {
+-	private SqliteConnection conn;
+-	private string dbfile = &quot;musicdb.sqlite&quot;;
+-	private bool isNew = false;
+-
+-	public SqliteMusicDb ()
+-	{
+-	    conn = new SqliteConnection ();
+-	    if (!File.Exists (Path.Combine (Configuration.GetInstance ().UserConfigDir, dbfile)))
+-		isNew = true;
+-	    conn.ConnectionString = &quot;URI:file:&quot; + Path.Combine (Configuration.GetInstance ().UserConfigDir, dbfile);
+-	    conn.Open ();
+-	    if (isNew)
+-		SetupDb ();
+-	}
+-
+-	public ArrayList Songs {
+-	    get {
+-		ArrayList songs = new ArrayList ();
+-		SqliteCommand cmd = new SqliteCommand ();
+-		cmd.Connection = conn;
+-		cmd.CommandText = &quot;SELECT * FROM songs&quot;;
+-		SqliteDataReader reader = cmd.ExecuteReader ();
+-		while (reader.Read ())
+-		{
+-		    SongMetadata sm = new SongMetadata ();
+-		    sm.Filename = reader[1].ToString ();
+-		    sm.Title = reader[2].ToString ();
+-		    sm.Artists = SqlStringToArray (reader[3].ToString ());
+-		    sm.Performers = SqlStringToArray (reader[4].ToString ());
+-		    sm.Album = reader[5].ToString ();
+-		    sm.TrackNumber = Int32.Parse (reader[6].ToString ());
+-		    sm.Year = Int32.Parse (reader[7].ToString ());
+-		    sm.Duration = Int32.Parse (reader[8].ToString ());
+-		    sm.MTime = Int32.Parse (reader[9].ToString ());
+-		    sm.Gain = Double.Parse (reader[10].ToString ());
+-		    Song s =  new Song (sm);
+-		    songs.Add (s); 
+-		}
+-		cmd.Dispose ();
+-		return songs;
+-	    }
+-	}
+-
+-	public ArrayList Albums {
+-	    get {
+-		ArrayList albums = new ArrayList ();
+-		SqliteCommand cmd = new SqliteCommand ();
+-		cmd.Connection = conn;
+-		cmd.CommandText = &quot;SELECT * FROM albums&quot;;
+-		SqliteDataReader reader = cmd.ExecuteReader ();
+-		while (reader.Read ())
+-		{
+-		    AlbumMetadata am = new AlbumMetadata ();
+-		    am.Name = reader[1].ToString ();
+-		    am.Songs = SqlStringToArray (reader[2].ToString ());
+-		    am.Artists = SqlStringToArray (reader[3].ToString ());
+-		    am.Performers = SqlStringToArray (reader[4].ToString ());
+-		    am.Year = Int32.Parse (reader[5].ToString ());
+-		    Album album = new Album (am);
+-		    albums.Add (album); 
+-		}
+-		cmd.Dispose ();
+-		return albums;
+-	    }
+-	}
+-
+-	public bool AddSong (Song song)
+-	{
+-	    string artists = ArrayToSqlString (song.Artists);
+-	    string performers = ArrayToSqlString (song.Performers);
+-
+-	    SqliteCommand cmd = new SqliteCommand ();
+-	    cmd.Connection = conn;
+-	    cmd.CommandText = String.Format (&quot;INSERT INTO songs (id, filename, title, artists, performers, album, tracknumber, year, duration, mtime, gain) VALUES ('{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}')&quot;,
+-						song.GetHashCode (),
+-						song.Filename,
+-						song.Title,
+-						artists,
+-						performers,
+-						song.Album,
+-						song.TrackNumber,
+-						song.Year,
+-						song.Duration,
+-						song.MTime,
+-						song.Gain);
+-	    int res = cmd.ExecuteNonQuery ();
+-	    if (res &gt; 0)
+-		return true;
+-	    return false;
+-	}
+-
+-	public bool AddAlbum (Album album)
+-	{
+-
+-	    string songs = ArrayToSqlString (album.Songs);
+-	    string artists = ArrayToSqlString (album.Artists);
+-	    string performers = ArrayToSqlString (album.Performers);
+-	    
+-	    SqliteCommand cmd = new SqliteCommand ();
+-	    cmd.Connection = conn;
+-	    cmd.CommandText = String.Format (&quot;INSERT INTO albums (id, name, songs, artists, performers, year) VALUES ('{1}', '{2}', '{3}', '{4}', '{5}', '{6}')&quot;,
+-						album.GetHashCode (),
+-						album.Name,
+-						songs,
+-						artists,
+-						performers,
+-						album.Year);
+-	    int res = cmd.ExecuteNonQuery ();
+-	    if (res &gt; 0)
+-		return true;
+-	    return false;
+-	}
+-
+-	public bool RemoveSong (Song song)
+-	{
+-	    SqliteCommand cmd = new SqliteCommand ();
+-	    cmd.Connection = conn;
+-	    cmd.CommandText = String.Format (&quot;REMOVE FROM songs WHERE id = {0}&quot;, song.GetHashCode ());
+-	    int res = cmd.ExecuteNonQuery ();
+-	    if (res &gt; 0)
+-		return true;
+-	    return false;
+-	}
+-
+-	public bool RemoveAlbum (Album album)
+-	{
+-	    SqliteCommand cmd = new SqliteCommand ();
+-	    cmd.Connection = conn;
+-	    cmd.CommandText = String.Format (&quot;REMOVE FROM albums WHERE id = {0}&quot;, album.GetHashCode ());
+-	    int res = cmd.ExecuteNonQuery ();
+-	    if (res &gt; 0)
+-		return true;
+-	    return false;
+-	}
+-
+-	private void SetupDb ()
+-	{
+-	    SqliteCommand command = new SqliteCommand ();
+-	    command.Connection = conn;
+-	    command.CommandText = 
+-		 &quot;CREATE TABLE songs (						    &quot; +
+-                        &quot;       id		    INTEGER PRIMARY KEY NOT NULL,   &quot; +
+-                        &quot;       filename	    STRING  NOT NULL,		    &quot; +
+-                        &quot;       title		    STRING  NOT NULL,               &quot; +
+-                        &quot;       artists		    STRING  NOT NULL,               &quot; +
+-                        &quot;       performers	    STRING  NOT NULL,               &quot; +
+-                        &quot;       album		    STRING  NOT NULL                &quot; +
+-                        &quot;       tacknumber	    INTEGER NOT NULL                &quot; +
+-                        &quot;       year		    INTEGER NOT NULL                &quot; +
+-                        &quot;       duration	    INTEGER NOT NULL                &quot; +
+-                        &quot;       mtime		    INTEGER NOT NULL                &quot; +
+-                        &quot;       gain		    FLOAT   NOT NULL                &quot; +
+-                        &quot;)&quot;;
+-	    command.ExecuteNonQuery ();
+-	    command.Dispose ();
+-	    
+-	    command = new SqliteCommand ();
+-	    command.Connection = conn;
+-	    command.CommandText = 
+-		 &quot;CREATE TABLE albums (						    &quot; +
+-                        &quot;       id		    INTEGER PRIMARY KEY NOT NULL,   &quot; +
+-                        &quot;       name		    STRING  NOT NULL,               &quot; +
+-                        &quot;       artists		    STRING  NOT NULL,               &quot; +
+-                        &quot;       songs		    STRING  NOT NULL,               &quot; +
+-                        &quot;       performers	    STRING  NOT NULL                &quot; +
+-                        &quot;       year		    INTEGER NOT NULL                &quot; +
+-                        &quot;)&quot;;
+-	    command.ExecuteNonQuery ();
+-	    command.Dispose ();
+-	}
+-	
+-	public string ArrayToSqlString (ArrayList list)
+-	{
+-	    StringBuilder builder = new StringBuilder ();
+-	    foreach (string s in list)
+-	    {
+-		builder.Append (s);
+-		builder.Append (&quot;%&quot;);
+-	    }
+-	    return builder.ToString ();
+-	}
+-
+-	public ArrayList SqlStringToArray (string list)
+-	{
+-	    string[] tokens = list.Split ('%');
+-	    ArrayList array = new ArrayList ();
+-	    foreach (string s in tokens)
+-	    {
+-		array.Add (s);	
+-	    }
+-	    return array;
+-	}
+-    }
+-
+-
+-}
+-
+
+Modified: Muine.Sdk/Makefile.am
+===================================================================
+--- Muine.Sdk/Makefile.am	2004-10-22 15:08:27 UTC (rev 305)
++++ Muine.Sdk/Makefile.am	2004-10-24 12:49:58 UTC (rev 306)
+@@ -1,3 +1,3 @@
+-SUBDIRS = src PlayerKits DataKits doc
++SUBDIRS = src PlayerKits DataKits examples doc
+ 
+ EXTRA_DIST = MuineSdk.ini
+
+Modified: Muine.Sdk/MuineSdk.ini
+===================================================================
+--- Muine.Sdk/MuineSdk.ini	2004-10-22 15:08:27 UTC (rev 305)
++++ Muine.Sdk/MuineSdk.ini	2004-10-24 12:49:58 UTC (rev 306)
+@@ -1,7 +1,9 @@
+ [Player]
+-PlayerKit = GstPlayer
++PlayerKit.Type = GstPlayer
++PlayerKit.Assembly = GstPlayer
+ 
+ [Data]
+-DataKit = SqliteDataKit
++DataKit.Type = Muine.Sdk.Data.Kits.SqliteDataKit
++DataKit.Assembly = SqliteDataKit
+ 
+ [Playlist]
+
+Modified: Muine.Sdk/configure.in
+===================================================================
+--- Muine.Sdk/configure.in	2004-10-22 15:08:27 UTC (rev 305)
++++ Muine.Sdk/configure.in	2004-10-24 12:49:58 UTC (rev 306)
+@@ -35,6 +35,7 @@
+ 
+ AC_OUTPUT([
+ Makefile
++examples/Makefile
+ doc/Makefile
+ src/Makefile
+ src/muine-sdk.pc
+
+Added: Muine.Sdk/examples/DbTest.cs
+===================================================================
+--- Muine.Sdk/examples/DbTest.cs	2004-10-22 15:08:27 UTC (rev 305)
++++ Muine.Sdk/examples/DbTest.cs	2004-10-24 12:49:58 UTC (rev 306)
+@@ -0,0 +1,39 @@
++/*
++ * Copyright (C) 2004 Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of the
++ * License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public
++ * License along with this program; if not, write to the
++ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++
++using System;    
++using Muine.Sdk.Data;
++using Muine.Sdk.Services;
++using Gtk;
++
++public class DbTest
++{
++    public DbTest ()
++    {
++    }
++    
++    public static void Main (string[] args)
++    {
++	    Application.Init ();
++	    Song s = new Song (&quot;test.mp3&quot;);
++	    SdkServices.MusicDb.AddSong (s);
++	    Application.Run ();
++    }
++}
++
+
+Added: Muine.Sdk/examples/Makefile.am
+===================================================================
+--- Muine.Sdk/examples/Makefile.am	2004-10-22 15:08:27 UTC (rev 305)
++++ Muine.Sdk/examples/Makefile.am	2004-10-24 12:49:58 UTC (rev 306)
+@@ -0,0 +1,8 @@
++REFERENCES =				\
++	-pkg:gtk-sharp				\
++	-r:../src/Muine.Sdk.dll
++
++all: db-test.exe
++
++db-test.exe: DbTest.cs
++	mcs DbTest.cs -o $@ $(REFERENCES)
+
+Modified: Muine.Sdk/src/Configuration/Configuration.cs
+===================================================================
+--- Muine.Sdk/src/Configuration/Configuration.cs	2004-10-22 15:08:27 UTC (rev 305)
++++ Muine.Sdk/src/Configuration/Configuration.cs	2004-10-24 12:49:58 UTC (rev 306)
+@@ -23,7 +23,6 @@
+     using Nini.Config;
+     using System.Reflection;
+     using System.IO;
+-    using Chicken.Configuration;
+ 
+     public class Configuration
+     {
+@@ -35,8 +34,7 @@
+ 	    objStore = new FileStore (&quot;Muine.Sdk&quot;);
+ 	    if (objStore[&quot;MuineSdk.ini&quot;] == null)
+ 	    {
+-		objStore.CreateFile (&quot;MuineSdk.ini&quot;, false);
+-		CopyDefaultConfigFile ();
++			CopyDefaultConfigFile ();
+ 	    }
+ 	    configSource = new IniConfigSource (objStore[&quot;MuineSdk.ini&quot;]); 
+ 	}
+@@ -48,7 +46,7 @@
+ 	    StreamReader reader = new StreamReader (s);
+ 	    string config = reader.ReadToEnd ();
+ 	    reader.Close ();
+-	    StreamWriter writer = new StreamWriter (objStore[&quot;MuineSdk.ini&quot;]);
++	    StreamWriter writer = new StreamWriter (objStore.CreateFile (&quot;MuineSdk.ini&quot;, false));
+ 	    writer.Write (config);
+ 	    writer.Close ();
+ 	}
+@@ -69,26 +67,44 @@
+ 	    }
+ 	}
+ 
+-	public string PlayerKit {
++	public string PlayerKitType {
+ 	    set {
+ 	    }
+ 
+ 	    get {
+-		IConfig config = configSource.Configs[&quot;Player&quot;];
+-		return config.GetString (&quot;PlayerKit&quot;, &quot;GstPlayer&quot;);
++			IConfig config = configSource.Configs[&quot;Player&quot;];
++			return config.GetString (&quot;PlayerKit.Type&quot;, &quot;GstPlayer&quot;);
+ 	    }
+ 	}
++	
++	public string PlayerKitAssembly {
++		set {
++		}
++		get {
++			IConfig config = configSource.Configs[&quot;Player&quot;];
++			return config.GetString (&quot;PlayerKit.Assembly&quot;, &quot;Gstplayer&quot;);
++		}
++	}
+ 
+-	public string DataKit {
++	public string DataKitType {
+ 	    set {
+ 	    }
+ 
+ 	    get {
+-		IConfig config = configSource.Configs[&quot;Data&quot;];
+-		return config.GetString (&quot;DataKit&quot;, &quot;SqliteDataKit&quot;);
++			IConfig config = configSource.Configs[&quot;Data&quot;];
++			return config.GetString (&quot;DataKit.Type&quot;, &quot;SqliteDataKit&quot;);
+ 	    }
+ 	}
+ 
++	public string DataKitAssembly {
++		set {
++		}
++		get {
++			IConfig config = configSource.Configs[&quot;Data&quot;];
++			return config.GetString (&quot;DataKit.Assembly&quot;, &quot;SqliteDataKit&quot;);
++		}
++	}
++
+ 	internal FileStream CreateUserFile (string filename)
+ 	{
+ 	    FileStream f = objStore.CreateFile (filename, false);
+
+Added: Muine.Sdk/src/Configuration/FileStore.cs
+===================================================================
+--- Muine.Sdk/src/Configuration/FileStore.cs	2004-10-22 15:08:27 UTC (rev 305)
++++ Muine.Sdk/src/Configuration/FileStore.cs	2004-10-24 12:49:58 UTC (rev 306)
+@@ -0,0 +1,110 @@
++/*
++ * Copyright (C) 2004 Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of the
++ * License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public
++ * License along with this program; if not, write to the
++ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++
++namespace Muine.Sdk.Configuration 
++{
++    using System;
++    using System.IO;
++    
++    public class FileStore
++    {
++	private string storeName;
++	private string location;
++	private string home = Environment.GetEnvironmentVariable (&quot;HOME&quot;);
++	
++	public FileStore (string storeName)
++	{
++	    this.storeName = storeName;
++	    string configDir = UserConfigDir ();
++	    location = Path.Combine (configDir, storeName);
++	    
++	    try {
++		if ( !Directory.Exists (configDir))
++		    Directory.CreateDirectory (configDir);
++		
++		if (!Directory.Exists (location))
++		    Directory.CreateDirectory (location);
++
++	    } catch (Exception) {
++		Console.WriteLine (&quot;Error initializing store.&quot;);
++		Environment.Exit (1);
++	    }
++	}
++
++	/*
++	 * Returns the full path of the file objName or
++	 * null if not found.
++	 */
++	public string this [string objName]
++	{
++	    get {
++		string fpath = location + Path.DirectorySeparatorChar + objName;
++		if (File.Exists (fpath))
++		    return fpath;
++		else
++		    return null;
++	    }
++	}
++
++	/*
++	 * Creates a new object in the store and returns the full
++	 * path of the new created object.
++	 */
++	public FileStream CreateFile (string name, bool truncate)
++	{
++		string fpath = location + Path.DirectorySeparatorChar + name;
++		FileStream stream;
++		if (!File.Exists (fpath))
++		{
++		    stream = File.Open (fpath, FileMode.Create, FileAccess.ReadWrite);
++		} else {
++		    if (truncate)
++				stream = File.Open (fpath, FileMode.Truncate, FileAccess.ReadWrite);
++			else
++		    	stream = File.Open (fpath, FileMode.Open, FileAccess.ReadWrite);
++		}
++		return stream;
++	}
++
++	/*
++	 * Get or set the location of objects. Location
++	 * must be a Directory. If directory does not exist,
++	 * it will try to create it using Directory.Create (string).
++	 * Directory.Create (string) exceptions are not catched. Client
++	 * must handle this case.
++	 */
++	public string Location {
++	    get {
++		return location;
++	    }
++
++	    set {
++		if (!Directory.Exists (location))
++		    Directory.CreateDirectory (location);
++		location = value;
++	    }
++	}
++
++	private string UserConfigDir ()
++	{
++	    return Path.Combine (home, &quot;.config&quot;);
++	}
++    }
++}
++
+
+Modified: Muine.Sdk/src/Data/Album.cs
+===================================================================
+--- Muine.Sdk/src/Data/Album.cs	2004-10-22 15:08:27 UTC (rev 305)
++++ Muine.Sdk/src/Data/Album.cs	2004-10-24 12:49:58 UTC (rev 306)
+@@ -39,35 +39,35 @@
+ 	    
+ 	}
+ 	
+-	private string name;
++	private string name = &quot;UNKNOWN&quot;;
+ 	public string Name {
+ 		get {
+ 			return name;
+ 		}
+ 	}
+ 
+-	private ArrayList songs;
++	private ArrayList songs = new ArrayList ();
+ 	public ArrayList Songs {
+ 	    get {
+ 		return songs;
+ 	    }
+ 	}
+ 
+-	private ArrayList artists;
++	private ArrayList artists = new ArrayList ();
+ 	public ArrayList Artists {
+ 		get {
+ 			return artists;
+ 		}
+ 	}
+ 
+-	private ArrayList performers;
++	private ArrayList performers = new ArrayList ();
+ 	public ArrayList Performers {
+ 		get {
+ 		    return performers;
+ 		}
+ 	}
+ 
+-	private int year;
++	private int year = 1900;
+ 	public int Year {
+ 		get {
+ 			return year;
+
+Modified: Muine.Sdk/src/Data/Song.cs
+===================================================================
+--- Muine.Sdk/src/Data/Song.cs	2004-10-22 15:08:27 UTC (rev 305)
++++ Muine.Sdk/src/Data/Song.cs	2004-10-24 12:49:58 UTC (rev 306)
+@@ -46,10 +46,14 @@
+ 	    
+ 	    if (filename == null)
+ 		throw new ArgumentException (&quot;Song:Constructor: metadata filename is null&quot;);
+-	    if (title == null)
+-		title = Path.GetFileNameWithoutExtension (filename);
+-		
+ 	}
++
++	public Song (String filename)
++	{
++	    if (filename == null)
++		throw new ArgumentException (&quot;Song:Constructor: metadata filename is null&quot;);
++	    this.filename = filename;
++	}
+     
+ 	private string filename;
+ 	public string Filename {
+@@ -61,67 +65,69 @@
+ 	private string title;
+ 	public string Title {
+ 		get {
++			if (title == null)
++				return Path.GetFileNameWithoutExtension (filename);
+ 			return title;
+ 		}
+ 	}
+ 
+-	private ArrayList artists;
++	private ArrayList artists = new ArrayList ();
+ 	public ArrayList Artists {
+ 		get {
+ 			return artists;
+ 		}
+ 	}
+ 
+-	private ArrayList performers;
++	private ArrayList performers = new ArrayList ();
+ 	public ArrayList Performers {
+ 		get {
+ 			return performers;
+ 		}
+ 	}
+ 
+-	private string album;
++	private string album = &quot;&quot;;
+ 	public string Album {
+ 		get {
+ 			return album;
+ 		}
+ 	}
+ 
+-	private int tracknumber;
++	private int tracknumber = 0;
+ 	public int TrackNumber {
+ 		get {
+ 			return tracknumber;
+ 		}
+ 	}
+ 
+-	private int year;
++	private int year = 1900;
+ 	public int Year {
+ 		get {
+ 			return year;
+ 		}
+ 	}
+ 
+-	private int duration;
++	private int duration = 0;
+ 	public int Duration {
+ 		get {
+ 			return duration;
+ 		}
+ 	}
+ 
+-	private int mtime;
++	private int mtime = 0;
+ 	public int MTime {
+ 		get {
+ 			return mtime;
+ 		}
+ 	}
+ 
+-	private double gain;
++	private double gain = 0;
+ 	public double Gain {
+ 		get {
+ 			return gain;
+ 		}
+ 	}
+ 
+-	private double peak;
++	private double peak = 0;
+ 	public double Peak {
+ 		get {
+ 			return peak;
+@@ -141,7 +147,6 @@
+ 	public bool FitsCriteria (string [] search_bits)
+ 	{
+ 	    throw new NotImplementedException (&quot;Not implemented&quot;);
+-	    return false;
+ 	}
+ 
+ 	public override bool Equals (object obj)
+
+Modified: Muine.Sdk/src/Services/SdkServices.cs
+===================================================================
+--- Muine.Sdk/src/Services/SdkServices.cs	2004-10-22 15:08:27 UTC (rev 305)
++++ Muine.Sdk/src/Services/SdkServices.cs	2004-10-24 12:49:58 UTC (rev 306)
+@@ -36,8 +36,8 @@
+ 	static SdkServices ()
+ 	{
+ 	    Playlist = new Playlist ();
+-	    Player = (IPlayer)LoadService (&quot;PlayerKits&quot;, configuration.PlayerKit);
+-	    MusicDb = (IMusicDb) LoadService (&quot;DataKits&quot;, configuration.DataKit);
++	    Player = (IPlayer)LoadService (&quot;PlayerKits&quot;, configuration.PlayerKitType, configuration.PlayerKitAssembly);
++	    MusicDb = (IMusicDb) LoadService (&quot;DataKits&quot;, configuration.DataKitType, configuration.DataKitAssembly);
+ 	    Player.Playlist = Playlist;
+ 	}
+ 
+@@ -46,7 +46,7 @@
+ 	public static IPlaylist Playlist;
+ 
+ 
+-	private static object LoadService (string serviceDir, string service)
++	private static object LoadService (string serviceDir, string serviceType, string serviceAssembly)
+ 	{
+ 	    char separator = Path.DirectorySeparatorChar;
+ 	    object serviceObject = null;
+@@ -54,28 +54,39 @@
+ 	    //First, the service is loaded from the user config dir.
+ 	    //If not, try to the system wide service.
+ 	    try {
+-		string userConfigDir = Configuration.GetInstance ().UserConfigDir;
+-		string userServiceLocation = userConfigDir + separator + serviceDir + separator + service + &quot;.dll&quot;;
+-		if (File.Exists (userServiceLocation))
+-		{
+-		    asm = Assembly.LoadFrom (userServiceLocation);
+-		    serviceObject = asm.CreateInstance (service);
++			string userConfigDir = Configuration.GetInstance ().UserConfigDir;
++			string userServiceLocation = userConfigDir + separator + serviceDir + separator + serviceAssembly + &quot;.dll&quot;;
++			if (File.Exists (userServiceLocation))
++			{
++				Console.WriteLine (&quot;Loading {0} from USER services&quot;, serviceAssembly);
++				asm = Assembly.LoadFrom (userServiceLocation);
++				if (asm != null)
++					Console.WriteLine (&quot;{0} loaded succesfully&quot;, serviceAssembly);
++				serviceObject = asm.CreateInstance (serviceType);
+ 
+-		} else {
+-		    string sdkDir = Path.GetDirectoryName (Assembly.GetCallingAssembly ().Location);
+-		    string systemServiceLocation = sdkDir + separator + &quot;Muine.Sdk&quot; + 
+-						    separator + serviceDir + separator + service + &quot;.dll&quot;;
+-		    asm = Assembly.LoadFrom (systemServiceLocation);
+-		    serviceObject = asm.CreateInstance (service);
+-		}
++			} else {
++				Console.WriteLine (&quot;Loading {0} from SYSTEM services&quot;, serviceAssembly);
++				string sdkDir = Path.GetDirectoryName (Assembly.GetCallingAssembly ().Location);
++				string systemServiceLocation = sdkDir + separator + &quot;Muine.Sdk&quot; + 
++							separator + serviceDir + separator + serviceAssembly + &quot;.dll&quot;;
++				Console.WriteLine (&quot;Service location: {0}&quot;, systemServiceLocation);
++				asm = Assembly.LoadFrom (systemServiceLocation);
++				if (asm != null)
++					Console.WriteLine (&quot;Assembly {0}.dll loaded succesfully&quot;, serviceAssembly);
++				serviceObject = asm.CreateInstance (serviceType);
++			}
+ 
+-		if (serviceObject == null)
+-		    throw new ServiceUnavailableException (String.Format (&quot;ERROR: Service {0} unavailable.&quot;, service));
+-		return serviceObject;
+-		    
++			if (serviceObject == null)
++			{
++				Console.WriteLine (&quot;Error initiating {0}&quot;, serviceType);
++				throw new ServiceUnavailableException (String.Format (&quot;ERROR: Service {0} unavailable.&quot;, serviceType));
++			}
++			return serviceObject;
++					
+ 	    } catch (Exception e) {
+-		Console.WriteLine (e.StackTrace);
+-		throw new ServiceUnavailableException (String.Format (&quot;ERROR: Service {0} unavailable.&quot;, service), e);
++			Console.WriteLine (e.StackTrace);
++			Console.WriteLine (e.Message);
++			throw new ServiceUnavailableException (String.Format (&quot;ERROR: Service {0} unavailable.&quot;, serviceType), e);
+ 	    }
+ 	}
+ 	
+
+Modified: Muine.Sdk/src/sources.list
+===================================================================
+--- Muine.Sdk/src/sources.list	2004-10-22 15:08:27 UTC (rev 305)
++++ Muine.Sdk/src/sources.list	2004-10-24 12:49:58 UTC (rev 306)
+@@ -1,17 +1,18 @@
+ CSSOURCES=
+ CSSOURCES += ./Playlist/Playlist.cs
+ CSSOURCES += ./Playlist/IPlaylist.cs
++CSSOURCES += ./Services/ServiceUnavailableException.cs
+ CSSOURCES += ./Services/SdkServices.cs
+-CSSOURCES += ./Services/ServiceUnavailableException.cs
+-CSSOURCES += ./Configuration/Configuration.cs
+-CSSOURCES += ./Data/ISearchable.cs
+-CSSOURCES += ./Data/Song.cs
+-CSSOURCES += ./Data/SongMetadata.cs
+-CSSOURCES += ./Data/Album.cs
+ CSSOURCES += ./Data/AlbumMetadata.cs
+ CSSOURCES += ./Data/ICoverDb.cs
+ CSSOURCES += ./Data/Cover.cs
+ CSSOURCES += ./Data/IMusicDb.cs
++CSSOURCES += ./Data/Album.cs
++CSSOURCES += ./Data/IAlbumComparer.cs
++CSSOURCES += ./Data/ISearchable.cs
++CSSOURCES += ./Data/Song.cs
++CSSOURCES += ./Data/SongMetadata.cs
+ CSSOURCES += ./Data/ISongComparer.cs
+-CSSOURCES += ./Data/IAlbumComparer.cs
++CSSOURCES += ./Configuration/Configuration.cs
++CSSOURCES += ./Configuration/FileStore.cs
+ CSSOURCES += ./Player/IPlayer.cs
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000041.html">[Mspace-checkins] r305 - in WebNotes/trunk: . images src/WebNotes
+</A></li>
+	<LI>Next message: <A HREF="000043.html">[Mspace-checkins] r307 - in Muine.Sdk: . doc doc/arch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#42">[ date ]</a>
+              <a href="thread.html#42">[ thread ]</a>
+              <a href="subject.html#42">[ subject ]</a>
+              <a href="author.html#42">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

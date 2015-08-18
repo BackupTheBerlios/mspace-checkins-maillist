@@ -1,0 +1,304 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r582 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Resources
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-November/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r582%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20Forms%20Resources&In-Reply-To=%3C200511141207.jAEC7E34000934%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000293.html">
+   <LINK REL="Next"  HREF="000295.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r582 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Resources</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r582%20-%20in%20BabuineComponentBuilder/trunk/src/ComponentBuilder%3A%20Forms%20Resources&In-Reply-To=%3C200511141207.jAEC7E34000934%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r582 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Resources">nestor at berlios.de
+       </A><BR>
+    <I>Mon Nov 14 13:07:14 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000293.html">[Mspace-checkins] r581 - in ComponentModel/trunk/src: ComponentModel/Container ComponentModel/Interfaces UnitTest/Components/TestComponent UnitTest/Components/TestComponent/Bo
+</A></li>
+        <LI>Next message: <A HREF="000295.html">[Mspace-checkins] r583 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Resources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#294">[ date ]</a>
+              <a href="thread.html#294">[ thread ]</a>
+              <a href="subject.html#294">[ subject ]</a>
+              <a href="author.html#294">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-11-14 13:07:07 +0100 (Mon, 14 Nov 2005)
+New Revision: 582
+
+Modified:
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ProjectView.cs
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade
+   BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak
+Log:
+
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs	2005-11-14 09:53:43 UTC (rev 581)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ComponentView.cs	2005-11-14 12:07:07 UTC (rev 582)
+@@ -8,8 +8,6 @@
+ 
+ namespace ComponentBuilder.Forms {
+     internal class ComponentView : IViewHandler, IGtkView {
+-        private static ComponentView instance;
+-        
+         Glade.XML componentView;
+         [Widget] TreeView viewsTreeView, methodsTreeView;
+         [Widget] Entry componentNameEntry, exceptionManagerEntry;
+@@ -20,7 +18,7 @@
+         FormView formView;
+         MethodView methodView;
+         
+-        private ComponentView () {
++        internal ComponentView () {
+             componentView = new Glade.XML (null, &quot;MainComponentBuilderForm.glade&quot;, &quot;table5&quot;, null);
+             componentView.Autoconnect (this);
+ 
+@@ -41,15 +39,6 @@
+             methodTableModel = new MethodTableModel ();
+             methodsTreeView.Model = methodTableModel.ListStore;
+         }
+-       
+-        internal static ComponentView Instance {
+-            get {
+-                if (instance == null) {
+-                    instance = new ComponentView ();
+-                }
+-                return instance;
+-            }
+-        }
+         
+         /* GUI Events */
+         private void OnNewMethodClicked (object sender, EventArgs args) {
+@@ -81,6 +70,10 @@
+             }
+         }
+ 
++        private void OnClearMethodsClicked (object sender, EventArgs args) {
++            methodTableModel.Clear ();
++        }
++
+         private void OnNewViewClicked (object sender, EventArgs args) {
+             formView = new FormView ();
+             ViewDTO viewDTO = (ViewDTO) formView.GetDataForm ();
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs	2005-11-14 09:53:43 UTC (rev 581)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/MainComponentBuilderForm.cs	2005-11-14 12:07:07 UTC (rev 582)
+@@ -14,15 +14,16 @@
+         
+         ProjectView projectView;
+         ComponentView componentView;
++        PreferencesView preferencesView;
+         
+         public MainComponentBuilderForm () {
+             mainComponentBuilderForm = new Glade.XML (null, &quot;MainComponentBuilderForm.glade&quot;, &quot;mainView&quot;, null);
+             mainComponentBuilderForm.Autoconnect (this);
+ 
+             //Terminamos de construir el gui.
+-            projectView = ProjectView.Instance;
++            projectView = new ProjectView ();
+             hpaned1.Pack1 (projectView.GetWidget (), true, true);
+-            componentView = ComponentView.Instance;
++            componentView = new ComponentView ();
+             hpaned1.Pack2 (componentView.GetWidget (), true, true);
+             hpaned1.ShowAll ();
+         }
+@@ -115,6 +116,15 @@
+         }
+ 
+         private void OnPreferencesClicked (object sender, EventArgs args) {
++            preferencesView = new PreferencesView ();
++            IComponentModel componentModel = DefaultContainer.Instance[&quot;ComponentBuilder&quot;];
++            preferencesView.LoadDataForm ((IDataTransferObject) componentModel.GetProperty (&quot;PreferencesDTO&quot;));
++            PreferencesDTO preferencesDTO = (PreferencesDTO) preferencesView.GetDataForm ();
++            if (preferencesDTO != null) {
++                componentModel.SetProperty (&quot;PreferencesDTO&quot;, preferencesDTO);
++                componentModel.Execute (&quot;SerializePreferences&quot;, null, this);
++            }
++            preferencesView = null;
+         }        
+         
+         /* Response Notifications */
+@@ -138,6 +148,12 @@
+                 LoadDataForm (projectDTO);
+             }
+         }
++
++        public void ResponseSerializePreferences (ResponseMethodDTO response) {
++            if (response.ExecutionSuccess) {
++                Console.WriteLine (&quot;Serialized settings.&quot;);
++            }
++        }
+         
+         /* Interface Implementation */
+         public void LoadDataForm (IDataTransferObject dto) {
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ProjectView.cs
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ProjectView.cs	2005-11-14 09:53:43 UTC (rev 581)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Forms/ProjectView.cs	2005-11-14 12:07:07 UTC (rev 582)
+@@ -8,14 +8,13 @@
+ 
+ namespace ComponentBuilder.Forms {
+     internal class ProjectView : IViewHandler, IGtkView {
+-        private static ProjectView instance;     
+         
+         /*Contenenedor*/
+         ScrolledWindow componentScrolledWindow;
+         NodeView componentNodeView;
+         NodeStore componentNodeStore;
+         
+-        private ProjectView () {
++        internal ProjectView () {
+             componentNodeStore = new NodeStore (typeof (GenericNode));
+             componentNodeView = new NodeView (componentNodeStore);
+             componentNodeView.AppendColumn (&quot;Project Tree&quot;, new CellRendererText (),&quot;text&quot;, 0);
+@@ -27,15 +26,6 @@
+             componentNodeView.NodeSelection.Changed += new EventHandler (OnSelectionChanged);
+         }
+ 
+-        internal static ProjectView Instance {
+-            get {
+-                if (instance == null) {
+-                    instance = new ProjectView ();
+-                }
+-                return instance;
+-            }
+-        }
+-        
+         /* Interface Implementation */
+         public void LoadDataForm (IDataTransferObject dto) {
+             if (dto is ProjectDTO) {
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade	2005-11-14 09:53:43 UTC (rev 581)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade	2005-11-14 12:07:07 UTC (rev 582)
+@@ -401,6 +401,7 @@
+ 	      &lt;property name=&quot;has_frame&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;invisible_char&quot;&gt;*&lt;/property&gt;
+ 	      &lt;property name=&quot;activates_default&quot;&gt;False&lt;/property&gt;
++	      &lt;signal name=&quot;activate&quot; handler=&quot;OnViewNameEntryActivate&quot; last_modification_time=&quot;Mon, 14 Nov 2005 09:14:31 GMT&quot;/&gt;
+ 	    &lt;/widget&gt;
+ 	    &lt;packing&gt;
+ 	      &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+@@ -1436,6 +1437,7 @@
+ 	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+ 	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	      &lt;signal name=&quot;clicked&quot; handler=&quot;OnDeleteMethodClicked&quot; last_modification_time=&quot;Mon, 14 Nov 2005 09:45:32 GMT&quot;/&gt;
+ 	    &lt;/widget&gt;
+ 	  &lt;/child&gt;
+ 
+@@ -1448,6 +1450,7 @@
+ 	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+ 	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	      &lt;signal name=&quot;clicked&quot; handler=&quot;OnClearMethodsClicked&quot; last_modification_time=&quot;Mon, 14 Nov 2005 11:39:54 GMT&quot;/&gt;
+ 	    &lt;/widget&gt;
+ 	  &lt;/child&gt;
+ 	&lt;/widget&gt;
+@@ -1521,6 +1524,7 @@
+ 	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+ 	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	      &lt;signal name=&quot;clicked&quot; handler=&quot;OnDeleteViewClicked&quot; last_modification_time=&quot;Mon, 14 Nov 2005 09:20:20 GMT&quot;/&gt;
+ 	    &lt;/widget&gt;
+ 	  &lt;/child&gt;
+ 
+@@ -1533,6 +1537,7 @@
+ 	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+ 	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	      &lt;signal name=&quot;clicked&quot; handler=&quot;OnClearViewsClicked&quot; last_modification_time=&quot;Mon, 14 Nov 2005 09:41:21 GMT&quot;/&gt;
+ 	    &lt;/widget&gt;
+ 	  &lt;/child&gt;
+ 	&lt;/widget&gt;
+
+Modified: BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak
+===================================================================
+--- BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak	2005-11-14 09:53:43 UTC (rev 581)
++++ BabuineComponentBuilder/trunk/src/ComponentBuilder/Resources/MainComponentBuilderForm.glade.bak	2005-11-14 12:07:07 UTC (rev 582)
+@@ -401,6 +401,7 @@
+ 	      &lt;property name=&quot;has_frame&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;invisible_char&quot;&gt;*&lt;/property&gt;
+ 	      &lt;property name=&quot;activates_default&quot;&gt;False&lt;/property&gt;
++	      &lt;signal name=&quot;activate&quot; handler=&quot;OnViewNameEntryActivate&quot; last_modification_time=&quot;Mon, 14 Nov 2005 09:14:31 GMT&quot;/&gt;
+ 	    &lt;/widget&gt;
+ 	    &lt;packing&gt;
+ 	      &lt;property name=&quot;padding&quot;&gt;0&lt;/property&gt;
+@@ -1436,6 +1437,7 @@
+ 	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+ 	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	      &lt;signal name=&quot;clicked&quot; handler=&quot;OnDeleteMethodClicked&quot; last_modification_time=&quot;Mon, 14 Nov 2005 09:45:32 GMT&quot;/&gt;
+ 	    &lt;/widget&gt;
+ 	  &lt;/child&gt;
+ 
+@@ -1448,6 +1450,7 @@
+ 	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+ 	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	      &lt;signal name=&quot;clicked&quot; handler=&quot;OnClearMethodsClicked&quot; last_modification_time=&quot;Mon, 14 Nov 2005 11:39:54 GMT&quot;/&gt;
+ 	    &lt;/widget&gt;
+ 	  &lt;/child&gt;
+ 	&lt;/widget&gt;
+@@ -1521,6 +1524,7 @@
+ 	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+ 	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	      &lt;signal name=&quot;clicked&quot; handler=&quot;OnDeleteViewClicked&quot; last_modification_time=&quot;Mon, 14 Nov 2005 09:20:20 GMT&quot;/&gt;
+ 	    &lt;/widget&gt;
+ 	  &lt;/child&gt;
+ 
+@@ -1533,6 +1537,7 @@
+ 	      &lt;property name=&quot;use_stock&quot;&gt;True&lt;/property&gt;
+ 	      &lt;property name=&quot;relief&quot;&gt;GTK_RELIEF_NORMAL&lt;/property&gt;
+ 	      &lt;property name=&quot;focus_on_click&quot;&gt;True&lt;/property&gt;
++	      &lt;signal name=&quot;clicked&quot; handler=&quot;OnClearViewsClicked&quot; last_modification_time=&quot;Mon, 14 Nov 2005 09:41:21 GMT&quot;/&gt;
+ 	    &lt;/widget&gt;
+ 	  &lt;/child&gt;
+ 	&lt;/widget&gt;
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000293.html">[Mspace-checkins] r581 - in ComponentModel/trunk/src: ComponentModel/Container ComponentModel/Interfaces UnitTest/Components/TestComponent UnitTest/Components/TestComponent/Bo
+</A></li>
+	<LI>Next message: <A HREF="000295.html">[Mspace-checkins] r583 - in BabuineComponentBuilder/trunk/src/ComponentBuilder: Forms Resources
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#294">[ date ]</a>
+              <a href="thread.html#294">[ thread ]</a>
+              <a href="subject.html#294">[ subject ]</a>
+              <a href="author.html#294">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

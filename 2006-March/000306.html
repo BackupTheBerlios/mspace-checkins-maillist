@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r594 - in HA: etc/HA usr/local/sbin/HA
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2006-March/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r594%20-%20in%20HA%3A%20etc/HA%20usr/local/sbin/HA&In-Reply-To=%3C200603151236.k2FCakLI028223%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000305.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r594 - in HA: etc/HA usr/local/sbin/HA</H1>
+    <B>luis at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r594%20-%20in%20HA%3A%20etc/HA%20usr/local/sbin/HA&In-Reply-To=%3C200603151236.k2FCakLI028223%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r594 - in HA: etc/HA usr/local/sbin/HA">luis at berlios.de
+       </A><BR>
+    <I>Wed Mar 15 13:36:46 CET 2006</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000305.html">[Mspace-checkins] r593 - in HA: etc/HA usr/local/sbin/HA
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#306">[ date ]</a>
+              <a href="thread.html#306">[ thread ]</a>
+              <a href="subject.html#306">[ subject ]</a>
+              <a href="author.html#306">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: luis
+Date: 2006-03-15 13:36:44 +0100 (Wed, 15 Mar 2006)
+New Revision: 594
+
+Modified:
+   HA/etc/HA/ha.cf
+   HA/usr/local/sbin/HA/remote_ha.sh
+Log:
+Removed duplicated configuration variables.
+
+
+Modified: HA/etc/HA/ha.cf
+===================================================================
+--- HA/etc/HA/ha.cf	2006-03-15 10:46:51 UTC (rev 593)
++++ HA/etc/HA/ha.cf	2006-03-15 12:36:44 UTC (rev 594)
+@@ -9,6 +9,11 @@
+ 
+ SLEEP_TIME=15
+ 
++
++#### IPs que usaremos como maquinas de referencia para ver si la red funciona correctamente
++SECURE_IPS=&quot;ip_fija1
++ip_fija2&quot;
++
+ ### Recursos de HA
+ IFACES=&quot;eth0:0_10.1.1.1/255.255.0.0
+ eth0:1_10.99.1.1/255.255.255.0
+@@ -32,8 +37,8 @@
+ STONITH_COMMAND=
+ 
+ ### Datos para el envio de mails cuando se realiza el failover
++MAIL=/usr/bin/mail
+ # Direcciones de correo a las que se les envia el mail, separadas por un espacio
+-MAIL=/usr/bin/mail
+ MAILTO=&quot;&quot;
+ SUBJECT=&quot;Failover a la maquina ${HOSTNAME}&quot;
+ BODY=&quot;`date +'A las %X del %x'` el nodo Activo ha caido. La m&#225;quina Activa ahora es ${HOSTNAME}&quot;
+
+Modified: HA/usr/local/sbin/HA/remote_ha.sh
+===================================================================
+--- HA/usr/local/sbin/HA/remote_ha.sh	2006-03-15 10:46:51 UTC (rev 593)
++++ HA/usr/local/sbin/HA/remote_ha.sh	2006-03-15 12:36:44 UTC (rev 594)
+@@ -26,17 +26,13 @@
+ CONTINUE=YES
+ CRITICAL_STATUS=NO
+ 
+-CHECK_IPS=&quot;ip_fija1
+-ip_fija2&quot;
++TOTAL_SERVICE_IPS=`echo ${IFACES} |wc -w`
+ 
+-NODE_IPS=&quot;virtual_ip1
+-virtual_ip2
+-virtual_ip3&quot;
+ 
+-
+ IP_STATUS ()
+ {
+-	${PING} -c ${REPEAT} -w ${TIMEOUT} -t ${TTL} ${1} &gt; /dev/null 2&gt;&amp;1
++        HOST=`echo ${1} |cut -d_ -f2 |cut -d/ -f1`
++	${PING} -c ${REPEAT} -w ${TIMEOUT} -t ${TTL} ${HOST} &gt; /dev/null 2&gt;&amp;1
+ }
+ 
+ failover ()
+@@ -57,7 +53,7 @@
+ 	while [[ ${LOCAL} != &quot;OK&quot; ]]
+ 	do
+ 		LOCAL=CHECK
+-		for i in ${CHECK_IPS}
++		for i in ${SECURE_IPS}
+ 		do
+ 			IP_STATUS ${i}
+ 			if [[ ${?} = 0 &amp;&amp; ${LOCAL} != &quot;FAIL&quot; ]]
+@@ -72,8 +68,8 @@
+ 	
+ 	echo &quot;**** COMPROBANDO COMUNICACION REMOTA ****&quot;
+ 	REMOTE=CHECK
+-	FAIL_NODES=0
+-	for i in ${NODE_IPS}
++	FAIL_IPS=0
++	for i in ${IFACES}
+ 	do
+ 		IP_STATUS ${i}
+ 		if [[ ${?} != 0 ]]
+@@ -81,7 +77,7 @@
+ 			IP_STATUS ${i}
+ 			if [[ ${?} != 0 ]]
+ 			then
+-				let &quot;FAIL_NODES+=1&quot;
++				let &quot;FAIL_IPS+=1&quot;
+ 			else
+ 				SURVIVOR_IP=${i}
+ 			fi
+@@ -89,23 +85,20 @@
+ 			SURVIVOR_IP=${i}
+ 		fi
+ 	done
+-	case ${FAIL_NODES} in
+-		0 )
+-			REMOTE=&quot;UP&quot;
+-			sleep 10
+-			;;
+-		1 )	
+-			REMOTE=&quot;KILL&quot;
+-			stonith ${SURVIVOR_IP}
+-			sleep 5
+-			failover
+-			;;
+-		2 )	
+-			REMOTE=&quot;DOWN&quot;
+-			CONTINUE=NO
+-			failover
+-			;;
+-		* )
+-			;;
+-	esac
++	
++	if [[ ${FAIL_IPS} = 0 ]]
++	then
++		REMOTE=&quot;UP&quot;
++		sleep 10
++	elif [[ ${FAIL_IPS} = ${TOTAL_SERVICE_IPS} ]]
++	then
++		REMOTE=&quot;DOWN&quot;
++		CONTINUE=NO
++		failover
++	else
++		REMOTE=&quot;KILL&quot;
++		stonith ${SURVIVOR_IP}
++		sleep 5
++		failover
++	fi
+ }
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000305.html">[Mspace-checkins] r593 - in HA: etc/HA usr/local/sbin/HA
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#306">[ date ]</a>
+              <a href="thread.html#306">[ thread ]</a>
+              <a href="subject.html#306">[ subject ]</a>
+              <a href="author.html#306">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

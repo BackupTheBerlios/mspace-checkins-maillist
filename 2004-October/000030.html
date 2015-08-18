@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r294 - monkeypop/trunk
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r294%20-%20monkeypop/trunk&In-Reply-To=%3C200410121735.i9CHZTnJ029882%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000029.html">
+   <LINK REL="Next"  HREF="000031.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r294 - monkeypop/trunk</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r294%20-%20monkeypop/trunk&In-Reply-To=%3C200410121735.i9CHZTnJ029882%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r294 - monkeypop/trunk">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Tue Oct 12 19:35:29 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000029.html">[Mspace-checkins] r293 - monkeypop/releases/monkeypop-0.1.2/debian
+</A></li>
+        <LI>Next message: <A HREF="000031.html">[Mspace-checkins] r295 - monkeypop/trunk
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#30">[ date ]</a>
+              <a href="thread.html#30">[ thread ]</a>
+              <a href="subject.html#30">[ subject ]</a>
+              <a href="author.html#30">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2004-10-12 19:35:28 +0200 (Tue, 12 Oct 2004)
+New Revision: 294
+
+Modified:
+   monkeypop/trunk/ChangeLog
+   monkeypop/trunk/Makefile.am
+Log:
+removed bin target
+
+
+Modified: monkeypop/trunk/ChangeLog
+===================================================================
+--- monkeypop/trunk/ChangeLog	2004-10-12 15:21:50 UTC (rev 293)
++++ monkeypop/trunk/ChangeLog	2004-10-12 17:35:28 UTC (rev 294)
+@@ -1,5 +1,9 @@
+ 2004-10-12  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
+ 
++	* Makefile.am: Removed bin target
++
++2004-10-12  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
+ 	* debian/README.Debian:
+ 	* debian/changelog:
+ 	* debian/compat:
+
+Modified: monkeypop/trunk/Makefile.am
+===================================================================
+--- monkeypop/trunk/Makefile.am	2004-10-12 15:21:50 UTC (rev 293)
++++ monkeypop/trunk/Makefile.am	2004-10-12 17:35:28 UTC (rev 294)
+@@ -6,15 +6,7 @@
+ RELDIR=~/public_html/Projects/MonkeyPop/Releases
+ UPDIR=~/public_html/gunther-user/uploads/pages/MonkeyPop
+ 
+-bin: all
+-	mkdir $(TMPDIR)
+-	cp src/MonkeyPop.exe $(TMPDIR)
+-	cp README NEWS AUTHORS COPYING $(TMPDIR)
+-	tar czvf monkeypop-$(VERSION)-bin.tar.gz $(TMPDIR)
+-	rm -rf $(TMPDIR)
+-
+-push: all dist bin
+-	mv monkeypop-$(VERSION).tar.gz $(SRC)
++push: all dist
+ 	cp monkeypop*.tar.gz ~/public_html/Projects/MonkeyPop/Releases
+ 	cp $(RELDIR)/monkeypop-$(VERSION)*.tar.gz  $(UPDIR)/
+ 	
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000029.html">[Mspace-checkins] r293 - monkeypop/releases/monkeypop-0.1.2/debian
+</A></li>
+	<LI>Next message: <A HREF="000031.html">[Mspace-checkins] r295 - monkeypop/trunk
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#30">[ date ]</a>
+              <a href="thread.html#30">[ thread ]</a>
+              <a href="subject.html#30">[ subject ]</a>
+              <a href="author.html#30">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,308 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r440 - in Red.Components/trunk: . Project/Interface
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r440%20-%20in%20Red.Components/trunk%3A%20.%20Project/Interface&In-Reply-To=%3C200504161052.j3GAqWEJ007812%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000152.html">
+   <LINK REL="Next"  HREF="000154.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r440 - in Red.Components/trunk: . Project/Interface</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r440%20-%20in%20Red.Components/trunk%3A%20.%20Project/Interface&In-Reply-To=%3C200504161052.j3GAqWEJ007812%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r440 - in Red.Components/trunk: . Project/Interface">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Sat Apr 16 12:52:32 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000152.html">[Mspace-checkins] r439 - /
+</A></li>
+        <LI>Next message: <A HREF="000154.html">[Mspace-checkins] r441 - in ComponentModel/releases: . doc doc/pre-alpha
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#153">[ date ]</a>
+              <a href="thread.html#153">[ thread ]</a>
+              <a href="subject.html#153">[ subject ]</a>
+              <a href="author.html#153">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2005-04-16 12:52:22 +0200 (Sat, 16 Apr 2005)
+New Revision: 440
+
+Added:
+   Red.Components/trunk/Project/Interface/IProjectEventManager.boo
+   Red.Components/trunk/Project/Interface/IProjectItem.boo
+   Red.Components/trunk/Project/Interface/IProjectSerializer.boo
+Removed:
+   Red.Components/trunk/Project/Interface/IProjectFile.boo
+Modified:
+   Red.Components/trunk/ChangeLog
+   Red.Components/trunk/Project/Interface/IProject.boo
+   Red.Components/trunk/Project/Interface/IProjectEventListener.boo
+   Red.Components/trunk/Project/Interface/IProjectNavigator.boo
+Log:
+
+	* Project/Interface/IProject.boo: 
+	* Project/Interface/IProjectEventListener.boo:
+	* Project/Interface/IProjectEventManager.boo:
+	* Project/Interface/IProjectItem.boo:
+	* Project/Interface/IProjectNavigator.boo:
+	* Project/Interface/IProjectSerializer.boo:
+	* default.build:
+	New component interface.
+	
+	* Project/Interface/IProjectFile.boo: Removed
+
+
+
+Modified: Red.Components/trunk/ChangeLog
+===================================================================
+--- Red.Components/trunk/ChangeLog	2005-04-15 21:25:58 UTC (rev 439)
++++ Red.Components/trunk/ChangeLog	2005-04-16 10:52:22 UTC (rev 440)
+@@ -0,0 +1,13 @@
++2005-04-16  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
++	* Project/Interface/IProject.boo: 
++	* Project/Interface/IProjectEventListener.boo:
++	* Project/Interface/IProjectEventManager.boo:
++	* Project/Interface/IProjectItem.boo:
++	* Project/Interface/IProjectNavigator.boo:
++	* Project/Interface/IProjectSerializer.boo:
++	* default.build:
++	New component interface.
++	
++	* Project/Interface/IProjectFile.boo: Removed
++
+
+Modified: Red.Components/trunk/Project/Interface/IProject.boo
+===================================================================
+--- Red.Components/trunk/Project/Interface/IProject.boo	2005-04-15 21:25:58 UTC (rev 439)
++++ Red.Components/trunk/Project/Interface/IProject.boo	2005-04-16 10:52:22 UTC (rev 440)
+@@ -1,51 +1,20 @@
+-namespace Red.ProjectManager
++namespace Red.Components.Project
+ 
+ import System
+ import System.IO
+ import System.Text.RegularExpressions
+ import System.Collections
+ 
+-interface IProject(IEnumerable):
++interface IProject (ICollection):
+ 	Name as string:
+ 		get
+ 	
+-	Navigator as IProjectNavigator:
++	Items as IList:
+ 		get
+ 	
+-	ProjectFile as string:
+-		get
+-	
+-	Location as string:
+-		get
+-		set
+-	
+-	Files as ICollection:
+-		get
+-	
+-	Folders as ICollection:
+-		get
+-	
+-	def Contains(fileName as string) as bool
+-	def GetFilesFromSubdir(subdir as string) as IList
+-	def GetFilesWithExtension(extensions as IList) as IList
+-	def GetFilesWithoutExtension(extensions as IList) as IList
+-	def NewFile(relPath as string) as IProjectFile
++	def Contains(item as IProjectItem) as bool
+ 	def Clear()
+-	def AddFile(file as IProjectFile)
+-	def NewFolder(path as string)
+-	def ImportMatchingFiles(pattern as Regex, discardHidden as bool)
+-	def ImportFiles(extensions as IList, discardHidden as bool)
+-	def AddFolder(path as string)
+-	def ImportFiles(discardHidden as bool)
+-	def RemoveFile(file as string)
+-	def RemoveFile(file as string, delete as bool)
+-	def RemoveDir(dir as string)
+-	def RemoveDir(dir as string, delete as bool)
+-	def BeginInit()
+-	def EndInit()
+-	def Save()
+-	def AddListener ([required]listener as IProjectEventListener,
+-				evt as ProjectEventType)
+-	def RemoveListener ([required]listener as IProjectEventListener,
+-					evt as ProjectEventType)
++	def AddItem(item as IProjectItem)
++	def RemoveItem(item as IProjectItem, delete as bool)
++	def GetItem (itemName as string)
+ 
+
+Modified: Red.Components/trunk/Project/Interface/IProjectEventListener.boo
+===================================================================
+--- Red.Components/trunk/Project/Interface/IProjectEventListener.boo	2005-04-15 21:25:58 UTC (rev 439)
++++ Red.Components/trunk/Project/Interface/IProjectEventListener.boo	2005-04-16 10:52:22 UTC (rev 440)
+@@ -1,24 +1,41 @@
+-namespace Red.ProjectManager
++namespace Red.Components.Project
+ import System
+ 
+ [Flags]
+ enum ProjectEventType:
+-	FileAdded
+-	FileRemoved
++	ItemAdded
++	ItemRemoved
+ 	ContentsChanged
+ 	Cleared
++	ProjectSaved
++	ProjectLoaded
+ 	
+ interface IProjectEventListener:
+-	def OnFileAdded(sender as object, args as FileChangedArgs)
+-	def OnFileRemoved(sender as object, args as FileChangedArgs)
++	def OnItemAdded(sender as object, args as ItemEventArgs)
++	def OnItemRemoved(sender as object, args as ItemEventArgs)
+ 	def OnContentsChanged(sender as object, args as EventArgs)
+ 	def OnCleared(sender as object, args as EventArgs)
++	def OnLoad(sender as object, args as ProjectEventArgs)
++	def OnSave(sender as object, args as ProjectEventArgs)
+ 
+-class FileChangedArgs(EventArgs):
+-	def constructor(file as string):
+-		File = file
++
++class ItemEventArgs(EventArgs):
+ 	
+-	public File as string
++	def constructor(item as IProjectItem):
++		_item = item
+ 	
++	_item as IProjectItem
++	Item as IProjectItem:
++		get:
++			return _item
+ 
++class ProjectEventArgs (EventArgs):
++	
++	def constructor (project as IProject):
++		_project = project
++	
++	_project as IProject
++	Project as IProject:
++		get:
++			return _project
+ 
+
+Added: Red.Components/trunk/Project/Interface/IProjectEventManager.boo
+===================================================================
+--- Red.Components/trunk/Project/Interface/IProjectEventManager.boo	2005-04-15 21:25:58 UTC (rev 439)
++++ Red.Components/trunk/Project/Interface/IProjectEventManager.boo	2005-04-16 10:52:22 UTC (rev 440)
+@@ -0,0 +1,8 @@
++namespace Red.Components.Project
++	
++interface IProjectEventManager:
++
++	def AddListener ([required]listener as IProjectEventListener,
++				evt as ProjectEventType)
++	def RemoveListener ([required]listener as IProjectEventListener,
++					evt as ProjectEventType)
+
+Deleted: Red.Components/trunk/Project/Interface/IProjectFile.boo
+===================================================================
+--- Red.Components/trunk/Project/Interface/IProjectFile.boo	2005-04-15 21:25:58 UTC (rev 439)
++++ Red.Components/trunk/Project/Interface/IProjectFile.boo	2005-04-16 10:52:22 UTC (rev 440)
+@@ -1,11 +0,0 @@
+-namespace Red.ProjectManager
+-
+-import System
+-
+-interface IProjectFile:
+-
+-	Name as string:
+-		get
+-		
+-	FullName as string:
+-		get
+
+Added: Red.Components/trunk/Project/Interface/IProjectItem.boo
+===================================================================
+--- Red.Components/trunk/Project/Interface/IProjectItem.boo	2005-04-15 21:25:58 UTC (rev 439)
++++ Red.Components/trunk/Project/Interface/IProjectItem.boo	2005-04-16 10:52:22 UTC (rev 440)
+@@ -0,0 +1,18 @@
++namespace Red.Components.Project
++
++import System
++
++public enum ItemType:
++	Icon
++	Image
++	File
++	Directory
++	
++interface IProjectItem:
++
++	Type as ItemType:
++		get
++	Location as string:
++		get
++	Name as string:
++		get
+
+Modified: Red.Components/trunk/Project/Interface/IProjectNavigator.boo
+===================================================================
+--- Red.Components/trunk/Project/Interface/IProjectNavigator.boo	2005-04-15 21:25:58 UTC (rev 439)
++++ Red.Components/trunk/Project/Interface/IProjectNavigator.boo	2005-04-16 10:52:22 UTC (rev 440)
+@@ -1,4 +1,4 @@
+-namespace Red.ProjectManager
++namespace Red.Components.Project
+ 
+ import System.Collections
+ 
+
+Added: Red.Components/trunk/Project/Interface/IProjectSerializer.boo
+===================================================================
+--- Red.Components/trunk/Project/Interface/IProjectSerializer.boo	2005-04-15 21:25:58 UTC (rev 439)
++++ Red.Components/trunk/Project/Interface/IProjectSerializer.boo	2005-04-16 10:52:22 UTC (rev 440)
+@@ -0,0 +1,6 @@
++namespace Red.Components.Project
++
++interface IProjectSerializer:
++	
++	def LoadProject (uri as string) as IProject
++	def SaveProject (project as IProject, uri as string)
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000152.html">[Mspace-checkins] r439 - /
+</A></li>
+	<LI>Next message: <A HREF="000154.html">[Mspace-checkins] r441 - in ComponentModel/releases: . doc doc/pre-alpha
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#153">[ date ]</a>
+              <a href="thread.html#153">[ thread ]</a>
+              <a href="subject.html#153">[ subject ]</a>
+              <a href="author.html#153">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

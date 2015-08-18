@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r338 - in mvim/trunk/src: . Vim.Components.VimBuffer Vim.Test
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-February/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r338%20-%20in%20mvim/trunk/src%3A%20.%20Vim.Components.VimBuffer%20Vim.Test&In-Reply-To=%3C200502170945.j1H9jQ9u029117%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000071.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r338 - in mvim/trunk/src: . Vim.Components.VimBuffer Vim.Test</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r338%20-%20in%20mvim/trunk/src%3A%20.%20Vim.Components.VimBuffer%20Vim.Test&In-Reply-To=%3C200502170945.j1H9jQ9u029117%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r338 - in mvim/trunk/src: . Vim.Components.VimBuffer Vim.Test">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Thu Feb 17 10:45:26 CET 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000071.html">[Mspace-checkins] r337 - in mvim/trunk: doc lib src src/Vim.Components.VimBuffer src/Vim.Main
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#72">[ date ]</a>
+              <a href="thread.html#72">[ thread ]</a>
+              <a href="subject.html#72">[ subject ]</a>
+              <a href="author.html#72">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-02-17 10:45:25 +0100 (Thu, 17 Feb 2005)
+New Revision: 338
+
+Added:
+   mvim/trunk/src/Vim.Test/VimBufferStrategyTest.cs
+Modified:
+   mvim/trunk/src/AssemblyInfo.cs.in
+   mvim/trunk/src/Makefile.am
+   mvim/trunk/src/Vim.Components.VimBuffer/GapVimBufferStrategy.cs
+Log:
+Added Unit test from VimBufferStrategy.
+
+
+
+Modified: mvim/trunk/src/AssemblyInfo.cs.in
+===================================================================
+--- mvim/trunk/src/AssemblyInfo.cs.in	2005-02-17 08:58:18 UTC (rev 337)
++++ mvim/trunk/src/AssemblyInfo.cs.in	2005-02-17 09:45:25 UTC (rev 338)
+@@ -4,4 +4,4 @@
+ [assembly: AssemblyVersion(&quot;@VERSION@&quot;)]
+ [assembly: AssemblyTitle (&quot;MonoVim&quot;)]
+ [assembly: AssemblyDescription (&quot;A little editor, as vim.  Using Mono &amp; GTK#&quot;)]
+-[assembly: AssemblyCopyright (&quot;Copyright (c) 2005 N&#233;stor Salceda Alonso&quot;)]
++[assembly: AssemblyCopyright (&quot;Copyright (c) 2005 N&#233;stor Salceda Alonso &amp; Sergio Rubio&quot;)]
+
+Modified: mvim/trunk/src/Makefile.am
+===================================================================
+--- mvim/trunk/src/Makefile.am	2005-02-17 08:58:18 UTC (rev 337)
++++ mvim/trunk/src/Makefile.am	2005-02-17 09:45:25 UTC (rev 338)
+@@ -5,7 +5,7 @@
+ 
+ PKG_REFERENCES_BUILD=$(addprefix -pkg:,$(PKG_REFERENCES))
+ 
+-LIB_REFERENCES = log4net.dll 
++LIB_REFERENCES = log4net.dll nunit.framework.dll
+ 
+ LIB_REFERENCES_BUILD=$(addprefix -reference:,$(LIB_REFERENCES))
+ 
+@@ -23,13 +23,14 @@
+ Vim.Components.Gtk/*.cs\
+ Vim.Components.SWF/*.cs\
+ Vim.Main/Launcher.cs \
++Vim.Test/*.cs\
+ AssemblyInfo.cs
+ 
+ SOURCES_REFERENCES_BUILD=$(addprefix $(srcdir)/, $(SOURCES_REFERENCES))
+ 
+ all:
+ 	$(MCS) $(PKG_REFERENCES_BUILD) $(LIB_REFERENCES_BUILD) $(RESOURCES_REFERENCES_BUILD) $(SOURCES_REFERENCES) -o MonoVim.exe
+-
++	$(MCS) $(PKG_REFERENCES_BUILD) $(LIB_REFERENCES_BUILD) $(RESOURCES_REFERENCES_BUILD) $(SOURCES_REFERENCES) -t:library -o MonoVimTests.dll
+ install:
+ 	cp MonoVim.exe /usr/local/bin
+ 	cp monovim /usr/local/bin
+
+Modified: mvim/trunk/src/Vim.Components.VimBuffer/GapVimBufferStrategy.cs
+===================================================================
+--- mvim/trunk/src/Vim.Components.VimBuffer/GapVimBufferStrategy.cs	2005-02-17 08:58:18 UTC (rev 337)
++++ mvim/trunk/src/Vim.Components.VimBuffer/GapVimBufferStrategy.cs	2005-02-17 09:45:25 UTC (rev 338)
+@@ -10,7 +10,7 @@
+ using System.Text;
+ 
+ namespace Vim.Components.VimBuffer {
+-    public class GapTextBufferStrategy : IVimBufferStrategy {
++    public class GapVimBufferStrategy : IVimBufferStrategy {
+         private char[] buffer = new char [0];
+ 
+         int gapBeginOffset = 0;
+@@ -134,7 +134,8 @@
+         }
+         
+         /**
+-         * Colocaci&#243;n del gap en el buffer.
++         * Colocaci&#243;n del gap en el buffer en la posici&#243;n offset con la longitud
++         * length.
+          */ 
+         void PlaceGap (int offset, int length) {
+             // Guardamos el valor viejo de la longitud del gap.
+
+Added: mvim/trunk/src/Vim.Test/VimBufferStrategyTest.cs
+===================================================================
+--- mvim/trunk/src/Vim.Test/VimBufferStrategyTest.cs	2005-02-17 08:58:18 UTC (rev 337)
++++ mvim/trunk/src/Vim.Test/VimBufferStrategyTest.cs	2005-02-17 09:45:25 UTC (rev 338)
+@@ -0,0 +1,54 @@
++using NUnit.Framework;
++using Vim.Components.VimBuffer;
++using System;
++
++namespace Vim.Test {
++    [TestFixture]
++    public class VimBufferStrategyTest {
++        IVimBufferStrategy vimBufferStrategy;
++        string text;
++        
++        [SetUp]
++        public void Init () {
++            vimBufferStrategy = new GapVimBufferStrategy ();
++            text = &quot;TestingBuffer&quot;;
++            vimBufferStrategy.SetContent(text);
++        }
++        [TearDown]    
++        public void Clean () {
++            vimBufferStrategy = null;
++            text = String.Empty;
++        }
++
++        [Test]
++        public void TestLength () {
++            Assert.AreEqual (vimBufferStrategy.Length, text.Length);
++        }
++    
++        [Test]
++        public void TestItemAt () {
++            for (int i = 0; i &lt; vimBufferStrategy.Length; i++) {
++                Assert.AreEqual (vimBufferStrategy[i], text[i]);
++            }
++        }
++
++        [Test]
++        public void TestInsert () {
++            string textInserted = &quot;TextoInsertado&quot;;
++            vimBufferStrategy.Insert (0, textInserted);
++            text = textInserted + text;
++            TestLength ();
++            TestItemAt ();
++        }
++
++        [Test]
++        public void TestInsert1 () {
++            string textInserted = &quot;TextoInsertado&quot;;
++            vimBufferStrategy.Insert (vimBufferStrategy.Length, textInserted);
++            text = text + textInserted;
++            TestLength ();
++            TestItemAt ();
++        }
++            
++    }
++}
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000071.html">[Mspace-checkins] r337 - in mvim/trunk: doc lib src src/Vim.Components.VimBuffer src/Vim.Main
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#72">[ date ]</a>
+              <a href="thread.html#72">[ thread ]</a>
+              <a href="subject.html#72">[ subject ]</a>
+              <a href="author.html#72">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

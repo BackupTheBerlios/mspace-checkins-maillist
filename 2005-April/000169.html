@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r456 - koolboy/trunk/src
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r456%20-%20koolboy/trunk/src&In-Reply-To=%3C200504301947.j3UJlZSI022248%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000168.html">
+   <LINK REL="Next"  HREF="000170.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r456 - koolboy/trunk/src</H1>
+    <B>Isaac Clerencia at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r456%20-%20koolboy/trunk/src&In-Reply-To=%3C200504301947.j3UJlZSI022248%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r456 - koolboy/trunk/src">isaaccp at sheep.berlios.de
+       </A><BR>
+    <I>Sat Apr 30 21:47:35 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000168.html">[Mspace-checkins] r455 - koolboy/trunk/src
+</A></li>
+        <LI>Next message: <A HREF="000170.html">[Mspace-checkins] r457 - koolboy/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#169">[ date ]</a>
+              <a href="thread.html#169">[ thread ]</a>
+              <a href="subject.html#169">[ subject ]</a>
+              <a href="author.html#169">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: isaaccp
+Date: 2005-04-30 21:47:34 +0200 (Sat, 30 Apr 2005)
+New Revision: 456
+
+Modified:
+   koolboy/trunk/src/koolboy.rb
+   koolboy/trunk/src/libkoolnotes.rb
+   koolboy/trunk/src/readtnotes.rb
+Log:
+Commit some stuff for RubioJr
+
+
+Modified: koolboy/trunk/src/koolboy.rb
+===================================================================
+--- koolboy/trunk/src/koolboy.rb	2005-04-29 22:38:17 UTC (rev 455)
++++ koolboy/trunk/src/koolboy.rb	2005-04-30 19:47:34 UTC (rev 456)
+@@ -102,7 +102,5 @@
+ thing = SysTrayThing.new( &quot;koolboy&quot; )
+ thing.show
+ 
+-KoolNoteWell.setFile(KDE::StandardDirs::locateLocal(&quot;appdata&quot;,&quot;koolnotes.db&quot;))
+-
+ a.mainWidget = thing
+ a.exec 
+
+Modified: koolboy/trunk/src/libkoolnotes.rb
+===================================================================
+--- koolboy/trunk/src/libkoolnotes.rb	2005-04-29 22:38:17 UTC (rev 455)
++++ koolboy/trunk/src/libkoolnotes.rb	2005-04-30 19:47:34 UTC (rev 456)
+@@ -12,10 +12,13 @@
+ 
+ #NoteManager should be a singleton also
+ class NoteManager
++	
++	include Singleton
++
+ 	attr_reader :dir
+ 
+-	def initialize (notesDir = &quot;#{ENV['HOME']+ &quot;/.tomboy&quot;}&quot;)
+-		@dir = notesDir
++	def initialize
++		@dir = KDE::StandardDirs::locateLocal(&quot;appdata&quot;,&quot;notes/&quot;)
+ 		@notes = {}
+ 		loadNotes()
+ 	end
+@@ -35,10 +38,9 @@
+ 	private
+ 	def loadNotes ()
+ 		Dir.foreach(@dir) do |file|
+-			full = @dir + &quot;/&quot; + file
+ 			#if file[-1,1] != &quot;~&quot; &amp;&amp; !File.directory?(full)
+ 			if file =~ /.*note$/
+-				note = XmlNote.new(full)
++				note = XmlNote.new(file)
+ 				@notes[note.title] = note
+ 			end
+ 		end
+@@ -47,106 +49,59 @@
+ end
+ 
+ #######################################
+-#			Notes implementations
++#	Notes implementations
+ #######################################
+-class KoolNote
+-	attr_accessor :title
+-	attr_accessor :contents
+-	attr_reader :id
+-
+-	def initialize ( title, id=-1, contents='' )
+-		@title = title
+-		@id = id
+-		@contents = contents
+-	end
+-end
+-
+ class XmlNote
+ 	require &quot;rexml/document&quot;
+ 	include REXML
+ 	
+-	attr_accessor :title, :xml, :text
+-	attr_reader :file
++	attr_accessor :title
+ 	
+-	def initialize(file)
+-		@file = file
++	def initialize(title)
++		@title = title
++		@read = false
++	end
++
++	def doc
++		@read or read;
++		return @doc
++	end
++
++	def text 
++		@read or read;
++		return @text
++	end
++
++	def read
++		file = KDE::StandardDirs::locateLocal(
++			&quot;appdata&quot;,&quot;notes/#{@title}.note&quot;)
+ 		@xml = IO.readlines(file).join(&quot;\n&quot;)
+ 		begin
+ 			@doc = Document.new(@xml)
+-			@title = @doc.root.elements[&quot;title&quot;].text
+ 			@text = @doc.root.elements[&quot;text&quot;]
++			@read = true
+ 		rescue
+-			print &quot;IGNORING Note: &quot; + @file
+-			print $!
++			p &quot;IGNORING Note: &quot; + @file
++			p $!
+ 		end
+ 	end
+ 
+ 	def to_s()
+ 		return @xml
+ 	end
+-	
+-end
+ 
+-###############################################
+-#				NoteDB Implementations
+-###############################################
++	private
+ 
+-# FIXME
+-# Add DB interface here
+-class NoteDB
+-end
+-
+-# FIXME
+-# Inherit from NoteDB and
+-class TomboyStore
+-end
+-
+-class KoolNoteWell
+-	include Singleton
+-
+-	@@file = ''
+-
+-	def KoolNoteWell.setFile( file )
+-		@@file = file
+-	end
+-
+-	def initialize
+-		@db = SQLite3::Database.new(@@file)
+-		@db.results_as_hash = true
+-		count = @db.get_first_value(&quot;SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='notes'&quot;)
+-		count == &quot;1&quot; or 
+-			@db.execute(&quot;CREATE TABLE notes ( id integer primary key autoincrement, title text, contents text, date text)&quot;)
+-	end
+-
+-	def lastNotes
+-		@db.execute(&quot;SELECT * FROM notes ORDER BY date LIMIT 5&quot;)
+-	end
+-
+-	def getNote ( title )
+-		note = nil
+-		rows = @db.execute(&quot;SELECT * FROM notes WHERE title='#{title}'&quot;)
+-		if rows.length == 1
+-			note = KoolNote.new(title, rows[0]['id'], rows[0]['contents'])
+-		else
+-			note = KoolNote.new(title)
+-		end
+-		note
+-	end
+-
+-	def storeNote ( note )
+-		count = @db.get_first_value(&quot;SELECT COUNT(*) FROM notes WHERE id=#{note.id}&quot;)
+-		date=Qt::DateTime.currentDateTime.toString(Qt::ISODate)
+-		if count == &quot;1&quot;
+-			if note.title.length != 0
+-				@db.execute(&quot;UPDATE notes SET title='#{note.title}', contents='#{note.contents}', date='#{date}' WHERE id=#{note.id}&quot;)
+-			else
+-				@db.execute(&quot;DELETE FROM notes WHERE id=#{note.id}&quot;)
++	def self.attr_after_read (*attrs)
++		attrs.each do |a|
++			module_eval &lt;&lt;-EOF
++			def #{a}
++			read unless @read
++			@#{a}
+ 			end
+-		else
+-			if note.title.length != 0
+-				@db.execute(&quot;INSERT INTO notes VALUES (NULL, '#{note.title}', '#{note.contents}', '#{date}')&quot;)
+-			end
++			EOF
+ 		end
+-
+ 	end
++
++	attr_after_read :doc, :text
+ end
+
+Modified: koolboy/trunk/src/readtnotes.rb
+===================================================================
+--- koolboy/trunk/src/readtnotes.rb	2005-04-29 22:38:17 UTC (rev 455)
++++ koolboy/trunk/src/readtnotes.rb	2005-04-30 19:47:34 UTC (rev 456)
+@@ -7,4 +7,4 @@
+ 		puts note.file
+ 		#puts note.text
+ 	end
+-end	
+\ No newline at end of file
++end	
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000168.html">[Mspace-checkins] r455 - koolboy/trunk/src
+</A></li>
+	<LI>Next message: <A HREF="000170.html">[Mspace-checkins] r457 - koolboy/trunk/src
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#169">[ date ]</a>
+              <a href="thread.html#169">[ thread ]</a>
+              <a href="subject.html#169">[ subject ]</a>
+              <a href="author.html#169">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

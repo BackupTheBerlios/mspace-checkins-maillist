@@ -1,0 +1,493 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r270 - / monkeypop monkeypop/Trunk monkeypop/Trunk/debian monkeypop/Trunk/monkeypopd
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r270%20-%20/%20monkeypop%20monkeypop/Trunk%20monkeypop/Trunk/debian%20monkeypop/Trunk/monkeypopd&In-Reply-To=%3C200410121227.i9CCRTY0006060%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000005.html">
+   <LINK REL="Next"  HREF="000007.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r270 - / monkeypop monkeypop/Trunk monkeypop/Trunk/debian monkeypop/Trunk/monkeypopd</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r270%20-%20/%20monkeypop%20monkeypop/Trunk%20monkeypop/Trunk/debian%20monkeypop/Trunk/monkeypopd&In-Reply-To=%3C200410121227.i9CCRTY0006060%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r270 - / monkeypop monkeypop/Trunk monkeypop/Trunk/debian monkeypop/Trunk/monkeypopd">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Tue Oct 12 14:27:29 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000005.html">[Mspace-checkins] r269 - Chicken/branches
+</A></li>
+        <LI>Next message: <A HREF="000007.html">[Mspace-checkins] r271 - / monkeypop
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6">[ date ]</a>
+              <a href="thread.html#6">[ thread ]</a>
+              <a href="subject.html#6">[ subject ]</a>
+              <a href="author.html#6">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2004-10-12 14:27:27 +0200 (Tue, 12 Oct 2004)
+New Revision: 270
+
+Added:
+   monkeypop/
+   monkeypop/Trunk/
+   monkeypop/Trunk/debian/
+   monkeypop/Trunk/debian/README.Debian
+   monkeypop/Trunk/debian/changelog
+   monkeypop/Trunk/debian/compat
+   monkeypop/Trunk/debian/control
+   monkeypop/Trunk/debian/copyright
+   monkeypop/Trunk/debian/dirs
+   monkeypop/Trunk/debian/docs
+   monkeypop/Trunk/debian/fulldeps.control
+   monkeypop/Trunk/debian/rules
+   monkeypop/Trunk/monkeypopd/
+   monkeypop/Trunk/monkeypopd/DaemonLauncher.cs
+   monkeypop/Trunk/monkeypopd/Makefile.am
+   monkeypop/Trunk/monkeypopd/MonkeyPopClient.cs
+   monkeypop/Trunk/monkeypopd/NotificationDaemon.cs
+   monkeypop/Trunk/monkeypopd/monkeypop-sample-client.py
+   monkeypop/branches/
+   monkeypop/releases/
+Removed:
+   monkeypop/Trunk/scripts/
+Modified:
+   monkeypop/Trunk/ChangeLog
+   monkeypop/Trunk/configure.in
+Log:
+renamed dir
+debian package
+monkeypop daemon
+
+
+
+Copied: monkeypop/Trunk (from rev 250, MonkeyPop)
+
+Modified: monkeypop/Trunk/ChangeLog
+===================================================================
+--- MonkeyPop/ChangeLog	2004-10-09 20:44:50 UTC (rev 250)
++++ monkeypop/Trunk/ChangeLog	2004-10-12 12:27:27 UTC (rev 270)
+@@ -0,0 +1,13 @@
++2004-10-12  Sergio Rubio  &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++
++	* debian/README.Debian:
++	* debian/changelog:
++	* debian/compat:
++	* debian/control:
++	* debian/copyright:
++	* debian/dirs:
++	* debian/docs:
++	* debian/fulldeps.control:
++	* debian/rules:
++	Added debian package files
++
+
+Modified: monkeypop/Trunk/configure.in
+===================================================================
+--- MonkeyPop/configure.in	2004-10-09 20:44:50 UTC (rev 250)
++++ monkeypop/Trunk/configure.in	2004-10-12 12:27:27 UTC (rev 270)
+@@ -54,7 +54,7 @@
+ 
+ AC_OUTPUT([
+ Makefile
+-scripts/Makefile
++monkeypopd/Makefile
+ src/Makefile
+ images/Makefile
+ src/monkeypop
+
+Added: monkeypop/Trunk/debian/README.Debian
+===================================================================
+--- MonkeyPop/debian/README.Debian	2004-10-09 20:44:50 UTC (rev 250)
++++ monkeypop/Trunk/debian/README.Debian	2004-10-12 12:27:27 UTC (rev 270)
+@@ -0,0 +1,4 @@
++monkeypop for Debian
++--------------------
++
++ -- Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;, Tue, 12 Oct 2004 02:54:50 +0200
+
+Added: monkeypop/Trunk/debian/changelog
+===================================================================
+--- MonkeyPop/debian/changelog	2004-10-09 20:44:50 UTC (rev 250)
++++ monkeypop/Trunk/debian/changelog	2004-10-12 12:27:27 UTC (rev 270)
+@@ -0,0 +1,6 @@
++monkeypop (0.1.1-1) unstable; urgency=low
++
++  * Initial Release.
++
++ -- Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;  Tue, 12 Oct 2004 02:54:50 +0200
++
+
+Added: monkeypop/Trunk/debian/compat
+===================================================================
+--- MonkeyPop/debian/compat	2004-10-09 20:44:50 UTC (rev 250)
++++ monkeypop/Trunk/debian/compat	2004-10-12 12:27:27 UTC (rev 270)
+@@ -0,0 +1 @@
++4
+
+Added: monkeypop/Trunk/debian/control
+===================================================================
+--- MonkeyPop/debian/control	2004-10-09 20:44:50 UTC (rev 250)
++++ monkeypop/Trunk/debian/control	2004-10-12 12:27:27 UTC (rev 270)
+@@ -0,0 +1,16 @@
++Source: monkeypop
++Section: gnome
++Priority: optional
++Maintainer: Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++Build-Depends: debhelper (&gt;= 4.0.0), libchicken (&gt;= 0.1.3)
++Standards-Version: 3.6.0
++
++Package: monkeypop
++Architecture: all
++Depends: ${misc:Depends}, libchicken (&gt;= 0.1.3)
++Description: Chicken library client.
++ .
++ MonkeyPop can be used from scripts to show desktop notifications.
++ Notifications can be SVG images or HTML files. It also has 3
++ standard notifications. Info, Warning and Error notifications are
++ included.
+
+Added: monkeypop/Trunk/debian/copyright
+===================================================================
+--- MonkeyPop/debian/copyright	2004-10-09 20:44:50 UTC (rev 250)
++++ monkeypop/Trunk/debian/copyright	2004-10-12 12:27:27 UTC (rev 270)
+@@ -0,0 +1,7 @@
++This package was debianized by Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt; on
++Tue, 12 Oct 2004 02:54:50 +0200.
++
++It was downloaded from <A HREF="http://mspace.berlios.de">http://mspace.berlios.de</A>
++
++Upstream Author(s): Sergio Rubio
++
+
+Added: monkeypop/Trunk/debian/dirs
+===================================================================
+--- MonkeyPop/debian/dirs	2004-10-09 20:44:50 UTC (rev 250)
++++ monkeypop/Trunk/debian/dirs	2004-10-12 12:27:27 UTC (rev 270)
+@@ -0,0 +1,2 @@
++usr/bin
++usr/lib
+
+Added: monkeypop/Trunk/debian/docs
+===================================================================
+--- MonkeyPop/debian/docs	2004-10-09 20:44:50 UTC (rev 250)
++++ monkeypop/Trunk/debian/docs	2004-10-12 12:27:27 UTC (rev 270)
+@@ -0,0 +1,2 @@
++NEWS
++README
+
+Added: monkeypop/Trunk/debian/fulldeps.control
+===================================================================
+--- MonkeyPop/debian/fulldeps.control	2004-10-09 20:44:50 UTC (rev 250)
++++ monkeypop/Trunk/debian/fulldeps.control	2004-10-12 12:27:27 UTC (rev 270)
+@@ -0,0 +1,16 @@
++Source: monkeypop
++Section: gnome
++Priority: optional
++Maintainer: Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++Build-Depends: debhelper (&gt;= 4.0.0), libchicken (&gt;= 0.1.3)
++Standards-Version: 3.6.0
++
++Package: monkeypop
++Architecture: all
++Depends: ${misc:Depends}, libchicken (&gt;= 0.1.3)
++Description: Chicken library client.
++ .
++ MonkeyPop can be used from scripts to show desktop notifications.
++ Notifications can be SVG images or HTML files. It also has 3
++ standard notifications. Info, Warning and Error notifications are
++ included.
+
+Added: monkeypop/Trunk/debian/rules
+===================================================================
+--- MonkeyPop/debian/rules	2004-10-09 20:44:50 UTC (rev 250)
++++ monkeypop/Trunk/debian/rules	2004-10-12 12:27:27 UTC (rev 270)
+@@ -0,0 +1,96 @@
++#!/usr/bin/make -f
++# -*- makefile -*-
++# Sample debian/rules that uses debhelper.
++# GNU copyright 1997 to 1999 by Joey Hess.
++
++# Uncomment this to turn on verbose mode.
++#export DH_VERBOSE=1
++
++
++# These are used for cross-compiling and for saving the configure script
++# from having to guess our platform (since we know it already)
++DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
++DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
++
++VERSION = $(shell dpkg-parsechangelog | grep ^Vers | cut -d\  -f2)
++UPVERSION = $(shell echo $(VERSION) | sed 's,-.*,,')
++
++
++CFLAGS = -Wall -g
++
++ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
++	CFLAGS += -O0
++else
++	CFLAGS += -O2
++endif
++ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
++	INSTALL_PROGRAM += -s
++endif
++
++config.status: configure
++	dh_testdir
++	# Add here commands to configure the package.
++	CFLAGS=&quot;$(CFLAGS)&quot; ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info
++
++
++build: build-stamp
++
++build-stamp:  config.status
++	dh_testdir
++
++	# Add here commands to compile the package.
++	$(MAKE)
++	#/usr/bin/docbook-to-man debian/monkeypop.sgml &gt; monkeypop.1
++
++	touch build-stamp
++
++clean:
++	dh_testdir
++	dh_testroot
++	rm -f build-stamp 
++
++	# Add here commands to clean up after the build process.
++	-$(MAKE) distclean
++ifneq &quot;$(wildcard /usr/share/misc/config.sub)&quot; &quot;&quot;
++	cp -f /usr/share/misc/config.sub config.sub
++endif
++ifneq &quot;$(wildcard /usr/share/misc/config.guess)&quot; &quot;&quot;
++	cp -f /usr/share/misc/config.guess config.guess
++endif
++
++
++	dh_clean 
++
++install: build
++	dh_testdir
++	dh_testroot
++	dh_clean -k 
++	dh_installdirs
++
++	# Add here commands to install the package into debian/monkeypop.
++	$(MAKE) install DESTDIR=$(CURDIR)/debian/monkeypop
++
++
++# Build architecture-independent files here.
++binary-indep: build install
++	dh_testdir
++	dh_testroot
++	dh_installchangelogs ChangeLog
++	dh_installdocs
++#	dh_installexamples
++#	dh_installman
++	dh_link
++	dh_strip
++	dh_compress
++	dh_fixperms
++#	dh_perl
++#	dh_python
++#	dh_makeshlibs
++	dh_installdeb
++#	dh_shlibdeps
++	dh_gencontrol
++	dh_md5sums
++	dh_builddeb
++
++binary: binary-indep
++.PHONY: build clean binary-indep binary-arch binary install 
+
+
+Property changes on: monkeypop/Trunk/debian/rules
+___________________________________________________________________
+Name: svn:executable
+   + *
+
+Added: monkeypop/Trunk/monkeypopd/DaemonLauncher.cs
+===================================================================
+--- MonkeyPop/monkeypopd/DaemonLauncher.cs	2004-10-09 20:44:50 UTC (rev 250)
++++ monkeypop/Trunk/monkeypopd/DaemonLauncher.cs	2004-10-12 12:27:27 UTC (rev 270)
+@@ -0,0 +1,48 @@
++/*
++ * Copyright (C) 2004 Sergio Rubio &lt;<A HREF="https://lists.berlios.de/mailman/listinfo/mspace-checkins">sergio.rubio at hispalinux.es</A>&gt;
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of the
++ * License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public
++ * License along with this program; if not, write to the
++ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++
++namespace MonkeyPop.NotificationDaemon 
++{
++    using System;    
++    using Gtk; 
++    
++    public class DaemonLauncher
++    {
++	public static void Main (string[] args)
++	{
++	    Application.Init ();
++	    try {
++		DBus.Connection connection = DBus.Bus.GetSessionBus ();
++		DBus.Service service =
++			new DBus.Service (connection,
++					  NotificationDaemon.Service);
++
++		NotificationDaemon ndaemon= new NotificationDaemon ();
++		service.RegisterObject (ndaemon, NotificationDaemon.Path);
++
++		Console.WriteLine (&quot;Daemon active.&quot;);
++	    } catch (Exception e) {
++		Console.WriteLine (&quot;Daemon active.&quot;, e.Message);
++	    }
++	    Application.Run ();
++	}
++    }
++
++}
++
+
+Added: monkeypop/Trunk/monkeypopd/Makefile.am
+===================================================================
+--- MonkeyPop/monkeypopd/Makefile.am	2004-10-09 20:44:50 UTC (rev 250)
++++ monkeypop/Trunk/monkeypopd/Makefile.am	2004-10-12 12:27:27 UTC (rev 270)
+@@ -0,0 +1,10 @@
++CSFILES=*.cs
++REFERENCES=-pkg:gtk-sharp -pkg:chicken -pkg:dbus-sharp
++
++all: notification-daemon.exe
++
++notification-daemon.exe: $(CSFILES)
++	mcs $(CSFILES) -o $@ $(REFERENCES)
++
++EXTRA_DIST = *.cs
++CLEANFILES= *.exe
+
+Added: monkeypop/Trunk/monkeypopd/MonkeyPopClient.cs
+===================================================================
+--- MonkeyPop/monkeypopd/MonkeyPopClient.cs	2004-10-09 20:44:50 UTC (rev 250)
++++ monkeypop/Trunk/monkeypopd/MonkeyPopClient.cs	2004-10-12 12:27:27 UTC (rev 270)
+@@ -0,0 +1,20 @@
++namespace Foo
++{
++  using System;
++  using DBus;
++  using MonkeyPop.NotificationDaemon;
++
++  public class MonkeyPopClient
++  {
++    public static int Main(string [] args)
++    {
++      Connection connection = Bus.GetSessionBus();
++      Service service = Service.Get(connection, &quot;org.rubiojr.MonkeyPop&quot;);
++      NotificationDaemon daemon = (NotificationDaemon) 
++	    service.GetObject(typeof(NotificationDaemon), &quot;/org/rubiojr/MonkeyPop/NotificationDaemon&quot;);
++      daemon.ShowMessageNotification (&quot;test&quot;, &quot;TEST&quot;, &quot;Info&quot;);
++      
++      return 0;
++    }
++  }
++}
+
+Added: monkeypop/Trunk/monkeypopd/NotificationDaemon.cs
+===================================================================
+--- MonkeyPop/monkeypopd/NotificationDaemon.cs	2004-10-09 20:44:50 UTC (rev 250)
++++ monkeypop/Trunk/monkeypopd/NotificationDaemon.cs	2004-10-12 12:27:27 UTC (rev 270)
+@@ -0,0 +1,26 @@
++
++namespace MonkeyPop.NotificationDaemon
++{
++    using DBus;
++    using System;
++    using Chicken.Gnome.Notification;
++    
++    [DBus.Interface (&quot;org.rubiojr.MonkeyPop.NotificationDaemon&quot;)]
++    public class NotificationDaemon
++    {
++	public const string Path = &quot;/org/rubiojr/MonkeyPop/NotificationDaemon&quot;;
++	public const string Service = &quot;org.rubiojr.MonkeyPop&quot;;
++	    
++	// Shows a standard notification message.
++	// type is one of Error, Info, Warning. Case sensitive.
++	// header: the header of the message
++	// body: the body of the message
++	[DBus.Method]
++	public void ShowMessageNotification (string header, string body, string type)
++	{
++	    NotificationType ntype = (NotificationType)Enum.Parse (typeof (NotificationType), type);
++	    NotificationFactory.ShowMessageNotification (header, body, ntype, null);
++	}
++
++    }
++}
+
+Added: monkeypop/Trunk/monkeypopd/monkeypop-sample-client.py
+===================================================================
+--- MonkeyPop/monkeypopd/monkeypop-sample-client.py	2004-10-09 20:44:50 UTC (rev 250)
++++ monkeypop/Trunk/monkeypopd/monkeypop-sample-client.py	2004-10-12 12:27:27 UTC (rev 270)
+@@ -0,0 +1,16 @@
++&quot;&quot;&quot;Lists services on the system bus
++&quot;&quot;&quot;
++import dbus
++
++bus = dbus.SystemBus()
++
++dbus_service = bus.get_service('org.rubiojr.MonkeyPop')
++    
++dbus_object = dbus_service.get_object('/org/rubiojr/MonkeyPop/NotificationDaemon',
++				     'org.rubiojr.MonkeyPop.NotificationDaemon')
++            
++# One of the member functions in the org.freedesktop.DBus interface
++# is ListServices(), which provides a list of all the other services
++# registered on this bus. Call it, and print the list.
++dbus_object.ShowMessageNotification (&quot;hola&quot;, &quot;hola&quot;, &quot;Info&quot;)
++
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000005.html">[Mspace-checkins] r269 - Chicken/branches
+</A></li>
+	<LI>Next message: <A HREF="000007.html">[Mspace-checkins] r271 - / monkeypop
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#6">[ date ]</a>
+              <a href="thread.html#6">[ thread ]</a>
+              <a href="subject.html#6">[ subject ]</a>
+              <a href="author.html#6">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r282 - Chicken/trunk/debian
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2004-October/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r282%20-%20Chicken/trunk/debian&In-Reply-To=%3C200410121327.i9CDRa3f009156%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000017.html">
+   <LINK REL="Next"  HREF="000019.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r282 - Chicken/trunk/debian</H1>
+    <B>Sergio Rubio at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r282%20-%20Chicken/trunk/debian&In-Reply-To=%3C200410121327.i9CDRa3f009156%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r282 - Chicken/trunk/debian">rubiojr at sheep.berlios.de
+       </A><BR>
+    <I>Tue Oct 12 15:27:36 CEST 2004</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000017.html">[Mspace-checkins] r281 - Chicken/trunk/debian
+</A></li>
+        <LI>Next message: <A HREF="000019.html">[Mspace-checkins] r283 - Chicken/trunk/debian
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#18">[ date ]</a>
+              <a href="thread.html#18">[ thread ]</a>
+              <a href="subject.html#18">[ subject ]</a>
+              <a href="author.html#18">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: rubiojr
+Date: 2004-10-12 15:27:35 +0200 (Tue, 12 Oct 2004)
+New Revision: 282
+
+Modified:
+   Chicken/trunk/debian/mindeps.control
+Log:
+added missing depends
+
+
+
+Modified: Chicken/trunk/debian/mindeps.control
+===================================================================
+--- Chicken/trunk/debian/mindeps.control	2004-10-12 13:26:20 UTC (rev 281)
++++ Chicken/trunk/debian/mindeps.control	2004-10-12 13:27:35 UTC (rev 282)
+@@ -7,7 +7,7 @@
+ 
+ Package: libchicken
+ Architecture: powerpc i386 sparc s390
+-Depends: ${shlibs:Depends}
++Depends: ${shlibs:Depends}, ${misc:Depends}
+ Description: Misc .Net/Mono components.
+  .
+  Desktop notification messages, notification bubbles,
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000017.html">[Mspace-checkins] r281 - Chicken/trunk/debian
+</A></li>
+	<LI>Next message: <A HREF="000019.html">[Mspace-checkins] r283 - Chicken/trunk/debian
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#18">[ date ]</a>
+              <a href="thread.html#18">[ thread ]</a>
+              <a href="subject.html#18">[ subject ]</a>
+              <a href="author.html#18">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

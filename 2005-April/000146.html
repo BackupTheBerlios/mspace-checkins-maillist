@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [Mspace-checkins] r433 - ComponentModel/trunk/src/ComponentModel.Container
+   </TITLE>
+   <LINK REL="Index" HREF="http://lists.berlios.de/pipermail/mspace-checkins/2005-April/index.html" >
+   <LINK REL="made" HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r433%20-%20ComponentModel/trunk/src/ComponentModel.Container&In-Reply-To=%3C200504132116.j3DLGZcY006155%40sheep.berlios.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000145.html">
+   <LINK REL="Next"  HREF="000147.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[Mspace-checkins] r433 - ComponentModel/trunk/src/ComponentModel.Container</H1>
+    <B>N&#233;stor Salceda at BerliOS</B> 
+    <A HREF="mailto:mspace-checkins%40lists.berlios.de?Subject=Re%3A%20%5BMspace-checkins%5D%20r433%20-%20ComponentModel/trunk/src/ComponentModel.Container&In-Reply-To=%3C200504132116.j3DLGZcY006155%40sheep.berlios.de%3E"
+       TITLE="[Mspace-checkins] r433 - ComponentModel/trunk/src/ComponentModel.Container">nestor at sheep.berlios.de
+       </A><BR>
+    <I>Wed Apr 13 23:16:35 CEST 2005</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000145.html">[Mspace-checkins] r432 - / gksu-sharp gksu-sharp/examples gksu-sharp/gksu gksu-sharp/gksu/generated gksu-sharp/gksu.ui gksu-sharp/gksu.ui/generated gksu-sharp/sources
+</A></li>
+        <LI>Next message: <A HREF="000147.html">[Mspace-checkins] r434 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container.Dao
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#146">[ date ]</a>
+              <a href="thread.html#146">[ thread ]</a>
+              <a href="subject.html#146">[ subject ]</a>
+              <a href="author.html#146">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Author: nestor
+Date: 2005-04-13 23:16:34 +0200 (Wed, 13 Apr 2005)
+New Revision: 433
+
+Modified:
+   ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+Log:
+Little comment added.
+
+
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-04-12 21:39:33 UTC (rev 432)
++++ ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-04-13 21:16:34 UTC (rev 433)
+@@ -36,7 +36,7 @@
+             GetAllComponents (); 
+         }
+ 
+-        public void GetAllComponents () {
++        private void GetAllComponents () {
+             foreach (Assembly ass  in Assemblies) {
+                 ICollection collection = DefaultContainerDao.Instance.ProcessAssembly (ass);
+                 if (collection.Count != 0)
+@@ -75,6 +75,11 @@
+         }
+ 
+         public void Add (IComponentModel component) {
++            /**
++             * Dado que un componente es un peso pesado para la carga de un
++             * sistema no se permite m&#225;s de una instancia, as&#237; que con pasarle
++             * la referencia ser&#225; suficiente.
++             */
+             if (componentList.Contains (component))
+                 return;
+             componentList.Add (component);
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000145.html">[Mspace-checkins] r432 - / gksu-sharp gksu-sharp/examples gksu-sharp/gksu gksu-sharp/gksu/generated gksu-sharp/gksu.ui gksu-sharp/gksu.ui/generated gksu-sharp/sources
+</A></li>
+	<LI>Next message: <A HREF="000147.html">[Mspace-checkins] r434 - in ComponentModel/trunk: ComponentTest/src/Components/Saludator/Bo ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container.Dao
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#146">[ date ]</a>
+              <a href="thread.html#146">[ thread ]</a>
+              <a href="subject.html#146">[ subject ]</a>
+              <a href="author.html#146">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://lists.berlios.de/mailman/listinfo/mspace-checkins">More information about the Mspace-checkins
+mailing list</a><br>
+</body></html>

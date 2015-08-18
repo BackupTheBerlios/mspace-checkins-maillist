@@ -1,0 +1,3894 @@
+From nestor at berlios.de  Sun Sep  4 22:31:23 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Sun, 4 Sep 2005 22:31:23 +0200
+Subject: [Mspace-checkins] r506 - in ComponentModel/trunk: . ComponentTest/src/Components/Saludator/Form src src/ComponentModel.Container src/ComponentModel.Container.Dao src/ComponentModel.ExceptionManager src/ComponentModel.Exceptions src/ComponentModel.Factory src/ComponentModel.Interfaces src/ComponentModel.Threading src/ComponentModel.VO
+Message-ID: <200509042031.j84KVNna031433@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-04 22:31:21 +0200 (Sun, 04 Sep 2005)
+New Revision: 506
+
+Added:
+   ComponentModel/trunk/COPYING
+Modified:
+   ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs
+   ComponentModel/trunk/src/ComponentAttribute.cs
+   ComponentModel/trunk/src/ComponentMethodAttribute.cs
+   ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs
+   ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+   ComponentModel/trunk/src/ComponentModel.ExceptionManager/DefaultExceptionManager.cs
+   ComponentModel/trunk/src/ComponentModel.Exceptions/ComponentModelException.cs
+   ComponentModel/trunk/src/ComponentModel.Exceptions/ComponentNotFoundException.cs
+   ComponentModel/trunk/src/ComponentModel.Exceptions/ExceptionManagerNotFoundException.cs
+   ComponentModel/trunk/src/ComponentModel.Exceptions/MethodNotFoundException.cs
+   ComponentModel/trunk/src/ComponentModel.Exceptions/ResponseNotFoundException.cs
+   ComponentModel/trunk/src/ComponentModel.Exceptions/TypeNotFoundException.cs
+   ComponentModel/trunk/src/ComponentModel.Exceptions/ViewNotFoundException.cs
+   ComponentModel/trunk/src/ComponentModel.Factory/FactoryVO.cs
+   ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs
+   ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModelVO.cs
+   ComponentModel/trunk/src/ComponentModel.Interfaces/IContainer.cs
+   ComponentModel/trunk/src/ComponentModel.Interfaces/IExceptionManager.cs
+   ComponentModel/trunk/src/ComponentModel.Interfaces/IVO.cs
+   ComponentModel/trunk/src/ComponentModel.Interfaces/IViewHandler.cs
+   ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs
+   ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs
+   ComponentModel/trunk/src/ComponentModel.VO/ResponseMethodVO.cs
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+A?\195?\177adida la licencia a todos los archivos.
+
+
+
+Added: ComponentModel/trunk/COPYING
+===================================================================
+--- ComponentModel/trunk/COPYING	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/COPYING	2005-09-04 20:31:21 UTC (rev 506)
+@@ -0,0 +1,504 @@
++		  GNU LESSER GENERAL PUBLIC LICENSE
++		       Version 2.1, February 1999
++
++ Copyright (C) 1991, 1999 Free Software Foundation, Inc.
++     51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ Everyone is permitted to copy and distribute verbatim copies
++ of this license document, but changing it is not allowed.
++
++[This is the first released version of the Lesser GPL.  It also counts
++ as the successor of the GNU Library Public License, version 2, hence
++ the version number 2.1.]
++
++			    Preamble
++
++  The licenses for most software are designed to take away your
++freedom to share and change it.  By contrast, the GNU General Public
++Licenses are intended to guarantee your freedom to share and change
++free software--to make sure the software is free for all its users.
++
++  This license, the Lesser General Public License, applies to some
++specially designated software packages--typically libraries--of the
++Free Software Foundation and other authors who decide to use it.  You
++can use it too, but we suggest you first think carefully about whether
++this license or the ordinary General Public License is the better
++strategy to use in any particular case, based on the explanations below.
++
++  When we speak of free software, we are referring to freedom of use,
++not price.  Our General Public Licenses are designed to make sure that
++you have the freedom to distribute copies of free software (and charge
++for this service if you wish); that you receive source code or can get
++it if you want it; that you can change the software and use pieces of
++it in new free programs; and that you are informed that you can do
++these things.
++
++  To protect your rights, we need to make restrictions that forbid
++distributors to deny you these rights or to ask you to surrender these
++rights.  These restrictions translate to certain responsibilities for
++you if you distribute copies of the library or if you modify it.
++
++  For example, if you distribute copies of the library, whether gratis
++or for a fee, you must give the recipients all the rights that we gave
++you.  You must make sure that they, too, receive or can get the source
++code.  If you link other code with the library, you must provide
++complete object files to the recipients, so that they can relink them
++with the library after making changes to the library and recompiling
++it.  And you must show them these terms so they know their rights.
++
++  We protect your rights with a two-step method: (1) we copyright the
++library, and (2) we offer you this license, which gives you legal
++permission to copy, distribute and/or modify the library.
++
++  To protect each distributor, we want to make it very clear that
++there is no warranty for the free library.  Also, if the library is
++modified by someone else and passed on, the recipients should know
++that what they have is not the original version, so that the original
++author's reputation will not be affected by problems that might be
++introduced by others.
++
++  Finally, software patents pose a constant threat to the existence of
++any free program.  We wish to make sure that a company cannot
++effectively restrict the users of a free program by obtaining a
++restrictive license from a patent holder.  Therefore, we insist that
++any patent license obtained for a version of the library must be
++consistent with the full freedom of use specified in this license.
++
++  Most GNU software, including some libraries, is covered by the
++ordinary GNU General Public License.  This license, the GNU Lesser
++General Public License, applies to certain designated libraries, and
++is quite different from the ordinary General Public License.  We use
++this license for certain libraries in order to permit linking those
++libraries into non-free programs.
++
++  When a program is linked with a library, whether statically or using
++a shared library, the combination of the two is legally speaking a
++combined work, a derivative of the original library.  The ordinary
++General Public License therefore permits such linking only if the
++entire combination fits its criteria of freedom.  The Lesser General
++Public License permits more lax criteria for linking other code with
++the library.
++
++  We call this license the "Lesser" General Public License because it
++does Less to protect the user's freedom than the ordinary General
++Public License.  It also provides other free software developers Less
++of an advantage over competing non-free programs.  These disadvantages
++are the reason we use the ordinary General Public License for many
++libraries.  However, the Lesser license provides advantages in certain
++special circumstances.
++
++  For example, on rare occasions, there may be a special need to
++encourage the widest possible use of a certain library, so that it becomes
++a de-facto standard.  To achieve this, non-free programs must be
++allowed to use the library.  A more frequent case is that a free
++library does the same job as widely used non-free libraries.  In this
++case, there is little to gain by limiting the free library to free
++software only, so we use the Lesser General Public License.
++
++  In other cases, permission to use a particular library in non-free
++programs enables a greater number of people to use a large body of
++free software.  For example, permission to use the GNU C Library in
++non-free programs enables many more people to use the whole GNU
++operating system, as well as its variant, the GNU/Linux operating
++system.
++
++  Although the Lesser General Public License is Less protective of the
++users' freedom, it does ensure that the user of a program that is
++linked with the Library has the freedom and the wherewithal to run
++that program using a modified version of the Library.
++
++  The precise terms and conditions for copying, distribution and
++modification follow.  Pay close attention to the difference between a
++"work based on the library" and a "work that uses the library".  The
++former contains code derived from the library, whereas the latter must
++be combined with the library in order to run.
++
++		  GNU LESSER GENERAL PUBLIC LICENSE
++   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
++
++  0. This License Agreement applies to any software library or other
++program which contains a notice placed by the copyright holder or
++other authorized party saying it may be distributed under the terms of
++this Lesser General Public License (also called "this License").
++Each licensee is addressed as "you".
++
++  A "library" means a collection of software functions and/or data
++prepared so as to be conveniently linked with application programs
++(which use some of those functions and data) to form executables.
++
++  The "Library", below, refers to any such software library or work
++which has been distributed under these terms.  A "work based on the
++Library" means either the Library or any derivative work under
++copyright law: that is to say, a work containing the Library or a
++portion of it, either verbatim or with modifications and/or translated
++straightforwardly into another language.  (Hereinafter, translation is
++included without limitation in the term "modification".)
++
++  "Source code" for a work means the preferred form of the work for
++making modifications to it.  For a library, complete source code means
++all the source code for all modules it contains, plus any associated
++interface definition files, plus the scripts used to control compilation
++and installation of the library.
++
++  Activities other than copying, distribution and modification are not
++covered by this License; they are outside its scope.  The act of
++running a program using the Library is not restricted, and output from
++such a program is covered only if its contents constitute a work based
++on the Library (independent of the use of the Library in a tool for
++writing it).  Whether that is true depends on what the Library does
++and what the program that uses the Library does.
++  
++  1. You may copy and distribute verbatim copies of the Library's
++complete source code as you receive it, in any medium, provided that
++you conspicuously and appropriately publish on each copy an
++appropriate copyright notice and disclaimer of warranty; keep intact
++all the notices that refer to this License and to the absence of any
++warranty; and distribute a copy of this License along with the
++Library.
++
++  You may charge a fee for the physical act of transferring a copy,
++and you may at your option offer warranty protection in exchange for a
++fee.
++
++  2. You may modify your copy or copies of the Library or any portion
++of it, thus forming a work based on the Library, and copy and
++distribute such modifications or work under the terms of Section 1
++above, provided that you also meet all of these conditions:
++
++    a) The modified work must itself be a software library.
++
++    b) You must cause the files modified to carry prominent notices
++    stating that you changed the files and the date of any change.
++
++    c) You must cause the whole of the work to be licensed at no
++    charge to all third parties under the terms of this License.
++
++    d) If a facility in the modified Library refers to a function or a
++    table of data to be supplied by an application program that uses
++    the facility, other than as an argument passed when the facility
++    is invoked, then you must make a good faith effort to ensure that,
++    in the event an application does not supply such function or
++    table, the facility still operates, and performs whatever part of
++    its purpose remains meaningful.
++
++    (For example, a function in a library to compute square roots has
++    a purpose that is entirely well-defined independent of the
++    application.  Therefore, Subsection 2d requires that any
++    application-supplied function or table used by this function must
++    be optional: if the application does not supply it, the square
++    root function must still compute square roots.)
++
++These requirements apply to the modified work as a whole.  If
++identifiable sections of that work are not derived from the Library,
++and can be reasonably considered independent and separate works in
++themselves, then this License, and its terms, do not apply to those
++sections when you distribute them as separate works.  But when you
++distribute the same sections as part of a whole which is a work based
++on the Library, the distribution of the whole must be on the terms of
++this License, whose permissions for other licensees extend to the
++entire whole, and thus to each and every part regardless of who wrote
++it.
++
++Thus, it is not the intent of this section to claim rights or contest
++your rights to work written entirely by you; rather, the intent is to
++exercise the right to control the distribution of derivative or
++collective works based on the Library.
++
++In addition, mere aggregation of another work not based on the Library
++with the Library (or with a work based on the Library) on a volume of
++a storage or distribution medium does not bring the other work under
++the scope of this License.
++
++  3. You may opt to apply the terms of the ordinary GNU General Public
++License instead of this License to a given copy of the Library.  To do
++this, you must alter all the notices that refer to this License, so
++that they refer to the ordinary GNU General Public License, version 2,
++instead of to this License.  (If a newer version than version 2 of the
++ordinary GNU General Public License has appeared, then you can specify
++that version instead if you wish.)  Do not make any other change in
++these notices.
++
++  Once this change is made in a given copy, it is irreversible for
++that copy, so the ordinary GNU General Public License applies to all
++subsequent copies and derivative works made from that copy.
++
++  This option is useful when you wish to copy part of the code of
++the Library into a program that is not a library.
++
++  4. You may copy and distribute the Library (or a portion or
++derivative of it, under Section 2) in object code or executable form
++under the terms of Sections 1 and 2 above provided that you accompany
++it with the complete corresponding machine-readable source code, which
++must be distributed under the terms of Sections 1 and 2 above on a
++medium customarily used for software interchange.
++
++  If distribution of object code is made by offering access to copy
++from a designated place, then offering equivalent access to copy the
++source code from the same place satisfies the requirement to
++distribute the source code, even though third parties are not
++compelled to copy the source along with the object code.
++
++  5. A program that contains no derivative of any portion of the
++Library, but is designed to work with the Library by being compiled or
++linked with it, is called a "work that uses the Library".  Such a
++work, in isolation, is not a derivative work of the Library, and
++therefore falls outside the scope of this License.
++
++  However, linking a "work that uses the Library" with the Library
++creates an executable that is a derivative of the Library (because it
++contains portions of the Library), rather than a "work that uses the
++library".  The executable is therefore covered by this License.
++Section 6 states terms for distribution of such executables.
++
++  When a "work that uses the Library" uses material from a header file
++that is part of the Library, the object code for the work may be a
++derivative work of the Library even though the source code is not.
++Whether this is true is especially significant if the work can be
++linked without the Library, or if the work is itself a library.  The
++threshold for this to be true is not precisely defined by law.
++
++  If such an object file uses only numerical parameters, data
++structure layouts and accessors, and small macros and small inline
++functions (ten lines or less in length), then the use of the object
++file is unrestricted, regardless of whether it is legally a derivative
++work.  (Executables containing this object code plus portions of the
++Library will still fall under Section 6.)
++
++  Otherwise, if the work is a derivative of the Library, you may
++distribute the object code for the work under the terms of Section 6.
++Any executables containing that work also fall under Section 6,
++whether or not they are linked directly with the Library itself.
++
++  6. As an exception to the Sections above, you may also combine or
++link a "work that uses the Library" with the Library to produce a
++work containing portions of the Library, and distribute that work
++under terms of your choice, provided that the terms permit
++modification of the work for the customer's own use and reverse
++engineering for debugging such modifications.
++
++  You must give prominent notice with each copy of the work that the
++Library is used in it and that the Library and its use are covered by
++this License.  You must supply a copy of this License.  If the work
++during execution displays copyright notices, you must include the
++copyright notice for the Library among them, as well as a reference
++directing the user to the copy of this License.  Also, you must do one
++of these things:
++
++    a) Accompany the work with the complete corresponding
++    machine-readable source code for the Library including whatever
++    changes were used in the work (which must be distributed under
++    Sections 1 and 2 above); and, if the work is an executable linked
++    with the Library, with the complete machine-readable "work that
++    uses the Library", as object code and/or source code, so that the
++    user can modify the Library and then relink to produce a modified
++    executable containing the modified Library.  (It is understood
++    that the user who changes the contents of definitions files in the
++    Library will not necessarily be able to recompile the application
++    to use the modified definitions.)
++
++    b) Use a suitable shared library mechanism for linking with the
++    Library.  A suitable mechanism is one that (1) uses at run time a
++    copy of the library already present on the user's computer system,
++    rather than copying library functions into the executable, and (2)
++    will operate properly with a modified version of the library, if
++    the user installs one, as long as the modified version is
++    interface-compatible with the version that the work was made with.
++
++    c) Accompany the work with a written offer, valid for at
++    least three years, to give the same user the materials
++    specified in Subsection 6a, above, for a charge no more
++    than the cost of performing this distribution.
++
++    d) If distribution of the work is made by offering access to copy
++    from a designated place, offer equivalent access to copy the above
++    specified materials from the same place.
++
++    e) Verify that the user has already received a copy of these
++    materials or that you have already sent this user a copy.
++
++  For an executable, the required form of the "work that uses the
++Library" must include any data and utility programs needed for
++reproducing the executable from it.  However, as a special exception,
++the materials to be distributed need not include anything that is
++normally distributed (in either source or binary form) with the major
++components (compiler, kernel, and so on) of the operating system on
++which the executable runs, unless that component itself accompanies
++the executable.
++
++  It may happen that this requirement contradicts the license
++restrictions of other proprietary libraries that do not normally
++accompany the operating system.  Such a contradiction means you cannot
++use both them and the Library together in an executable that you
++distribute.
++
++  7. You may place library facilities that are a work based on the
++Library side-by-side in a single library together with other library
++facilities not covered by this License, and distribute such a combined
++library, provided that the separate distribution of the work based on
++the Library and of the other library facilities is otherwise
++permitted, and provided that you do these two things:
++
++    a) Accompany the combined library with a copy of the same work
++    based on the Library, uncombined with any other library
++    facilities.  This must be distributed under the terms of the
++    Sections above.
++
++    b) Give prominent notice with the combined library of the fact
++    that part of it is a work based on the Library, and explaining
++    where to find the accompanying uncombined form of the same work.
++
++  8. You may not copy, modify, sublicense, link with, or distribute
++the Library except as expressly provided under this License.  Any
++attempt otherwise to copy, modify, sublicense, link with, or
++distribute the Library is void, and will automatically terminate your
++rights under this License.  However, parties who have received copies,
++or rights, from you under this License will not have their licenses
++terminated so long as such parties remain in full compliance.
++
++  9. You are not required to accept this License, since you have not
++signed it.  However, nothing else grants you permission to modify or
++distribute the Library or its derivative works.  These actions are
++prohibited by law if you do not accept this License.  Therefore, by
++modifying or distributing the Library (or any work based on the
++Library), you indicate your acceptance of this License to do so, and
++all its terms and conditions for copying, distributing or modifying
++the Library or works based on it.
++
++  10. Each time you redistribute the Library (or any work based on the
++Library), the recipient automatically receives a license from the
++original licensor to copy, distribute, link with or modify the Library
++subject to these terms and conditions.  You may not impose any further
++restrictions on the recipients' exercise of the rights granted herein.
++You are not responsible for enforcing compliance by third parties with
++this License.
++
++  11. If, as a consequence of a court judgment or allegation of patent
++infringement or for any other reason (not limited to patent issues),
++conditions are imposed on you (whether by court order, agreement or
++otherwise) that contradict the conditions of this License, they do not
++excuse you from the conditions of this License.  If you cannot
++distribute so as to satisfy simultaneously your obligations under this
++License and any other pertinent obligations, then as a consequence you
++may not distribute the Library at all.  For example, if a patent
++license would not permit royalty-free redistribution of the Library by
++all those who receive copies directly or indirectly through you, then
++the only way you could satisfy both it and this License would be to
++refrain entirely from distribution of the Library.
++
++If any portion of this section is held invalid or unenforceable under any
++particular circumstance, the balance of the section is intended to apply,
++and the section as a whole is intended to apply in other circumstances.
++
++It is not the purpose of this section to induce you to infringe any
++patents or other property right claims or to contest validity of any
++such claims; this section has the sole purpose of protecting the
++integrity of the free software distribution system which is
++implemented by public license practices.  Many people have made
++generous contributions to the wide range of software distributed
++through that system in reliance on consistent application of that
++system; it is up to the author/donor to decide if he or she is willing
++to distribute software through any other system and a licensee cannot
++impose that choice.
++
++This section is intended to make thoroughly clear what is believed to
++be a consequence of the rest of this License.
++
++  12. If the distribution and/or use of the Library is restricted in
++certain countries either by patents or by copyrighted interfaces, the
++original copyright holder who places the Library under this License may add
++an explicit geographical distribution limitation excluding those countries,
++so that distribution is permitted only in or among countries not thus
++excluded.  In such case, this License incorporates the limitation as if
++written in the body of this License.
++
++  13. The Free Software Foundation may publish revised and/or new
++versions of the Lesser General Public License from time to time.
++Such new versions will be similar in spirit to the present version,
++but may differ in detail to address new problems or concerns.
++
++Each version is given a distinguishing version number.  If the Library
++specifies a version number of this License which applies to it and
++"any later version", you have the option of following the terms and
++conditions either of that version or of any later version published by
++the Free Software Foundation.  If the Library does not specify a
++license version number, you may choose any version ever published by
++the Free Software Foundation.
++
++  14. If you wish to incorporate parts of the Library into other free
++programs whose distribution conditions are incompatible with these,
++write to the author to ask for permission.  For software which is
++copyrighted by the Free Software Foundation, write to the Free
++Software Foundation; we sometimes make exceptions for this.  Our
++decision will be guided by the two goals of preserving the free status
++of all derivatives of our free software and of promoting the sharing
++and reuse of software generally.
++
++			    NO WARRANTY
++
++  15. BECAUSE THE LIBRARY IS LICENSED FREE OF CHARGE, THERE IS NO
++WARRANTY FOR THE LIBRARY, TO THE EXTENT PERMITTED BY APPLICABLE LAW.
++EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR
++OTHER PARTIES PROVIDE THE LIBRARY "AS IS" WITHOUT WARRANTY OF ANY
++KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE
++IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++PURPOSE.  THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE
++LIBRARY IS WITH YOU.  SHOULD THE LIBRARY PROVE DEFECTIVE, YOU ASSUME
++THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
++
++  16. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN
++WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY
++AND/OR REDISTRIBUTE THE LIBRARY AS PERMITTED ABOVE, BE LIABLE TO YOU
++FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR
++CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE
++LIBRARY (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING
++RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
++FAILURE OF THE LIBRARY TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
++SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
++DAMAGES.
++
++		     END OF TERMS AND CONDITIONS
++
++           How to Apply These Terms to Your New Libraries
++
++  If you develop a new library, and you want it to be of the greatest
++possible use to the public, we recommend making it free software that
++everyone can redistribute and change.  You can do so by permitting
++redistribution under these terms (or, alternatively, under the terms of the
++ordinary General Public License).
++
++  To apply these terms, attach the following notices to the library.  It is
++safest to attach them to the start of each source file to most effectively
++convey the exclusion of warranty; and each file should have at least the
++"copyright" line and a pointer to where the full notice is found.
++
++    <one line to give the library's name and a brief idea of what it does.>
++    Copyright (C) <year>  <name of author>
++
++    This library is free software; you can redistribute it and/or
++    modify it under the terms of the GNU Lesser General Public
++    License as published by the Free Software Foundation; either
++    version 2.1 of the License, or (at your option) any later version.
++
++    This library is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++    Lesser General Public License for more details.
++
++    You should have received a copy of the GNU Lesser General Public
++    License along with this library; if not, write to the Free Software
++    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++
++Also add information on how to contact you by electronic and paper mail.
++
++You should also get your employer (if you work as a programmer) or your
++school, if any, to sign a "copyright disclaimer" for the library, if
++necessary.  Here is a sample; alter the names:
++
++  Yoyodyne, Inc., hereby disclaims all copyright interest in the
++  library `Frob' (a library for tweaking knobs) written by James Random Hacker.
++
++  <signature of Ty Coon>, 1 April 1990
++  Ty Coon, President of Vice
++
++That's all there is to it!
++
++
+
+Modified: ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs
+===================================================================
+--- ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/ComponentTest/src/Components/Saludator/Form/SaludatorForm.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -55,10 +55,15 @@
+                     Console.WriteLine ("Que pasa nenggg, soy el fucking virtual !!");
+                 }
+                 
++                void Virtual2 (ResponseMethodVO responseMethodVO) {
++                    Console.WriteLine ("Vritual 2 respondiendo");
++                }
+                 
+                 void Button2Click (object sender, EventArgs evt) {
+                     DefaultContainer.Instance.GetComponentByName ("Saludator").VirtualMethod += new VirtualMethod (this.Virtual);
+-                    DefaultContainer.Instance.Execute ("Saludator", "SaludaATodos", null, this);
++                    DefaultContainer.Instance.GetComponentByName ("Saludator").VirtualMethod += new VirtualMethod (this.Virtual2);
++                    DefaultContainer.Instance.Execute ("Saludator", "Saluda", null, this);
++                    
+                 }
+                 
+ 		void Button1Click(object sender, System.EventArgs ev) {
+
+Modified: ComponentModel/trunk/src/ComponentAttribute.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentAttribute.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentAttribute.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ 
+ namespace ComponentModel {
+
+Modified: ComponentModel/trunk/src/ComponentMethodAttribute.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentMethodAttribute.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentMethodAttribute.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ 
+ namespace ComponentModel {
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Container/DefaultContainer.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ using System.IO;
+ using System.Diagnostics;
+
+Modified: ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Container.Dao/DefaultContainerDao.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ using System.Collections;
+ using System.Reflection;
+
+Modified: ComponentModel/trunk/src/ComponentModel.ExceptionManager/DefaultExceptionManager.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.ExceptionManager/DefaultExceptionManager.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.ExceptionManager/DefaultExceptionManager.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ using ComponentModel.Interfaces;
+ 
+@@ -3,4 +22,6 @@
+ namespace ComponentModel.ExceptionManager {
+     public class DefaultExceptionManager : IExceptionManager {
++        //Igual un buen comportamiento por defecto ser?a imprimir el stack trace
++        //de la llamada.
+         public virtual void ProcessException (Exception exception) {
+         }
+
+Modified: ComponentModel/trunk/src/ComponentModel.Exceptions/ComponentModelException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Exceptions/ComponentModelException.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Exceptions/ComponentModelException.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ 
+ namespace ComponentModel.Exceptions {
+
+Modified: ComponentModel/trunk/src/ComponentModel.Exceptions/ComponentNotFoundException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Exceptions/ComponentNotFoundException.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Exceptions/ComponentNotFoundException.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ 
+ namespace ComponentModel.Exceptions {
+
+Modified: ComponentModel/trunk/src/ComponentModel.Exceptions/ExceptionManagerNotFoundException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Exceptions/ExceptionManagerNotFoundException.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Exceptions/ExceptionManagerNotFoundException.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ 
+ namespace ComponentModel.Exceptions {
+
+Modified: ComponentModel/trunk/src/ComponentModel.Exceptions/MethodNotFoundException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Exceptions/MethodNotFoundException.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Exceptions/MethodNotFoundException.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ 
+ namespace ComponentModel.Exceptions {
+
+Modified: ComponentModel/trunk/src/ComponentModel.Exceptions/ResponseNotFoundException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Exceptions/ResponseNotFoundException.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Exceptions/ResponseNotFoundException.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ 
+ namespace ComponentModel.Exceptions {
+
+Modified: ComponentModel/trunk/src/ComponentModel.Exceptions/TypeNotFoundException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Exceptions/TypeNotFoundException.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Exceptions/TypeNotFoundException.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ 
+ namespace ComponentModel.Exceptions {
+
+Modified: ComponentModel/trunk/src/ComponentModel.Exceptions/ViewNotFoundException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Exceptions/ViewNotFoundException.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Exceptions/ViewNotFoundException.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ 
+ namespace ComponentModel.Exceptions {
+
+Modified: ComponentModel/trunk/src/ComponentModel.Factory/FactoryVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Factory/FactoryVO.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Factory/FactoryVO.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ using ComponentModel.VO;
+ 
+
+Modified: ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModel.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ using ComponentModel.VO;
+ 
+
+Modified: ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModelVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModelVO.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Interfaces/IComponentModelVO.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ 
+ namespace ComponentModel.Interfaces {
+
+Modified: ComponentModel/trunk/src/ComponentModel.Interfaces/IContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Interfaces/IContainer.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Interfaces/IContainer.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,6 +1,26 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ 
+ namespace ComponentModel.Interfaces {
++    //Igual si extendemos de System.ComponentModel.IContainer est? bien tambi?n.
+     public interface IContainer {
+         IComponentModel GetComponentByName (string componentName);
+         
+
+Modified: ComponentModel/trunk/src/ComponentModel.Interfaces/IExceptionManager.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Interfaces/IExceptionManager.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Interfaces/IExceptionManager.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ 
+ namespace ComponentModel.Interfaces {
+
+Modified: ComponentModel/trunk/src/ComponentModel.Interfaces/IVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Interfaces/IVO.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Interfaces/IVO.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ 
+ namespace ComponentModel.Interfaces {
+
+Modified: ComponentModel/trunk/src/ComponentModel.Interfaces/IViewHandler.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Interfaces/IViewHandler.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Interfaces/IViewHandler.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ 
+ namespace ComponentModel.Interfaces {
+
+Modified: ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.Threading/ComponentActionDispatcher.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ using System.Threading;
+ using ComponentModel.VO;
+
+Modified: ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.VO/ComponentModelVO.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ using System.Collections;
+ 
+
+Modified: ComponentModel/trunk/src/ComponentModel.VO/ResponseMethodVO.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel.VO/ResponseMethodVO.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/ComponentModel.VO/ResponseMethodVO.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ 
+ namespace ComponentModel.VO {
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-08-29 11:26:19 UTC (rev 505)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-09-04 20:31:21 UTC (rev 506)
+@@ -1,3 +1,22 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
+ using System;
+ using System.Reflection;
+ using ComponentModel.Interfaces;
+
+
+
+From nestor at berlios.de  Sun Sep  4 22:40:09 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Sun, 4 Sep 2005 22:40:09 +0200
+Subject: [Mspace-checkins] r507 - ComponentModel/trunk
+Message-ID: <200509042040.j84Ke9UE031736@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-04 22:40:06 +0200 (Sun, 04 Sep 2005)
+New Revision: 507
+
+Added:
+   ComponentModel/trunk/TODO
+Log:
+A?\195?\177adido una lista de que haceres.
+
+
+
+
+Added: ComponentModel/trunk/TODO
+===================================================================
+--- ComponentModel/trunk/TODO	2005-09-04 20:31:21 UTC (rev 506)
++++ ComponentModel/trunk/TODO	2005-09-04 20:40:06 UTC (rev 507)
+@@ -0,0 +1,30 @@
++Pr?ximas mejoras en las pr?ximas versiones.
++---------------------------------------------
++
++* Implementaci?n de un ViewCache, almacenando todas las vistas de un componente;
++  poder acceder as? a cada una de ellas.  Ser? as? un modo de tener un Proxy en
++  cada componente que pueda autogestionar sus vistas; y en caso necesario poder
++  conseguir nosotros a una vista asociada a un componente.
++
++* Implementaci?n de m?todos para conseguir la devoluci?n de Propiedades que
++  tenga un componente.
++
++* Mejora de la concurrencia de un componente, varios accesos; varias llamadas,
++  respuestas y esperas.
++
++* Optimizaciones de b?squeda.  A?adir tambi?n b?squeda de componentes dentro del
++  GAC, al igual que descarga autom?tica en memoria de ensamblados que no
++  contengan componentes.  Ya se encargar? el JIT de cargar esos ensamblados
++  seg?n lo vea necesario.
++
++* Problemas de nomenclatura; deprecar el interface IVO, dado que no es
++  estrictamente un Value Object.  Sustituir por IDataTransferObject.
++
++* El interface de la vista, dejar? de estar vacio; para implementar 3 m?todos
++  que se suelen utilizar en las vistas siempre, esto es GetDataForm,
++  LoadDataForm y ClearForm.
++
++* Preejecuci?n y postejecuci?n; con m?todos virtuales e implementaci?n de
++  callbacks.
++
++* ?????? Uso de delegates para poder responder a varios responses de golpe.
+
+
+
+From nestor at berlios.de  Sun Sep  4 22:41:14 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Sun, 4 Sep 2005 22:41:14 +0200
+Subject: [Mspace-checkins] r508 - ComponentModel/trunk
+Message-ID: <200509042041.j84KfEQx031818@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-04 22:41:13 +0200 (Sun, 04 Sep 2005)
+New Revision: 508
+
+Modified:
+   ComponentModel/trunk/TODO
+Log:
+
+
+Modified: ComponentModel/trunk/TODO
+===================================================================
+--- ComponentModel/trunk/TODO	2005-09-04 20:40:06 UTC (rev 507)
++++ ComponentModel/trunk/TODO	2005-09-04 20:41:13 UTC (rev 508)
+@@ -1,6 +1,9 @@
+ Pr?ximas mejoras en las pr?ximas versiones.
+ ---------------------------------------------
+ 
++* Errores en la b?squeda de m?todos.  A d?a de hoy, esta version no permite
++  sobrecarga de casos de uso seg?n la firma.  Esto es sencillo de arreglar.
++
+ * Implementaci?n de un ViewCache, almacenando todas las vistas de un componente;
+   poder acceder as? a cada una de ellas.  Ser? as? un modo de tener un Proxy en
+   cada componente que pueda autogestionar sus vistas; y en caso necesario poder
+
+
+
+From nestor at berlios.de  Sun Sep  4 22:49:44 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Sun, 4 Sep 2005 22:49:44 +0200
+Subject: [Mspace-checkins] r509 - in ComponentModel/trunk: . src
+Message-ID: <200509042049.j84KniWq032125@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-04 22:49:42 +0200 (Sun, 04 Sep 2005)
+New Revision: 509
+
+Modified:
+   ComponentModel/trunk/TODO
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+
+
+Modified: ComponentModel/trunk/TODO
+===================================================================
+--- ComponentModel/trunk/TODO	2005-09-04 20:41:13 UTC (rev 508)
++++ ComponentModel/trunk/TODO	2005-09-04 20:49:42 UTC (rev 509)
+@@ -3,6 +3,7 @@
+ 
+ * Errores en la b?squeda de m?todos.  A d?a de hoy, esta version no permite
+   sobrecarga de casos de uso seg?n la firma.  Esto es sencillo de arreglar.
++  Hay una implementaci?n de referencia sin testear.
+ 
+ * Implementaci?n de un ViewCache, almacenando todas las vistas de un componente;
+   poder acceder as? a cada una de ellas.  Ser? as? un modo de tener un Proxy en
+@@ -31,3 +32,5 @@
+   callbacks.
+ 
+ * ?????? Uso de delegates para poder responder a varios responses de golpe.
++
++* Dejar de hacer los test a pelo !! Uso intensivo de NUnit para ello.
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-09-04 20:41:13 UTC (rev 508)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-09-04 20:49:42 UTC (rev 509)
+@@ -82,6 +82,30 @@
+             }
+             return null;
+         }
++
++        // Implementaci?n de referencia para obtener la sobrecarga.  No es
++        // llamada, dado que a?n no ha sido testeado su funcionamiento.
++        private MethodInfo GetMethodToExecute (string methodName, object[] parameters, Type componentType) {
++            //Precondition: methodName != null && methodName != String.Empty &&
++            //componentType != null
++            logger.Debug ("Entering GetMethodToExecute.  Searching " + methodName + "in: " + componentType.ToString ());
++            Type[] typeParam = new Type[parameters.Length];
++            for (int i = 0; i < typeParam.Length; i++) {
++                typeParam[i] = parameters[i].GetType ();
++            }
++            //Busca solamente los publicos.  Cambiar el Binder puede ser un lio
++            //grande, ojo con esto.
++            MethodInfo methodInfo = componentType.GetMethod (methodName, typeParam);
++            //?encontrado?
++            if (methodInfo == null) {
++                throw new MethodNotFoundException ("Method to execute: " + methodName + " not found.");
++            }
++            else {
++                logger.Debug ("Finded method to execute: " + methodInfo.ToString ());
++            }
++            //Post: methodInfo != null
++            return methodInfo;
++        }
+         
+         private MethodInfo GetMethodToExecute (string methodName, Type componentType) {
+             //Precondition: methodName != null && methodName != String.Empty &&
+
+
+
+From nestor at berlios.de  Sun Sep  4 22:51:29 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Sun, 4 Sep 2005 22:51:29 +0200
+Subject: [Mspace-checkins] r510 - ComponentModel/trunk
+Message-ID: <200509042051.j84KpTEL032225@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-04 22:51:23 +0200 (Sun, 04 Sep 2005)
+New Revision: 510
+
+Modified:
+   ComponentModel/trunk/TODO
+Log:
+Commit para Eduardo.
+
+Version 0.2
+
+
+Modified: ComponentModel/trunk/TODO
+===================================================================
+--- ComponentModel/trunk/TODO	2005-09-04 20:49:42 UTC (rev 509)
++++ ComponentModel/trunk/TODO	2005-09-04 20:51:23 UTC (rev 510)
+@@ -1,6 +1,7 @@
+ Pr?ximas mejoras en las pr?ximas versiones.
+ ---------------------------------------------
+ 
++
+ * Errores en la b?squeda de m?todos.  A d?a de hoy, esta version no permite
+   sobrecarga de casos de uso seg?n la firma.  Esto es sencillo de arreglar.
+   Hay una implementaci?n de referencia sin testear.
+
+
+
+From nestor at berlios.de  Tue Sep 20 01:40:46 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Tue, 20 Sep 2005 01:40:46 +0200
+Subject: [Mspace-checkins] r511 - ComponentModel/releases
+Message-ID: <200509192340.j8JNekUu014358@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-20 01:39:57 +0200 (Tue, 20 Sep 2005)
+New Revision: 511
+
+Added:
+   ComponentModel/releases/babuine-0.1-bin.tar.bz2
+   ComponentModel/releases/babuine-0.1-bin.tar.gz
+   ComponentModel/releases/babuine-0.1.tar.bz2
+   ComponentModel/releases/babuine-0.1.tar.gz
+Removed:
+   ComponentModel/releases/ComponentModel.dll
+Log:
+Release 0.1
+
+
+Deleted: ComponentModel/releases/ComponentModel.dll
+===================================================================
+(Binary files differ)
+
+Added: ComponentModel/releases/babuine-0.1-bin.tar.bz2
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/releases/babuine-0.1-bin.tar.bz2
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: ComponentModel/releases/babuine-0.1-bin.tar.gz
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/releases/babuine-0.1-bin.tar.gz
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: ComponentModel/releases/babuine-0.1.tar.bz2
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/releases/babuine-0.1.tar.bz2
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: ComponentModel/releases/babuine-0.1.tar.gz
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/releases/babuine-0.1.tar.gz
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+
+
+From nestor at berlios.de  Tue Sep 20 01:52:36 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Tue, 20 Sep 2005 01:52:36 +0200
+Subject: [Mspace-checkins] r512 - ComponentModel/trunk
+Message-ID: <200509192352.j8JNqaQo019475@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-20 01:52:26 +0200 (Tue, 20 Sep 2005)
+New Revision: 512
+
+Added:
+   ComponentModel/trunk/ChangeLog
+Log:
+
+
+Added: ComponentModel/trunk/ChangeLog
+===================================================================
+--- ComponentModel/trunk/ChangeLog	2005-09-19 23:39:57 UTC (rev 511)
++++ ComponentModel/trunk/ChangeLog	2005-09-19 23:52:26 UTC (rev 512)
+@@ -0,0 +1,3 @@
++20-09-2005 -- N?stor Salceda <nestor.salceda at gmail.com>
++    DefaultComponentModel:
++	Marked as abstract class.
+
+
+
+From nestor at berlios.de  Mon Sep 26 19:08:57 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Mon, 26 Sep 2005 19:08:57 +0200
+Subject: [Mspace-checkins] r513 - ComponentModel/trunk/src
+Message-ID: <200509261708.j8QH8vZs028839@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-26 19:08:55 +0200 (Mon, 26 Sep 2005)
+New Revision: 513
+
+Modified:
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+Abstract Class.
+
+
+Modified: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-09-19 23:52:26 UTC (rev 512)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-09-26 17:08:55 UTC (rev 513)
+@@ -33,7 +33,7 @@
+     // TODO: En los getMethodXXX --> se deber?a realizar tambi?n una b?squeda
+     // con par?metros para poder permitir la sobrecarga de m?todos.  Y para las
+     // respuestas nos tapar?a un error muy majo :)
+-    public class DefaultComponentModel : IComponentModel {
++    public abstract class DefaultComponentModel : IComponentModel {
+         //Logging
+         private Logger logger = LogManager.GetLogger ("ComponentModel.DefaultComponentModel");
+         //Value object with information associated to component
+@@ -67,7 +67,7 @@
+ 
+             //Precondition: exceptionManagerClassName != null &&
+             //exceptionManagerClassName != String.Empty
+-            if ((exceptionManagerClassName == null) | (exceptionManagerClassName.Equals (String.Empty))) {
++            if ((exceptionManagerClassName == null) || (exceptionManagerClassName.Equals (String.Empty))) {
+                 throw new ExceptionManagerNotFoundException ("Null exception managerClassName.");
+             }
+             try {
+
+
+
+From nestor at berlios.de  Tue Sep 27 01:18:02 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Tue, 27 Sep 2005 01:18:02 +0200
+Subject: [Mspace-checkins] r514 - in ComponentModel/trunk/src: . ComponentModel ComponentModel/Container
+Message-ID: <200509262318.j8QNI2YE019505@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-27 01:17:56 +0200 (Tue, 27 Sep 2005)
+New Revision: 514
+
+Added:
+   ComponentModel/trunk/src/ComponentModel/
+   ComponentModel/trunk/src/ComponentModel/AssemblyInfo.cs
+   ComponentModel/trunk/src/ComponentModel/ComponentAttribute.cs
+   ComponentModel/trunk/src/ComponentModel/ComponentMethodAttribute.cs
+   ComponentModel/trunk/src/ComponentModel/Container/
+   ComponentModel/trunk/src/ComponentModel/Container/Dao/
+   ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs
+   ComponentModel/trunk/src/ComponentModel/ExceptionManager/
+   ComponentModel/trunk/src/ComponentModel/Exceptions/
+   ComponentModel/trunk/src/ComponentModel/Factory/
+   ComponentModel/trunk/src/ComponentModel/Interfaces/
+   ComponentModel/trunk/src/ComponentModel/Threading/
+   ComponentModel/trunk/src/ComponentModel/VO/
+Removed:
+   ComponentModel/trunk/src/AssemblyInfo.cs
+   ComponentModel/trunk/src/ComponentAttribute.cs
+   ComponentModel/trunk/src/ComponentMethodAttribute.cs
+   ComponentModel/trunk/src/ComponentModel.Container.Dao/
+   ComponentModel/trunk/src/ComponentModel.Container/
+   ComponentModel/trunk/src/ComponentModel.ExceptionManager/
+   ComponentModel/trunk/src/ComponentModel.Exceptions/
+   ComponentModel/trunk/src/ComponentModel.Factory/
+   ComponentModel/trunk/src/ComponentModel.Interfaces/
+   ComponentModel/trunk/src/ComponentModel.Resources/
+   ComponentModel/trunk/src/ComponentModel.Threading/
+   ComponentModel/trunk/src/ComponentModel.VO/
+   ComponentModel/trunk/src/DefaultComponentModel.cs
+Log:
+A?\195?\177adida la b?\195?\186squeda por sobrecarga de ejecuci?\195?\179n de casos de uso.
+
+Redise?\195?\177o del directorio src para poder albergar otros m?\195?\179dulos, como bien por
+ejemplo tests de Unidad.
+
+
+
+Deleted: ComponentModel/trunk/src/AssemblyInfo.cs
+===================================================================
+--- ComponentModel/trunk/src/AssemblyInfo.cs	2005-09-26 17:08:55 UTC (rev 513)
++++ ComponentModel/trunk/src/AssemblyInfo.cs	2005-09-26 23:17:56 UTC (rev 514)
+@@ -1,12 +0,0 @@
+-using System.Reflection;
+-using System.Runtime.CompilerServices;
+-
+-[assembly: AssemblyTitle("MSpace ComponentModel")]
+-[assembly: AssemblyDescription("A little component model and framework to write .NET components.")]
+-[assembly: AssemblyConfiguration("")]
+-[assembly: AssemblyCompany("MSpace")]
+-[assembly: AssemblyProduct("ComponentModel")]
+-[assembly: AssemblyCopyright("2005 (C) N?stor Salceda Alonso")]
+-[assembly: AssemblyTrademark("")]
+-[assembly: AssemblyCulture("")]
+-[assembly: AssemblyVersion("0.2.*")]
+
+Deleted: ComponentModel/trunk/src/ComponentAttribute.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentAttribute.cs	2005-09-26 17:08:55 UTC (rev 513)
++++ ComponentModel/trunk/src/ComponentAttribute.cs	2005-09-26 23:17:56 UTC (rev 514)
+@@ -1,66 +0,0 @@
+-/*
+-Babuine Component Model & Babuine Framework
+-Copyright (C) 2005  N?stor Salceda Alonso
+-
+-This library is free software; you can redistribute it and/or
+-modify it under the terms of the GNU Lesser General Public
+-License as published by the Free Software Foundation; either
+-version 2.1 of the License, or (at your option) any later version.
+-
+-This library is distributed in the hope that it will be useful,
+-but WITHOUT ANY WARRANTY; without even the implied warranty of
+-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+-Lesser General Public License for more details.
+-
+-You should have received a copy of the GNU Lesser General Public
+-License along with this library; if not, write to the Free Software
+-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+-*/
+-
+-using System;
+-
+-namespace ComponentModel {
+-    
+-    [AttributeUsage (AttributeTargets.Class,  AllowMultiple = false, Inherited = false)]
+-    public class ComponentAttribute : Attribute {
+-        //Campos
+-        private string componentName;
+-        private string exceptionManager;
+-        
+-        //Propiedades p?blicos.
+-        public string ExceptionManager {
+-            get {return exceptionManager;}
+-        }
+-        
+-        public string ComponentName {
+-            get {return componentName;}
+-        }
+-        
+-        //M?todos privados.
+-        private void SetExceptionManager (string exceptionManager) {
+-            if (exceptionManager == null)
+-                throw new Exception ("Null value not allowed.");
+-            if (exceptionManager.Equals (String.Empty))
+-                throw new Exception ("String empty not allowed.");
+-            this.exceptionManager = exceptionManager;
+-        }
+-        
+-        private void SetComponentName (string componentName) {
+-            if (componentName == null) 
+-                throw new Exception ("Null value not allowed.");
+-            if (componentName.Equals (String.Empty))
+-                throw new Exception ("String empty not allowed.");
+-            this.componentName = componentName;
+-        }
+-        
+-        /**
+-         * Generalmente los par?metros requeridos se deben pasar en el
+-         * constructor, para forzar as? en tiempo de compilaci?n el checkeo de
+-         * que el n?mero es correcto.
+-         */
+-        public ComponentAttribute (string componentName, string exceptionManager) : base () {
+-            this.SetComponentName (componentName);
+-            this.SetExceptionManager (exceptionManager);
+-        }
+-    }
+-}
+
+Deleted: ComponentModel/trunk/src/ComponentMethodAttribute.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentMethodAttribute.cs	2005-09-26 17:08:55 UTC (rev 513)
++++ ComponentModel/trunk/src/ComponentMethodAttribute.cs	2005-09-26 23:17:56 UTC (rev 514)
+@@ -1,66 +0,0 @@
+-/*
+-Babuine Component Model & Babuine Framework
+-Copyright (C) 2005  N?stor Salceda Alonso
+-
+-This library is free software; you can redistribute it and/or
+-modify it under the terms of the GNU Lesser General Public
+-License as published by the Free Software Foundation; either
+-version 2.1 of the License, or (at your option) any later version.
+-
+-This library is distributed in the hope that it will be useful,
+-but WITHOUT ANY WARRANTY; without even the implied warranty of
+-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+-Lesser General Public License for more details.
+-
+-You should have received a copy of the GNU Lesser General Public
+-License along with this library; if not, write to the Free Software
+-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+-*/
+-
+-using System;
+-
+-namespace ComponentModel {
+-
+-    [AttributeUsage (AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+-    public class ComponentMethodAttribute : Attribute {
+-        //Campos
+-        private string responseName;
+-        private string viewName;
+-
+-        //Propiedades p?blicas.
+-        public string ViewName {
+-            get {return viewName;}
+-        }
+-        
+-        public string ResponseName {
+-            get {return responseName;}
+-        }
+-
+-        //M?todos privados.
+-        private void SetViewName (string viewName) {
+-            if (viewName == null)
+-                throw new Exception ("Null value not allowed.");
+-            if (viewName.Equals (String.Empty))
+-                throw new Exception ("String empty not allowed.");
+-            this.viewName = viewName;
+-        }
+-        
+-        private void SetResponseName (string responseName) {
+-            if (responseName == null)
+-                throw new Exception ("Null value not allowed.");
+-            if (responseName.Equals (String.Empty))
+-                throw new Exception ("String empty not allowed.");
+-            this.responseName = responseName;
+-        }
+-
+-        /**
+-         * Generalmente los par?metros requeridos se le pasan en orden al
+-         * constructor.  Los opcionales se le pasar?n como propiedades.
+-         */
+-        public ComponentMethodAttribute (string viewName, string responseName) : base () {
+-            this.SetViewName (viewName);
+-            this.SetResponseName (responseName);
+-        }
+-        
+-    }
+-}
+
+Copied: ComponentModel/trunk/src/ComponentModel/AssemblyInfo.cs (from rev 511, ComponentModel/trunk/src/AssemblyInfo.cs)
+
+Copied: ComponentModel/trunk/src/ComponentModel/ComponentAttribute.cs (from rev 511, ComponentModel/trunk/src/ComponentAttribute.cs)
+
+Copied: ComponentModel/trunk/src/ComponentModel/ComponentMethodAttribute.cs (from rev 511, ComponentModel/trunk/src/ComponentMethodAttribute.cs)
+
+Copied: ComponentModel/trunk/src/ComponentModel/Container (from rev 511, ComponentModel/trunk/src/ComponentModel.Container)
+
+Copied: ComponentModel/trunk/src/ComponentModel/Container/Dao (from rev 511, ComponentModel/trunk/src/ComponentModel.Container.Dao)
+
+Copied: ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs (from rev 513, ComponentModel/trunk/src/DefaultComponentModel.cs)
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-09-26 17:08:55 UTC (rev 513)
++++ ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs	2005-09-26 23:17:56 UTC (rev 514)
+@@ -0,0 +1,341 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
++using System;
++using System.Reflection;
++using ComponentModel.Interfaces;
++using ComponentModel.VO;
++using ComponentModel.Container;
++using ComponentModel.Container.Dao;
++using ComponentModel.Factory;
++using ComponentModel.ExceptionManager;
++using ComponentModel.Threading;
++using ComponentModel.Exceptions;
++using NLog;
++
++namespace ComponentModel {
++    // TODO: En los getMethodXXX --> se deber?a realizar tambi?n una b?squeda
++    // con par?metros para poder permitir la sobrecarga de m?todos.  Y para las
++    // respuestas nos tapar?a un error muy majo :)
++    public abstract class DefaultComponentModel : IComponentModel {
++        //Logging
++        private Logger logger = LogManager.GetLogger ("ComponentModel.DefaultComponentModel");
++        //Value object with information associated to component
++        private ComponentModelVO vO;
++        //Exception manager to process exceptions.
++        private IExceptionManager defaultExceptionManager;
++
++        private VirtualMethod virtualMethod;
++
++        public VirtualMethod VirtualMethod {
++            get {return virtualMethod;}
++            set {virtualMethod = value;}
++        }
++        
++        public IExceptionManager DefaultExceptionManager {
++            get {return defaultExceptionManager;}
++            set {defaultExceptionManager = value;}
++        }
++ 
++        //Properties}
++        public ComponentModelVO VO {
++            get {return vO;}
++        }
++        
++        //Ctor
++        protected DefaultComponentModel () {
++            logger.Debug ("Executing ctor for: " + this.GetType ().FullName);
++        }
++      
++        private Type GetTypeExceptionManager (string exceptionManagerClassName) {
++
++            //Precondition: exceptionManagerClassName != null &&
++            //exceptionManagerClassName != String.Empty
++            if ((exceptionManagerClassName == null) || (exceptionManagerClassName.Equals (String.Empty))) {
++                throw new ExceptionManagerNotFoundException ("Null exception managerClassName.");
++            }
++            try {
++                Type type = DefaultContainerDao.Instance.GetType (exceptionManagerClassName);
++                if (type.IsSubclassOf (typeof (DefaultExceptionManager)) || (type.GetInterface ("IExceptionManager") != null)) 
++                    return type;
++            }
++            catch (TypeNotFoundException ex) {
++            //PostCondition: return != null
++            //Si llega aqu?, no ha encontrado el tipo del exceptionManager.
++                throw new ExceptionManagerNotFoundException ("Exception Manager Can't be found in Component.");
++            }
++            return null;
++        }
++
++        // Implementaci?n de referencia para obtener la sobrecarga.  No es
++        // llamada, dado que a?n no ha sido testeado su funcionamiento.
++        private MethodInfo GetMethodToExecute (string methodName, object[] parameters, Type componentType) {
++            //Precondition: methodName != null && methodName != String.Empty &&
++            //componentType != null
++            logger.Debug ("Entering GetMethodToExecute.  Searching " + methodName + "in: " + componentType.ToString ());
++            Type[] typeParam = Type.EmptyTypes;
++            if (parameters != null) {
++                typeParam = new Type[parameters.Length];
++                for (int i = 0; i < typeParam.Length; i++) {
++                    typeParam[i] = parameters[i].GetType ();
++                }
++            }
++            //Busca solamente los publicos.  Cambiar el Binder puede ser un lio
++            //grande, ojo con esto.
++            MethodInfo methodInfo = componentType.GetMethod (methodName, typeParam);
++            //?encontrado?
++            if (methodInfo == null) {
++                throw new MethodNotFoundException ("Method to execute: " + methodName + " not found.");
++            }
++            else {
++                logger.Debug ("Finded method to execute: " + methodInfo.ToString ());
++            }
++            //Post: methodInfo != null
++            return methodInfo;
++        }
++        
++        /*
++         * Deprecated !
++         *
++         * Este m?todo no soporta la b?squeda mediante la sobrecarga de m?todos.
++         * 
++         */ 
++        private MethodInfo GetMethodToExecute (string methodName, Type componentType) {
++            //Precondition: methodName != null && methodName != String.Empty &&
++            //componentType != null
++            logger.Debug ("Entering GetMethodToExecute. Searching: " + methodName + " in: " + componentType.ToString ());
++            MethodInfo methodInfo = componentType.GetMethod (methodName, BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public);
++            //Checkeamos que lo haya encontrado
++            if (methodInfo == null) {
++                throw new MethodNotFoundException ("Method to execute: " + methodName + " not found.");
++            }
++            else {
++                logger.Debug ("Finded method to execute: " + methodInfo.ToString ());
++            }
++            //PostCondition: methodInfo != null
++            return methodInfo;
++        }
++
++        private MethodInfo GetMethodToExecute (string methodName, object[] parameters) {
++            return this.GetMethodToExecute (methodName, parameters, this.GetType ());
++        }
++        
++        private MethodInfo GetMethodToResponse (Type viewType, ComponentMethodAttribute componentMethodAttribute) {
++            if (componentMethodAttribute == null) {
++                throw new ResponseNotFoundException ("Please set up correctly Response Attribute.");    
++            }
++            MethodInfo responseMethod = viewType.GetMethod (componentMethodAttribute.ResponseName, BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public) ;
++            if (responseMethod == null) 
++                throw new ResponseNotFoundException ("Response: " + componentMethodAttribute.ResponseName + " not found in: " + viewType.ToString ());
++            else 
++                logger.Debug ("Finded response to execute: " + responseMethod.ToString () + " in: " + viewType.ToString ());
++            return responseMethod;
++        } 
++        
++        private void MapException (Exception exception) {
++            if (exception.InnerException is ComponentModelException) 
++                throw exception.InnerException;
++            else {
++                if (this.defaultExceptionManager == null) {
++                    Type typeManager = this.GetTypeExceptionManager (this.VO.ExceptionManagerClassName);
++                    this.defaultExceptionManager = (IExceptionManager) typeManager.GetConstructor (null).Invoke (null);
++                }
++                this.defaultExceptionManager.ProcessException (exception.InnerException);
++            }
++        }
++        
++        private Type GetViewType (string viewType) {
++            if ((viewType == null) || (viewType.Equals (String.Empty)))
++                throw new ViewNotFoundException ("Please, set up attributes correctly.");
++            try {
++                Type type = DefaultContainerDao.Instance.GetType (viewType);
++                if (type.GetInterface ("IViewHandler") != null)
++                    return type;
++            }
++            catch (TypeNotFoundException exception) {
++                throw new ViewNotFoundException ("View" + viewType + "not found.");
++            }
++            return null;
++        }
++        
++        private Type GetViewType (ComponentMethodAttribute componentMethodAttribute) {
++            if (componentMethodAttribute == null)
++                throw new ViewNotFoundException ("Please set up attributes correctly.");
++            return this.GetViewType (componentMethodAttribute.ViewName);
++        }
++    
++        private ComponentMethodAttribute GetComponentAttributes (MethodInfo methodInfo) {
++            //Pre: MethodInfo != null
++            if (methodInfo == null)
++                //TODO: ?Es buena la excepci?n?
++                throw new MethodNotFoundException ("Please set up attributes correctly.");
++            Attribute[] atts = (Attribute[]) methodInfo.GetCustomAttributes (typeof (ComponentMethodAttribute), true);
++            //Post: atts != null
++            if (atts[0] == null)
++                throw new MethodNotFoundException ("Can't find ComponentMethodAttribute.");
++            return ((ComponentMethodAttribute)atts[0]);
++        }
++
++
++        private ResponseMethodVO ExecuteRedirectNewView (MethodInfo methodToExecute, object[] parameters, Type viewType, MethodInfo methodToResponse) {
++            ResponseMethodVO responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO (); 
++            try {
++                object ret = methodToExecute.Invoke (this, parameters);
++                responseMethodVO.MethodResult = ret;
++                object obj = viewType.GetConstructor (null).Invoke (null);
++                responseMethodVO.SetExecutionSuccess (true);
++                if (VirtualMethod != null) {
++                    VirtualMethod (responseMethodVO);
++                    VirtualMethod = null;
++                }
++                methodToResponse.Invoke (obj, new object[] {responseMethodVO});
++                return responseMethodVO;
++            }
++            catch (TargetInvocationException exception) {
++                this.MapException (exception);
++            }
++            return responseMethodVO;
++        }
++
++        private ResponseMethodVO ExecuteRedirectView (MethodInfo methodToExecute, object[] parameters, IViewHandler viewHandler, MethodInfo methodToResponse) {
++            ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
++            try {
++                object ret = methodToExecute.Invoke (this, parameters);
++                responseMethodVO.MethodResult = ret;
++                responseMethodVO.SetExecutionSuccess (true);
++                if (VirtualMethod != null) {
++                    VirtualMethod (responseMethodVO);
++                    VirtualMethod = null;
++                }
++                methodToResponse.Invoke (viewHandler, new object[] {responseMethodVO});
++            }
++            catch (TargetInvocationException exception) {
++                this.MapException (exception);
++            }
++            return responseMethodVO;
++        }
++        
++        private ResponseMethodVO ExecuteNoRedirect (MethodInfo methodToExecute, object[] parameters) {
++            ResponseMethodVO responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
++            try {
++                object ret = methodToExecute.Invoke (this, parameters);
++                responseMethodVO.MethodResult = ret;
++                responseMethodVO.SetExecutionSuccess (true);
++                if (VirtualMethod != null) {
++                    VirtualMethod (responseMethodVO);
++                    VirtualMethod = null;
++                }
++            }
++            catch (TargetInvocationException exception) {
++                this.MapException (exception);
++            }
++            return responseMethodVO;
++        }
++        
++        /*Executor overloads*/
++        public ResponseMethodVO Execute (string methodName, object[] parameters) {
++            return this.Execute (methodName, parameters, true, null, true);
++        }
++        
++        public ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect) {
++            return this.Execute (methodName, parameters, redirect, null, true);
++        }
++        
++        public ResponseMethodVO Execute (string methodName, object[] parameters, IViewHandler viewHandler) {
++            return this.Execute (methodName, parameters, true, viewHandler, true);
++        }       
++        
++        /*Executor commander !*/
++        public ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block) {
++            /*Existen cosas que siempre deben de buscarse*/
++            MethodInfo methodToExecute = this.GetMethodToExecute (methodName, parameters); 
++            ComponentMethodAttribute componentMethodAttribute = this.GetComponentAttributes (methodToExecute);
++            /*Primero discernimos si es bloqueante o no lo es*/
++            if (block) {
++                //Operaciones que son bloqueantes
++                if (redirect) {
++                    MethodInfo methodToResponse ;
++                    Type viewType;
++                    if (viewHandler == null) {
++                        //FIX: A?n se podria mejorar esta invocaci?n.
++                        viewType = this.GetViewType (componentMethodAttribute);
++                        methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
++                        return ExecuteRedirectNewView (methodToExecute, parameters, viewType, methodToResponse);
++                    }
++                    else {
++                        //Redirigimos a la que nos pide
++                        viewType = viewHandler.GetType ();
++                        methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
++                        return ExecuteRedirectView (methodToExecute, parameters, viewHandler, methodToResponse);
++                    }
++                }
++                else {
++                    //No necesitamos informaci?n sobre la vista, ni el response.
++                    //No se va a ejecutar.
++                    return ExecuteNoRedirect (methodToExecute, parameters);
++                }
++            }
++            else {
++                ComponentActionDispatcher componentActionDispatcher;
++                //Operaciones bloqueantes, envolver en un hilo
++                if (redirect) {
++                    MethodInfo methodToResponse;
++                    Type viewType;
++                    if (viewHandler == null) {
++                        //Exception handling ??
++                        viewType = this.GetViewType (componentMethodAttribute);
++                        methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
++                        componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters, viewType, methodToResponse);
++                        try {
++                            componentActionDispatcher.Do ();
++                        }
++                        catch (TargetInvocationException exception) {
++                            this.MapException (exception);
++                        }
++                        return componentActionDispatcher.ResponseMethodVO;
++                    }
++                    else {
++                        viewType = viewHandler.GetType ();
++                        methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
++                        componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters, viewHandler, methodToResponse);
++                        try {
++                            componentActionDispatcher.Do ();
++                        }
++                        catch (TargetInvocationException exception) {
++                            this.MapException (exception);
++                        }
++                        return componentActionDispatcher.ResponseMethodVO;
++                    }
++                }
++                else {
++                    componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters); 
++                    try {
++                        componentActionDispatcher.Do ();
++                    }
++                    catch (TargetInvocationException exception) {
++                        this.MapException (exception);
++                    }
++                    return componentActionDispatcher.ResponseMethodVO;
++                }
++            }
++            //return null;
++        }
++
++    }
++}
+
+Copied: ComponentModel/trunk/src/ComponentModel/ExceptionManager (from rev 511, ComponentModel/trunk/src/ComponentModel.ExceptionManager)
+
+Copied: ComponentModel/trunk/src/ComponentModel/Exceptions (from rev 511, ComponentModel/trunk/src/ComponentModel.Exceptions)
+
+Copied: ComponentModel/trunk/src/ComponentModel/Factory (from rev 511, ComponentModel/trunk/src/ComponentModel.Factory)
+
+Copied: ComponentModel/trunk/src/ComponentModel/Interfaces (from rev 511, ComponentModel/trunk/src/ComponentModel.Interfaces)
+
+Copied: ComponentModel/trunk/src/ComponentModel/Threading (from rev 511, ComponentModel/trunk/src/ComponentModel.Threading)
+
+Copied: ComponentModel/trunk/src/ComponentModel/VO (from rev 511, ComponentModel/trunk/src/ComponentModel.VO)
+
+Deleted: ComponentModel/trunk/src/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/DefaultComponentModel.cs	2005-09-26 17:08:55 UTC (rev 513)
++++ ComponentModel/trunk/src/DefaultComponentModel.cs	2005-09-26 23:17:56 UTC (rev 514)
+@@ -1,332 +0,0 @@
+-/*
+-Babuine Component Model & Babuine Framework
+-Copyright (C) 2005  N?stor Salceda Alonso
+-
+-This library is free software; you can redistribute it and/or
+-modify it under the terms of the GNU Lesser General Public
+-License as published by the Free Software Foundation; either
+-version 2.1 of the License, or (at your option) any later version.
+-
+-This library is distributed in the hope that it will be useful,
+-but WITHOUT ANY WARRANTY; without even the implied warranty of
+-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+-Lesser General Public License for more details.
+-
+-You should have received a copy of the GNU Lesser General Public
+-License along with this library; if not, write to the Free Software
+-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+-*/
+-
+-using System;
+-using System.Reflection;
+-using ComponentModel.Interfaces;
+-using ComponentModel.VO;
+-using ComponentModel.Container;
+-using ComponentModel.Container.Dao;
+-using ComponentModel.Factory;
+-using ComponentModel.ExceptionManager;
+-using ComponentModel.Threading;
+-using ComponentModel.Exceptions;
+-using NLog;
+-
+-namespace ComponentModel {
+-    // TODO: En los getMethodXXX --> se deber?a realizar tambi?n una b?squeda
+-    // con par?metros para poder permitir la sobrecarga de m?todos.  Y para las
+-    // respuestas nos tapar?a un error muy majo :)
+-    public abstract class DefaultComponentModel : IComponentModel {
+-        //Logging
+-        private Logger logger = LogManager.GetLogger ("ComponentModel.DefaultComponentModel");
+-        //Value object with information associated to component
+-        private ComponentModelVO vO;
+-        //Exception manager to process exceptions.
+-        private IExceptionManager defaultExceptionManager;
+-
+-        private VirtualMethod virtualMethod;
+-
+-        public VirtualMethod VirtualMethod {
+-            get {return virtualMethod;}
+-            set {virtualMethod = value;}
+-        }
+-        
+-        public IExceptionManager DefaultExceptionManager {
+-            get {return defaultExceptionManager;}
+-            set {defaultExceptionManager = value;}
+-        }
+- 
+-        //Properties
+-        public ComponentModelVO VO {
+-            get {return vO;}
+-        }
+-        
+-        //Ctor
+-        protected DefaultComponentModel () {
+-            logger.Debug ("Executing ctor for: " + this.GetType ().FullName);
+-        }
+-      
+-        private Type GetTypeExceptionManager (string exceptionManagerClassName) {
+-
+-            //Precondition: exceptionManagerClassName != null &&
+-            //exceptionManagerClassName != String.Empty
+-            if ((exceptionManagerClassName == null) || (exceptionManagerClassName.Equals (String.Empty))) {
+-                throw new ExceptionManagerNotFoundException ("Null exception managerClassName.");
+-            }
+-            try {
+-                Type type = DefaultContainerDao.Instance.GetType (exceptionManagerClassName);
+-                if (type.IsSubclassOf (typeof (DefaultExceptionManager)) || (type.GetInterface ("IExceptionManager") != null)) 
+-                    return type;
+-            }
+-            catch (TypeNotFoundException ex) {
+-            //PostCondition: return != null
+-            //Si llega aqu?, no ha encontrado el tipo del exceptionManager.
+-                throw new ExceptionManagerNotFoundException ("Exception Manager Can't be found in Component.");
+-            }
+-            return null;
+-        }
+-
+-        // Implementaci?n de referencia para obtener la sobrecarga.  No es
+-        // llamada, dado que a?n no ha sido testeado su funcionamiento.
+-        private MethodInfo GetMethodToExecute (string methodName, object[] parameters, Type componentType) {
+-            //Precondition: methodName != null && methodName != String.Empty &&
+-            //componentType != null
+-            logger.Debug ("Entering GetMethodToExecute.  Searching " + methodName + "in: " + componentType.ToString ());
+-            Type[] typeParam = new Type[parameters.Length];
+-            for (int i = 0; i < typeParam.Length; i++) {
+-                typeParam[i] = parameters[i].GetType ();
+-            }
+-            //Busca solamente los publicos.  Cambiar el Binder puede ser un lio
+-            //grande, ojo con esto.
+-            MethodInfo methodInfo = componentType.GetMethod (methodName, typeParam);
+-            //?encontrado?
+-            if (methodInfo == null) {
+-                throw new MethodNotFoundException ("Method to execute: " + methodName + " not found.");
+-            }
+-            else {
+-                logger.Debug ("Finded method to execute: " + methodInfo.ToString ());
+-            }
+-            //Post: methodInfo != null
+-            return methodInfo;
+-        }
+-        
+-        private MethodInfo GetMethodToExecute (string methodName, Type componentType) {
+-            //Precondition: methodName != null && methodName != String.Empty &&
+-            //componentType != null
+-            logger.Debug ("Entering GetMethodToExecute. Searching: " + methodName + " in: " + componentType.ToString ());
+-            MethodInfo methodInfo = componentType.GetMethod (methodName, BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public);
+-            //Checkeamos que lo haya encontrado
+-            if (methodInfo == null) {
+-                throw new MethodNotFoundException ("Method to execute: " + methodName + " not found.");
+-            }
+-            else {
+-                logger.Debug ("Finded method to execute: " + methodInfo.ToString ());
+-            }
+-            //PostCondition: methodInfo != null
+-            return methodInfo;
+-        }
+-
+-        private MethodInfo GetMethodToExecute (string methodName) {
+-            return this.GetMethodToExecute (methodName, this.GetType ());
+-        }
+-        
+-        private MethodInfo GetMethodToResponse (Type viewType, ComponentMethodAttribute componentMethodAttribute) {
+-            if (componentMethodAttribute == null) {
+-                throw new ResponseNotFoundException ("Please set up correctly Response Attribute.");    
+-            }
+-            MethodInfo responseMethod = viewType.GetMethod (componentMethodAttribute.ResponseName, BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public) ;
+-            if (responseMethod == null) 
+-                throw new ResponseNotFoundException ("Response: " + componentMethodAttribute.ResponseName + " not found in: " + viewType.ToString ());
+-            else 
+-                logger.Debug ("Finded response to execute: " + responseMethod.ToString () + " in: " + viewType.ToString ());
+-            return responseMethod;
+-        } 
+-        
+-        private void MapException (Exception exception) {
+-            if (exception.InnerException is ComponentModelException) 
+-                throw exception.InnerException;
+-            else {
+-                if (this.defaultExceptionManager == null) {
+-                    Type typeManager = this.GetTypeExceptionManager (this.VO.ExceptionManagerClassName);
+-                    this.defaultExceptionManager = (IExceptionManager) typeManager.GetConstructor (null).Invoke (null);
+-                }
+-                this.defaultExceptionManager.ProcessException (exception.InnerException);
+-            }
+-        }
+-        
+-        private Type GetViewType (string viewType) {
+-            if ((viewType == null) || (viewType.Equals (String.Empty)))
+-                throw new ViewNotFoundException ("Please, set up attributes correctly.");
+-            try {
+-                Type type = DefaultContainerDao.Instance.GetType (viewType);
+-                if (type.GetInterface ("IViewHandler") != null)
+-                    return type;
+-            }
+-            catch (TypeNotFoundException exception) {
+-                throw new ViewNotFoundException ("View" + viewType + "not found.");
+-            }
+-            return null;
+-        }
+-        
+-        private Type GetViewType (ComponentMethodAttribute componentMethodAttribute) {
+-            if (componentMethodAttribute == null)
+-                throw new ViewNotFoundException ("Please set up attributes correctly.");
+-            return this.GetViewType (componentMethodAttribute.ViewName);
+-        }
+-    
+-        private ComponentMethodAttribute GetComponentAttributes (MethodInfo methodInfo) {
+-            //Pre: MethodInfo != null
+-            if (methodInfo == null)
+-                //TODO: ?Es buena la excepci?n?
+-                throw new MethodNotFoundException ("Please set up attributes correctly.");
+-            Attribute[] atts = (Attribute[]) methodInfo.GetCustomAttributes (typeof (ComponentMethodAttribute), true);
+-            //Post: atts != null
+-            if (atts[0] == null)
+-                throw new MethodNotFoundException ("Can't find ComponentMethodAttribute.");
+-            return ((ComponentMethodAttribute)atts[0]);
+-        }
+-
+-
+-        private ResponseMethodVO ExecuteRedirectNewView (MethodInfo methodToExecute, object[] parameters, Type viewType, MethodInfo methodToResponse) {
+-            ResponseMethodVO responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO (); 
+-            try {
+-                object ret = methodToExecute.Invoke (this, parameters);
+-                responseMethodVO.MethodResult = ret;
+-                object obj = viewType.GetConstructor (null).Invoke (null);
+-                responseMethodVO.SetExecutionSuccess (true);
+-                if (VirtualMethod != null) {
+-                    VirtualMethod (responseMethodVO);
+-                    VirtualMethod = null;
+-                }
+-                methodToResponse.Invoke (obj, new object[] {responseMethodVO});
+-                return responseMethodVO;
+-            }
+-            catch (TargetInvocationException exception) {
+-                this.MapException (exception);
+-            }
+-            return responseMethodVO;
+-        }
+-
+-        private ResponseMethodVO ExecuteRedirectView (MethodInfo methodToExecute, object[] parameters, IViewHandler viewHandler, MethodInfo methodToResponse) {
+-            ResponseMethodVO responseMethodVO =  FactoryVO.Instance.CreateResponseMethodVO ();
+-            try {
+-                object ret = methodToExecute.Invoke (this, parameters);
+-                responseMethodVO.MethodResult = ret;
+-                responseMethodVO.SetExecutionSuccess (true);
+-                if (VirtualMethod != null) {
+-                    VirtualMethod (responseMethodVO);
+-                    VirtualMethod = null;
+-                }
+-                methodToResponse.Invoke (viewHandler, new object[] {responseMethodVO});
+-            }
+-            catch (TargetInvocationException exception) {
+-                this.MapException (exception);
+-            }
+-            return responseMethodVO;
+-        }
+-        
+-        private ResponseMethodVO ExecuteNoRedirect (MethodInfo methodToExecute, object[] parameters) {
+-            ResponseMethodVO responseMethodVO = FactoryVO.Instance.CreateResponseMethodVO ();
+-            try {
+-                object ret = methodToExecute.Invoke (this, parameters);
+-                responseMethodVO.MethodResult = ret;
+-                responseMethodVO.SetExecutionSuccess (true);
+-                if (VirtualMethod != null) {
+-                    VirtualMethod (responseMethodVO);
+-                    VirtualMethod = null;
+-                }
+-            }
+-            catch (TargetInvocationException exception) {
+-                this.MapException (exception);
+-            }
+-            return responseMethodVO;
+-        }
+-        
+-        /*Executor overloads*/
+-        public ResponseMethodVO Execute (string methodName, object[] parameters) {
+-            return this.Execute (methodName, parameters, true, null, true);
+-        }
+-        
+-        public ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect) {
+-            return this.Execute (methodName, parameters, redirect, null, true);
+-        }
+-        
+-        public ResponseMethodVO Execute (string methodName, object[] parameters, IViewHandler viewHandler) {
+-            return this.Execute (methodName, parameters, true, viewHandler, true);
+-        }       
+-        
+-        /*Executor commander !*/
+-        public ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block) {
+-            /*Existen cosas que siempre deben de buscarse*/
+-            MethodInfo methodToExecute = this.GetMethodToExecute (methodName); 
+-            ComponentMethodAttribute componentMethodAttribute = this.GetComponentAttributes (methodToExecute);
+-            /*Primero discernimos si es bloqueante o no lo es*/
+-            if (block) {
+-                //Operaciones que son bloqueantes
+-                if (redirect) {
+-                    MethodInfo methodToResponse ;
+-                    Type viewType;
+-                    if (viewHandler == null) {
+-                        //FIX: A?n se podria mejorar esta invocaci?n.
+-                        viewType = this.GetViewType (componentMethodAttribute);
+-                        methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
+-                        return ExecuteRedirectNewView (methodToExecute, parameters, viewType, methodToResponse);
+-                    }
+-                    else {
+-                        //Redirigimos a la que nos pide
+-                        viewType = viewHandler.GetType ();
+-                        methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
+-                        return ExecuteRedirectView (methodToExecute, parameters, viewHandler, methodToResponse);
+-                    }
+-                }
+-                else {
+-                    //No necesitamos informaci?n sobre la vista, ni el response.
+-                    //No se va a ejecutar.
+-                    return ExecuteNoRedirect (methodToExecute, parameters);
+-                }
+-            }
+-            else {
+-                ComponentActionDispatcher componentActionDispatcher;
+-                //Operaciones bloqueantes, envolver en un hilo
+-                if (redirect) {
+-                    MethodInfo methodToResponse;
+-                    Type viewType;
+-                    if (viewHandler == null) {
+-                        //Exception handling ??
+-                        viewType = this.GetViewType (componentMethodAttribute);
+-                        methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
+-                        componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters, viewType, methodToResponse);
+-                        try {
+-                            componentActionDispatcher.Do ();
+-                        }
+-                        catch (TargetInvocationException exception) {
+-                            this.MapException (exception);
+-                        }
+-                        return componentActionDispatcher.ResponseMethodVO;
+-                    }
+-                    else {
+-                        viewType = viewHandler.GetType ();
+-                        methodToResponse = this.GetMethodToResponse (viewType, componentMethodAttribute);
+-                        componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters, viewHandler, methodToResponse);
+-                        try {
+-                            componentActionDispatcher.Do ();
+-                        }
+-                        catch (TargetInvocationException exception) {
+-                            this.MapException (exception);
+-                        }
+-                        return componentActionDispatcher.ResponseMethodVO;
+-                    }
+-                }
+-                else {
+-                    componentActionDispatcher = new ComponentActionDispatcher (this, methodToExecute, parameters); 
+-                    try {
+-                        componentActionDispatcher.Do ();
+-                    }
+-                    catch (TargetInvocationException exception) {
+-                        this.MapException (exception);
+-                    }
+-                    return componentActionDispatcher.ResponseMethodVO;
+-                }
+-            }
+-            //return null;
+-        }
+-
+-    }
+-}
+
+
+
+From nestor at berlios.de  Tue Sep 27 01:28:14 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Tue, 27 Sep 2005 01:28:14 +0200
+Subject: [Mspace-checkins] r515 - in ComponentModel/trunk: . src
+Message-ID: <200509262328.j8QNSEM4025315@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-27 01:28:04 +0200 (Tue, 27 Sep 2005)
+New Revision: 515
+
+Added:
+   ComponentModel/trunk/src/ComponentModelTest/
+Modified:
+   ComponentModel/trunk/ChangeLog
+   ComponentModel/trunk/ComponentModel.build
+Log:
+
+
+Modified: ComponentModel/trunk/ChangeLog
+===================================================================
+--- ComponentModel/trunk/ChangeLog	2005-09-26 23:17:56 UTC (rev 514)
++++ ComponentModel/trunk/ChangeLog	2005-09-26 23:28:04 UTC (rev 515)
+@@ -1,3 +1,9 @@
++27-09-2005 -- N?stor Salceda <nestor.salceda at gmail.com>
++    DefaultComponentModel:
++	Support for overloaded execution of use case.
++    General Structure:
++	Redesign of src/ tree; now it support that you can compile
++	ComponentModel or do Unit Test.
+ 20-09-2005 -- N?stor Salceda <nestor.salceda at gmail.com>
+     DefaultComponentModel:
+ 	Marked as abstract class.
+
+Modified: ComponentModel/trunk/ComponentModel.build
+===================================================================
+--- ComponentModel/trunk/ComponentModel.build	2005-09-26 23:17:56 UTC (rev 514)
++++ ComponentModel/trunk/ComponentModel.build	2005-09-26 23:28:04 UTC (rev 515)
+@@ -31,6 +31,7 @@
+     <!-- Directory Tree--> 
+     <!-- Localizacion de dependencias -->
+     <property name="src" value="src"/>
++    <property name="src_component" value="${src}/ComponentModel"/>
+     <property name="lib" value="lib"/>
+     <!-- Other mspace components -->
+     <property name="components" value="lib/components"/>
+@@ -58,8 +59,8 @@
+     <!-- Compila el componente y lo guarda en bin -->
+     <target name="build" depends="create-skeleton">
+         <csc target="library" output="${bin}/${component_name}.dll" debug="true"
+-        verbose="false">
+-            <sources basedir="${src}">
++        verbose="true">
++            <sources basedir="${src_component}">
+                 <include name="**/*.cs"/>
+             </sources>
+             <references>
+@@ -71,6 +72,7 @@
+     </target>
+ 
+     <!-- Ejecuta el componente (Lo compila como un exe y luego lo ejecuta) -->
++    <!-- En este caso solo deber? ejecutar los test de unidad-->
+     <target name="run" depends="build">
+         <csc target="exe" output="${bin}/${component_name}.exe" debug="true"
+         verbose="false">
+
+
+
+From nestor at berlios.de  Tue Sep 27 01:31:37 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Tue, 27 Sep 2005 01:31:37 +0200
+Subject: [Mspace-checkins] r516 - ComponentModel/trunk
+Message-ID: <200509262331.j8QNVbXY026224@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-27 01:31:32 +0200 (Tue, 27 Sep 2005)
+New Revision: 516
+
+Removed:
+   ComponentModel/trunk/ComponentTest/
+Log:
+Eliminado esto de aqui.
+
+Hare un componente para realizar los tests como debe hacerse.
+
+
+
+
+
+From nestor at berlios.de  Tue Sep 27 01:36:48 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Tue, 27 Sep 2005 01:36:48 +0200
+Subject: [Mspace-checkins] r517 - ComponentModel/trunk/src/ComponentModel/Interfaces
+Message-ID: <200509262336.j8QNam0d028622@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-27 01:36:45 +0200 (Tue, 27 Sep 2005)
+New Revision: 517
+
+Added:
+   ComponentModel/trunk/src/ComponentModel/Interfaces/IDataTransferObject.cs
+Modified:
+   ComponentModel/trunk/src/ComponentModel/Interfaces/IViewHandler.cs
+Log:
+A?\195?\177adido para la gestion de Vistas para conseguir un GetDataForm, LoadDataForm y
+un ClearForm.
+
+A?\195?\177adido el conflicto de nomenclatura con IDataTransferObject.
+
+
+Added: ComponentModel/trunk/src/ComponentModel/Interfaces/IDataTransferObject.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Interfaces/IDataTransferObject.cs	2005-09-26 23:31:32 UTC (rev 516)
++++ ComponentModel/trunk/src/ComponentModel/Interfaces/IDataTransferObject.cs	2005-09-26 23:36:45 UTC (rev 517)
+@@ -0,0 +1,25 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N?stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
++using System;
++
++namespace ComponentModel.Interfaces {
++    public interface IDataTransferObject {
++    }
++}
+
+Modified: ComponentModel/trunk/src/ComponentModel/Interfaces/IViewHandler.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Interfaces/IViewHandler.cs	2005-09-26 23:31:32 UTC (rev 516)
++++ ComponentModel/trunk/src/ComponentModel/Interfaces/IViewHandler.cs	2005-09-26 23:36:45 UTC (rev 517)
+@@ -21,5 +21,10 @@
+ 
+ namespace ComponentModel.Interfaces {
+     public interface IViewHandler {
++        IDataTransferObject GetDataForm ();
++        LoadDataForm (IDataTransferObject dataTransferObject);
++        void ClearForm ();
++
++        //Probablemente en un futuro proximo, llevara algun tipo de activate.
+     }
+ }
+
+
+
+From nestor at berlios.de  Tue Sep 27 01:41:06 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Tue, 27 Sep 2005 01:41:06 +0200
+Subject: [Mspace-checkins] r518 - ComponentModel/trunk/src
+Message-ID: <200509262341.j8QNf6sg030046@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-27 01:41:03 +0200 (Tue, 27 Sep 2005)
+New Revision: 518
+
+Added:
+   ComponentModel/trunk/src/UnitTest/
+Removed:
+   ComponentModel/trunk/src/ComponentModelTest/
+Log:
+
+
+Copied: ComponentModel/trunk/src/UnitTest (from rev 515, ComponentModel/trunk/src/ComponentModelTest)
+
+
+
+From nestor at berlios.de  Tue Sep 27 01:43:12 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Tue, 27 Sep 2005 01:43:12 +0200
+Subject: [Mspace-checkins] r519 - in ComponentModel/trunk: . src/ComponentModel/Interfaces
+Message-ID: <200509262343.j8QNhCdY030968@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-27 01:42:58 +0200 (Tue, 27 Sep 2005)
+New Revision: 519
+
+Modified:
+   ComponentModel/trunk/ComponentModel.build
+   ComponentModel/trunk/src/ComponentModel/Interfaces/IViewHandler.cs
+Log:
+Fix compile problem.
+
+
+
+Modified: ComponentModel/trunk/ComponentModel.build
+===================================================================
+--- ComponentModel/trunk/ComponentModel.build	2005-09-26 23:41:03 UTC (rev 518)
++++ ComponentModel/trunk/ComponentModel.build	2005-09-26 23:42:58 UTC (rev 519)
+@@ -59,7 +59,7 @@
+     <!-- Compila el componente y lo guarda en bin -->
+     <target name="build" depends="create-skeleton">
+         <csc target="library" output="${bin}/${component_name}.dll" debug="true"
+-        verbose="true">
++        verbose="false">
+             <sources basedir="${src_component}">
+                 <include name="**/*.cs"/>
+             </sources>
+
+Modified: ComponentModel/trunk/src/ComponentModel/Interfaces/IViewHandler.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Interfaces/IViewHandler.cs	2005-09-26 23:41:03 UTC (rev 518)
++++ ComponentModel/trunk/src/ComponentModel/Interfaces/IViewHandler.cs	2005-09-26 23:42:58 UTC (rev 519)
+@@ -22,9 +22,8 @@
+ namespace ComponentModel.Interfaces {
+     public interface IViewHandler {
+         IDataTransferObject GetDataForm ();
+-        LoadDataForm (IDataTransferObject dataTransferObject);
++        void LoadDataForm (IDataTransferObject dataTransferObject);
+         void ClearForm ();
+-
+         //Probablemente en un futuro proximo, llevara algun tipo de activate.
+     }
+ }
+
+
+
+From nestor at berlios.de  Tue Sep 27 01:46:55 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Tue, 27 Sep 2005 01:46:55 +0200
+Subject: [Mspace-checkins] r520 - ComponentModel/trunk
+Message-ID: <200509262346.j8QNkthD031755@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-27 01:46:14 +0200 (Tue, 27 Sep 2005)
+New Revision: 520
+
+Modified:
+   ComponentModel/trunk/COPYING
+Log:
+Asuntos legales.
+
+
+
+Modified: ComponentModel/trunk/COPYING
+===================================================================
+--- ComponentModel/trunk/COPYING	2005-09-26 23:42:58 UTC (rev 519)
++++ ComponentModel/trunk/COPYING	2005-09-26 23:46:14 UTC (rev 520)
+@@ -470,8 +470,8 @@
+ convey the exclusion of warranty; and each file should have at least the
+ "copyright" line and a pointer to where the full notice is found.
+ 
+-    <one line to give the library's name and a brief idea of what it does.>
+-    Copyright (C) <year>  <name of author>
++    Babuine Component Model & Babuine Framework
++    Copyright (C) 2005  N?stor Salceda
+ 
+     This library is free software; you can redistribute it and/or
+     modify it under the terms of the GNU Lesser General Public
+
+
+
+From nestor at berlios.de  Tue Sep 27 01:52:33 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Tue, 27 Sep 2005 01:52:33 +0200
+Subject: [Mspace-checkins] r521 - ComponentModel/trunk
+Message-ID: <200509262352.j8QNqXoL000634@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-27 01:51:53 +0200 (Tue, 27 Sep 2005)
+New Revision: 521
+
+Modified:
+   ComponentModel/trunk/ComponentModel.build
+Log:
+A?\195?\177adido para la ejecuci?\195?\179n autom?\195?\161tica de los tests de unidad.
+
+
+
+Modified: ComponentModel/trunk/ComponentModel.build
+===================================================================
+--- ComponentModel/trunk/ComponentModel.build	2005-09-26 23:46:14 UTC (rev 520)
++++ ComponentModel/trunk/ComponentModel.build	2005-09-26 23:51:53 UTC (rev 521)
+@@ -32,6 +32,7 @@
+     <!-- Localizacion de dependencias -->
+     <property name="src" value="src"/>
+     <property name="src_component" value="${src}/ComponentModel"/>
++    <property name="src_unit_test" value="${src}/UnitTest"/>
+     <property name="lib" value="lib"/>
+     <!-- Other mspace components -->
+     <property name="components" value="lib/components"/>
+@@ -74,9 +75,9 @@
+     <!-- Ejecuta el componente (Lo compila como un exe y luego lo ejecuta) -->
+     <!-- En este caso solo deber? ejecutar los test de unidad-->
+     <target name="run" depends="build">
+-        <csc target="exe" output="${bin}/${component_name}.exe" debug="true"
++        <csc target="exe" output="${bin}/${component_name}UnitTest.exe" debug="true"
+         verbose="false">
+-            <sources basedir="${src}">
++            <sources basedir="${src_unit_test}">
+                 <include name="**/*.cs"/>
+             </sources>
+             <references>
+@@ -86,7 +87,7 @@
+             </references>
+         </csc>
+           
+-        <exec program="${bin}/${component_name}.exe" useruntimeengine="true">
++        <exec program="${bin}/${component_name}UnitTest.exe" useruntimeengine="true">
+             <environment>
+                 <variable name="MONO_PATH">
+                     <path>
+
+
+
+From nestor at berlios.de  Tue Sep 27 15:41:23 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Tue, 27 Sep 2005 15:41:23 +0200
+Subject: [Mspace-checkins] r522 - in ComponentModel/trunk: . lib lib/nunit src/ComponentModel src/ComponentModel/Container src/UnitTest src/UnitTest/Components src/UnitTest/Components/TestComponent src/UnitTest/Components/TestComponent/Bo src/UnitTest/Components/TestComponent/Exceptions src/UnitTest/Components/TestComponent/Form
+Message-ID: <200509271341.j8RDfNak013256@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-27 15:41:19 +0200 (Tue, 27 Sep 2005)
+New Revision: 522
+
+Added:
+   ComponentModel/trunk/lib/nunit/
+   ComponentModel/trunk/lib/nunit/license.rtf
+   ComponentModel/trunk/lib/nunit/nunit-console.exe
+   ComponentModel/trunk/lib/nunit/nunit-console.exe.config
+   ComponentModel/trunk/lib/nunit/nunit.core.dll
+   ComponentModel/trunk/lib/nunit/nunit.extensions.dll
+   ComponentModel/trunk/lib/nunit/nunit.framework.dll
+   ComponentModel/trunk/lib/nunit/nunit.mocks.dll
+   ComponentModel/trunk/lib/nunit/nunit.util.dll
+   ComponentModel/trunk/src/ComponentModel/Dto/
+   ComponentModel/trunk/src/UnitTest/Components/
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Bo/
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Bo/TestComponentComponentModel.cs
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Dto/
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Exceptions/
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Exceptions/TestComponentExceptionManager.cs
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/MainTestComponentForm.cs
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs
+   ComponentModel/trunk/src/UnitTest/DefaultContainerUnit.cs
+   ComponentModel/trunk/src/UnitTest/Launcher.cs
+Modified:
+   ComponentModel/trunk/ComponentModel.build
+   ComponentModel/trunk/lib/NLog.dll.nlog
+   ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs
+   ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs
+Log:
+Infraestructura y algunos test de ejemplo creados.
+
+Hay que terminar la primera pasada de tests de unidad.
+
+
+
+
+Modified: ComponentModel/trunk/ComponentModel.build
+===================================================================
+--- ComponentModel/trunk/ComponentModel.build	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/ComponentModel.build	2005-09-27 13:41:19 UTC (rev 522)
+@@ -34,6 +34,7 @@
+     <property name="src_component" value="${src}/ComponentModel"/>
+     <property name="src_unit_test" value="${src}/UnitTest"/>
+     <property name="lib" value="lib"/>
++    <property name="lib_nunit" value="${lib}/nunit"/>
+     <!-- Other mspace components -->
+     <property name="components" value="lib/components"/>
+     <property name="doc" value="doc"/>
+@@ -75,7 +76,7 @@
+     <!-- Ejecuta el componente (Lo compila como un exe y luego lo ejecuta) -->
+     <!-- En este caso solo deber? ejecutar los test de unidad-->
+     <target name="run" depends="build">
+-        <csc target="exe" output="${bin}/${component_name}UnitTest.exe" debug="true"
++        <csc target="library" output="${bin}/${component_name}UnitTest.dll" debug="true"
+         verbose="false">
+             <sources basedir="${src_unit_test}">
+                 <include name="**/*.cs"/>
+@@ -84,21 +85,25 @@
+                 <include name="**/${lib}/*.dll"/>
+                 <include name="**/${lib}/components/*.dll"/>
+                 <include name="**/${bin}/*.dll"/>    
++                <include name="**/${lib_nunit}/*.dll"/>
+             </references>
+         </csc>
+-          
+-        <exec program="${bin}/${component_name}UnitTest.exe" useruntimeengine="true">
++        <exec program="${lib_nunit}/nunit-console.exe" useruntimeengine="true"
++        verbose = "false">
++            <!-- Esto se queda ahi temporalmente, se deber? hacer que se meta a
++            resources/ComponentModelTest.xml-->
++            <arg line="/xml:ComponentModelTest.xml ${bin}/${component_name}UnitTest.dll"/>
+             <environment>
+                 <variable name="MONO_PATH">
+                     <path>
+                         <pathelement file="${lib}"/>
+                         <pathelement file="${components}"/>
+                         <pathelement file="${bin}"/>
++                        <pathelement file="${lib_nunit}"/>
+                     </path>
+                 </variable>
+             </environment>
+         </exec>
+-
+         <tstamp/>
+     </target>
+ 
+
+Modified: ComponentModel/trunk/lib/NLog.dll.nlog
+===================================================================
+--- ComponentModel/trunk/lib/NLog.dll.nlog	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/lib/NLog.dll.nlog	2005-09-27 13:41:19 UTC (rev 522)
+@@ -3,6 +3,6 @@
+             <appender name="debug"  type="Console" />
+         </appenders>
+ 	<rules>
+-		<logger name="*" levels="Info,Warn,Debug" appendTo="debug"/>
++		<logger name="*" levels="Info, Warn, Debug" appendTo="debug"/>
+ 	</rules>
+ </nlog>
+
+Added: ComponentModel/trunk/lib/nunit/license.rtf
+===================================================================
+--- ComponentModel/trunk/lib/nunit/license.rtf	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/lib/nunit/license.rtf	2005-09-27 13:41:19 UTC (rev 522)
+@@ -0,0 +1,38 @@
++{\rtf1\ansi\ansicpg1252\uc1\deff0\stshfdbch13\stshfloch0\stshfhich0\stshfbi0\deflang1033\deflangfe1033{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}
++{\f2\fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Courier New;}{\f13\fnil\fcharset134\fprq2{\*\panose 02010600030101010101}SimSun{\*\falt ????\'a8\'ac??};}{\f36\fnil\fcharset134\fprq2{\*\panose 00000000000000000000}@SimSun;}
++{\f37\froman\fcharset238\fprq2 Times New Roman CE;}{\f38\froman\fcharset204\fprq2 Times New Roman Cyr;}{\f40\froman\fcharset161\fprq2 Times New Roman Greek;}{\f41\froman\fcharset162\fprq2 Times New Roman Tur;}
++{\f42\froman\fcharset177\fprq2 Times New Roman (Hebrew);}{\f43\froman\fcharset178\fprq2 Times New Roman (Arabic);}{\f44\froman\fcharset186\fprq2 Times New Roman Baltic;}{\f45\froman\fcharset163\fprq2 Times New Roman (Vietnamese);}
++{\f57\fmodern\fcharset238\fprq1 Courier New CE;}{\f58\fmodern\fcharset204\fprq1 Courier New Cyr;}{\f60\fmodern\fcharset161\fprq1 Courier New Greek;}{\f61\fmodern\fcharset162\fprq1 Courier New Tur;}{\f62\fmodern\fcharset177\fprq1 Courier New (Hebrew);}
++{\f63\fmodern\fcharset178\fprq1 Courier New (Arabic);}{\f64\fmodern\fcharset186\fprq1 Courier New Baltic;}{\f65\fmodern\fcharset163\fprq1 Courier New (Vietnamese);}}{\colortbl;\red0\green0\blue0;\red0\green0\blue255;\red0\green255\blue255;
++\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;\red128\green128\blue0;
++\red128\green128\blue128;\red192\green192\blue192;}{\stylesheet{\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs24\lang1033\langfe2052\loch\f0\hich\af0\dbch\af13\cgrid\langnp1033\langfenp2052 \snext0 Normal;}{\*\cs10 
++\additive \ssemihidden Default Paragraph Font;}{\*\ts11\tsrowd\trftsWidthB3\trpaddl108\trpaddr108\trpaddfl3\trpaddft3\trpaddfb3\trpaddfr3\trcbpat1\trcfpat1\tscellwidthfts0\tsvertalt\tsbrdrt\tsbrdrl\tsbrdrb\tsbrdrr\tsbrdrdgl\tsbrdrdgr\tsbrdrh\tsbrdrv 
++\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1024\langfe1024\loch\f0\hich\af0\dbch\af13\cgrid\langnp1024\langfenp1024 \snext11 \ssemihidden Normal Table;}{
++\s15\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0 \fs20\lang1033\langfe2052\loch\f2\hich\af2\dbch\af13\cgrid\langnp1033\langfenp2052 \sbasedon0 \snext15 \styrsid9332467 Plain Text;}}{\*\rsidtbl \rsid610709\rsid818068
++\rsid7476632\rsid8721477\rsid9332467\rsid10426157\rsid11172945\rsid11871043\rsid15552035}{\*\generator Microsoft Word 10.0.3416;}{\info{\title Copyright (c) 2002 James W}{\author James Newkirk}{\operator Charlie}{\creatim\yr2002\mo9\dy11\hr14\min43}
++{\revtim\yr2004\mo5\dy15\hr15\min52}{\version7}{\edmins5}{\nofpages1}{\nofwords159}{\nofchars912}{\*\company Nascent Software, Inc.}{\nofcharsws1069}{\vern16453}}\margl1319\margr1319 
++\widowctrl\ftnbj\aenddoc\noxlattoyen\expshrtn\noultrlspc\dntblnsbdb\nospaceforul\hyphcaps0\formshade\horzdoc\dgmargin\dghspace180\dgvspace180\dghorigin1319\dgvorigin1440\dghshow1\dgvshow1
++\jexpand\viewkind1\viewscale120\pgbrdrhead\pgbrdrfoot\splytwnine\ftnlytwnine\htmautsp\nolnhtadjtbl\useltbaln\alntblind\lytcalctblwd\lyttblrtgr\lnbrkrule\nobrkwrptbl\snaptogridincell\allowfieldendsel\wrppunct\asianbrkrule\rsidroot15552035 \fet0\sectd 
++\linex0\endnhere\sectlinegrid360\sectdefaultcl\sectrsid9332467\sftnbj {\*\pnseclvl1\pnucrm\pnstart1\pnindent720\pnhang {\pntxta .}}{\*\pnseclvl2\pnucltr\pnstart1\pnindent720\pnhang {\pntxta .}}{\*\pnseclvl3\pndec\pnstart1\pnindent720\pnhang {\pntxta .}}
++{\*\pnseclvl4\pnlcltr\pnstart1\pnindent720\pnhang {\pntxta )}}{\*\pnseclvl5\pndec\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl6\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl7\pnlcrm\pnstart1\pnindent720\pnhang 
++{\pntxtb (}{\pntxta )}}{\*\pnseclvl8\pnlcltr\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}{\*\pnseclvl9\pnlcrm\pnstart1\pnindent720\pnhang {\pntxtb (}{\pntxta )}}\pard\plain 
++\s15\ql \li0\ri0\widctlpar\aspalpha\aspnum\faauto\adjustright\rin0\lin0\itap0\pararsid9332467 \fs20\lang1033\langfe2052\loch\af2\hich\af2\dbch\af13\cgrid\langnp1033\langfenp2052 {\insrsid610709\charrsid9332467 \hich\af2\dbch\af13\loch\f2 Copyright }{
++\insrsid10426157 \loch\af2\dbch\af13\hich\f2 \'a9\loch\f2  }{\insrsid610709\charrsid9332467 \hich\af2\dbch\af13\loch\f2 2002}{\insrsid8721477 \hich\af2\dbch\af13\loch\f2 -200}{\insrsid11871043 \hich\af2\dbch\af13\loch\f2 4}{\insrsid610709\charrsid9332467 
++\hich\af2\dbch\af13\loch\f2  James W. Newkirk, Mich}{\insrsid7476632 \hich\af2\dbch\af13\loch\f2 ael C. Two, Alexei A. Vorontsov, Charlie Poole
++\par }{\insrsid11871043 \hich\af2\dbch\af13\loch\f2 \hich\f2 Copyright \'a9\loch\f2  2000-2004}{\insrsid610709\charrsid9332467 \hich\af2\dbch\af13\loch\f2  Philip A. Craig
++\par 
++\par \hich\af2\dbch\af13\loch\f2 This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
++\par 
++\par \hich\af2\dbch\af13\loch\f2 Permission is granted to anyone to use this software for any purpose, including \hich\af2\dbch\af13\loch\f2 commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
++\par 
++\par \hich\af2\dbch\af13\loch\f2 1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a p\hich\af2\dbch\af13\loch\f2 
++roduct, an acknowledgment (see the following) in the product documentation is required.
++\par 
++\par \hich\af2\dbch\af13\loch\f2 Portions Copyright }{\insrsid10426157 \loch\af2\dbch\af13\hich\f2 \'a9\loch\f2  2002}{\insrsid11871043 \hich\af2\dbch\af13\loch\f2 -2004}{\insrsid10426157 \hich\af2\dbch\af13\loch\f2  James W. Newkirk, }{
++\insrsid610709\charrsid9332467 \hich\af2\dbch\af13\loch\f2 Michael C. Two, Alexei A. Vorontsov, Charlie Poole or Copyright }{\insrsid10426157 \loch\af2\dbch\af13\hich\f2 \'a9}{\insrsid11871043 \hich\af2\dbch\af13\loch\f2  2000-2004}{
++\insrsid610709\charrsid9332467 \hich\af2\dbch\af13\loch\f2  Philip A. Craig
++\par 
++\par \hich\af2\dbch\af13\loch\f2 2. Altered source version\hich\af2\dbch\af13\loch\f2 s must be plainly marked as such, and must not be misrepresented as being the original software.
++\par 
++\par \hich\af2\dbch\af13\loch\f2 3. This notice may not be removed or altered from any source distribution.}{\insrsid9332467 
++\par }}
+\ No newline at end of file
+
+Added: ComponentModel/trunk/lib/nunit/nunit-console.exe
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/trunk/lib/nunit/nunit-console.exe
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: ComponentModel/trunk/lib/nunit/nunit-console.exe.config
+===================================================================
+--- ComponentModel/trunk/lib/nunit/nunit-console.exe.config	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/lib/nunit/nunit-console.exe.config	2005-09-27 13:41:19 UTC (rev 522)
+@@ -0,0 +1,92 @@
++<?xml version="1.0" encoding="Windows-1252"?>
++<configuration>
++    <!--
++     Application settings for NUnit-console.exe. Do NOT put settings
++	 for use by your tests here.
++	-->
++  <appSettings>
++
++	<!--	Specify the location to be used by .NET for the cache -->
++    <add key="shadowfiles.path" value="%temp%\nunit20\ShadowCopyCache" />
++  
++  </appSettings>
++  
++    <!-- 
++     These statements specify the runtime versions supported
++     in the order that they will be used if more than one
++     is present. You can change the order of these if you like
++     or remove any that do not apply.
++	 
++	 Since .NET 1.0 does not recognize the <supportedRuntime> elements,
++	 a <requiredRuntime> element is used in case it is the only version
++	 of the framework that is installed.
++    -->
++  <startup>
++
++	  <supportedRuntime version="v1.1.4322" />
++	  <supportedRuntime version="v2.0.40607" />
++	  <supportedRuntime version="v1.0.3705" />
++	
++	  <requiredRuntime version="v1.0.3705" />
++
++  </startup>
++
++   <!--
++    The following <runtime> section allows running nunit under 
++    .NET 1.0 by redirecting assemblies. The appliesTo attribute
++    causes the section to be ignored except under .NET 1.0version 1
++    on a machine with only the .NET version 1.0 runtime installed.
++    If application and its tests were built for .NET 1.1 you will
++    also need to redirect system assemblies in the test config file.
++   -->
++  
++ <runtime>
++    
++    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1"
++			appliesTo="v1.0.3705">
++
++      <dependentAssembly> 
++        <assemblyIdentity name="System" 
++                          publicKeyToken="b77a5c561934e089" 
++                          culture=""/>
++        <bindingRedirect  oldVersion="1.0.5000.0" 
++                          newVersion="1.0.3300.0"/>
++      </dependentAssembly>
++
++      <dependentAssembly> 
++        <assemblyIdentity name="System.Data" 
++                          publicKeyToken="b77a5c561934e089" 
++                          culture=""/>
++        <bindingRedirect  oldVersion="1.0.5000.0" 
++                          newVersion="1.0.3300.0"/>
++      </dependentAssembly>
++
++      <dependentAssembly> 
++        <assemblyIdentity name="System.Drawing" 
++                          publicKeyToken="b03f5f7f11d50a3a" 
++                          culture=""/>
++        <bindingRedirect  oldVersion="1.0.5000.0" 
++                          newVersion="1.0.3300.0"/>
++      </dependentAssembly>
++
++      <dependentAssembly> 
++        <assemblyIdentity name="System.Windows.Forms" 
++                          publicKeyToken="b77a5c561934e089" 
++                          culture=""/>
++        <bindingRedirect  oldVersion="1.0.5000.0" 
++                          newVersion="1.0.3300.0"/>
++      </dependentAssembly>
++
++      <dependentAssembly> 
++        <assemblyIdentity name="System.Xml" 
++                          publicKeyToken="b77a5c561934e089" 
++                          culture=""/>
++        <bindingRedirect  oldVersion="1.0.5000.0" 
++                          newVersion="1.0.3300.0"/>
++      </dependentAssembly>
++
++    </assemblyBinding>
++
++  </runtime>
++  
++</configuration>
+\ No newline at end of file
+
+Added: ComponentModel/trunk/lib/nunit/nunit.core.dll
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/trunk/lib/nunit/nunit.core.dll
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: ComponentModel/trunk/lib/nunit/nunit.extensions.dll
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/trunk/lib/nunit/nunit.extensions.dll
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: ComponentModel/trunk/lib/nunit/nunit.framework.dll
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/trunk/lib/nunit/nunit.framework.dll
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: ComponentModel/trunk/lib/nunit/nunit.mocks.dll
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/trunk/lib/nunit/nunit.mocks.dll
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Added: ComponentModel/trunk/lib/nunit/nunit.util.dll
+===================================================================
+(Binary files differ)
+
+
+Property changes on: ComponentModel/trunk/lib/nunit/nunit.util.dll
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Modified: ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs	2005-09-27 13:41:19 UTC (rev 522)
+@@ -38,6 +38,7 @@
+         Logger logger = LogManager.GetLogger ("ComponentModel.Container.DefaultContainer");
+         
+         private DefaultContainer () {
++            Console.WriteLine ("--- Babuine Component Model & Babuine Framework Inicializated ----");
+             logger.Debug ("Init DefaultContainer");
+             logger.Debug ("Getting Relative Search Path: " + AppDomain.CurrentDomain.RelativeSearchPath);
+             logger.Debug ("Getting Dynamic Directory: " + AppDomain.CurrentDomain.DynamicDirectory);
+
+Modified: ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs	2005-09-27 13:41:19 UTC (rev 522)
+@@ -116,6 +116,7 @@
+          * Este m?todo no soporta la b?squeda mediante la sobrecarga de m?todos.
+          * 
+          */ 
++        /*
+         private MethodInfo GetMethodToExecute (string methodName, Type componentType) {
+             //Precondition: methodName != null && methodName != String.Empty &&
+             //componentType != null
+@@ -131,7 +132,8 @@
+             //PostCondition: methodInfo != null
+             return methodInfo;
+         }
+-
++        */
++        
+         private MethodInfo GetMethodToExecute (string methodName, object[] parameters) {
+             return this.GetMethodToExecute (methodName, parameters, this.GetType ());
+         }
+
+Added: ComponentModel/trunk/src/UnitTest/Components/TestComponent/Bo/TestComponentComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Components/TestComponent/Bo/TestComponentComponentModel.cs	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/src/UnitTest/Components/TestComponent/Bo/TestComponentComponentModel.cs	2005-09-27 13:41:19 UTC (rev 522)
+@@ -0,0 +1,14 @@
++using System;
++using ComponentModel;
++
++namespace UnitTest.Components.TestComponent {
++    [Component ("TestUnidad1", "UnitTest.Components.TestComponent.Exceptions.TestComponentExceptionManager")]
++    public sealed class TestComponentComponentModel : DefaultComponentModel {
++        
++        [ComponentMethod ("ResponseReturnValue","UnitTest.Components.TestComponent.Form.MainTestComponentForm")]
++        public int ReturnValue (int x) {
++            return x;
++        }
++
++    }
++}
+
+Added: ComponentModel/trunk/src/UnitTest/Components/TestComponent/Exceptions/TestComponentExceptionManager.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Components/TestComponent/Exceptions/TestComponentExceptionManager.cs	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/src/UnitTest/Components/TestComponent/Exceptions/TestComponentExceptionManager.cs	2005-09-27 13:41:19 UTC (rev 522)
+@@ -0,0 +1,13 @@
++using System;
++using ComponentModel.Interfaces;
++
++namespace UnitTest.Components.TestComponent {
++    public sealed class TestComponentExceptionManager : IExceptionManager {
++        public void ProcessException (Exception exception) {
++            Console.WriteLine ("BEGIN EXCEPTION");
++            Console.WriteLine ("Exception caught !! by " + this.GetType ());
++            Console.WriteLine (exception.ToString ());
++            Console.WriteLine ("END EXCEPTION");
++        }
++    }
++}
+
+Added: ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/MainTestComponentForm.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/MainTestComponentForm.cs	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/MainTestComponentForm.cs	2005-09-27 13:41:19 UTC (rev 522)
+@@ -0,0 +1,16 @@
++using System;
++using ComponentModel.Interfaces;
++
++namespace UnitTest.Components.TestComponent.Form {
++    public sealed class MainTestComponentForm : IViewHandler {
++        public IDataTransferObject GetDataForm () {
++            return null;
++        }
++
++        public void LoadDataForm (IDataTransferObject dto) {
++        }
++
++        public void ClearForm () {
++        }
++    }
++}
+
+Added: ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs	2005-09-27 13:41:19 UTC (rev 522)
+@@ -0,0 +1,48 @@
++using System;
++using ComponentModel.Container;
++using ComponentModel.Interfaces;
++using ComponentModel.VO;
++using NUnit.Framework;
++
++namespace UnitTest.Components.TestComponent {
++    /*
++     * Bater?a de tests para este componente.
++     */
++    [TestFixture]
++    public sealed class TestComponentUnit {
++
++        [SetUp]
++        public void SetUp () {
++        }
++
++        [TearDown]
++        public void TearDown () {
++        }
++
++        /*A partir de aqui escribiremos los tests*/
++
++        [Test]
++        public void GetComponentFromContainer () {
++            Assert.IsNotNull (DefaultContainer.Instance.GetComponentByName ("TestUnidad1"));
++        }
++
++        [Test]
++        public void ExecutionNonRedirect () {
++            int x = 4;
++            ResponseMethodVO responseMethodVO;
++            int returnValue;
++            
++            IComponentModel componentModel = DefaultContainer.Instance.GetComponentByName ("TestUnidad1");
++            responseMethodVO = componentModel.Execute ("ReturnValue", new object[]{x}, false);
++            Assert.AreEqual (responseMethodVO.ExecutionSuccess, true);
++            Assert.IsNotNull (responseMethodVO.MethodResult);
++            if (responseMethodVO.ExecutionSuccess == true) {
++                returnValue = (int) responseMethodVO.MethodResult;    
++                Assert.AreEqual (returnValue, x);
++                //Al estar usando reflection, no creo que se devuelva la misma
++                //posici?n de memoria.
++                //Assert.AreNotSame (returnValue, x);
++            }
++        }
++    }
++}
+
+Added: ComponentModel/trunk/src/UnitTest/DefaultContainerUnit.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/DefaultContainerUnit.cs	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/src/UnitTest/DefaultContainerUnit.cs	2005-09-27 13:41:19 UTC (rev 522)
+@@ -0,0 +1,27 @@
++using System;
++using ComponentModel.Container;
++using NUnit.Framework;
++
++namespace UnitTest {
++    /*
++     * Bater?a de tests para este componente.
++     */
++    [TestFixture]
++    public sealed class DefaultContainerUnit {
++
++        [SetUp]
++        public void SetUp () {
++        }
++
++        [TearDown]
++        public void TearDown () {
++        }
++
++        /*A partir de aqui escribiremos los tests*/
++
++        [Test]
++        public void InitContainer () {
++            Assert.IsNotNull (DefaultContainer.Instance);
++        }
++    }
++}
+
+Added: ComponentModel/trunk/src/UnitTest/Launcher.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Launcher.cs	2005-09-26 23:51:53 UTC (rev 521)
++++ ComponentModel/trunk/src/UnitTest/Launcher.cs	2005-09-27 13:41:19 UTC (rev 522)
+@@ -0,0 +1,22 @@
++using System;
++using NUnit.Framework;
++using NUnit.Core;
++using UnitTest.Components.TestComponent;
++
++namespace UnitTest {
++    /*
++     *  Contendr? la suite para realizar los tests de unidad.
++     */
++    public sealed class Launcher {
++        [Suite]
++        public static TestSuite Suite {
++            get {
++                TestSuite suite = new TestSuite("All Tests");
++                suite.Add (new DefaultContainerUnit ());
++                suite.Add (new TestComponentUnit ());
++                return suite;
++            }
++        }
++        
++    }
++}
+
+
+
+From nestor at berlios.de  Wed Sep 28 01:20:49 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Wed, 28 Sep 2005 01:20:49 +0200
+Subject: [Mspace-checkins] r523 - in ComponentModel/trunk/src: ComponentModel/Container UnitTest
+Message-ID: <200509272320.j8RNKn4E002405@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-28 01:20:45 +0200 (Wed, 28 Sep 2005)
+New Revision: 523
+
+Modified:
+   ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs
+   ComponentModel/trunk/src/UnitTest/DefaultContainerUnit.cs
+Log:
+Modificado el comportamiento de conseguir un componente si este no existe.  Se
+lanza una excepci?\195?\179n indicando que no est?\195?\161.
+
+
+
+Modified: ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs	2005-09-27 13:41:19 UTC (rev 522)
++++ ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs	2005-09-27 23:20:45 UTC (rev 523)
+@@ -115,12 +115,19 @@
+             //        return (IComponentModel)componentList[i];
+             //    }
+             //}
++            /**
+             try {
+                 return (IComponentModel)componentHashtable[componentName];
+             }
+             catch (Exception e) {
+                 throw new ComponentNotFoundException ("Component " + componentName + " not found in container.");
+             }
++            */
++            IComponentModel componentModel = (IComponentModel) componentHashtable[componentName];
++            if (componentModel == null) {
++                throw new ComponentNotFoundException ("Component " + componentName + " not found in container.");
++            }
++            return componentModel;
+             //return null;
+         }
+ 
+
+Modified: ComponentModel/trunk/src/UnitTest/DefaultContainerUnit.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/DefaultContainerUnit.cs	2005-09-27 13:41:19 UTC (rev 522)
++++ ComponentModel/trunk/src/UnitTest/DefaultContainerUnit.cs	2005-09-27 23:20:45 UTC (rev 523)
+@@ -1,5 +1,7 @@
+ using System;
+ using ComponentModel.Container;
++using ComponentModel.Interfaces;
++using ComponentModel.Exceptions;
+ using NUnit.Framework;
+ 
+ namespace UnitTest {
+@@ -23,5 +25,17 @@
+         public void InitContainer () {
+             Assert.IsNotNull (DefaultContainer.Instance);
+         }
++
++        [Test]
++        public void GetComponentByName () {
++            Assert.IsNotNull (DefaultContainer.Instance.GetComponentByName ("TestUnidad1"));
++        }
++
++        [Test]
++        [ExpectedException (typeof (ComponentNotFoundException))]
++        public void FailGetComponentByName () {
++            IComponentModel componentModel = DefaultContainer.Instance.GetComponentByName ("NoName");
++            Assert.IsNull (componentModel);
++        }
+     }
+ }
+
+
+
+From nestor at berlios.de  Thu Sep 29 18:57:11 2005
+From: nestor at berlios.de (Néstor Salceda at BerliOS)
+Date: Thu, 29 Sep 2005 18:57:11 +0200
+Subject: [Mspace-checkins] r524 - in ComponentModel/trunk: . src/ComponentModel src/ComponentModel/Container src/ComponentModel/Exceptions src/ComponentModel/Interfaces src/UnitTest src/UnitTest/Components/TestComponent src/UnitTest/Components/TestComponent/Bo src/UnitTest/Components/TestComponent/Form
+Message-ID: <200509291657.j8TGvBrQ017256@sheep.berlios.de>
+
+Author: nestor
+Date: 2005-09-29 18:57:08 +0200 (Thu, 29 Sep 2005)
+New Revision: 524
+
+Added:
+   ComponentModel/trunk/src/ComponentModel/Exceptions/PropertyCanReadException.cs
+   ComponentModel/trunk/src/ComponentModel/Exceptions/PropertyCanWriteException.cs
+   ComponentModel/trunk/src/ComponentModel/Exceptions/PropertyNotFoundException.cs
+Modified:
+   ComponentModel/trunk/ComponentModel.build
+   ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs
+   ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs
+   ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModel.cs
+   ComponentModel/trunk/src/ComponentModel/Interfaces/IContainer.cs
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Bo/TestComponentComponentModel.cs
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/MainTestComponentForm.cs
+   ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs
+   ComponentModel/trunk/src/UnitTest/Launcher.cs
+Log:
+*Soporte para conseguir una Propiedad del componente.
+*BugFix del container; resincronizacion con su interfaz.
+*Tests con redireccion a la vista.
+
+
+
+Modified: ComponentModel/trunk/ComponentModel.build
+===================================================================
+--- ComponentModel/trunk/ComponentModel.build	2005-09-27 23:20:45 UTC (rev 523)
++++ ComponentModel/trunk/ComponentModel.build	2005-09-29 16:57:08 UTC (rev 524)
+@@ -86,6 +86,7 @@
+                 <include name="**/${lib}/components/*.dll"/>
+                 <include name="**/${bin}/*.dll"/>    
+                 <include name="**/${lib_nunit}/*.dll"/>
++                <include name="System.Windows.Forms.dll"/>
+             </references>
+         </csc>
+         <exec program="${lib_nunit}/nunit-console.exe" useruntimeengine="true"
+
+Modified: ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs	2005-09-27 23:20:45 UTC (rev 523)
++++ ComponentModel/trunk/src/ComponentModel/Container/DefaultContainer.cs	2005-09-29 16:57:08 UTC (rev 524)
+@@ -32,7 +32,6 @@
+ namespace ComponentModel.Container {
+     public class DefaultContainer : IContainer {
+         private static DefaultContainer instance = null; 
+-        //private IList componentList;
+         private Hashtable componentHashtable;
+         //Logging
+         Logger logger = LogManager.GetLogger ("ComponentModel.Container.DefaultContainer");
+@@ -49,7 +48,6 @@
+             //MONO_PATH
+             this.LoadAssembliesInPath ();
+             //Getting data from assembly resolv.
+-            //componentList = new ArrayList ();
+             componentHashtable = new Hashtable ();
+             //En cada ensamblado, cargar?? el / los componente y lo registrar?? con el
+             //nombre que se le ha dado al atributo.
+@@ -110,51 +108,19 @@
+         }
+ 
+         public IComponentModel GetComponentByName (string componentName) {
+-            //for (int i = 0; i < componentList.Count; i++) {
+-            //    if ((componentList[i] as DefaultComponentModel).VO.ComponentName.Equals (componentName)) {
+-            //        return (IComponentModel)componentList[i];
+-            //    }
+-            //}
+-            /**
+-            try {
+-                return (IComponentModel)componentHashtable[componentName];
+-            }
+-            catch (Exception e) {
+-                throw new ComponentNotFoundException ("Component " + componentName + " not found in container.");
+-            }
+-            */
+             IComponentModel componentModel = (IComponentModel) componentHashtable[componentName];
+             if (componentModel == null) {
+                 throw new ComponentNotFoundException ("Component " + componentName + " not found in container.");
+             }
+             return componentModel;
+-            //return null;
+         }
+ 
+         public void Add (IComponentModel component) {
+-            /**
+-             * Dado que un componente es un peso pesado para la carga de un
+-             * sistema no se permite m??s de una instancia, as?? que con pasarle
+-             * la referencia ser?? suficiente.
+-             */
+-            //if (componentList.Contains (component))
+-            //    return;
+-            /*Chequeamos que no existan dos componentes con el mismo nombre.*/
+-            //for (int i = 0; i< componentList.Count; i++) {
+-            //    if (((IComponentModel)componentList[i]).VO.ComponentName.Equals (component.VO.ComponentName)) {
+-                    /*No lanzo una excepci??n porque no se debe parar la
+-                     * ejecuci??n del programa por este error.*/
+-            //        return;
+-            //    }
+-            //}
+             componentHashtable.Add (component.VO.ComponentName, component);
+             logger.Info ("Registering component: " + component + " as Name: " + component.VO.ComponentName);
+         }
+ 
+         public void Remove (IComponentModel component) {
+-            //if (componentList.Contains (component)) {
+-            //    componentList.Remove (component);
+-            //}
+             componentHashtable.Remove (component.VO.ComponentName);
+         }
+ 
+
+Modified: ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs	2005-09-27 23:20:45 UTC (rev 523)
++++ ComponentModel/trunk/src/ComponentModel/DefaultComponentModel.cs	2005-09-29 16:57:08 UTC (rev 524)
+@@ -30,9 +30,6 @@
+ using NLog;
+ 
+ namespace ComponentModel {
+-    // TODO: En los getMethodXXX --> se deber??a realizar tambi??n una b??squeda
+-    // con par??metros para poder permitir la sobrecarga de m??todos.  Y para las
+-    // respuestas nos tapar??a un error muy majo :)
+     public abstract class DefaultComponentModel : IComponentModel {
+         //Logging
+         private Logger logger = LogManager.GetLogger ("ComponentModel.DefaultComponentModel");
+@@ -64,7 +61,6 @@
+         }
+       
+         private Type GetTypeExceptionManager (string exceptionManagerClassName) {
+-
+             //Precondition: exceptionManagerClassName != null &&
+             //exceptionManagerClassName != String.Empty
+             if ((exceptionManagerClassName == null) || (exceptionManagerClassName.Equals (String.Empty))) {
+@@ -96,6 +92,10 @@
+                     typeParam[i] = parameters[i].GetType ();
+                 }
+             }
++            logger.Debug ("Types of method invocation: ");
++            for (int i = 0;i < typeParam.Length;i++) {
++                logger.Debug ("Parameter: " + i + " " + typeParam[i]);
++            }
+             //Busca solamente los publicos.  Cambiar el Binder puede ser un lio
+             //grande, ojo con esto.
+             MethodInfo methodInfo = componentType.GetMethod (methodName, typeParam);
+@@ -110,30 +110,6 @@
+             return methodInfo;
+         }
+         
+-        /*
+-         * Deprecated !
+-         *
+-         * Este m??todo no soporta la b??squeda mediante la sobrecarga de m??todos.
+-         * 
+-         */ 
+-        /*
+-        private MethodInfo GetMethodToExecute (string methodName, Type componentType) {
+-            //Precondition: methodName != null && methodName != String.Empty &&
+-            //componentType != null
+-            logger.Debug ("Entering GetMethodToExecute. Searching: " + methodName + " in: " + componentType.ToString ());
+-            MethodInfo methodInfo = componentType.GetMethod (methodName, BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public);
+-            //Checkeamos que lo haya encontrado
+-            if (methodInfo == null) {
+-                throw new MethodNotFoundException ("Method to execute: " + methodName + " not found.");
+-            }
+-            else {
+-                logger.Debug ("Finded method to execute: " + methodInfo.ToString ());
+-            }
+-            //PostCondition: methodInfo != null
+-            return methodInfo;
+-        }
+-        */
+-        
+         private MethodInfo GetMethodToExecute (string methodName, object[] parameters) {
+             return this.GetMethodToExecute (methodName, parameters, this.GetType ());
+         }
+@@ -171,7 +147,7 @@
+                     return type;
+             }
+             catch (TypeNotFoundException exception) {
+-                throw new ViewNotFoundException ("View" + viewType + "not found.");
++                throw new ViewNotFoundException ("View " + viewType + " not found.");
+             }
+             return null;
+         }
+@@ -339,5 +315,45 @@
+             //return null;
+         }
+ 
++
++        /*B?squeda de propiedades*/
++
++        private PropertyInfo GetPropertyToExecute (string propertyName) {
++            if ((propertyName == null) || (propertyName.Length != 0)) {
++                Type type = this.GetType ();
++                PropertyInfo propertyInfo = type.GetProperty (propertyName);
++                if (propertyInfo == null) {
++                    throw new PropertyNotFoundException ("Property " + propertyName + " not found");
++                }
++                return propertyInfo;
++            }
++            return null;
++        }
++        
++        public object GetProperty (string propertyName) {
++            PropertyInfo propertyInfo = this.GetPropertyToExecute (propertyName);
++            if (propertyInfo.CanRead) {
++                MethodInfo methodInfo = propertyInfo.GetGetMethod ();
++                return methodInfo.Invoke (this, null);
++                //Suponemos que como se puede leer no va a ser null el
++                //methodInfo.
++            }
++            else {
++                throw new PropertyCanReadException ("Property can't access to getter Method.");
++            }
++        }
++
++        public void SetProperty (string propertyName, object valor) {
++            PropertyInfo propertyInfo = this.GetPropertyToExecute (propertyName);
++            if (propertyInfo.CanWrite) {
++                MethodInfo methodInfo = propertyInfo.GetSetMethod ();
++                methodInfo.Invoke (this, new object[]{valor});
++                //Suponemos que como se puede escribir no va a ser null el
++                //methodInfo.
++            }
++            else {
++                throw new PropertyCanWriteException ("Property can't access to setter Method.");
++            }
++        }
+     }
+ }
+
+Added: ComponentModel/trunk/src/ComponentModel/Exceptions/PropertyCanReadException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Exceptions/PropertyCanReadException.cs	2005-09-27 23:20:45 UTC (rev 523)
++++ ComponentModel/trunk/src/ComponentModel/Exceptions/PropertyCanReadException.cs	2005-09-29 16:57:08 UTC (rev 524)
+@@ -0,0 +1,26 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N??stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
++using System;
++
++namespace ComponentModel.Exceptions {
++    public class PropertyCanReadException : ComponentModelException {
++        public PropertyCanReadException (string message) : base (message) {}
++    }
++}
+
+Added: ComponentModel/trunk/src/ComponentModel/Exceptions/PropertyCanWriteException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Exceptions/PropertyCanWriteException.cs	2005-09-27 23:20:45 UTC (rev 523)
++++ ComponentModel/trunk/src/ComponentModel/Exceptions/PropertyCanWriteException.cs	2005-09-29 16:57:08 UTC (rev 524)
+@@ -0,0 +1,26 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N??stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
++using System;
++
++namespace ComponentModel.Exceptions {
++    public class PropertyCanWriteException : ComponentModelException {
++        public PropertyCanWriteException (string message) : base (message) {}
++    }
++}
+
+Added: ComponentModel/trunk/src/ComponentModel/Exceptions/PropertyNotFoundException.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Exceptions/PropertyNotFoundException.cs	2005-09-27 23:20:45 UTC (rev 523)
++++ ComponentModel/trunk/src/ComponentModel/Exceptions/PropertyNotFoundException.cs	2005-09-29 16:57:08 UTC (rev 524)
+@@ -0,0 +1,26 @@
++/*
++Babuine Component Model & Babuine Framework
++Copyright (C) 2005  N??stor Salceda Alonso
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public
++License as published by the Free Software Foundation; either
++version 2.1 of the License, or (at your option) any later version.
++
++This library is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++*/
++
++using System;
++
++namespace ComponentModel.Exceptions {
++    public class PropertyNotFoundException : ComponentModelException {
++        public PropertyNotFoundException (string message) : base (message) {}
++    }
++}
+
+Modified: ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModel.cs	2005-09-27 23:20:45 UTC (rev 523)
++++ ComponentModel/trunk/src/ComponentModel/Interfaces/IComponentModel.cs	2005-09-29 16:57:08 UTC (rev 524)
+@@ -31,5 +31,8 @@
+         ResponseMethodVO Execute (string methodName, object[] parameters, IViewHandler viewHandler);//Redirige y elige vista.
+         ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect);//Redirige o no redirige, si redirige vista nueva.
+         ResponseMethodVO Execute (string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block);
++
++        object GetProperty (string propertyName);
++        void SetProperty (string propertyName, object valor);
+     }
+ }
+
+Modified: ComponentModel/trunk/src/ComponentModel/Interfaces/IContainer.cs
+===================================================================
+--- ComponentModel/trunk/src/ComponentModel/Interfaces/IContainer.cs	2005-09-27 23:20:45 UTC (rev 523)
++++ ComponentModel/trunk/src/ComponentModel/Interfaces/IContainer.cs	2005-09-29 16:57:08 UTC (rev 524)
+@@ -18,6 +18,7 @@
+ */
+ 
+ using System;
++using ComponentModel.VO;
+ 
+ namespace ComponentModel.Interfaces {
+     //Igual si extendemos de System.ComponentModel.IContainer est?? bien tambi??n.
+@@ -26,5 +27,10 @@
+         
+         void Add (IComponentModel componentModel);
+         void Remove (IComponentModel componentModel);
++
++        ResponseMethodVO Execute (string componentName, string methodName, object[] parameters);//Redirige & bloquea a la vista por defecto.
++        ResponseMethodVO Execute (string componentName, string methodName, object[] parameters, IViewHandler viewHandler);//Redirige y elige vista.
++        ResponseMethodVO Execute (string componentName, string methodName, object[] parameters, bool redirect);//Redirige o no redirige, si redirige vista nueva.
++        ResponseMethodVO Execute (string componentName, string methodName, object[] parameters, bool redirect, IViewHandler viewHandler, bool block);
+     }
+ }
+
+Modified: ComponentModel/trunk/src/UnitTest/Components/TestComponent/Bo/TestComponentComponentModel.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Components/TestComponent/Bo/TestComponentComponentModel.cs	2005-09-27 23:20:45 UTC (rev 523)
++++ ComponentModel/trunk/src/UnitTest/Components/TestComponent/Bo/TestComponentComponentModel.cs	2005-09-29 16:57:08 UTC (rev 524)
+@@ -4,11 +4,22 @@
+ namespace UnitTest.Components.TestComponent {
+     [Component ("TestUnidad1", "UnitTest.Components.TestComponent.Exceptions.TestComponentExceptionManager")]
+     public sealed class TestComponentComponentModel : DefaultComponentModel {
++        private int entero;
++
++        public int Entero {
++            get {return entero;}
++            set {entero = value;}
++        }
+         
+-        [ComponentMethod ("ResponseReturnValue","UnitTest.Components.TestComponent.Form.MainTestComponentForm")]
++        [ComponentMethod ("UnitTest.Components.TestComponent.Form.MainTestComponentForm", "ResponseReturnValue")]
+         public int ReturnValue (int x) {
+             return x;
+         }
+ 
++        [ComponentMethod ("UnitTest.Components.TestComponent.Form.MainTestComponentForm", "ResponseReturnValue")]
++        public char ReturnValue (char obj) {
++            return obj;
++        }
++
+     }
+ }
+
+Modified: ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/MainTestComponentForm.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/MainTestComponentForm.cs	2005-09-27 23:20:45 UTC (rev 523)
++++ ComponentModel/trunk/src/UnitTest/Components/TestComponent/Form/MainTestComponentForm.cs	2005-09-29 16:57:08 UTC (rev 524)
+@@ -1,5 +1,7 @@
+ using System;
+ using ComponentModel.Interfaces;
++using ComponentModel.VO;
++using System.Windows.Forms;
+ 
+ namespace UnitTest.Components.TestComponent.Form {
+     public sealed class MainTestComponentForm : IViewHandler {
+@@ -12,5 +14,11 @@
+ 
+         public void ClearForm () {
+         }
++
++        public void ResponseReturnValue (ResponseMethodVO responseMethodVO) {
++            if (responseMethodVO.ExecutionSuccess) {
++                MessageBox.Show ("Yeah !!, el valor de retorno es: " + responseMethodVO.MethodResult); 
++            }
++        }
+     }
+ }
+
+Modified: ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs	2005-09-27 23:20:45 UTC (rev 523)
++++ ComponentModel/trunk/src/UnitTest/Components/TestComponent/TestComponentUnit.cs	2005-09-29 16:57:08 UTC (rev 524)
+@@ -44,5 +44,48 @@
+                 //Assert.AreNotSame (returnValue, x);
+             }
+         }
++
++        [Test]
++        public void ExecutionNonRedirectOverload () {
++            char c = 'a';
++            ResponseMethodVO responseMethodVO;
++            char returnValue;
++
++            IComponentModel componentModel = DefaultContainer.Instance.GetComponentByName ("TestUnidad1");
++            responseMethodVO = componentModel.Execute ("ReturnValue", new object[]{c}, false);
++            Assert.AreEqual (responseMethodVO.ExecutionSuccess, true);
++            Assert.IsNotNull (responseMethodVO.MethodResult);
++            if (responseMethodVO.ExecutionSuccess == true) {
++                returnValue = (char) responseMethodVO.MethodResult;
++                Assert.AreEqual (returnValue, c);
++            }
++        }
++
++        [Test]
++        public void ExecuteRedirectNewView () {
++            int x = 4;
++            ResponseMethodVO responseMethodVO;
++            int returnValue;
++
++            IComponentModel componentModel = DefaultContainer.Instance.GetComponentByName ("TestUnidad1");
++            responseMethodVO = componentModel.Execute ("ReturnValue", new object[]{x});
++            Assert.AreEqual (responseMethodVO.ExecutionSuccess, true);
++            Assert.IsNotNull (responseMethodVO.MethodResult);
++        }
++
++        [Test]
++        public void GetProperty () {
++            IComponentModel componentModel = DefaultContainer.Instance.GetComponentByName ("TestUnidad1");
++            Assert.IsNotNull (componentModel.GetProperty ("Entero"));
++            Assert.AreEqual ((int) componentModel.GetProperty ("Entero"), 0); 
++        }
++
++        [Test]
++        public void SetProperty () {
++            IComponentModel componentModel = DefaultContainer.Instance.GetComponentByName ("TestUnidad1");
++            componentModel.SetProperty ("Entero", 5);
++            Assert.IsNotNull (componentModel.GetProperty ("Entero"));
++            Assert.AreEqual ((int) componentModel.GetProperty ("Entero"), 5);
++        }
+     }
+ }
+
+Modified: ComponentModel/trunk/src/UnitTest/Launcher.cs
+===================================================================
+--- ComponentModel/trunk/src/UnitTest/Launcher.cs	2005-09-27 23:20:45 UTC (rev 523)
++++ ComponentModel/trunk/src/UnitTest/Launcher.cs	2005-09-29 16:57:08 UTC (rev 524)
+@@ -12,8 +12,8 @@
+         public static TestSuite Suite {
+             get {
+                 TestSuite suite = new TestSuite("All Tests");
++                suite.Add (new TestComponentUnit ());
+                 suite.Add (new DefaultContainerUnit ());
+-                suite.Add (new TestComponentUnit ());
+                 return suite;
+             }
+         }
+
+
+
